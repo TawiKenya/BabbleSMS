@@ -1,0 +1,13 @@
+===========================
+Babble SMS README
+===========================
+
++++++++++++++
+Introduction
++++++++++++++
+This software module is a turnkey application that allows for sending and/or
+receiving of SMS through an easy-to-use website interface. It is designed with
+the look-and-feel of an email account.
+
+Underneath it relies on the SMS Gateway as a transport mechanism for SMS to and
+from the network operators.
