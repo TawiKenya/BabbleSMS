@@ -1,0 +1,11 @@
+Uuid|ShortDesc|LongDesc|origin|NotificationDate
+8b71a568-f95d-4c3e-8b5c-700a155c35a0|New feature: Export of graphs|This feature will allow you to export any graph of your choice. The exported graph will be available in PDF.|system|Fri Dec 26 23:01:19 EAT 2014
+71098b2f-58d5-4ec8-9940-e5c531158252|Upgrade: Email reports|You will now be able to set even to the minute in which you want to get your report.|admin|Tue Sep 23 09:22:41 EAT 2014
+50f1e183-b260-47f8-8b4f-f5347131b585|Upcoming Feature|Soon you will be able to log in through your mobile phone|system|Fri Nov 07 08:27:52 EAT 2014
+9761a51e-a712-4433-a987-61928f7342f7|Feature ready|The new PDF structure is now available. Log in to have the experience.|admin|Thu Aug 07 20:51:24 EAT 2014
+b9efac48-db17-4283-92ce-9a2647433fad|System upgrade|The USSD gateway will not be available on Friday from 2100 Hrs to Saturday 0800 Hrs|system|Sat Dec 27 04:56:56 EAT 2014
+ccd0eb36-b557-41dc-94f6-48ecb8ac8bf1|Downgrade of feature: |We are downgrading the mechanism of testing connections to USSD applications. This is because of user complaints.|admin|Thu Sep 25 15:02:12 EAT 2014
+3a2e8ac6-be59-433c-8e59-807e7da6c144|New feature: Reset password|We are working to provide a way to reset your password when you have forgotten it.|system|Mon Sep 15 17:30:41 EAT 2014
+403bb38e-4a54-4fca-b6e9-101f1d6f14ce|New feature: Refresh of captcha|Customers have complained that sometimes they cannot differentiate between 'I' and 'L'. Now this refresh ability will change that pain.|admin|Mon Sep 29 00:11:41 EAT 2014
+9cefc293-7ac2-4b20-8d45-d3c359cc0493|Downgrade of feature: |Unfortunately we shall have to downgrade the account management.|system|Sun Sep 14 18:41:49 EAT 2014
+1baea312-1b15-4d41-ab93-ddfe7777b206|Upcoming Feature|Sadly this is an April 1st prank.|admin|Sat Sep 27 00:30:22 EAT 2014

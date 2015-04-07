@@ -1,0 +1,129 @@
+#scroll {
+    width: 200px;  /* Optional */
+    /* border-collapse: collapse; */
+    border-spacing: 0;
+    border: 2px solid black;
+	float:left;
+margin: 0 1.5%;
+}
+
+#groupsform {
+float: left;
+ width: 200px;
+margin: 0 1.5%;
+}
+#add {
+
+ margin-left:27%;
+ margin-right:27%;
+ margin-top:30%;
+ 
+ 
+}
+
+#adds {
+
+ margin-left:27%;
+ margin-right:27%;
+ margin-top:30%;
+ 
+ 
+}
+
+#add1 {
+
+ margin-left:27%;
+ margin-right:27%;
+ margin-top:30%;
+ 
+ 
+}
+
+#remove{
+margin-left:27%;
+margin-right:27%;
+margin-bottom:30%;
+}
+
+#remove2{
+margin-left:27%;
+margin-right:27%;
+margin-bottom:30%;
+}
+
+
+
+#scroll1 {
+    width: 200px;  /* Optional */
+    /* border-collapse: collapse; */
+    border-spacing: 0;
+    border: 2px solid black;
+    float:left;	
+margin: 0 1.5%;
+}
+
+
+
+
+
+
+
+
+#scroll tbody,
+#scroll thead,#scroll1 tbody,
+#scroll1 thead { display: block; }
+
+thead tr th { 
+    height: 30px;
+    line-height: 30px;
+    /* text-align: left; */
+}
+
+#hideANDseek
+{
+    display: none;
+}
+
+#rows{
+ height: 30px;
+    line-height: 30px;
+
+}
+#scroll tbody,#scroll1 tbody {
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width:200px;
+}
+
+.textarea{
+width:30%;
+
+}
+
+#savecancelButtons{
+margin: 0 10%;
+
+
+}
+
+#savecancelButtons2{
+margin: 0  33%;
+
+
+}
+
+
+
+
+tbody { border-top: 2px solid black; }
+
+tbody td, thead th {
+    /* width: 20%; */ /* Optional */
+    /*border-right: 1px solid black;*/
+    /* white-space: nowrap; */
+}
+
+tbody td:last-child, thead th:last-child {
+    border-right: none;
+}

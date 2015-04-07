@@ -1,0 +1,320 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
++++++++++++++++++++++++++++++++++++++++
++ BabbleSMS Database Layout.
++++++++++++++++++++++++++++++++++++++++
+
+The tables are divided into the following sections:
+1. Account Management
+2. Contact and Group Management
+3. SMS Management
+4. SMS Gateway Management
+5. Administrative
+6. System Activity
+
+'UUID' stands for a universally unique identifier.
+For more details, see http://en.wikipedia.org/wiki/Universally_unique_identifier
+
+
+======================
+======================
+1. Account Management
+======================
+======================
+An account holder is one that can log into the portal, can create Contacts and
+Groups, and can send and/or receive SMS.
+
+--------------------
+Table Status
+--------------------
+This is to indicate Status of an account, contact, phone and email e.g. active, 
+suspended, deleted etc
+- Id (primary key)
+- uuid
+- Description
+
+
+---------------------
+ Table Account
+---------------------
+ This table stores information to the user at each state. Note that the word 
+ "State" is a future reserved SQL keyword.
+ - Id
+ - UUID
+ - username
+ - password
+ - apiusername
+ - apipassword
+ - usertype
+ - Creation Date
+ - name
+ - mobile
+ - email
+ - dailysmsLimit
+ - Status uuid references Status(uuid)
+ 
+ 
+================================
+================================
+2. Contact and Group Management
+================================
+================================
+
+---------------------
+Table Country
+---------------------
+- uuid
+- English Name
+- Country Code
+
+
+---------------------
+ Table Network
+---------------------
+Used to store network operators e.g. Safaricom, Airtel
+- Id (primary key)
+- UUID
+- Name
+- Country uuid references Country(uuid)
+
+
+---------------
+ Table Contact
+--------------
+This table stores contacts that user has created
+- Id (primary key)
+- UUID
+- Name
+- Description
+- Account uuid references Account(uuid)
+- Status uuid references Status(uuid)
+
+
+------
+Phone
+------
+This table stores phone numbers associated with the Contact
+- Id (primary key)
+- UUID
+- Phone Number
+- Contact UUID references Contact
+- Status uuid references Status
+
+
+------
+Email
+------
+This table stores emails associated with the contact
+- Id (primary key)
+- UUID
+- Address
+- Contact UUID references Contact
+- Status uuid references Status
+
+
+-----------------
+ Table Group
+ ----------------
+This table stores groups. A Group may have zero or more Contacts.
+- Id (primary key)
+- UUID
+- Name
+- Description
+- Date of Creation
+- Account uuid references Account(uuid)
+- Status uuid references Status
+
+
+-------------------
+Table ContactGroup
+-------------------
+This table is used to show the association of Contacts and Groups. A Contact may
+belong to zero or more Groups. A Group may have zero or more Contacts.
+- Id (primary key)
+- UUID
+- Contact UUID references Contact(UUID)
+- Group UUID references Group(UUID)
+- Account UUID references Account(UUID)
+    
+
+
+==================
+==================
+3. SMS Management
+==================
+==================
+
+---------------------
+Table Shortcode
+---------------------
+- Id (primary key)
+- UUID
+- codenumber
+- Network UUID references Network
+- Account UUID references Account
+- creation date
+ 
+
+---------------------
+Table mask
+---------------------
+Represents SMS masks.
+- Id (primary key)
+- UUID
+- name
+- Account UUID references Account
+- Network UUID references Network
+- creation date
+
+ 
+---------------------
+Table IncomingLog
+---------------------
+This is a list of all SMS that have come into the system.
+- Id (primary key)
+- UUID
+- origin
+- destination 
+- Recipient UUID references Account (UUID)
+- message
+- timestamp
+- Network UUID references Network
+
+
+--------------------
+Table MessageStatus
+--------------------
+A list of the states of outgoing SMS, e.g. Sent, Success, Failure etc
+- Id (primary key)
+- UUID
+- Description
+
+
+---------------------
+Table outgoinglog
+---------------------
+A list of all SMS that have been sent from the system to Contacts.
+- Id (primary key)
+- UUID (not unique)
+- origin
+- destination
+- message
+- timestamp
+- Network UUID references Network
+- Messagestatus UUID references MessageStatus
+- Sender UUID references Account (UUID)
+
+
+-----------------------
+Table outgoingGroupLog
+-----------------------
+A list of all SMS that have been sent from the system to Groups.
+- Id (primary key)
+- UUID
+- origin
+- Destination UUID references Group (UUID)
+- message
+- timestamp
+- Messagestatus UUID references MessageStatus
+- Sender UUID references Account (UUID)
+
+
+---------------------
+ Table messagetemplate
+ ---------------------
+These are text that can be automatically used as the body of an SMS.
+- Id (primary key)
+- UUID
+- templatetitle
+- contents
+- Account UUID references Account
+
+
+---------------------
+Table purchaseHistory
+---------------------
+- Id (primary key)
+- UUID
+- amount
+- source
+- timestamp
+- Account UUID references Account
+- Network UUID references Network
+
+
+=========================
+=========================
+4. SMS Gateway Management
+=========================
+=========================
+
+==================
+==================
+5. Administrative
+==================
+==================
+
+===================
+===================
+6. System Activity
+===================
+===================
+
+
+
+=================
+=================
+Unaudited Tables
+=================
+=================
+
+---------------------
+ Table credit
+ ---------------------
+ This table stores information to the user at each state. Note that the word 
+ "State" is a future reserved SQL keyword.
+ - Id
+ - UUID
+ - source
+ - credit
+ - useruuid
+
+
+------------------
+Table Notification
+------------------
+This table holds information about impending 
+or already done upgrades to the gateway
+- Id 
+- Uuid 
+- accountuuid references Account(uuid)
+- Short Description
+- Long Description
+- origin
+- Notification Date
+
+
+---------------------------
+Table NotificationStatus
+---------------------------
+This table holds information on the read status of a notification
+- Id 
+- Uuid 
+- Notification Uuid references Notification (Uuid)
+- Read Flag
+- Read Date
+
+

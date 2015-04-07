@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+    <!-- Servlet definition start -->
+    <servlet>
+        <servlet-name>Log4jInit</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.init.Log4jInit</servlet-class>
+        <init-param>
+            <param-name>log4j-init-file</param-name>
+            <param-value>/WEB-INF/log/log4j.properties</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>PropertiesConfig</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig</servlet-class>
+        <init-param>
+            <param-name>config-file</param-name>
+            <param-value>/WEB-INF/config.properties</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>DbPoolUtil</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.util.DbPoolUtil</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>CacheInit</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.init.CacheInit</servlet-class>
+        <init-param>
+            <param-name>ehcache-file</param-name>
+            <param-value>/WEB-INF/classes/ehcache.xml</param-value>
+        </init-param>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+    
+    
+    <!-- Start Account Holder servlets -->
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Login</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addcontact</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
+    </servlet>
+   <servlet>
+        <servlet-name>EditGroup</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditGroup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditContact</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditContact</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>FontImageGenerator</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IncomingBarDay</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.bar.IncomingBarDay</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OutgoingBarDay</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.bar.OutgoingBarDay</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IncomingPie</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.pie.IncomingPie</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OutgoingPie</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.pie.OutgoingPie</servlet-class>
+    </servlet>
+    
+    <!-- End Account Holder servlets -->
+    
+    <servlet>
+        <servlet-name>AdminLogin</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Loggin</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
+    </servlet>
+    <!--<servlet>
+        <servlet-name>addnetwork</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.network.Addnetwork2</servlet-class>
+    </servlet>-->
+    <servlet>
+        <servlet-name>addshortcode</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.source.Addshortcode</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addmask</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.source.Addmask</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>addcredit</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.sms.Addcredit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>callback</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.callback.Callback</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>uploadFile</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.UploadFile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>exportExcel</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.inbox.ExportExcel</servlet-class>
+    </servlet>
+    
+    <!-- Servlet mapping start -->
+    
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>addcontact</servlet-name>
+        <url-pattern>/account/addcontact</url-pattern>
+    </servlet-mapping> 
+
+     <servlet-mapping>
+        <servlet-name>EditGroup</servlet-name>
+        <url-pattern>/account/editGroup</url-pattern>
+    </servlet-mapping> 
+    
+    <servlet-mapping>
+        <servlet-name>EditContact</servlet-name>
+        <url-pattern>/account/editContact</url-pattern>
+    </servlet-mapping>    
+    
+    <servlet-mapping>
+        <servlet-name>FontImageGenerator</servlet-name>
+        <url-pattern>/fontImageGenerator</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IncomingBarDay</servlet-name>
+        <url-pattern>/account/incomingBarDay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OutgoingBarDay</servlet-name>
+        <url-pattern>/account/outgoingBarDay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IncomingPie</servlet-name>
+        <url-pattern>/account/incomingPie</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OutgoingPie</servlet-name>
+        <url-pattern>/account/outgoingPie</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Loggin</servlet-name>
+        <url-pattern>/Loggin</url-pattern>
+    </servlet-mapping>
+    <!--<servlet-mapping>
+        <servlet-name>addnetwork</servlet-name>
+        <url-pattern>/addnetwork</url-pattern>
+    </servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>addshortcode</servlet-name>
+        <url-pattern>/addshortcode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addmask</servlet-name>
+        <url-pattern>/addmask</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>addcredit</servlet-name>
+        <url-pattern>/addcredit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>callback</servlet-name>
+        <url-pattern>/callback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>uploadFile</servlet-name>
+        <url-pattern>/account/uploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>exportExcel</servlet-name>
+        <url-pattern>/account/exportExcel</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Servlet mapping end -->
+    
+    
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+</web-app>
