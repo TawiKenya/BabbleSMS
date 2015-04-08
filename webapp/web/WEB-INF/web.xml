@@ -55,9 +55,13 @@
         <servlet-name>addcontact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addgroup</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddGroup</servlet-class>
+    </servlet>
    <servlet>
-        <servlet-name>EditGroup</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditGroup</servlet-class>
+        <servlet-name>EditGroup</servlet-name> 
+       <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditGroup</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditContact</servlet-name>
@@ -140,6 +144,11 @@
     <servlet-mapping>
         <servlet-name>addcontact</servlet-name>
         <url-pattern>/account/addcontact</url-pattern>
+    </servlet-mapping> 
+    
+    <servlet-mapping>
+        <servlet-name>addgroup</servlet-name>
+        <url-pattern>/account/addgroup</url-pattern>
     </servlet-mapping> 
 
      <servlet-mapping>

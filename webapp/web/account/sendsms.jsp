@@ -30,7 +30,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO"%>
@@ -38,8 +38,10 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
-<%@page import= "ke.co.tawi.babblesms.server.persistence.items.accounts.AccountBalanceDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingGroupLogDAO"%>
+<%@page import= "ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.items.messageTemplate.MessageTemplateDAO"%>
 
 <%@page import="ke.co.tawi.babblesms.server.threads.SendSMS.SendSMS"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
@@ -99,6 +101,17 @@
     List<MessageTemplate> list = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
     List<Contact> contactlist = new ArrayList();
+
+
+   MaskDAO maskDAO = MaskDAO.getInstance();
+   ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
+   NetworkDAO networkDAO = NetworkDAO.getInstance();
+   MessageTemplateDAO msgtemplDAO = MessageTemplateDAO.getInstance();
+  
+
+   masklist =maskDAO.getmaskbyaccount(account.getUuid());
+   shortcodelist = shortcodeDAO.getShortcodebyaccountuuid(account.getUuid());
+   list = msgtemplDAO.getAllMessageTemplatesbyuuid(account.getUuid());
 
     //Element element;
     List keys;
@@ -246,7 +259,7 @@
                                     if (masklist != null) {
                                         for (Mask code : masklist) {
                                 %>
-                                <option value="<%= code.getMaskname()%>"><%= code.getMaskname()+'('+networkHash.get(code.getNetworkuuid())+')'%></option>
+                                <option value="<%= code.getMaskname()%>"><%= code.getMaskname()+'('+networkDAO.getNetwork(code.getNetworkuuid()).getName()+')'%></option>
                                 <%
                                             count++;
                                         }
@@ -257,7 +270,7 @@
                                     if (shortcodelist != null) {
                                         for (Shortcode code : shortcodelist) {
                                 %>
-                                <option value="<%= code.getCodenumber()%>"><%=code.getCodenumber()+'('+networkHash.get(code.getNetworkuuid())+')'%></option>
+                                <option value="<%= code.getCodenumber()%>"><%=code.getCodenumber()+'('+networkDAO.getNetwork(code.getNetworkuuid()).getName()+')'%></option>
                                 <%
                                             count++;
                                         }
@@ -269,21 +282,10 @@
                             </select>
                         </div>
                     </div>    
-                    <div class="control-group">
+                    <!--<div class="control-group">
                         <label class="control-label" for="network">Network:</label>
-                        <div class="controls">
-                            <select name="network[]" multiple required="true">
-                                <%                                    count = 1;
-                                    for (Network code : networkList) {
-                                %>
-                                <option value="<%= code.getUuid()%>"><%= code.getName()%></option>
-                                <%
-                                        count++;
-                                    }
-                                %>
-                            </select>
-                        </div>
-                    </div>
+                        
+                    </div>-->
 
                     <div class="control-group">
                         <label class="control-label" for="message">Message Template:</label>

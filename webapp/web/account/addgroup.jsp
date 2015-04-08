@@ -118,13 +118,13 @@
                     <div class="control-group">
                         <label class="control-label" for="gname" autofocus>Name</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="groupname" type="text" name="gname" value="">
+                            <input class="input-xlarge focused" id="groupname" type="text" name="name" value="">
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="gdesc">Description</label>
+                        <label class="control-label" for="desc">Description</label>
                         <div class="controls">
-                            <textarea rows ="3" cols ="3" id="groupdesc" name="gdesc" > </textarea>
+                            <textarea rows ="3" cols ="3" id="groupdesc" name="desc" > </textarea>
                             <!--<input class="input-xlarge focused"  id="groupdesc" name="gdesc" type="text">-->
                         </div>
                     </div>

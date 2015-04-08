@@ -185,12 +185,12 @@ public Group getGroupByName(Account account , String groupname){
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE groups SET name =? , description =? , statusuuid = ? WHERE uuid =?;");	
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE groups SET name =? , description =? WHERE uuid =?;");	
 		   ){
 			pstmt.setString(1, group.getName());
 			pstmt.setString(2, group.getDescription());
-			pstmt.setString(3, group.getStatusuuid());
-			pstmt.setString(4, uuid);
+			//pstmt.setString(3, group.getStatusuuid());
+			pstmt.setString(3, uuid);
 			
 			 pstmt.executeUpdate();
 				
@@ -219,7 +219,7 @@ public Group getGroupByName(Account account , String groupname){
 
         try(
         		Connection conn = dbCredentials.getConnection();
-        		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO groups (Uuid,name,descriptioneationdate,cr,accountuuid,statusuuid) VALUES (?,?,?,?,?,?);");	
+        		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO groups (Uuid,name,description,creationdate,accountuuid,statusuuid) VALUES (?,?,?,?,?,?);");	
         	   ){
         	 pstmt.setString(1, group.getUuid());
              pstmt.setString(2, group.getName());

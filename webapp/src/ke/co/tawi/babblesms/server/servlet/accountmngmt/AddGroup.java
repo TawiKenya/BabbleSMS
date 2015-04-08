@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.servlet.contacts;
+
+package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import java.io.IOException;
 
@@ -24,26 +25,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ke.co.tawi.babblesms.server.session.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+
 /**
- * Receives form values from addgroup.jsp section and adds a new
- * {@link Group} to the database.
- *
+ * Receives a form request toedit a group's details
+ * 
  * <p>
- * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
+ * 
+ * @author dennis <a href="mailto:dennism@tawi.mobi">Dennis Mutegi</a>
+ *
  */
 
 public class AddGroup extends HttpServlet {
-    
+	
 	private final String ERROR_NO_GROUP_NAME = "Please provide the group name";
 	private Logger logger = Logger.getLogger(this.getClass());
 	
@@ -73,31 +71,35 @@ public class AddGroup extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		
 		String gname = request.getParameter("name");
-		String gdesc = request.getParameter("phone1");
-		String gUuid = request.getParameter("uuid");
-		
-		if(gname.equals("")){
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_GROUP_NAME);
-		}
+		String gdesc = request.getParameter("desc");
+		String accountUuid = request.getParameter("accountuuid");
+		String activestatus = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
 
-		else{
+
+	
 			Group group = new Group();
 			group.setName(gname);
 			group.setDescription(gdesc);
-			group.setUuid(gUuid);
+			group.setAccountsuuid(accountUuid);
+			group.setStatusuuid(activestatus);
+			//group.setUuid(gUuid);
 			
 			logger.info(group);
 			
 			GroupDAO gDAO = GroupDAO.getInstance();
-			if(gDAO.updateGroup(gUuid, group)){
+			if(gDAO.putGroup(group)){
 				session.setAttribute(SessionConstants.UPDATE_SUCCESS, "successfully saved");
 			}
 			else{
 				session.setAttribute(SessionConstants.ADD_ERROR, "failed! Please try again");
 			}
 			
-		}
+		
 	
 		response.sendRedirect("groups.jsp");
 	}
+
 }
+
+
+

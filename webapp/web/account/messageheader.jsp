@@ -205,7 +205,7 @@
                 <!--  < <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                     <a href="portfolio.jsp">REPORT</a>-->
-		    <a href="#">MESSAGES</a>
+		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                     <a href="#">REPORT</a>
 			
@@ -233,7 +233,7 @@
                             <li><a class="ajax-link" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
                             <li><a class="ajax-link" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
 -->
-		<li><a class="btn-danger" href="#" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>	
+		<li><a class="btn-danger" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>	
 			<li><a class="ajax-link" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet"> Dashboard</span></a></li>
                             <li><a class="ajax-link" href="inbox.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
                             <li><a class="ajax-link" href="sent.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent</span></a></li>
