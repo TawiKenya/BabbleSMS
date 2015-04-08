@@ -504,7 +504,7 @@ more
 <label class="control-label" for="email">Email</label>
 <div class="controls" id = "addemails1">
 <input class="input-xlarge focused"id="email" name="email[]" type="text" value="">
-<button id='addemails'>+</button>
+<button id="addemail">+</button>
 </div>
 </div>
 

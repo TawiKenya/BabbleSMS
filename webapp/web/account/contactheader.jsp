@@ -124,13 +124,7 @@
         <script>
         $(document).ready(function() {
 
-           $(".add_field_button").click(function(e){ //on add input button click
-                e.preventDefault();
-
-                    $(".input_fields_wrap").append('<div><input type="text" placeholder = "search" autofocus><br><select name="cars" multiple><%for(int i =0; i<100; i++){%><option value ="saf">Safaricom</option><%}%></select><br><button class="btn">Done</button><button class="remove_field">undo</button></div>'); //add input box
-
-            });
-
+           
             $(".input_fields_wrap").on("click",".remove_field", function(e){ //user click on remove text
                 e.preventDefault(); $(this).parent('div').remove();
             })
@@ -257,7 +251,7 @@ xreq.send();
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">  <span>Babble</span></a>
+                    <a class="brand" href="index.jsp">  <span>Babble</span></a>
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >

@@ -225,7 +225,7 @@
                         <label class="control-label" for="email">Email</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="email" name="email[]" type="text" value="">
-                            <button id='addemails'>+</button>
+                            <button id="addemail">+</button>
                         </div>
                     </div>
 
@@ -273,7 +273,7 @@
 <div id = "groupsform">
 <br/><br/><br/>
 <button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-<button type="submit"  id = "remove" > << Remove </button>
+<button type="submit"  id = "remove2" > << Remove </button>
 
 
 <input type="hidden"  class ="groupsadded" name="groupsadded[]"  />

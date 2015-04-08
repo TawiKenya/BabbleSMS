@@ -195,6 +195,7 @@ http://opensource.org/licenses/OSL-3.0
     position: relative;
     width: 874px;
     z-index: 10;
+    margin-top:40px;
 }
 
 .ussdNavControls.footer {
@@ -252,7 +253,7 @@ http://opensource.org/licenses/OSL-3.0
 .ussdNavControls #pagination {
     border-left: 1px solid #a6a6a6;
     float: left;
-    width: 443px;
+    width: 400px;
 }
 
 .ussdNavControls.searchResultsPagination #pagination {
@@ -284,7 +285,7 @@ http://opensource.org/licenses/OSL-3.0
 
 .ussdNavControls #export {
     float: right;
-    width: 336px;
+    width: 380px;
 }
 
 .ussdNavControls #export form {

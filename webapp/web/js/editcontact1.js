@@ -1,4 +1,4 @@
-$(document).ready(function() {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            $(document).ready(function() {
 var group;
 var group1;
 var group2;
@@ -196,7 +196,15 @@ window.location="../account/contact.jsp";
 
 });
 
+ //add more email click
+        $("#addemail").click(function(e) {
+            e.preventDefault();
+            $("#mail").append("<div class='controls'> <input style='margin-top:5px;' class='input-xlarge focused'  id='email' name='email[]' type='text'> </div>");
+
+        });
  
+
+
 
 
 
