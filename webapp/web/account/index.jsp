@@ -87,7 +87,7 @@
             Home<span class="divider">/</span>
         </li>
         <li>
-            Dashboard
+            Quick Reports
         </li>
     </ul>
 </div>
