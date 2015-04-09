@@ -101,7 +101,8 @@
     List<MessageTemplate> list = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
     List<Contact> contactlist = new ArrayList();
-
+	GroupDAO gDAO=new GroupDAO();
+         contactsgrpList = gDAO.getGroups(account);
 
    MaskDAO maskDAO = MaskDAO.getInstance();
    ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
@@ -162,8 +163,7 @@
 
     }
 
-    GroupDAO gDAO=new GroupDAO();
-         contactsgrpList = gDAO.getGroups(account);
+    
 
     keys = contactsCache.getKeys();
     for (Object key : keys) {
