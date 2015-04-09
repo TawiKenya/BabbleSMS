@@ -197,6 +197,7 @@
         networkHash.put(network.getUuid(), network.getName());
     }
 */
+
 %>
 <jsp:include page="messageheader.jsp" />
 
@@ -239,7 +240,7 @@
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
             %>
-            <form id="sendsms" class="form-horizontal" action="sendsms.jsp" method="POST">
+            <form id="sendsms" name = "myform" class="form-horizontal" action="sendsms.jsp" method="POST">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="destination">TO:</label>
@@ -248,7 +249,8 @@
                                 <input class="input-xlarge focused" id="receiver" type="text" name="destination" value="" required="true">
                             </div>
                         </div>
-                    </div>
+                    </div>                                              
+                    
                     <div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
@@ -291,38 +293,32 @@
                         <label class="control-label" for="message">Message Template:</label>
                         <div class="controls">
                             <select name="msgtemplate" id="msgtemplate" >
-                                <option value="">Please select one</option>
+                                <option class = "add_field_button" value="">Please select one</option>
                                 <%
                                     count = 1;
                                     if (list != null) {
                                         for (MessageTemplate code : list) {
                                 %>
-                                <option value="<%= code.getContents()%>"><%= code.getTemplatetitle()%></option>
+                                <option class = "add_field_button" value="<%= code.getContents()%>"><%= code.getTemplatetitle()%></option>
+                                
                                 <%
                                             count++;
-                                        }
+                                                                                  }
                                     }
                                 %>
                             </select>
                         </div>
-                    </div>
-
-
-                    <div class="control-group">
-                        <div class="controls">
-                            <button type="submit" id="template" name="template" value="Template" class="btn btn-primary" >Use Template</button>
-
-                        </div>         
-                    </div>          
+                    </div>       
 
                     <div class="control-group">
                         <label class="control-label" for="message">Message:</label>
                         <div class="controls">
-                            <textarea cols="200" rows="6" class="input-xlarge focused"  id="messaged" name="message" required="true"></textarea>
+                            <textarea cols="200" rows="6" class="input-xlarge focused input_fields_wrap"  id="messaged" name="message" required="true"onkeyup="countChar(this)"></textarea>
                         </div>
-                        <div class="controls">
-                            <label  class="control-label" for="message" id="sms"> SMS</label><label class="control-label" for="message" id="count"> Characters</label>
+                       <div class="controls">
+                            <label  class="control-label" for="message" id="sms"> SMS  <quote id="smsNum"></quote></label><label class="control-label" for="message" id="count"> Characters <quote id="charCount"></quote></label>
                         </div>
+                        
                     </div>          
 
                     <div id="dialog-confirm">

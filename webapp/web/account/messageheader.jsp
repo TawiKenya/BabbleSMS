@@ -67,6 +67,7 @@
         </style>
         <!-- jQuery -->
         <script src="../js/jquery-1.7.2.min.js"></script>
+        <script src="../js/composepagejavascript.js"></script>
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
         <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
@@ -112,9 +113,7 @@
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
 
-        
-
-    </head>
+      </head>
 
     <body>
 
