@@ -6,7 +6,14 @@
 	float:left;
 margin: 0 1.5%;
 }
-
+#scroll2 {
+    width: 200px;  /* Optional */
+    /* border-collapse: collapse; */
+    border-spacing: 0;
+   
+	float:left;
+margin: 0 1.5%;
+}
 #groupsform {
 float: left;
  width: 200px;

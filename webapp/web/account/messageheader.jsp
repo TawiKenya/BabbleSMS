@@ -86,7 +86,7 @@
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
         <link href='../css/site.css' rel='stylesheet'>
-
+	<link href='../css/grouptable.css' rel='stylesheet'>
         
          <!--jqplot charts-->
         <!--<script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>-->
@@ -100,8 +100,42 @@
         <script type="text/javascript" src="../js/jqplot.pointLabels.min.js"></script>
         <script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
         
-
+	<script>
         
+
+	$(document).ready(function() {
+    $("[href]").each(function() {
+    if (this.href == window.location.href) {
+        $(this).css('background-color', '#d41e24');
+        }
+    });
+	$("#scroll2").hide();
+      $('#destination').change(function(){
+      if($(this).val()=="Group"){
+        $("#scroll2").show();
+    }
+	else if($(this).val()=="A Contact"){
+       
+        $("#scroll2").hide();
+        }
+	});
+	
+	$("#scroll2 td:nth-child(1)").click(function(event){  
+	//Prevent the hyperlink to perform default behavior  
+        event.preventDefault();
+	$td= $(this).closest('tr').children('td');
+	($td).css("background", "#808080");
+	group = $td.eq(0).text();
+	
+       group2 = $td.eq(1).text(); 
+	var field1 = $('.groupselected').clone().val(group);
+       
+        field1.appendTo("#grouptable");
+	 });
+     });
+
+
+	</script>        
          
         
 
@@ -232,12 +266,12 @@
                             <li><a class="ajax-link" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
                             <li><a class="ajax-link" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
 -->
-		<li><a class="btn-danger" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>	
-			<li><a class="ajax-link" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet">Quick Reports</span></a></li>
-                            <li><a class="ajax-link" href="inbox.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
-                            <li><a class="ajax-link" href="sent.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent</span></a></li>
-                         <li><a class="ajax-link" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
-                            <li><a class="ajax-link" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
+		<li><a id ="btn-dangers1" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>	
+			<li><a class="ajax-link"id ="btn-dangers1" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet">Quick Reports</span></a></li>
+                            <li><a class="ajax-link" id ="btn-dangers1"href="inbox.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
+                            <li><a class="ajax-link"id ="btn-dangers1" href="sent.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent</span></a></li>
+                         <li><a class="ajax-link" id ="btn-dangers1" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
+                            <li><a class="ajax-link"id ="btn-dangers1" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
 
 
 

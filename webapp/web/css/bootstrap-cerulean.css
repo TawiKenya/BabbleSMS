@@ -4417,15 +4417,32 @@ div.subnav {
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+#btn-dangers:active {
+  background-color: #d41e24;
+  background-image: -moz-linear-gradient(top, #dd1f26, #c71c22);
+  background-image: -ms-linear-gradient(top, #dd1f26, #c71c22);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dd1f26), to(#c71c22));
+  background-image: -webkit-linear-gradient(top, #dd1f26, #c71c22);
+  background-image: -o-linear-gradient(top, #dd1f26, #c71c22);
+  background-image: linear-gradient(top, #dd1f26, #c71c22);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dd1f26', endColorstr='#c71c22', GradientType=0);
+  border-color: #c71c22 #c71c22 #841317;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #c71c22;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
 .btn-danger:hover,
-.btn-danger:active,
+
 .btn-danger.active,
 .btn-danger.disabled,
 .btn-danger[disabled] {
   background-color: #c71c22;
   *background-color: #b1191e;
 }
-.btn-danger:active,
+
 .btn-danger.active {
   background-color: #9a161a \9;
 }

@@ -162,15 +162,8 @@
 
     }
 
-    keys = groupCache.getKeys();
-    for (Object key : keys) {
-
-        element = groupCache.get(key);
-        cgroup = (Group) element.getObjectValue();
-        if (account.getUuid().equals(cgroup.getAccountsuuid())) {
-            contactsgrpList.add(cgroup);
-        }
-    }
+    GroupDAO gDAO=new GroupDAO();
+         contactsgrpList = gDAO.getGroups(account);
 
     keys = contactsCache.getKeys();
     for (Object key : keys) {
@@ -242,14 +235,48 @@
             %>
             <form id="sendsms" name = "myform" class="form-horizontal" action="sendsms.jsp" method="POST">
                 <fieldset>
-                    <div class="control-group">
+                    <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>
                         <div class="controls">
-                            <div id="destination">
+                           <!-- <div id="destination">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="destination" value="" required="true">
-                            </div>
-                        </div>
-                    </div>                                              
+                            </div> -->
+			<select name ="destination" id="destination" required="true">
+			<option value ="A Contact">A Contact</option>
+			<option value = "Group">Group</option>
+			</select>
+
+			</div>
+			 <div class="controls">
+			<table id='scroll2'  class="table table-striped table-bordered">
+			<thead>
+				<tr>
+				    <th>Select Group</th>
+				</tr>
+			    </thead>
+			<%
+	
+			if (contactsgrpList != null) {
+
+			 for (Group code : contactsgrpList) {
+			%>
+
+			<tr style="width:30px">
+			   
+			 <td class="center"><a href="#"><%=code.getName()%></a></td>
+			 <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
+			</tr>
+			<%  
+			}
+			    } 
+			 
+			%>
+			  
+			 
+			</table>
+			</div>
+			<input type="hidden"  class ="groupselected" name="groupselected"  />
+			</div>
                     
                     <div class="control-group">
                         <label class="control-label" for="source">Source:</label>
