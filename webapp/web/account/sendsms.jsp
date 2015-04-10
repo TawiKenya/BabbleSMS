@@ -101,9 +101,11 @@
     List<MessageTemplate> list = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
     List<Contact> contactlist = new ArrayList();
+	List<Contact> contactList = new ArrayList();
 	GroupDAO gDAO=new GroupDAO();
          contactsgrpList = gDAO.getGroups(account);
-
+	ContactDAO cDAO =  ContactDAO.getInstance();
+	contactList= cDAO.getContacts(account);
    MaskDAO maskDAO = MaskDAO.getInstance();
    ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
    NetworkDAO networkDAO = NetworkDAO.getInstance();
@@ -237,6 +239,7 @@
                 <fieldset>
                     <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>
+				
                         <div class="controls">
                            <!-- <div id="destination">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="destination" value="" required="true">
@@ -244,9 +247,16 @@
 			<select name ="destination" id="destination" required="true">
 			<option value ="A Contact">A Contact</option>
 			<option value = "Group">Group</option>
-			</select>
-
-			</div>
+			<option value = "Groups">Group</option>
+			</select></div>
+			<!--<div class="control-group" id = "sendtocontact">
+			<div class="controls">
+                        <label class="control-label" id ="label2" for="destination">Select Contact:</label>
+			<input class="input-xlarge focused" type="text" id="receiver" name="receiver" value="" required="true"/>
+                        <button type="submit">search</button>>
+                         </div> 
+			</div>-->
+			<div class="control-group">
 			 <div class="controls">
 			<table id='scroll2'  class="table table-striped table-bordered">
 			<thead>
@@ -275,7 +285,55 @@
 			 
 			</table>
 			</div>
+			</div>
+			<div class="control-group">
+			 <div class="controls">
+			<table id="scroll3" style="height:200px;" class="table table-striped table-bordered">
+			<thead>
+				<tr>
+				    <th>Select Contact</th>
+				</tr>
+			    </thead>
+			<%
+	
+			if (contactList != null) {
+
+			 for (Contact code : contactList) {
+			%>
+
+			<tr >
+			   
+			 <td class="center"><a href="#"><%=code.getName()%></a></td>
+			 <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
+			</tr>
+			<%  
+			}
+			    } 
+			 
+			%>
+			  
+			 
+			</table>
+			</div>
+			</div>
+			<div class="control-group" id ="destinationdiv"> 
+			<label class="control-label" id ="label1" for="destinations">Select Group:</label>
+			<div class="controls">
+			<select name ="destination" id="destination" required="true">
+			<%if (contactsgrpList != null) {
+
+			 for (Group code : contactsgrpList) {
+			%>
+			<option value ="<%=code.getName()%>"><%=code.getName()%></option>
+			<%  
+			}
+			    } 
+			 
+			%>
+			</select></div>
+			</div>
 			<input type="hidden"  class ="groupselected" name="groupselected"  />
+			<input type="hidden"  class ="contactselected" name="contactselected"  />
 			</div>
                     
                     <div class="control-group">

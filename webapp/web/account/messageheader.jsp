@@ -93,7 +93,9 @@
         <script language="javascript" type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/jquery.jqplot.min.css" />
    
-
+        <script type="text/javascript" src="JS/jquery-1.4.2.min.js"></script>
+	<script src="JS/jquery.autocomplete.js"></script>
+	
    
         <script type="text/javascript" src="../js/jqplot.barRenderer.min.js"></script>
         <script type="text/javascript" src="../js/jqplot.categoryAxisRenderer.min.js"></script>
@@ -110,15 +112,38 @@
         }
     });
 	$("#scroll2").hide();
+	$("#scroll3").hide();
+	$('#destinationdiv').hide();
+	$('#label1').hide();
+	
+	
       $('#destination').change(function(){
       if($(this).val()=="Group"){
+	$('#destinationdiv').hide();
+	
+	$("#scroll3").hide();	
         $("#scroll2").show();
     }
-	else if($(this).val()=="A Contact"){
+	else if($(this).val()=="Groups"){
        
         $("#scroll2").hide();
+	
+	$("#scroll3").hide();
+	
+	$('#label1').show();
+	$('#destinationdiv').show();
+        }
+	else{
+	$("#scroll2").hide();
+	$('#label1').hide();
+	$('#destinationdiv').hide();
+	$("#scroll3").show();
         }
 	});
+	jQuery(function(){
+	$("#receiver").autocomplete("sentTocontact.jsp");
+	});
+	
 	
 	$("#scroll2 td:nth-child(1)").click(function(event){  
 	//Prevent the hyperlink to perform default behavior  
@@ -131,6 +156,19 @@
 	var field1 = $('.groupselected').clone().val(group);
        
         field1.appendTo("#grouptable");
+	 });
+	$("#scroll3 td:nth-child(1)").click(function(event){  
+	//Prevent the hyperlink to perform default behavior  
+        event.preventDefault();
+	$td= $(this).closest('tr').children('td');
+	($td).css("background", "#808080");
+	group = $td.eq(0).text();
+	
+       group2 = $td.eq(1).text(); 
+	var field1 = $('.contactselected').clone().val(group2);
+       
+        field1.appendTo("#grouptable");
+	$("#scroll3").hide();
 	 });
      });
 
