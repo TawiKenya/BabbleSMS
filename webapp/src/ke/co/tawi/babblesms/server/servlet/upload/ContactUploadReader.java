@@ -1,3 +1,18 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
 package ke.co.tawi.babblesms.server.servlet.upload;
 
 import java.io.File;
@@ -27,17 +42,14 @@ import org.supercsv.exception.SuperCsvException;
 /**
  * This program demonstrates how to read CSV file using SuperCSV library.
  * Each line is read into a JavaBean class (POJO).
- * @author www.codejava.net
+ * <p>
  *
+ * @author <a href="mailto:eugene@tawi.mobi">Eugene Chimita</a>
  */
 public class ContactUploadReader {
-	
-	
-    
-	
+		
 	
 	static String readCSVFile(String csvFileName) {
-    //static void readCSVFile(String csvFileName) {
 		EmailDAO emailDAO = EmailDAO.getInstance();
 	    PhoneDAO phoneDAO = PhoneDAO.getInstance();
 	    ContactDAO ctDAO = ContactDAO.getInstance();
@@ -61,15 +73,12 @@ public class ContactUploadReader {
                 new Optional(), // email()no processing is required (the String is used unchanged). Semantically, 
                 				//it might have been better to replace that with new Optional(), which means the same thing. 
                 				//If we wanted to guarantee that name was supplied (i.e. it's mandatory), then we could have used new NotNull()
-                new NotNull() //network
-               
-                
+                new NotNull() //network               
         };
+        
      
         try {
         	    
-        	//ContactDAO contactDAO = ContactDAO.getInstace();
-        	//saves eugene = new saves();
             beanReader = new CsvBeanReader(new FileReader(csvFileName),
                     CsvPreference.STANDARD_PREFERENCE);
             String[] header = beanReader.getHeader(true);
@@ -116,7 +125,7 @@ public class ContactUploadReader {
         } catch (SuperCsvException ex){
             //logger.log(Level.SEVERE, "ERROR ON ROW "+beanReader.getRowNumber(), ex);
                       //treatedOk = false;
-        	msg = "File Upload Failed!! make sure your file extention is .csv and it conforms to this formart(uuid,name,phone,email,network) ";
+        	msg = "File Upload Failed!! make sure your file extention is .csv and it conforms to this format (name,phone,email,network) ";
        
         } catch (FileNotFoundException ex) {
             System.err.println("Could not find the CSV file: " + ex);
