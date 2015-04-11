@@ -320,13 +320,15 @@
         </div>
 
         <div class="box-content">
+        
             <p>Upload csv file with format <code>name,phone,email,network</code></p>
+            <!--
             <c:set var="uploadErrStr" value="${requestScope[SessionConstants.ADMIN_UPLOAD_FILE_ERROR_KEY]}" />  <%--Access session variables using constants as keys--%>
             <c:set var="uploadSuccessStr" value="${requestScope[SessionConstants.ADMIN_UPLOAD_FILE_SUCCESS_KEY]}"/>
             <c:if test="${!empty uploadErrStr}">
                 <p class="error">${uploadErrStr}</p> 
                 <c:set var="uploadErrStr" value=""/>
-            </c:if>
+            </c:if>-->
             <form class="form-horizontal" method="POST" action="uploadFile" name="uploadFile"
                   enctype="multipart/form-data">
                 <fieldset>
@@ -346,10 +348,18 @@
             </form>
 
         </div>
+        <h2>${message}</h2>
+        <!--
+        <form method="post" action="uploadFile" enctype="multipart/form-data">
+            Select file to upload:
+            <input type="file" name="uploadFile" />
+            <br/><br/>
+            <input type="submit" value="Upload" />
+        </form>
+        <h2>${message}</h2>-->
     </div><!--/span-->
 
 </div><!--/row-->
-
 
 
 <jsp:include page="footer.jsp" />

@@ -124,13 +124,19 @@
         <servlet-name>callback</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.callback.Callback</servlet-class>
     </servlet>
+<!--
     <servlet>
         <servlet-name>uploadFile</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.UploadFile</servlet-class>
-    </servlet>
+    </servlet>-->
     <servlet>
         <servlet-name>exportExcel</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.inbox.ExportExcel</servlet-class>
+    </servlet>
+ <!-- upload servlet -->
+    <servlet>
+        <servlet-name>Upload</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.FileUploadServlet</servlet-class>
     </servlet>
     
     <!-- Servlet mapping start -->
@@ -215,13 +221,20 @@
         <servlet-name>callback</servlet-name>
         <url-pattern>/callback</url-pattern>
     </servlet-mapping>
+<!--
     <servlet-mapping>
         <servlet-name>uploadFile</servlet-name>
         <url-pattern>/account/uploadFile</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>exportExcel</servlet-name>
         <url-pattern>/account/exportExcel</url-pattern>
+    </servlet-mapping>
+
+ <!-- file upload mapping -->
+    <servlet-mapping>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/account/uploadFile</url-pattern>
     </servlet-mapping>
     
     <!-- Servlet mapping end -->
