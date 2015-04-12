@@ -25,8 +25,6 @@ import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 /**
  * Paginate an Inbox HTML view.
  * <p>
@@ -39,14 +37,23 @@ public class InboxPaginator {
      *
      */
     public static final int PAGESIZE = 15; // The number of Incoming SMS to display per page
-    private final IncomingLogDAO incomingLogDAO;
-    private final CountUtils countUtils;
+    
+    private IncomingLogDAO incomingLogDAO;
+    private CountUtils countUtils;
+    
     private String accountuuid;
     private List<String> shortcodes;
-    private ShortcodeDAO ussdCodeDAO;
-    private Logger logger = Logger.getLogger(this.getClass());
-    Account account;
+    private ShortcodeDAO shortCodeDAO;
+    
+    private Account account;
 
+    
+    /**
+     * Disable the default constructor.
+     */
+    private InboxPaginator() {}
+    
+    
     /**
      *
      * @param accountuuid
@@ -56,26 +63,24 @@ public class InboxPaginator {
         countUtils = CountUtils.getInstance();
         incomingLogDAO = IncomingLogDAO.getInstance();
         
-        ussdCodeDAO = ShortcodeDAO.getInstance();
-
-        //populate the list of shortcodes
-        getShortCodes();
+        shortCodeDAO = ShortcodeDAO.getInstance();
+        
+        getShortCodes(); // Populate with the list of shortcodes belonging to this account
 
         account = new Account();
-        account.setUuid(accountuuid);
-        
+        account.setUuid(accountuuid);  
     }
+    
 
     /**
      *
-     * @param email
      * @param dbName
      * @param dbHost
      * @param dbUsername
      * @param dbPasswd
      * @param dbPort
      */
-    public InboxPaginator(String email, String dbName, String dbHost,
+    public InboxPaginator(String dbName, String dbHost,
             String dbUsername, String dbPasswd, int dbPort) {
 
         //initialize the DAOs
@@ -83,34 +88,35 @@ public class InboxPaginator {
         incomingLogDAO = new IncomingLogDAO(dbName, dbHost, dbUsername, dbPasswd, dbPort);
     }
 
+    
     /**
      *
      */
     private void getShortCodes() {
         shortcodes = new ArrayList<>();
-        List<Shortcode> ussdCodes = ussdCodeDAO.getShortcodebyaccountuuid(accountuuid);
+        List<Shortcode> smsCodes = shortCodeDAO.getShortcodebyaccountuuid(accountuuid);
 
-        for (Shortcode code : ussdCodes) {
+        for (Shortcode code : smsCodes) {
             shortcodes.add(code.getUuid());
         }
     }
+    
 
     /**
      *
-     * @return
+     * @return the first page
      */
     public InboxPage getFirstPage() {
-
         InboxPage page = new InboxPage();
-        account.setUuid(accountuuid);
-        List<IncomingLog> userList = incomingLogDAO.getIncomingLog(account , 0, PAGESIZE);
+        
+        List<IncomingLog> smsList = incomingLogDAO.getIncomingLog(account , 0, PAGESIZE);
  
-        page = new InboxPage(1, getTotalPage(), PAGESIZE, userList);
-        //result = new IncomingSMSPage (1, getTotalPage(), PAGESIZE, smsList);	    
+        page = new InboxPage(1, getTotalPage(), PAGESIZE, smsList);	    
 
         return page;
     }
 
+    
     /**
      * Provides the last page of the Incoming USSD session report
      *
@@ -119,19 +125,20 @@ public class InboxPaginator {
     public InboxPage getLastPage() {
         InboxPage page = new InboxPage();
 
-        List<IncomingLog> sessionList = null;
+        List<IncomingLog> smsList = null;
         int sessionCount, startIndex;
         int totalPage = getTotalPage();
 
         startIndex = (totalPage - 1) * PAGESIZE;
         sessionCount = countUtils.getIncomingCount(accountuuid);
-        account.setUuid(accountuuid);
-        sessionList = incomingLogDAO.getIncomingLog(account, startIndex, sessionCount);
+        
+        smsList = incomingLogDAO.getIncomingLog(account, startIndex, sessionCount);
 
-        page = new InboxPage(totalPage, totalPage, PAGESIZE, sessionList);
+        page = new InboxPage(totalPage, totalPage, PAGESIZE, smsList);
 
         return page;
     }
+    
 
     /**
      * Moves you forward to the page of the Incoming USSD session that comes
@@ -144,14 +151,16 @@ public class InboxPaginator {
         int totalPage = getTotalPage();
 
         InboxPage page = new InboxPage();
-        account.setUuid(accountuuid);
-        List<IncomingLog> sessionList = incomingLogDAO.getIncomingLog(account, currentPage.getPageNum() * PAGESIZE, ((currentPage.getPageNum() * PAGESIZE) + PAGESIZE));
+        
+        List<IncomingLog> smsList = incomingLogDAO.getIncomingLog(account, currentPage.getPageNum() * PAGESIZE, 
+        		((currentPage.getPageNum() * PAGESIZE) + PAGESIZE));
 
-        page = new InboxPage(currentPage.getPageNum() + 1, totalPage, PAGESIZE, sessionList);
+        page = new InboxPage(currentPage.getPageNum() + 1, totalPage, PAGESIZE, smsList);
 
         return page;
     }
 
+    
     /**
      * Moves you backward to the page of the Incoming USSD session that comes
      * before the current page
@@ -163,28 +172,28 @@ public class InboxPaginator {
         int totalPage = getTotalPage();
 
         InboxPage page = new InboxPage();
-        account.setUuid(accountuuid);
         
-        List<IncomingLog> sessionList = incomingLogDAO.getIncomingLog(account, (currentPage.getPageNum() - 2) * PAGESIZE, ((currentPage.getPageNum() - 1) * PAGESIZE));
+        List<IncomingLog> smsList = incomingLogDAO.getIncomingLog(account, (currentPage.getPageNum() - 2) * PAGESIZE, 
+        		((currentPage.getPageNum() - 1) * PAGESIZE));
 
-        page = new InboxPage(currentPage.getPageNum() - 1, totalPage, PAGESIZE, sessionList);
+        page = new InboxPage(currentPage.getPageNum() - 1, totalPage, PAGESIZE, smsList);
 
         return page;
     }
+    
 
     /**
-     * Calculates the total number of pages that would be printed for the USSD
-     * sessions that belong to the logged-in account
+     * Calculates the total number of pages that would be printed for the SMS
+     * that belong to the logged-in account
      *
      * @return	an integer
      */
     public int getTotalPage() {
         int totalSize = 0;
 
-        //get the number of all sessions belonging to this email
+        //get the number of all sms belonging to this account
         totalSize = countUtils.getIncomingCount(accountuuid);
 
-//TODO: divide by the page size and add one to take care of remainders and what else?
         return ((totalSize - 1) / PAGESIZE) + 1;
     }
 }

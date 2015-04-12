@@ -85,7 +85,7 @@ public class DateResetUtil extends GenericDAO {
 	 * @param endDate An end date in the format yyyy-MM-dd HH:mm:ss
 	 */
 	public void resetIncomingDates(String startDate, String endDate) {
-		System.out.println("Have started resetting dates, in progress ...");
+		
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Example 2011-06-01 00:16:45" 
 		List<String> uuids = new ArrayList<>();
 		
@@ -131,9 +131,63 @@ public class DateResetUtil extends GenericDAO {
 	     } catch (ParseException e) {			
 	    	 logger.error("ParseException when trying to reset dates of incomingLog.");
 	         logger.error(ExceptionUtils.getStackTrace(e));
-		}
+		}		
+	}
+	
+	
+	/**
+	 * Reset dates for Outgoing SMS.
+	 * 
+	 * @param startDate A start date in the format yyyy-MM-dd HH:mm:ss
+	 * @param endDate An end date in the format yyyy-MM-dd HH:mm:ss
+	 */
+	public void resetOutgoingDates(String startDate, String endDate) {
 		
-		System.out.println("Have finished resetting dates.");
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Example 2011-06-01 00:16:45" 
+		List<String> uuids = new ArrayList<>();
+		
+		RandomDataGenerator generator = new RandomDataGenerator();
+		
+		// Get UUIDs of Incoming SMS are in the database
+		try (
+			   Connection conn = dbCredentials.getConnection();
+		       PreparedStatement pstmt = conn.prepareStatement("SELECT uuid FROM outgoinglog;");    		   
+		   ) {	    	             
+		       ResultSet rset = pstmt.executeQuery();
+		       		       		       
+		       while(rset.next()) {
+		    	   uuids.add(rset.getString("uuid"));
+		       }
+	            		       
+	       } catch (SQLException e) {
+	           logger.error("SQLException when getting uuids of outgoinglog.");
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	       }
+				
+		try (
+	  		   Connection conn = dbCredentials.getConnection();
+	  	       PreparedStatement pstmt = conn.prepareStatement("UPDATE outgoinglog SET logTime=? "
+	  	       		+ "WHERE Uuid=?;");        				   
+	  	   ) {    
+			long start = dateFormatter.parse(startDate).getTime();
+			long end = dateFormatter.parse(endDate).getTime();
+						
+			for(String uuid : uuids) {
+				pstmt.setTimestamp(1, new Timestamp(generator.nextLong(start, end)));
+				pstmt.setString(2, uuid);
+				
+				pstmt.executeUpdate();
+			}	           
+			
+	     } catch (SQLException e) {
+	         logger.error("SQLException when trying to reset dates of outgoinglog.");
+	         logger.error(ExceptionUtils.getStackTrace(e));
+	         
+	     } catch (ParseException e) {			
+	    	 logger.error("ParseException when trying to reset dates of outgoinglog.");
+	         logger.error(ExceptionUtils.getStackTrace(e));
+		}		
+		
 	}
 	
 	
@@ -148,7 +202,14 @@ public class DateResetUtil extends GenericDAO {
 	    int dbPort = 5432;
 	    
 		DateResetUtil util = new DateResetUtil(dbName, dbHost, dbUsername, dbPassword, dbPort);
-		util.resetIncomingDates("2015-01-01 00:00:00", "2015-02-28 10:00:00"); // Date in format yyyy-MM-dd HH:mm:ss
+		
+		System.out.println("Have started resetting dates, in progress ...");
+		
+		// Below is the Start Date and End Date in format yyyy-MM-dd HH:mm:ss
+		//util.resetIncomingDates("2015-02-01 00:00:00", "2015-04-12 15:00:00"); 
+		util.resetOutgoingDates("2015-02-01 00:00:00", "2015-04-12 15:00:00"); 
+		
+		System.out.println("Have finished resetting dates.");
 	}
 }
 

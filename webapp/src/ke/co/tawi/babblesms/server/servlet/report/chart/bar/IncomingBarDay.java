@@ -49,12 +49,12 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 
 /**
- * This class draws an image of the incoming SMS for the last seven
- * days.
+ * This class draws an image of the incoming SMS for the last seven days.
  * <br>
  * The image is in the form of bar charts and it is for a specific account.
  * <p>
@@ -76,10 +76,9 @@ public class IncomingBarDay extends HttpServlet {
 
     private DefaultCategoryDataset dataset;
 
-    CountUtils countUtils;
-    NetworkDAO networkDAO;
-
-    private CacheManager mgr;
+    private CountUtils countUtils;
+    private NetworkDAO networkDAO;
+    
     private Cache statisticsCache;
 
     
@@ -92,7 +91,7 @@ public class IncomingBarDay extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        mgr = CacheManager.getInstance();
+        CacheManager mgr = CacheManager.getInstance();
         statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
 
         countUtils = CountUtils.getInstance();

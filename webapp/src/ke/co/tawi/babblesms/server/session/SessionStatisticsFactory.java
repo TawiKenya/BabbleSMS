@@ -78,7 +78,7 @@ public class SessionStatisticsFactory {
             
             //if count is greater than zero, add the information
             if (count > 0) {
-                stats.addNetworkIncomingSMSCount(network, count);
+                stats.addNetworkIncomingCount(network, count);
             }
             
             //get the count of outgoing SMS according to the account and network

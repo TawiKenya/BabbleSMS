@@ -51,8 +51,7 @@ import net.sf.ehcache.Element;
 public class IncomingPie extends HttpServlet {
 
     private static final long serialVersionUID = 2190230806914521830L;
-
-    private CacheManager mgr = CacheManager.getInstance();
+    
     private Cache statisticsCache;
     
 
@@ -64,7 +63,8 @@ public class IncomingPie extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        mgr = CacheManager.getInstance();
+        CacheManager mgr = CacheManager.getInstance();
+        
         statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
     }
  
@@ -84,22 +84,23 @@ public class IncomingPie extends HttpServlet {
 		response.setContentType("text/plain;charset=UTF-8");
 		response.setDateHeader("Expires", new Date().getTime()); // Expiration date
 		response.setDateHeader("Date", new Date().getTime()); // Date and time
-																// that the
-																// message was
-																// sent
+															  // that the message was sent
 		
-		out.write(check(accountUuid).getBytes());
+		out.write(getJsonIncoming(accountUuid).getBytes());
 		out.flush();
 		out.close();		
 	}
 
     
     /**
-     * Creates a chart for incoming SMS information against all {@link Network}s
+     * Creates Json information for incoming SMS information against all {@link Network}s.
+     * <p>
+     * An example is:<br/>
+     * {"Orange KE":1141,"Safaricom KE":3713,"Airtel KE":1189}
      *
-     * @return	chart
+     * @return	a Json String
      */
-	private String check(String accountUuid) {    	
+	private String getJsonIncoming(String accountUuid) {    	
     	Gson g = new GsonBuilder().disableHtmlEscaping().create();
     	
         HashMap<String, Integer> countHash = new HashMap<String, Integer>();
@@ -111,7 +112,7 @@ public class IncomingPie extends HttpServlet {
             statistics = (SessionStatistics) element.getObjectValue();
         }
 
-        Map<Network, Integer> networkIncomingSMSCount = statistics.getNetworkIncomingUSSDCount();
+        Map<Network, Integer> networkIncomingSMSCount = statistics.getNetworkIncomingCount();
         Iterator<Network> incomingIter = networkIncomingSMSCount.keySet().iterator();
         Network network;
 
@@ -119,10 +120,8 @@ public class IncomingPie extends HttpServlet {
             network = incomingIter.next();
             countHash.put(network.getName(), networkIncomingSMSCount.get(network));
         }
-       
-        String jsonResult = g.toJson(countHash);
-
-		return jsonResult;
+               
+        return g.toJson(countHash);
     }
     	
     	

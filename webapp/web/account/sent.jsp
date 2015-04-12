@@ -38,6 +38,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
+<%@page import="java.text.SimpleDateFormat"%>
 
 <%@page import="net.sf.ehcache.Element"%>
 <%@page import="net.sf.ehcache.Cache"%>
@@ -60,11 +61,11 @@
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
-    //String username1 = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
+
     String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
-    //System.out.println("username:::::::::::::::::::::::::::" +username1);
+
     OutgoingLogDAO outgoinglogDAO = OutgoingLogDAO.getInstance();
-//    List<OutgoingLog> outgoingList = outgoinglogDAO.getOutgoingLogByAccount(accountuuid);
+
     List<OutgoingLog> outgoingList;
 
     CacheManager mgr = CacheManager.getInstance();
@@ -84,13 +85,6 @@
     Contact contct;
     int incount = 0;  // Generic counter
 
- /* keys = networksCache.getKeys();
-    for (Object key : keys) {
-        element = networksCache.get(key);
-        network = (Network) element.getObjectValue();
-       // networkHash.put(network.getUuid(), network.getName());
-    }*/
-
     keys = msgstatusCache.getKeys();
     for (Object key : keys) {
         element = msgstatusCache.get(key);
@@ -98,13 +92,6 @@
         messageHash.put(msgt.getUuid(), msgt.getDescription());
     }
 
-   /* keys = contactsCache.getKeys();
-    for (Object key : keys) {
-        element = contactsCache.get(key);
-        contct = (Contact) element.getObjectValue();
-        contactHash.put(contct.getUuid(), contct.getName());
-    }
-*/
     SentPaginator paginator = new SentPaginator(accountuuid);
 
     SessionStatistics statistics = new SessionStatistics();
@@ -155,8 +142,7 @@
             sentPage = paginator.getNextPage(sentPage);
         }
          
-         System.out.println("sentPage.isFirstPage()::::" +sentPage.isFirstPage());
-         System.out.println(sentPage.isLastPage());
+        
         session.setAttribute("currentOutgoingPage", sentPage);
         
         outgoingList = sentPage.getContents();
@@ -167,6 +153,8 @@
 
     PhoneDAO phnDAO = PhoneDAO.getInstance();
     ContactDAO ctDAO = ContactDAO.getInstance();
+
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 %>    
 
 
@@ -265,11 +253,11 @@
             <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
                 <thead>
                     <tr>
-                        <th>*</th>
-                        <th>Message Id</th>
+                        <th>*</th>                        
                         <th>Message</th>
                         <th>Source</th>
                         <th>Destination</th>
+                        <th>Message Id</th>
                         <th>Message Status</th>
                         <th>Sent</th>
                         <th>Delivered</th>
@@ -285,7 +273,7 @@
                     <tr>
 
                         <td width="10%"><%=ussdCount%></td>
-                        <td class="center"><%=code.getUuid()%></td>
+                        
                         <td class="center"><%=code.getMessage()%></td>
                         <td class="center"><%=code.getOrigin()%> </td>
                         <%
@@ -301,8 +289,9 @@
                         <%} else {%>
                         <td class="center"><%=code.getDestination()%></td>  
                       <%}%>
+                        <td class="center"><%=code.getUuid()%></td>
                         <td class="center"><%=status%></td>
-                        <td class="center"><%=code.getLogTime()%> </td>
+                        <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
                         <td class="center"><%=code.getLogTime()%> </td>
                     </tr>
 

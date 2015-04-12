@@ -112,24 +112,24 @@ public class SessionStatistics implements Serializable {
     public void setAllOutgoingSMSCount(int allOutgoingSMSCount) {
         this.allOutgoingSMSCount = allOutgoingSMSCount;
     }
+    
 
     /**
      * Returns a reference to the original map.
      *
-     * @return the networkIncomingUSSDCount
+     * @return the Incoming SMS Count by network.
      */
-    public Map<Network, Integer> getNetworkIncomingUSSDCount() {
+    public Map<Network, Integer> getNetworkIncomingCount() {
         return networkIncomingSMSCount;
     }
 
-    
     
     /**
      *
      * @param network
      * @param count
      */
-    public void addNetworkIncomingSMSCount(Network network, int count) {
+    public void addNetworkIncomingCount(Network network, int count) {
         networkIncomingSMSCount.put(network, new Integer(count));
     }
 

@@ -32,8 +32,10 @@
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
+<%@page import="java.text.SimpleDateFormat"%>
 
 <%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.Element"%>
@@ -60,8 +62,7 @@
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
 
     String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
-    //IncomingLogDAO incominglogDAO = IncomingLogDAO.getInstance();
-//    List<IncomingLog> incomingList = incominglogDAO.getIncomingLogByAccount(accountuuid);
+
     List<IncomingLog> incomingList;
 
     CacheManager mgr = CacheManager.getInstance();
@@ -96,16 +97,8 @@
         shortcode = (Shortcode) element.getObjectValue();
         shortcodeHash.put(shortcode.getUuid(), shortcode.getCodenumber());
     }
-
-   /* keys = contactsCache.getKeys();
-System.out.println("ddddddddddddd"+keys.size()+"ddddddeeee");
-    for (Object key : keys) {
-        element = contactsCache.get(key);
-        contct = (Contact) element.getObjectValue();
-        contactHash.put(contct.getUuid(), contct.getName());
-    }*/
     
-     keys = networksCache.getKeys();
+    keys = networksCache.getKeys();
 
     for (Object key : keys) {
         element = networksCache.get(key);
@@ -156,7 +149,10 @@ System.out.println("ddddddddddddd"+keys.size()+"ddddddeeee");
     PhoneDAO phnDAO = PhoneDAO.getInstance();
     ContactDAO ctssDAO = ContactDAO.getInstance();
 
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 %> 
+
 <jsp:include page="messageheader.jsp" />
 
 
@@ -252,13 +248,13 @@ System.out.println("ddddddddddddd"+keys.size()+"ddddddeeee");
             <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
                 <thead>
                     <tr>
-                        <th>*</th>
-                        <th>Message Id</th>
+                        <th>*</th>                        
                         <th>Message</th>
                         <th>Source</th>                        
                         <th>Destination</th>
                         <!--<th>network</th>-->
-                        <th>Time</th>
+                        <th>Time (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
+                        <th>Message Id</th>
                     </tr>
                 </thead>   
                 <tbody>
@@ -268,7 +264,7 @@ System.out.println("ddddddddddddd"+keys.size()+"ddddddeeee");
                     %>
                     <tr>
                         <td width="10%"><%=ussdCount%></td>
-                        <td class="center"><%=code.getUuid()%></td>
+                        
                         <td class="center"><%=code.getMessage()%></td>
                         <%
                             //if phone number exists print out the contact name else print the number
@@ -283,8 +279,8 @@ System.out.println("ddddddddddddd"+keys.size()+"ddddddeeee");
                         <%}%>
                         <td class="center"><%=code.getDestination()%></td>
                         <!-- <td class="center"></td>-->
-                        <td class="center"><%=code.getLogTime()%> </td>
-
+                        <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
+                        <td class="center"><%=code.getUuid()%></td>
                     </tr>
 
                     <%

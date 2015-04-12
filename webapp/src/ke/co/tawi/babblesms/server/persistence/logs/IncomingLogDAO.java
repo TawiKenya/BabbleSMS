@@ -138,22 +138,20 @@ public class IncomingLogDAO extends GenericDAO implements BabbleIncomingLogDAO {
     public List<IncomingLog> getIncomingLog(Account account, int fromIndex, int toIndex) {
         List<IncomingLog> list = new ArrayList<>();
 
-        ResultSet rset = null;
-
         try 
             (
-            		Connection conn =  dbCredentials.getConnection();
-        		    PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM incomingLog WHERE recipientuuid = ?"
-            		+ "ORDER BY origin DESC LIMIT ? OFFSET ? ;");
-            )
-            {
+        		Connection conn =  dbCredentials.getConnection();
+    		    PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM incomingLog WHERE recipientuuid = ?"
+        		+ "ORDER BY logTime DESC LIMIT ? OFFSET ? ;");
+            ) {
+        	
         	pstmt.setString(1, account.getUuid());
         	pstmt.setInt(2, toIndex - fromIndex);
         	pstmt.setInt(3, fromIndex);
-            rset = pstmt.executeQuery();
-
-            list = b.toBeanList(rset, IncomingLog.class);
-
+        	
+        	try(ResultSet rset = pstmt.executeQuery();) {
+        		list = b.toBeanList(rset, IncomingLog.class);
+        	}
         } 
         
         catch (SQLException e) {

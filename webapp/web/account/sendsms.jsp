@@ -29,7 +29,6 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
-
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
@@ -38,11 +37,10 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
-<%@page import= "ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.messageTemplate.MessageTemplateDAO"%>
-
 <%@page import="ke.co.tawi.babblesms.server.threads.SendSMS.SendSMS"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
@@ -235,7 +233,7 @@
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
             %>
-            <form id="sendsms" name = "myform" class="form-horizontal" action="sendsms.jsp" method="POST">
+            <form id="sendsms" name="myform" class="form-horizontal" action="sendsms.jsp" method="POST">
                 <fieldset>
                     <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>

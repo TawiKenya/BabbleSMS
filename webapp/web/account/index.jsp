@@ -174,7 +174,7 @@
                     <th>Count</th>
                 </tr>
                 <%
-                    Map<Network, Integer> networkIncomingSMSCount = statistics.getNetworkIncomingUSSDCount();
+                    Map<Network, Integer> networkIncomingSMSCount = statistics.getNetworkIncomingCount();
                     Iterator<Network> incomingIter = networkIncomingSMSCount.keySet().iterator();
                     Network network;
 
@@ -188,81 +188,89 @@
                 <%}%>
             </table>
 
-            <p>                  
+            <!-- <p>                  
                 <img src="incomingPie?<% out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>"
-                                    alt="Incoming SMS Pie Chart" />
-                <!--<div id="incomingpie" style="min-width: 310px; height: 400px;"></div>-->
+                                    alt="Incoming SMS Pie Chart" />                             
+            </p> -->
+           
             <div id="chart1" style="width:650px; height:500px;"></div>
-            </p>
 
-
-            <%--
-            <p>Select Duration</p>
             <p>
-                <select name="yyyy">
-                    <%
-                        MutableDateTime mt = new MutableDateTime();
-                        int yr = 2013;
-                        for (int i = mt.getYear(); i >= yr; i--) {%>
-                    <option> <%=i%> </option>
-                    <%}%>
-
-                </select>
-                <select name="mm">
-                    <%
-                        for (int i = 1; i <= 12; i++) {%>
-                    <option> <%=i%> </option>
-                    <%}%>
-
-                </select>
-                <select name="dd">
-                    <%
-                        for (int i = 1; i <= 31; i++) {%>
-                    <option> <%=i%> </option>
-                    <%}%>
-
-                </select>
-
-                To
-
-                <select name="yyyy">
-                    <%
-                        mt = new MutableDateTime();
-                        yr = 2013;
-                        for (int i = mt.getYear(); i >= yr; i--) {%>
-                    <option> <%=i%> </option>
-                    <%}%>
-
-                </select>
-                <select name="mm">
-                    <%
-                        for (int i = 1; i <= 12; i++) {%>
-                    <option> <%=i%> </option>
-                    <%}%>
-
-                </select>
-                <select name="dd">
-                    <%
-                        for (int i = 1; i <= 31; i++) {%>
-                    <option> <%=i%> </option>
-                    <%}%>
-
-                </select>
-            --%>
-            </p> 
+                &nbsp;&nbsp;&nbsp;
+            </p>
             
-            <div>
-                <form id="incomingform">
-                    <div class="col-md-3"><label for="infrom">From<input type="text" id="infrom" name="from"></label></div>
-                    <div class="col-md-3"><label for="into">to<input type="text" id="into" name="to"></label></div>
-                    <button type="submit" id="incomingbarbtn" class="btn btn-primary">Filter</button>
-                </form>
-            </div>
             <p>
                 <img id="inbar" 
                      src="incomingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>&from=03/04/2015&to=03/21/2015" 
                      alt="Incoming Daily Bar Chart" />
             </p>
+            
+           
+            
+            <div>
+                <form id="incomingform">
+                    <%--
+                        <p>Select Duration</p>
+                        <p>
+                            <select name="yyyy">
+                                <%
+                                    MutableDateTime mt = new MutableDateTime();
+                                    int yr = 2015;
+                                    for (int i = mt.getYear(); i >= yr; i--) {%>
+                                <option> <%=i%> </option>
+                                <%}%>
+
+                            </select>
+                            <select name="mm">
+                                <%
+                                    for (int i = 1; i <= 12; i++) {%>
+                                <option> <%=i%> </option>
+                                <%}%>
+
+                            </select>
+                            <select name="dd">
+                                <%
+                                    for (int i = 1; i <= 31; i++) {%>
+                                <option> <%=i%> </option>
+                                <%}%>
+
+                            </select>
+
+                            To
+
+                            <select name="yyyy">
+                                <%
+                                    mt = new MutableDateTime();
+                                    yr = 2015;
+                                    for (int i = mt.getYear(); i >= yr; i--) {%>
+                                <option> <%=i%> </option>
+                                <%}%>
+
+                            </select>
+                            <select name="mm">
+                                <%
+                                    for (int i = 1; i <= 12; i++) {%>
+                                <option> <%=i%> </option>
+                                <%}%>
+
+                            </select>
+                            <select name="dd">
+                                <%
+                                    for (int i = 1; i <= 31; i++) {%>
+                                <option> <%=i%> </option>
+                                <%}%>
+
+                            </select>
+                        --%>
+            
+                    <div class="col-md-3"><label for="infrom">From<input type="text" id="infrom" name="from"></label></div>
+                    <div class="col-md-3"><label for="into">to<input type="text" id="into" name="to"></label></div>
+                    <button type="submit" id="incomingbarbtn" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+            
+            
+            
             <div class="clear"></div>
             <div id="outgoing_sms" class="content_title">
                 <h3>Outgoing SMS</h3>

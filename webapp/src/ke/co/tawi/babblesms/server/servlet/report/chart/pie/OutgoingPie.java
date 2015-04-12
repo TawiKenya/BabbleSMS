@@ -50,7 +50,7 @@ public class OutgoingPie extends HttpServlet {
 
     private static final long serialVersionUID = 2190230806914521830L;
 
-    private CacheManager mgr = CacheManager.getInstance();
+    
     private Cache statisticsCache;
 
     /**
@@ -60,8 +60,9 @@ public class OutgoingPie extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
-        mgr = CacheManager.getInstance();
+        
+        CacheManager mgr = CacheManager.getInstance();  
+        
         statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
     }
 
@@ -81,18 +82,21 @@ public class OutgoingPie extends HttpServlet {
         response.setDateHeader("Expires", new Date().getTime()); // Expiration date
         response.setDateHeader("Date", new Date().getTime()); // Date and time that the message was sent
         
-        out.write(check(accountUuid).getBytes());
+        out.write(getJsonOutgoing(accountUuid).getBytes());
         out.flush();
         out.close();
 	}
 
     
     /**
-     * Creates a chart for outgoing SMS information against all {@link Network}s.
+     * Creates Json information for outgoing SMS information against all {@link Network}s.
+     * <p>
+     * An example is:<br/>
+     * {"Orange KE":1141,"Safaricom KE":3713,"Airtel KE":1189}
      *
-     * @return a JSON String
+     * @return	a Json String
      */
-    private String check(String accountUuid) {
+    private String getJsonOutgoing(String accountUuid) {
     	Gson g = new GsonBuilder().disableHtmlEscaping().create();
     	        
         HashMap<String, Integer> countHash = new HashMap<>();
