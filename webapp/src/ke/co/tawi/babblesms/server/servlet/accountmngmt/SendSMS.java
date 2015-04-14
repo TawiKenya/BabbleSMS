@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-
 package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
-//import ke.co.tawi.babblesms.server.beans.contact.ContactGroup;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -26,22 +24,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ke.co.tawi.babblesms.server.session.SessionConstants;
-
 import org.apache.log4j.Logger;
 
+import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+
 /**
- * Receives form values from addcontact.jsp section and adds a new
- * {@link AddContacts} to the database.
+ * Receives a form request toedit a group's details
+ * 
  * <p>
- *  
- * @author <a href="mailto:dennism@tawi.mobi">dennis mutegi</a>
+ * 
+ * @author dennis <a href="mailto:dennism@tawi.mobi">Dennis Mutegi</a>
+ *
  */
 
-public class SendSMS extends HttpServlet {
-
-	private Logger logger = Logger.getLogger(this.getClass());
+public class SendSMS extends HttpServlet{
 	
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	/**
 	 * @param config
@@ -67,18 +67,24 @@ public class SendSMS extends HttpServlet {
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
 		HttpSession session = request.getSession(true);
 		
-		//session.setAttribute(SessionConstants.SENT_SUCCESS, "message sent to"+destination+"successfully");
-		
-		String destination = request.getParameter("destination");
+		String[] destination = request.getParameterValues("recipientcontact");
+		//String groupselected = request.getParameter("groupselected");
+		String contactselected = request.getParameter("contactselected");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
-		String[] contactselected = request.getParameterValues("contactselected");
 		
-		session.setAttribute(SessionConstants.SENT_SUCCESS, "message sent to"+""+destination+""+"successfully");
+		
+			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+			
+			logger.info("my message is"+message+"sent by"+source+"to"+"whose phone is"+contactselected);
+		for(int i=0;i<destination.length;i++){
+			logger.info("xxxxxxxxxxxxxxxi"+i+""+destination[i]);
+		}
+
+			response.sendRedirect("sendsms.jsp");	
+		}
 	
-		logger.info("This message here"+message +"is sent to"+destination+"from"+source+"name"+"xxx"+contactselected[0]);
-	
-		response.sendRedirect("sendsms.jsp");
+		
 	}
 
-}
+
