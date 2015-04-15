@@ -85,6 +85,7 @@ public class SendSMS extends HttpServlet{
 		String [] contactselected = request.getParameterValues("contactselected[]");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
+                String phones ="";
 		
 
 		List<String> grouplist = new ArrayList<String>();
@@ -113,17 +114,24 @@ public class SendSMS extends HttpServlet{
 			PhoneDAO pDAO = PhoneDAO.getInstance();
 			ContactDAO cDAO = ContactDAO.getInstance();
 			Contact contact = new Contact();
-			Phone phone = new Phone();
+			List<Phone> phonelist = new ArrayList<Phone>();
 
+			if(contactselected!=null){
 			for(String contactuuid:contactselected){
 			contact = cDAO.getContact(contactuuid);
-
+			for(int i =0; i < pDAO.getPhones(contact).size();i++){
+			phonelist.add(pDAO.getPhones(contact).get(i));
+			}}
+			logger.info("my phonenumbers"+ phonelist);
+                       for(Phone phone:phonelist){
+                         phones +=phone.getPhonenumber()+";"; 
+                 }}
+                       logger.info("my phones"+phones);
 			Map<String,String> params = new HashMap<String,String>();
 			params.put("username", "tawi");		
 			params.put("password", "tawi123");
 			params.put("source", "2024");
-			for
-			params.put("destination", "254720123456");
+			params.put("destination", phones);
 			params.put("message", message);
 			params.put("network", "safaricom_ke");
 					
