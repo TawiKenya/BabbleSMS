@@ -28,12 +28,15 @@ import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 /**
@@ -46,7 +49,7 @@ import java.util.ArrayList;
  */
 
 public class SendSMS extends HttpServlet{
-	
+	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	/**
@@ -103,7 +106,23 @@ public class SendSMS extends HttpServlet{
 			logger.info("xxxxxxxxxxxxxxxi+++++"+i+"++++++"+contactselected[i]);
 			
 		}}
-
+			
+			
+			Map<String,String> params = new HashMap<String,String>();
+			params.put("username", "tawi");		
+			params.put("password", "tawi123");
+			params.put("source", "2024");
+			params.put("destination", "254720123456");
+			params.put("message", "A test message.");
+			params.put("network", "safaricom_ke");
+					
+			
+			PostSMS postThread;
+					
+			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
+			postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
+								// running in an application server.
+			
 			response.sendRedirect("sendsms.jsp");	
 		}
 	
