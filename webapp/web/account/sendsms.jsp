@@ -56,6 +56,15 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 
+<style type= "text/css">
+.tokenize-sample { width: 300px ;}
+</style>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.tokenize.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
+
+
 <%
     // The following is for session management.    
     if (session == null) {
@@ -233,27 +242,20 @@
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
             %>
-            <form id="sendsms" name="myform" class="form-horizontal" action="sendsms.jsp" method="POST">
+            <form id="sendsms" name="myform" class="form-horizontal" action="SendSMS" method="POST">
                 <fieldset>
                     <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>
 				
                         <div class="controls">
-                           <!-- <div id="destination">
-                                <input class="input-xlarge focused" id="receiver" type="text" name="destination" value="" required="true">
-                            </div> -->
+                           
 			<select name ="destination" id="destination" required="true">
-			<option value ="A Contact">A Contact</option>
+			<option value ="Choose">choose Group or Contact(s)</option>
 			<option value = "Group">Group</option>
-			<option value = "Groups">Group</option>
+			
+			<option value = "Contact">Contact(s)</option>
 			</select></div>
-			<!--<div class="control-group" id = "sendtocontact">
-			<div class="controls">
-                        <label class="control-label" id ="label2" for="destination">Select Contact:</label>
-			<input class="input-xlarge focused" type="text" id="receiver" name="receiver" value="" required="true"/>
-                        <button type="submit">search</button>>
-                         </div> 
-			</div>-->
+			
 			<div class="control-group">
 			 <div class="controls">
 			<table id='scroll2'  class="table table-striped table-bordered">
@@ -282,59 +284,59 @@
 			  
 			 
 			</table>
-			</div>
-			</div>
-			<div class="control-group">
-			 <div class="controls">
-			<table id="scroll3" style="height:200px;" class="table table-striped table-bordered">
-			<thead>
-				<tr>
-				    <th>Select Contact</th>
-				</tr>
-			    </thead>
-			<%
-	
-			if (contactList != null) {
-
-			 for (Contact code : contactList) {
-			%>
-
-			<tr >
-			   
-			 <td class="center"><a href="#"><%=code.getName()%></a></td>
-			 <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
-			</tr>
-			<%  
-			}
-			    } 
-			 
-			%>
-			  
-			 
-			</table>
-			</div>
-			</div>
-			<div class="control-group" id ="destinationdiv"> 
-			<label class="control-label" id ="label1" for="destinations">Select Group:</label>
-			<div class="controls">
-			<select name ="destination" id="destination" required="true">
-			<%if (contactsgrpList != null) {
-
-			 for (Group code : contactsgrpList) {
-			%>
-			<option value ="<%=code.getName()%>"><%=code.getName()%></option>
-			<%  
-			}
-			    } 
-			 
-			%>
-			</select></div>
-			</div>
 			<input type="hidden"  class ="groupselected" name="groupselected"  />
-			<input type="hidden"  class ="contactselected" name="contactselected"  />
 			</div>
-                    
-                    <div class="control-group">
+			</div>
+			
+			
+<div class="section control-group">
+
+<div class="fluid">
+<div class="span50">
+<form>
+<label for="tokenize_simple"class="control_label">Type a contact name here  :</label>
+<select id="tokenize_simple" class="tokenize-sample controls" name="contactselected[]"  multiple="multiple" style="margin: 0px; padding: 0px; border: 0px none; display: none;">
+<%for(Contact contact:contactList){ %>
+<option value=<%=contact.getUuid()%>><%=contact.getName()%></option>
+  <% }%>
+</select>
+<div class="tokenize-samples Tokenizer">
+<ul class="TokensContainer">
+<li class="TokenSearch">
+<input size="5">
+</li>
+</ul>
+<ul class="Dropdown"></ul>
+</div>
+</form>
+</div>
+<!--<div class="span50">
+<label>Content of the select</label>
+<div class="demo code scroll">
+<pre id="tokenize_result_simple"><select multiple="multiple"> 
+  <%for(Contact contact:contactList){ %>
+<option value=<%=contact.getUuid()%>><%=contact.getName()%></option>
+  <% }%>
+</select></pre>
+</div>-->
+</div>
+
+
+
+<script type="text/javascript">
+$('select#tokenize_simple').tokenize({
+onAddToken: function(){
+update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+},
+onRemoveToken: function(){
+update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+}
+});
+update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+</script>
+
+</div>	
+		<div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
                             <select name="source" id="source" required="true">
@@ -344,7 +346,7 @@
                                     if (masklist != null) {
                                         for (Mask code : masklist) {
                                 %>
-                                <option value="<%= code.getMaskname()%>"><%= code.getMaskname()+'('+networkDAO.getNetwork(code.getNetworkuuid()).getName()+')'%></option>
+             <option value="<%= code.getMaskname()%>"><%= code.getMaskname()+'('+networkDAO.getNetwork(code.getNetworkuuid()).getName()+')'%></option>
                                 <%
                                             count++;
                                         }

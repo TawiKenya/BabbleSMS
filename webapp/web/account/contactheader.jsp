@@ -329,7 +329,7 @@ xreq.send();
 		    <a href="#">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                    <!-- <a href="portfolio.jsp">REPORT</a>-->
-		     <a href="#">REPORT</a>
+		     <a href="index2.html">REPORT</a>
                 </div>    
             </div>
 

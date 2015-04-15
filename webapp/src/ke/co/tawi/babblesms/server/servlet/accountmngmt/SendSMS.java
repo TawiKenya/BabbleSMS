@@ -30,6 +30,12 @@ import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
 /**
  * Receives a form request toedit a group's details
  * 
@@ -67,19 +73,36 @@ public class SendSMS extends HttpServlet{
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
 		HttpSession session = request.getSession(true);
 		
-		String[] destination = request.getParameterValues("recipientcontact");
-		//String groupselected = request.getParameter("groupselected");
-		String contactselected = request.getParameter("contactselected");
+		//String[] destination = request.getParameterValues("recipientcontact");
+		String [] groupselected = request.getParameterValues("groupselected");
+		String [] contactselected = request.getParameterValues("contactselected[]");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
 		
-		
-			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
-			
-			logger.info("my message is"+message+"sent by"+source+"to"+"whose phone is"+contactselected);
-		for(int i=0;i<destination.length;i++){
-			logger.info("xxxxxxxxxxxxxxxi"+i+""+destination[i]);
+
+		List<String> grouplist = new ArrayList<String>();
+                if(groupselected.length >0){
+    		for(String s :groupselected ) {
+      		  if(s != null && s.length() > 0) {
+         	  grouplist.add(s);
+      		  }
+    		}
+
+   		 groupselected = grouplist.toArray(new String[grouplist.size()]);
+		logger.info("wwwwwwwwwwwwwwwwwww+++++++++++"+contactselected);
 		}
+			Set<String> groupSet = new HashSet<String>(Arrays.asList(groupselected));
+			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+			if(groupSet != null){
+			for (String group1 : groupSet) {
+			logger.info("yyyyyyyyyyyy+++++++++++"+group1);
+				}}
+			logger.info("my message is"+message+"sent by"+source+"to"+"whose phone is"+contactselected);
+			if(contactselected!=null){
+			for(int i=0;i<contactselected.length;i++){
+			logger.info("xxxxxxxxxxxxxxxi+++++"+i+"++++++"+contactselected[i]);
+			
+		}}
 
 			response.sendRedirect("sendsms.jsp");	
 		}

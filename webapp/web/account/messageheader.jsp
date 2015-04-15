@@ -93,10 +93,37 @@
         <script language="javascript" type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/jquery.jqplot.min.css" />
    
-        <script type="text/javascript" src="JS/jquery-1.4.2.min.js"></script>
-	<script src="JS/jquery.autocomplete.js"></script>
+        <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
+	<script src="../js/jquery.autocomplete.js"></script>
 	
-   
+   	<style type= "text/css">
+.tokenize-sample { width: 300px ;}
+</style>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.tokenize.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
+<script language="JavaScript">
+       function GetInventory()
+       {
+         var InvForm = document.forms.InventoryList;
+         var SelBranchVal = "";
+         var x = 0;
+
+         for (x=0;x<InvForm.SelBranch.length;x++)
+         { alert(InvForm.SelBranch[x].value);
+            if (InvForm.SelBranch[x].selected)
+            { 
+             alert(InvForm.SelBranch[x].value);
+            // SelBranchVal = SelBranchVal + "," + InvForm.SelBranch[x].value;
+            }
+         }
+         //alert(SelBranchVal);
+       }
+
+
+  </script>
+
         <script type="text/javascript" src="../js/jqplot.barRenderer.min.js"></script>
         <script type="text/javascript" src="../js/jqplot.categoryAxisRenderer.min.js"></script>
         <script type="text/javascript" src="../js/jqplot.pointLabels.min.js"></script>
@@ -115,30 +142,30 @@
 	$("#scroll3").hide();
 	$('#destinationdiv').hide();
 	$('#label1').hide();
-	
-	
+	$('#label2').hide();
+	$('#sendtocontact').hide();
+	$('.section').hide();
       $('#destination').change(function(){
       if($(this).val()=="Group"){
 	$('#destinationdiv').hide();
-	
-	$("#scroll3").hide();	
+	$('#label2').hide();
+	$('#sendtocontact').hide();
+	$("#scroll3").hide();$('.section').hide();	
         $("#scroll2").show();
     }
-	else if($(this).val()=="Groups"){
+	
+	else if($(this).val()=="Contact"){
        
         $("#scroll2").hide();
 	
 	$("#scroll3").hide();
 	
-	$('#label1').show();
-	$('#destinationdiv').show();
-        }
-	else{
-	$("#scroll2").hide();
 	$('#label1').hide();
 	$('#destinationdiv').hide();
-	$("#scroll3").show();
+	$('#label2').hide();
+	$('.section').show();
         }
+	
 	});
 	jQuery(function(){
 	$("#receiver").autocomplete("sentTocontact.jsp");
@@ -149,27 +176,41 @@
 	//Prevent the hyperlink to perform default behavior  
         event.preventDefault();
 	$td= $(this).closest('tr').children('td');
+	var count2 = 0;
+	$("#scroll2 td").each( function(){
+          
+        
+		if((count2 % 2) == 0){ 
+	
+         $(this).css("background", "#F9F9F9");
+        }  
+		else if((count2 % 2) != 0) {
+        $(this).css("background", "transparent");
+            
+	} count2++;
+	
+         
+
+
+ 	 });
 	($td).css("background", "#808080");
 	group = $td.eq(0).text();
 	
        group2 = $td.eq(1).text(); 
-	var field1 = $('.groupselected').clone().val(group);
+   //$('.groupselected').each( function(){
+      // if($(this).value.length != 0){
+       // $(this).remove();
+	//}
+
+
+
+
+//});
+	var field1 = $('.groupselected').clone().val(group2);
        
         field1.appendTo("#grouptable");
 	 });
-	$("#scroll3 td:nth-child(1)").click(function(event){  
-	//Prevent the hyperlink to perform default behavior  
-        event.preventDefault();
-	$td= $(this).closest('tr').children('td');
-	($td).css("background", "#808080");
-	group = $td.eq(0).text();
 	
-       group2 = $td.eq(1).text(); 
-	var field1 = $('.contactselected').clone().val(group2);
-       
-        field1.appendTo("#grouptable");
-	$("#scroll3").hide();
-	 });
      });
 
 
@@ -278,7 +319,7 @@
                     <a href="portfolio.jsp">REPORT</a>-->
 		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
-                    <a href="#">REPORT</a>
+                    <a href="sentTocontact2.jsp">REPORT</a>
 			
                 </div>    
             </div>
