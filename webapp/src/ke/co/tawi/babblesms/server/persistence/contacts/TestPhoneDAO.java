@@ -116,7 +116,7 @@ public class TestPhoneDAO {
      */
     @Ignore
     @Test
-    public void testGetPhoness(){
+    public void testGetPhones2(){
     	storagenew = new ContactDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
     	Contact contact = storagenew.getContact(CONTACTUUID_LATEST);
@@ -127,15 +127,13 @@ public class TestPhoneDAO {
     	storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	List<Phone> contactPhoneList = storage.getPhones(contact);
     	
-        assertTrue(contactPhoneList.size() >= 7);   	
-    	
+        assertTrue(contactPhoneList.size() >= 7);       	
     }
     
 
 	/**
 	 * 
-	 */
-   
+	 */   
 	@Test
    public void testupdatePhone(){
 		storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
