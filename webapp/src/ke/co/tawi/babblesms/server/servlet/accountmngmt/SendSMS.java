@@ -86,7 +86,7 @@ public class SendSMS extends HttpServlet{
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
                 String phones ="";
-		
+		String phones1 ="";
 
 		List<String> grouplist = new ArrayList<String>();
                 if(groupselected.length >0){
@@ -128,10 +128,12 @@ public class SendSMS extends HttpServlet{
                  }}
                        logger.info("my phones"+phones);
 			Map<String,String> params = new HashMap<String,String>();
+			 for(Phone phone1:phonelist){
+				for (String phones1 : phone1.getPhonenumber()){
 			params.put("username", "tawi");		
 			params.put("password", "tawi123");
 			params.put("source", "2024");
-			params.put("destination", phones);
+			params.put("destination", phones1);
 			params.put("message", message);
 			params.put("network", "safaricom_ke");
 					
@@ -140,7 +142,7 @@ public class SendSMS extends HttpServlet{
 					
 			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
 			postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
-								// running in an application server.
+			}}					// running in an application server.
 			
 			response.sendRedirect("sendsms.jsp");	
 		}
