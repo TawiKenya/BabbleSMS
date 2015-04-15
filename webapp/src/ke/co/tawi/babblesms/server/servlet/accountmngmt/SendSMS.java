@@ -27,7 +27,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.beans.contact.Contact;
+import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 
@@ -106,14 +110,21 @@ public class SendSMS extends HttpServlet{
 			logger.info("xxxxxxxxxxxxxxxi+++++"+i+"++++++"+contactselected[i]);
 			
 		}}
-			
-			
+			PhoneDAO pDAO = PhoneDAO.getInstance();
+			ContactDAO cDAO = ContactDAO.getInstance();
+			Contact contact = new Contact();
+			Phone phone = new Phone();
+
+			for(String contactuuid:contactselected){
+			contact = cDAO.getContact(contactuuid);
+
 			Map<String,String> params = new HashMap<String,String>();
 			params.put("username", "tawi");		
 			params.put("password", "tawi123");
 			params.put("source", "2024");
+			for
 			params.put("destination", "254720123456");
-			params.put("message", "A test message.");
+			params.put("message", message);
 			params.put("network", "safaricom_ke");
 					
 			
