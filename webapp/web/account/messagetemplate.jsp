@@ -181,13 +181,13 @@
                     <tr>
 
                         <td width="10%"><%=count%></td>
-                        <td class="center"><%=code.getTemplatetitle()%></td>
+                        <td class="center"><%=code.getTitle()%></td>
                         <td class="center"><%=code.getContents()%></td>
                         
 
                         <td class="center">
                             <form name="edit" method="post" action="editmsgtemplate.jsp"> 
-                                <input type="hidden" name="title" value="<%=code.getTemplatetitle()%>">
+                                <input type="hidden" name="title" value="<%=code.getTitle()%>">
                                 <input type="hidden" name="content" value="<%=code.getContents()%>">
                                 <input type="hidden" name="templateuuid" value="<%=code.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edittemplate" id="submit" value="Edit" /> 

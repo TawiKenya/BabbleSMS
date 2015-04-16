@@ -69,7 +69,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
             conn = dbCredentials.getConnection();
             pstmt = conn.prepareStatement("INSERT INTO MessageTemplate (Uuid, templatetitle,contents,accountuuid) VALUES (?,?,?,?);");
             pstmt.setString(1, messageTemplate.getUuid());
-            pstmt.setString(2, messageTemplate.getTemplatetitle());
+            pstmt.setString(2, messageTemplate.getTitle());
             pstmt.setString(3, messageTemplate.getContents());
             pstmt.setString(4, messageTemplate.getAccountuuid());
             

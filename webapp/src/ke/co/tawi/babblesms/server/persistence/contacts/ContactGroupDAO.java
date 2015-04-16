@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
@@ -43,10 +42,8 @@ import org.apache.log4j.Logger;
 public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO {
 
     private static ContactGroupDAO contactGroupDAO;
-
-    private BeanProcessor beanProcessor  = new BeanProcessor();
     
-    private final Logger logger;
+    private Logger logger = Logger.getLogger(this.getClass());
 
     
     /**
@@ -56,15 +53,16 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
         if (contactGroupDAO == null) {
             contactGroupDAO = new ContactGroupDAO();
         }
+        
         return contactGroupDAO;
     }
 
+    
     /**
      *
      */
     protected ContactGroupDAO() {
         super();
-        logger = Logger.getLogger(this.getClass());
     }
     
 
@@ -97,18 +95,18 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	        try (
 	            Connection conn = dbCredentials.getConnection();
 	        	PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ContactGroup "
-	        			+ "(Uuid, contactuuid, groupuuid, accountuuid) VALUES (?,?,?,?);");)
-	        		{
-	        	pstmt.setString(1, UUID.randomUUID().toString());
-	            pstmt.setString(2, contact.getUuid());
-	            pstmt.setString(3, group.getUuid());
-	            pstmt.setString(4, contact.getAccountUuid());
-
-	            pstmt.execute();
+	        			+ "(Uuid, contactuuid, groupuuid, accountuuid) VALUES (?,?,?,?);");
+	        	) {
+		        	pstmt.setString(1, UUID.randomUUID().toString());
+		            pstmt.setString(2, contact.getUuid());
+		            pstmt.setString(3, group.getUuid());
+		            pstmt.setString(4, contact.getAccountUuid());
+	
+		            pstmt.execute();
 
 	        } catch (SQLException e) {
-	            logger.error("SQL Exception when trying to put contactGroup with: " + contact 
-	            		+ " and: " + group);
+	            logger.error("SQL Exception when trying to put " + contact 
+	            		+ " into " + group);
 	            logger.error(ExceptionUtils.getStackTrace(e));
 	            success = false;
 	        }
@@ -176,8 +174,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	           
 	           
            } catch (SQLException e) {
-	           logger.error("SQL Exception when getting contacts belonging "
-	           		+ " to contactgroup with uuid: " + group.getUuid());
+	           logger.error("SQL Exception when getting contacts belonging to " + group);
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	       } 
 		
@@ -192,32 +189,34 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	@Override
 	public List<Group> getGroups(Contact contact , Account account ) {		
 		List<Group> groupList = new ArrayList<>();
+		GroupDAO groupDAO = GroupDAO.getInstance();
 		
 		try (
-		Connection conn = dbCredentials.getConnection();
-		PreparedStatement pstmt = conn.prepareStatement("SELECT groupuuid FROM contactgroup WHERE contactuuid = ? and accountuuid= ?;");
+			Connection conn = dbCredentials.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT groupuuid FROM contactgroup "
+					+ "WHERE contactuuid = ? and accountuuid= ?;");
            ) {
 	           pstmt.setString(1,contact.getUuid());
 	           pstmt.setString(2,account.getUuid());
 	           
-	           try(ResultSet rset = pstmt.executeQuery();){
+	           try(ResultSet rset = pstmt.executeQuery();) {
 	           
 		           while(rset.next()){
-		        	   Group g = GroupDAO.getInstance().getGroup(rset.getString("groupuuid"));
+		        	   Group g = groupDAO.getGroup(rset.getString("groupuuid"));
 		        	   groupList.add(g);
 		           }
 	           }
-		/* Sort statement*/
-	           Collections.sort( groupList, Group.GroupNameComparator );
-	           }
-	        	  // groupList.add(e);
+			           
+           }	        	 
 
 	        catch (SQLException e) {
-	           logger.error("SQL Exception when getting groups belonging "
-	           		+ " to contactgroup with contactuuid: " + contact.getUuid());
+	           logger.error("SQL Exception when getting groups belonging to "
+	           		+ contact + " and " + account);
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	       } 
 		
+		
+		Collections.sort(groupList, Group.GroupNameComparator );
         return groupList;	
 	}
 

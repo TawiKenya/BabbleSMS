@@ -41,7 +41,6 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.messageTemplate.MessageTemplateDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.threads.SendSMS.SendSMS"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
@@ -108,7 +107,8 @@
     List<MessageTemplate> list = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
     List<Contact> contactlist = new ArrayList();
-	List<Contact> contactList = new ArrayList();
+    List<Contact> contactList = new ArrayList();
+
 	GroupDAO gDAO=new GroupDAO();
          contactsgrpList = gDAO.getGroups(account);
 	ContactDAO cDAO =  ContactDAO.getInstance();
@@ -346,7 +346,9 @@ update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                                     if (masklist != null) {
                                         for (Mask code : masklist) {
                                 %>
-             <option value="<%= code.getMaskname()%>"><%= code.getMaskname()+'('+networkDAO.getNetwork(code.getNetworkuuid()).getName()+')'%></option>
+                                    <option value="<%= code.getMaskname()%>">
+                                        <%= code.getMaskname() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")" %>
+                                    </option>
                                 <%
                                             count++;
                                         }
@@ -357,13 +359,14 @@ update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                                     if (shortcodelist != null) {
                                         for (Shortcode code : shortcodelist) {
                                 %>
-                                <option value="<%= code.getCodenumber()%>"><%=code.getCodenumber()+'('+networkDAO.getNetwork(code.getNetworkuuid()).getName()+')'%></option>
+                                        <option value="<%= code.getCodenumber() %>">
+                                            <%=code.getCodenumber() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")"%>
+                                        </option>
                                 <%
                                             count++;
                                         }
 
                                     }
-
 
                                 %>
                             </select>
@@ -378,13 +381,13 @@ update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                         <label class="control-label" for="message">Message Template:</label>
                         <div class="controls">
                             <select name="msgtemplate" id="msgtemplate" >
-                                <option class = "add_field_button" value="">Please select one</option>
+                                <option class = "add_field_button" value="">Please Select One</option>
                                 <%
                                     count = 1;
                                     if (list != null) {
                                         for (MessageTemplate code : list) {
                                 %>
-                                <option class = "add_field_button" value="<%= code.getContents()%>"><%= code.getTemplatetitle()%></option>
+                                <option class = "add_field_button" value="<%= code.getContents()%>"><%= code.getTitle()%></option>
                                 
                                 <%
                                             count++;

@@ -47,7 +47,7 @@ public class TestMessageTemplateDAO {
 
         MessageTemplate mt = storage.getMessageTemplate(MT_UUID);
         assertEquals(mt.getUuid(), MT_UUID);
-        assertEquals(mt.getTemplatetitle(), MT_TITLE);
+        assertEquals(mt.getTitle(), MT_TITLE);
         assertEquals(mt.getContents(), CONTENT);
         assertEquals(mt.getAccountuuid(), MTUUID);
 
@@ -85,7 +85,7 @@ public class TestMessageTemplateDAO {
 
         MessageTemplate mt = new MessageTemplate();
         mt.setUuid(MT_UUID_NEW);
-        mt.setTemplatetitle(MT_TITLE_NEW);
+        mt.setTitle(MT_TITLE_NEW);
         mt.setContents(CONTENT_NEW);
         mt.setAccountuuid(MTUUID_NEW);
 
@@ -93,7 +93,7 @@ public class TestMessageTemplateDAO {
 
         mt = storage.getMessageTemplate(MT_UUID_NEW);
         assertEquals(mt.getUuid(), MT_UUID_NEW);
-        assertEquals(mt.getTemplatetitle(), MT_TITLE_NEW);
+        assertEquals(mt.getTitle(), MT_TITLE_NEW);
         assertEquals(mt.getContents(), CONTENT_NEW);
         assertEquals(mt.getAccountuuid(), MTUUID_NEW);
     }
@@ -113,7 +113,7 @@ public class TestMessageTemplateDAO {
 
         MessageTemplate mt = storage.getMessageTemplate(MT_UUID_NEW);
         assertEquals(mt.getUuid(), MT_UUID_NEW);
-        assertEquals(mt.getTemplatetitle(), MT_TITLE_UPDATE);
+        assertEquals(mt.getTitle(), MT_TITLE_UPDATE);
         assertEquals(mt.getContents(), CONTENT_UPDATED);
         assertEquals(mt.getAccountuuid(), MTUUID_NEW);
     }

@@ -37,6 +37,9 @@ public class Group extends StorableBean {
     private Date creationdate;
     
     
+    /**
+     * 
+     */
     public Group() {
         super();
         statusuuid = "";
@@ -63,11 +66,11 @@ public class Group extends StorableBean {
     }
     
     public Date getCreationdate() {
-        return creationdate;
+        return new Date(creationdate.getTime());
     }
 
-    public void setCreationdate(Date creationdate) {
-        this.creationdate = new Date(creationdate.getTime());
+    public void setCreationdate(Date date) {
+        creationdate = new Date(date.getTime());
     }
 
     public String getDescription() {
@@ -85,21 +88,24 @@ public class Group extends StorableBean {
     public void setAccountsuuid(String accountsuuid) {
         this.accountsuuid = StringUtils.trimToEmpty(accountsuuid);
     }
-    /*Comparator for sorting the list by Group Name*/
+        
+    
+    /**
+     * Comparator for sorting a list by Group Name
+     */
     public static  Comparator<Group> GroupNameComparator = new Comparator<Group>() {
 
-    	public int compare(Group s1, Group s2) {
+    	/**
+    	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+    	 */
+    	@Override
+		public int compare(Group s1, Group s2) {
     	   String groupName1 = s1.getName().toUpperCase();
     	   String groupName2 = s2.getName().toUpperCase();
 
     	   //ascending order
     	   return groupName1.compareTo(groupName2);
-
-    	   //descending order
-    	   //return groupName2.compareTo(groupName1);
-        }};
-    
-    
+    }};
     
     
     

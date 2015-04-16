@@ -25,23 +25,26 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
  */
 public class MessageTemplate extends StorableBean {
 
-    private String templatetitle;
+    private String title;
     private String contents;
     private String accountuuid;
 
+    /**
+     * 
+     */
     public MessageTemplate() {
         super();
-        templatetitle = "";
+        title = "";
         contents = "";
         accountuuid = "";
     }
 
-    public String getTemplatetitle() {
-        return templatetitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTemplatetitle(String templatetitle) {
-        this.templatetitle = templatetitle;
+    public void setTitle(String templatetitle) {
+        this.title = templatetitle;
     }
 
     public String getContents() {
@@ -70,8 +73,8 @@ public class MessageTemplate extends StorableBean {
         builder.append("Messagetemplate ");
         builder.append("[uuid=");
         builder.append(getUuid());
-        builder.append(", templatetitle=");
-        builder.append(templatetitle);
+        builder.append(", title=");
+        builder.append(title);
         builder.append(", contents=");
         builder.append(contents);
         builder.append(", accountuuid=");

@@ -316,13 +316,12 @@ ALTER TABLE outgoingGrouplog OWNER TO babblesms;
 CREATE TABLE messagetemplate (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    templatetitle text,
+    title text,
     contents text,
-    accountuuid text references account(uuid)
+    accountuuid text REFERENCES account(uuid)
 );
 
--- import data from the CSV file for the Accounts table
-\COPY messagetemplate(uuid,templatetitle,contents,accountuuid) FROM '/tmp/messagetemplate.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY messagetemplate(uuid,title,contents,accountuuid) FROM '/tmp/MessageTemplate.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE messagetemplate OWNER TO babblesms;
 
 

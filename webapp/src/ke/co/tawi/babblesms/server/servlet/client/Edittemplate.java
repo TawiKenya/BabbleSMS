@@ -93,7 +93,7 @@ public class Edittemplate extends HttpServlet {
             } else {
                 // If we get this far then all parameter checks are ok. 
                 msgtemp = new MessageTemplate();
-                msgtemp.setTemplatetitle(msgtitle);
+                msgtemp.setTitle(msgtitle);
                 msgtemp.setContents(msgcontents);
                 msgtemp.setAccountuuid(accuuid);
 
