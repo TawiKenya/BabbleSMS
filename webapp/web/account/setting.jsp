@@ -50,22 +50,24 @@
     List keys;
     Account account;
     Contact contct;
-
+System.out.println("test0");
     keys = accountCache.getKeys();
     for (Object key : keys) {
         element = accountCache.get(key);
+System.out.println("test1");
         account = (Account) element.getObjectValue();
-        if (accountuuid.equals(account.getUuid())) { 
+        if (accountuuid.equals(account.getUuid())) {  System.out.println("test2");
         accountlist.add(account);
        }
     }
-
+  System.out.println("test3");System.out.println(contactsCache);
+	if(contactsCache!=null){
     keys = contactsCache.getKeys();
-    for (Object key : keys) {
+    for (Object key : keys) {System.out.println("test4");
         element = contactsCache.get(key);
-        contct = (Contact) element.getObjectValue();
-        contactHash.put(contct.getUuid(), contct.getName());
-    }
+        contct = (Contact) element.getObjectValue();System.out.println("test5");
+        contactHash.put(contct.getUuid(), contct.getName());System.out.println("test6");
+    }}
 
     
 
@@ -88,14 +90,15 @@
 
 <div class="row-fluid sortable">
     <div class="box span12">
-         <%
-                            String addErrStr = (String) session.getAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY);
+         <%			System.out.println("test7");
+                            String addErrStr = (String) session.getAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY);System.out.println("test8");
                             String addSuccessStr = (String) session.getAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY);
+System.out.println("test9");
                             HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(
-                                    SessionConstants.CLIENT_EDIT_ACCOUNT_PARAMETERS);
-
-                            if (paramHash == null) {
-                                paramHash = new HashMap<String, String>();
+      SessionConstants.CLIENT_EDIT_ACCOUNT_PARAMETERS);
+			
+                            if (paramHash == null) { System.out.println("test12");
+                                paramHash = new HashMap<String, String>();System.out.println("test14");
                             }
 
                             if (StringUtils.isNotEmpty(addErrStr)) {
