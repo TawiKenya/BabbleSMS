@@ -50,23 +50,23 @@
     List keys;
     Account account;
     Contact contct;
-System.out.println("test0");
+
     keys = accountCache.getKeys();
     for (Object key : keys) {
         element = accountCache.get(key);
-System.out.println("test1");
+
         account = (Account) element.getObjectValue();
-        if (accountuuid.equals(account.getUuid())) {  System.out.println("test2");
+        if (accountuuid.equals(account.getUuid())) {  
         accountlist.add(account);
        }
     }
-  System.out.println("test3");System.out.println(contactsCache);
+  
 	if(contactsCache!=null){
     keys = contactsCache.getKeys();
-    for (Object key : keys) {System.out.println("test4");
+    for (Object key : keys) {
         element = contactsCache.get(key);
-        contct = (Contact) element.getObjectValue();System.out.println("test5");
-        contactHash.put(contct.getUuid(), contct.getName());System.out.println("test6");
+        contct = (Contact) element.getObjectValue();
+        contactHash.put(contct.getUuid(), contct.getName());
     }}
 
     
@@ -90,14 +90,14 @@ System.out.println("test1");
 
 <div class="row-fluid sortable">
     <div class="box span12">
-         <%			System.out.println("test7");
-                            String addErrStr = (String) session.getAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY);System.out.println("test8");
+         <%			
+                            String addErrStr = (String) session.getAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY);
                             String addSuccessStr = (String) session.getAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY);
-System.out.println("test9");
+
                             HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(
       SessionConstants.CLIENT_EDIT_ACCOUNT_PARAMETERS);
 			
-                            if (paramHash == null) { System.out.println("test12");
+                            if (paramHash == null) { 
                                 paramHash = new HashMap<String, String>();System.out.println("test14");
                             }
 
@@ -126,7 +126,7 @@ System.out.println("test9");
             </div>
         </div>
         <div class="box-content">
-            <form class="form-horizontal" action="../editsetting" method="POST">
+            <form class="form-horizontal" action="editaccount" method="POST">
                  <fieldset>
                      <%    
                         int count = 1;
