@@ -233,6 +233,11 @@ document.getElementById("showtext").innerHTML
 xreq.open("get","dynamic1.jsp?q="+str,"true");
 xreq.send();
 }
+
+function hello(){
+    alert('hello');
+    document.getElementById("contactdiv").style.display="block";
+   // document.getElementById("showtext").style.display="none";
 </script>
 
 <!-- ++++++++++++++++++++++++++++++++stuff ends -->

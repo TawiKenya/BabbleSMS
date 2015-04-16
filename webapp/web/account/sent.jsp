@@ -252,7 +252,7 @@
         <div class="box-content" style="margin-top: -0.5%">
             <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
                 <thead>
-                    <tr>
+                    <tr width="3%" >
                         <th>*</th>                        
                         <th>Message</th>
                         <th>Source</th>
@@ -270,9 +270,9 @@
                                String status = messageHash.get(code.getMessagestatusuuid());
 
                     %>
-                    <tr>
+                    <tr width="5%">
 
-                        <td width="10%"><%=ussdCount%></td>
+                        <td width="2%"><%=ussdCount%></td>
                         
                         <td class="center"><%=code.getMessage()%></td>
                         <td class="center"><%=code.getOrigin()%> </td>

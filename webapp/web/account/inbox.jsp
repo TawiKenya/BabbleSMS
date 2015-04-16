@@ -262,8 +262,8 @@
                         if (incomingList != null) {
                             for (IncomingLog code : incomingList) {
                     %>
-                    <tr>
-                        <td width="10%"><%=ussdCount%></td>
+                    <tr width="5%">
+                        <td width="2%"><%=ussdCount%></td>
                         
                         <td class="center"><%=code.getMessage()%></td>
                         <%
