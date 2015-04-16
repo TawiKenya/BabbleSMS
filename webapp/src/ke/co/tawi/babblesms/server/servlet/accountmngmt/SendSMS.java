@@ -53,7 +53,7 @@ import java.util.ArrayList;
  */
 
 public class SendSMS extends HttpServlet{
-	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
+	final String SMSGW_URL_HTTP = "http://192.168.1.108:8080/SMSGateway/sendsms";
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	/**
@@ -132,7 +132,7 @@ public class SendSMS extends HttpServlet{
 				for (String phones1 : phone1.getPhonenumber()){
 			params.put("username", "tawi");		
 			params.put("password", "tawi123");
-			params.put("source", "2024");
+			params.put("source", "Tawi");
 			params.put("destination", phones1);
 			params.put("message", message);
 			params.put("network", "safaricom_ke");

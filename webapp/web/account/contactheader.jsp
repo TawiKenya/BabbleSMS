@@ -326,10 +326,10 @@ xreq.send();
                 <!-- top menu -->                        
                 <div class="topmenu">                     
                    <!--  <a href="inbox.jsp">MESSAGES</a>-->
-		    <a href="#">MESSAGES</a>
+		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                    <!-- <a href="portfolio.jsp">REPORT</a>-->
-		     <a href="index2.html">REPORT</a>
+		     <a href="#">REPORT</a>
                 </div>    
             </div>
 
