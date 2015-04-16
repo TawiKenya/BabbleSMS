@@ -236,7 +236,7 @@ xreq.send();
 
 function hello(){
     alert('hello');
-    document.getElementById("contactdiv").style.display="block";
+    //document.getElementById("contactdiv").style.display="block";
    // document.getElementById("showtext").style.display="none";
 </script>
 
