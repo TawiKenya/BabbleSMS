@@ -18,7 +18,7 @@
 
 
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.logs.IncomingLogDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO"%>
 
 <%
     // The following is for session management.    
