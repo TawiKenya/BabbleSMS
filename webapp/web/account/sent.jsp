@@ -36,6 +36,7 @@
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -155,6 +156,7 @@
     ContactDAO ctDAO = ContactDAO.getInstance();
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 %>    
 
 
@@ -256,11 +258,10 @@
                         <th>*</th>                        
                         <th>Message</th>
                         <th>Source</th>
-                        <th>Destination</th>
+                        <th>Destination</th>                        
+                        <th>Message Status</th>              
+                        <th>Time (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
                         <th>Message Id</th>
-                        <th>Message Status</th>
-                        <th>Sent</th>
-                        <th>Delivered</th>
                     </tr>
                 </thead>   
                 <tbody>
@@ -289,10 +290,10 @@
                         <%} else {%>
                         <td class="center"><%=code.getDestination()%></td>  
                       <%}%>
-                        <td class="center"><%=code.getUuid()%></td>
-                        <td class="center"><%=status%></td>
+                        
+                        <td class="center"><%=status %></td>
                         <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
-                        <td class="center"><%=code.getLogTime()%> </td>
+                        <td class="center"><%=code.getUuid() %></td>
                     </tr>
 
                     <%
