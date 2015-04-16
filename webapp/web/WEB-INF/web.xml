@@ -162,7 +162,7 @@
     
     <servlet-mapping>
         <servlet-name>editaccount</servlet-name>
-        <url-pattern>/account/editaccount</url-pattern>
+        <url-pattern>/account/editaccounts</url-pattern>
     </servlet-mapping> 
     <servlet-mapping>
         <servlet-name>addgroup</servlet-name>

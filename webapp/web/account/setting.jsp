@@ -126,7 +126,7 @@
             </div>
         </div>
         <div class="box-content">
-            <form class="form-horizontal" action="editaccount" method="POST">
+            <form class="form-horizontal" action="editaccounts" method="POST">
                  <fieldset>
                      <%    
                         int count = 1;
