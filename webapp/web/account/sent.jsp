@@ -171,7 +171,7 @@
 
 <div class="row-fluid sortable">		
     <div class="box span12">
-        <div class="box-header well" data-original-title>
+        <!--<div class="box-header well" data-original-title>
             <i class="icon-refresh"></i>
             <div id="refres">
 
@@ -189,11 +189,11 @@
                 <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
                 <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
             </div>
-        </div>
+        </div>-->
 
         <div class="clear"></div>
 
-        <div class="ussdNavControls">
+        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left:9px;">
 
 
             <div id="pagination">
@@ -249,7 +249,7 @@
 
         <div class="clear"></div>
 
-        <div class="box-content">
+        <div class="box-content" style="margin-top: -0.5%">
             <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
                 <thead>
                     <tr>
@@ -306,7 +306,7 @@
 
         <div class="clear"></div>
 
-        <div class="ussdNavControls">
+        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left:9px;">
             <div id="refresh">
                 <form name="pageForm" method="post" action="refreshUSSD">
                     <p><input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />

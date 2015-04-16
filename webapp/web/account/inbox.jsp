@@ -188,7 +188,7 @@
 
         <div class="clear"></div>
 
-        <div class="ussdNavControls">
+        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left: 9px;">
             <div id="pagination">
                 <form name="pageForm" method="post" action="inbox.jsp">                                
                     <%                                            if (!inboxPage.isFirstPage()) {
@@ -244,7 +244,7 @@
 
 
 
-        <div class="box-content">
+        <div class="box-content" style="margin-top: -0.5%">
             <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
                 <thead>
                     <tr>
@@ -295,7 +295,7 @@
 
         <div class="clear"></div>
 
-        <div class="ussdNavControls">
+        <div class="ussdNavControls"style="margin-top: 1%;width:98%;margin-left: 9px;">
             <div id="refresh">
                 <form name="pageForm" method="post" action="refreshUSSD">
                     <p><input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />
