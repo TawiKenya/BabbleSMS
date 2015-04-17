@@ -43,7 +43,7 @@ public class IncomingLogGenerator {
 		File outFile = new File("/tmp/logs/incomingSMS.csv");
 		RandomDataGenerator randomDataImpl = new RandomDataGenerator();
 		
-		String randomStrFile = "/tmp/randomized.txt";
+		String randomStrFile = "/tmp/random.txt";
 		
 		List<String> randomStrings = new ArrayList<>();
 		int randStrLength = 0;
@@ -54,11 +54,11 @@ public class IncomingLogGenerator {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // 2011-06-01 00:16:45" 
 		
 		List<String> shortcodeUuids = new ArrayList<>();
-		shortcodeUuids.add("20240");
-		shortcodeUuids.add("20272");
-		shortcodeUuids.add("30017");
-		shortcodeUuids.add("20100");
-		shortcodeUuids.add("10220");
+		shortcodeUuids.add("094def52-bc18-4a9e-9b84-c34cc6476c75");
+		shortcodeUuids.add("e9570c5d-0cc4-41e5-81df-b0674e9dda1e");
+		shortcodeUuids.add("a118c8ea-f831-4288-986d-35e22c91fc4d");
+		shortcodeUuids.add("a2688d72-291b-470c-8926-31a903f5ed0c");
+		shortcodeUuids.add("9bef62f6-e682-4efd-98e9-ca41fa4ef993");
 		
 		int shortcodeCount = shortcodeUuids.size() - 1;
 				

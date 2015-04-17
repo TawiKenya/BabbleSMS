@@ -188,10 +188,10 @@
                 <%}%>
             </table>
 
-            <!-- <p>                  
+             <p>                  
                 <img src="incomingPie?<% out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>"
                                     alt="Incoming SMS Pie Chart" />                             
-            </p> -->
+            </p> 
            
             <div id="chart1" style="width:650px; height:500px;"></div>
 

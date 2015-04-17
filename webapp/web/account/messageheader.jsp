@@ -240,7 +240,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="index.html">  <span>Babble</span></a>
+                    <a class="brand" href="index.jsp">  <span>Babble</span></a>
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >
@@ -319,7 +319,7 @@
                     <a href="portfolio.jsp">REPORT</a>-->
 		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
-                    <a href="sentTocontact2.jsp">REPORT</a>
+                    <a href="#">REPORT</a>
 			
                 </div>    
             </div>

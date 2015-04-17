@@ -47,16 +47,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content=".">
         <meta name="author" content="eugene" >
-   <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
-      <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="jquery_popup.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
- <link rel="stylesheet" href="poup.css" />
+   
+      
+ 
 
-        <!-- The styles -->
-        <!--<link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">-->
-        <link href="../css/bootstrap-cerulean.css" rel="stylesheet">
+        
+        <!--some internal css -->
         <style type="text/css">
             body {
                 padding-bottom: 40px;
@@ -69,32 +65,23 @@
                 z-index:999;
             }
         </style>
-        <!-- jQuery -->
-	<!-- DataTables CSS -->
-        <link rel="stylesheet" type="text/css" href="../DataTables-1.10.5/media/css/jquery.dataTables.css">
-
-        <!-- jQuery -->
-        <script type="text/javascript" charset="utf8" src="../DataTables-1.10.5/media/js/jquery.js"></script>
-
-        <!-- DataTables--> 
-        <script type="text/javascript" charset="utf8" src="../DataTables-1.10.5/media/js/jquery.dataTables.js"></script>
+        
 
 
 
-         <!-- <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
-         <!-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>-->
+         
 
 
 
 
-        <!-- jQuery -->
+        <!-- jQuery/javascript -->
         <script src="../js/jquery-1.7.2.min.js"></script>
-	<script src="../js/jquery.jeditable.js"></script>
-	<!--<script src="../js/jquery_popup.js"></script>-->
-	<script src="../js/editcontact1.js"></script>
-	<script src="../js/editcontact_popup1.js"></script>
-	<script src="../js/groupstable.js"></script>
-        <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+	<script src="jquery_popup.js"></script>
+       	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script src="../js/editcontact.js"></script>
+	<script src="../js/editcontact_popup.js"></script>
+	<!-- CSS -->
+	<link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
 	<link href="../css/poup.css" rel="stylesheet">
         <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
@@ -113,6 +100,9 @@
         <link href='../css/opa-icons.css' rel='stylesheet'>
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
+	<link href="../css/bootstrap-cerulean.css" rel="stylesheet">
+	<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+	<link rel="stylesheet" href="poup.css" />
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -128,31 +118,7 @@
             $(".input_fields_wrap").on("click",".remove_field", function(e){ //user click on remove text
                 e.preventDefault(); $(this).parent('div').remove();
             })
-		
-
-
-
-		
-
-
-
-
-
-
-
-             $('.edit_area').editable("http://www.appelsiini.net/projects/jeditable/php/echo.php", {
-                 type      : 'textarea',
-                 cancel    : 'Cancel',
-                 submit    : 'OK',
-                 indicator : '<img src="img/indicator.gif">',
-                 tooltip   : 'Click to edit...'
-             });
-
-
-        <!--Initialising DataTables-->
-
-         //$('#table_id').dataTable();
-        <!-- pagination button disabling on need-->
+	<!-- pagination button disabling on need-->
         
         $("#SECOND").click(function(){
         	$("#PREVIOUS").removeAttr("disabled");
@@ -163,44 +129,7 @@
 
         });
 
-	function formValidator(){
-        var name = $("#paragraph_1").val();
-        var email = $("#email").val();
-        var contact = $("#phone").val();
-        var description = $("#dept").val();
-        if (name == "" || email == "" || contact == "" || description == "")
-        {
-            alert("Please Fill All Fields");
-		$(".tblTest").hide();
-	    $("#contactdiv").css("display", "block");
-        }
-        else
-        {
-            if (validateEmail(email)) {
-                $("#contactdiv").css("display", "none");
-		$(".tblTest").show();
-            }
-            else {
-                alert('Invalid Email Address');
-            }
-            function validateEmail(email) {
-                var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
-
-                if (filter.test(email)) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }
-    }
-
-
-
-
-
-        </script>
+	</script>
 
 
 <!-- ++++++++++++++++++
@@ -289,7 +218,7 @@ function hello(){
                             <!--<li><a href="#">Profile</a></li>-->
                             <li class="divider"></li>
                             <li><a href="../logout">Logout</a></li>
-                            <li><a href="form.html">Setting</a>
+                            <li><a href="setting.jsp">Setting</a>
                                 <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                 <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
                                 <span class="caret"></span>

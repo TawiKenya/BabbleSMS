@@ -1,63 +1,116 @@
 $(document).ready(function() {
-var numCols = 0 ;
-    setTimeout(popup, 3000);
-
-    function popup() {
-        $("#logindiv").css("display", "block");
-    }
-
-    $("#login #cancel").click(function() {
-        $(this).parent().parent().hide();
-    });
+var phonenumCols = 0 ;
+var emailnumCols = 0 ;
+var groupnumCols = 0 ;
+var testrepeatedphones = 0;
+var testrepeatedemails = 0;
+    
 
    $(".tblTest td:nth-child(2)").click(function(event){  
 	//Prevent the hyperlink to perform default behavior  
 event.preventDefault();  
-//alert($(event.target).text())  
 
-
- //numCols = $(".tblTest").find('tr')[0].cells.length;
-//alert('Total columns : '+numCols);
 
 var $td= $(this).closest('tr').children('td'); 
+        var rows = $(this).closest('tr');
+	var getrows = $(this).closest('tr').find("#hiddenphones").length;
+           
+	var getrows2 = $(this).closest('tr').find("#hiddenemails").length;
+	  
+	rows.find("#hiddenphones").each(function() {
+	phonenumCols++;
 	
-	$("#hiddenphones").each(function() {
-	numCols++;
-	var testrepeat = true;
    	var phone1 = $(this).text();
-	$("#addphones1").each(function() {
-	if ($(this).val() == phone1){
-	testrepeat = false;
-	}  
-	if(testrepeat){
+	$(".phonee").each(function() {
+	var testa = $(this).val();
+	
+	if (testa == phone1){
+	testrepeatedphones++;
+	
+	} 
+	}); 
+	if(testrepeatedphones == 0){
 	var phones = $("#addphones1").clone();
 	phones.find("#phone2").val(phone1);
-	phones.find("#addphn").remove();
+	phones.find("#phone2").attr("class" , "phonee");
+	phones.find("#addphns").remove();
 	phones.appendTo("#phone");
 	}
-	});
-	alert(phone1);
+	
+	
 	}); 
-  
-       /* for (i = 5; i < numCols-3; i++) {
-         var phone1= $td.eq(i).text(); 
-	 var phones = $("#addphones1").clone();
-	phones.find("#phone2").val(phone1);
-	phones.appendTo("#phone");
-        }*/
-	alert(numCols);
+
+	rows.find("#hiddenemails").each(function() {
+	emailnumCols++;
+	
+   	var email1 = $(this).text();
+	$(".emailee").each(function() {
+	var testa2 = $(this).val();
+	
+	if (testa2 == email1){
+	testrepeatedemails++;
+	
+	} 
+	}); 
+	if(testrepeatedemails == 0){
+	var emails = $("#addemails1").clone();
+	emails.find("#email").val(email1);
+	emails.find("#email").attr("class" , "emailee");
+	emails.find("#addemails").remove();
+	emails.appendTo("#mail");
+	}
+	
+	
+	}); 
+
+  	rows.find("#hiddengroups").each(function() {
+	var groupvalue = $(this).text();
+	
+	groupnumCols++; 
+	
+	APP.ajax_post(groupvalue);
+	window.APP = {
+   
+	rowTemplate: $('<tr> <td id="td1"><a href="#"></a></td>  </tr>'),
+        ajax_post: function (groupvalue) {
+        
+        var table1 = $("#resulttable");
+      
+        var row = APP.rowTemplate.clone();
+        
+        row.find('td :eq(0)').text(groupvalue);
+        
+        
+        
+        row.appendTo(table1);
+        }}
+
+
+
+
+	 
+	
+	});
+		
+
+
+	
+        var account =$td.eq(0).text();
+	
 	var name= $td.eq(1).text();  
   
 	var phone= $td.eq(2).text();  
   
-	var email= $td.eq(4 + numCols).text();  
+	var email= $td.eq(4 + phonenumCols).text();  
 	
-	var group= $td.eq(5 + numCols).text();
-	alert(group);
-	var description= $td.eq( 6+ numCols).text();
+	var group= $td.eq( phonenumCols + 6 + emailnumCols ).text();
 	
-  	var uuid= $td.eq( 7 + numCols).text();
-	alert(uuid);
+	var description= $td.eq( phonenumCols + 8 + emailnumCols + groupnumCols ).text();
+	
+  	var uuid= $td.eq(phonenumCols + 9 + emailnumCols+groupnumCols).text();
+	
+        
+  ;
 	
 
 	$("#paragraph_1").val(name);
@@ -68,22 +121,41 @@ var $td= $(this).closest('tr').children('td');
 	$("#textarea").val(description);
 	$(".tblTest").hide();
         $("#contactdiv").css("display", "block");
+        
+
+        
     });
 
+   
+	$("#cancel1").click(function(event){
+         event.preventDefault();
+
+         window.location="../account/contact.jsp";
+
+
+        });
+   
+
+	$("#close").click(function(event) {
+	event.preventDefault();
+	event.preventDefault();
+
+         window.location="../account/contact.jsp";
+	});
+        
     $("#cancel").click(function(event) {
 	event.preventDefault();
         $(this).parent().parent().hide();
-	$(".tblTest").show();
+	$(".groupstablee").show();
     });
     $("#close").click(function(event) {
 	event.preventDefault();
         $(this).parent().parent().hide();
-	$(".tblTest").show();
+	$(".groupstablee").show();
     });
 
 
-//contact form popup send-button click event
-   // $("#send").click(function() 
+ 
 
 	function formValidator(){
         var name = $("#paragraph_1").val();
@@ -117,10 +189,16 @@ var $td= $(this).closest('tr').children('td');
             }
         }
     }
-
-
-
-
+//add more phone click
+  $("#addphns").click(function(e){ 
+                e.preventDefault();
+		
+		var control = $('#addphones1').clone();
+		control.find("#phone2").val("");
+		control.find("#addphns").remove();
+		$("#phone").append(control);
+              
+           });
 
 
 
@@ -138,6 +216,52 @@ var $td= $(this).closest('tr').children('td');
             $("#logindiv").css("display", "none");
         }
     });
+
+/**+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * 
+ * handler for edit group popup
+ * 
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ */
+$(".groupstablee td:nth-child(2)").click(function(event){  
+	//Prevent the hyperlink to perform default behavior  
+event.preventDefault();  
+
+var $tdd= $(this).closest('tr').children('td'); 
+
+	var group_name= $tdd.eq(1).text();  
+  
+	var description= $tdd.eq(2).text(); 
+
+        var total_Contactss = $tdd.eq(3).text();  
+  
+	var sms_sent = $tdd.eq(4).text();  
+	
+	var groupuuid = $tdd.eq(6).text();
+
+	$("#name").val(group_name);
+	$("#desc").val(description);
+        $("#tcontacts").val(total_Contactss);
+	$("#smssent").val(sms_sent);
+	$("#guuid").val(groupuuid);
+        $(".groupstablee").hide();
+        $("#contactdiv").css("display", "block");
+    });
+
+    $("#cancel").click(function(event) {
+	event.preventDefault();
+        $(this).parent().parent().hide();
+	$(".groupstablee").show();
+    });
+    $("#close").click(function(event) {
+	event.preventDefault();
+        $(this).parent().parent().hide();
+	$(".groupstablee").show();
+    });
+
+
 
 });
 
