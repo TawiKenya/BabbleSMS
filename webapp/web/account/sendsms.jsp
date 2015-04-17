@@ -257,7 +257,7 @@
 			</select></div>
 			
 			<div class="control-group">
-			 <div class="controls">
+			 <div class="controls" >
 			<table id='scroll2'  class="table table-striped table-bordered">
 			<thead>
 				<tr>

@@ -31,6 +31,7 @@ import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
@@ -53,7 +54,7 @@ import java.util.ArrayList;
  */
 
 public class SendSMS extends HttpServlet{
-	final String SMSGW_URL_HTTP = "http://192.168.1.108:8080/SMSGateway/sendsms";
+	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	/**
@@ -86,8 +87,10 @@ public class SendSMS extends HttpServlet{
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
                 String phones ="";
-		String phones1 ="";
-
+		Group group;
+		
+		
+		//removing any blank input field value passed here
 		List<String> grouplist = new ArrayList<String>();
                 if(groupselected.length >0){
     		for(String s :groupselected ) {
@@ -95,14 +98,15 @@ public class SendSMS extends HttpServlet{
          	  grouplist.add(s);
       		  }
     		}
-
+			//converting the list back to an array
    		 groupselected = grouplist.toArray(new String[grouplist.size()]);
-		logger.info("wwwwwwwwwwwwwwwwwww+++++++++++"+contactselected);
+		
+		//logger.info("wwwwwwwwwwwwwwwwwww+++++++++++"+groupselected[0]);
 		}
-			Set<String> groupSet = new HashSet<String>(Arrays.asList(groupselected));
+			List<String> newgroupList = new ArrayList<String>(new HashSet(grouplist));
 			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
-			if(groupSet != null){
-			for (String group1 : groupSet) {
+			if(newgroupList != null){
+			for (String group1 : newgroupList) {
 			logger.info("yyyyyyyyyyyy+++++++++++"+group1);
 				}}
 			logger.info("my message is"+message+"sent by"+source+"to"+"whose phone is"+contactselected);
@@ -111,10 +115,33 @@ public class SendSMS extends HttpServlet{
 			logger.info("xxxxxxxxxxxxxxxi+++++"+i+"++++++"+contactselected[i]);
 			
 		}}
+			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
+			GroupDAO gDAO = GroupDAO.getInstance();
+			
+
+
 			PhoneDAO pDAO = PhoneDAO.getInstance();
 			ContactDAO cDAO = ContactDAO.getInstance();
 			Contact contact = new Contact();
 			List<Phone> phonelist = new ArrayList<Phone>();
+			List<Contact> contactList = new ArrayList<>();
+			if(groupselected.length!=0){
+			for(int j =0;j<groupselected.length;j++){
+		     	group = gDAO.getGroup(groupselected[0]);
+			contactList = cgDAO.getContacts(group); 
+			for(Contact code:contactList){
+			for(int i =0; i < pDAO.getPhones(code).size();i++){
+			phonelist.add(pDAO.getPhones(code).get(i));
+		}	
+		}
+			logger.info("my phonenumbers"+ phonelist);
+			 for(Phone phone:phonelist){
+                         phones +=phone.getPhonenumber()+";"; 
+                }
+			 
+		} 
+			 logger.info("my phones"+phones);
+		}
 
 			if(contactselected!=null){
 			for(String contactuuid:contactselected){
@@ -131,8 +158,8 @@ public class SendSMS extends HttpServlet{
 			 
 			params.put("username", "tawi");		
 			params.put("password", "tawi123");
-			params.put("source", "Tawi");
-			params.put("destination", phones1);
+			params.put("source", "2024");
+			params.put("destination", phones);
 			params.put("message", message);
 			params.put("network", "safaricom_ke");
 					
