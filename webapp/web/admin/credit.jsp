@@ -11,7 +11,7 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
 
 <%
     // The following is for session management.    
