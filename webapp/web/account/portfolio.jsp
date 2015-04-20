@@ -1,5 +1,5 @@
 
-<%@page import="ke.co.tawi.babblesms.server.beans.purchaseHistory.PurchaseHistory"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.PurchaseHistory"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.purchaseHistory.PurchaseHistoryDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
@@ -18,9 +18,9 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.contacts.ContactsDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.contacts.PhoneDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 
 <%
     // The following is for session management.    
@@ -100,15 +100,7 @@
 
 <div class="row-fluid sortable">		
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-            <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> Refresh</a>                  
-            <a class="btn" href="#" title="delete message" data-rel="tooltip"><i class="icon-trash"></i> Delete</a>  
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>
-        </div>
+
         <div class="box-content">
 
 

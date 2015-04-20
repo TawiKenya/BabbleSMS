@@ -25,9 +25,9 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.contacts.ContactsDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.contacts.PhoneDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 
 <%
     // The following is for session management.    
