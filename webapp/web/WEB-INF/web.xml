@@ -79,6 +79,10 @@
         <servlet-name>EditTemplate</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditTemplate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddTemplate</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddTemplate</servlet-class>
+    </servlet>
     
     <servlet>
         <servlet-name>FontImageGenerator</servlet-name>
@@ -186,6 +190,11 @@
     <servlet-mapping>
         <servlet-name>EditTemplate</servlet-name>
         <url-pattern>/account/EditTemplate</url-pattern>
+    </servlet-mapping> 
+    
+    <servlet-mapping>
+        <servlet-name>AddTemplate</servlet-name>
+        <url-pattern>/account/AddTemplate</url-pattern>
     </servlet-mapping> 
     
     <servlet-mapping>

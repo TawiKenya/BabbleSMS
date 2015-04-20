@@ -58,25 +58,24 @@
             
         </div>
         <div class="box-content">
-            <form class="form-horizontal" method="POST" action="../addmsgtemplate">
+            <form class="form-horizontal" method="POST" action="AddTemplate">
                 <fieldset>
-                    <div class="control-group">
+                    
                         <label class="control-label" for="name">Template Title</label>
-                        <div class="controls">
+                        
                             <input class="input-xlarge focused"  id="title" id="contname" type="text" name="title"><br>
-                            <label class="control-label" for="message">Template Contents:</label> <textarea cols="200" rows="6" class="input-xlarge focused"  id="content" name="content"></textarea>
+                            </br>
+                            </br>
+                            <p><label class="control-label" for="message">Template Contents:</label> <textarea cols="20" rows="6" class="input-xlarge focused"  id="title" id="contname" name="contents"></textarea></p>
 
-                        </div>
-                    </div>
-     
-                        <label class="control-label" for="message">Template Contents:</label> <textarea cols="200" rows="6" class="input-xlarge focused"  id="content" name="content"></textarea>
-
+                       
+                   
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=accountuuid%>">
                         <button type="submit" class="btn btn-primary">Save changes</button>
                         <button class="btn">Cancel</button>
                     </div>
-                </fieldset>
+               
             </form>
 
         </div>
