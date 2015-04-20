@@ -88,6 +88,7 @@
         <link href='../css/template.css' rel='stylesheet'>
         <link href='../css/site.css' rel='stylesheet'>
 	<link href='../css/grouptable.css' rel='stylesheet'>
+        <link rel="stylesheet" href="poup.css" />
         
          <!--jqplot charts-->
         <!--<script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>-->
