@@ -63,10 +63,12 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Template Title</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  id="title" id="contname" type="text" name="title">
+                            <input class="input-xlarge focused"  id="title" id="contname" type="text" name="title"><br>
+                            <label class="control-label" for="message">Template Contents:</label> <textarea cols="200" rows="6" class="input-xlarge focused"  id="content" name="content"></textarea>
+
                         </div>
                     </div>
-
+     
                         <label class="control-label" for="message">Template Contents:</label> <textarea cols="200" rows="6" class="input-xlarge focused"  id="content" name="content"></textarea>
 
                     <div class="form-actions">
