@@ -140,7 +140,7 @@
 
 
 <!-- ++++++++++++++++++
-++++++++++++++++++++trying some stuff -->
+++++++++++++++++++++script for an ajax call to access server side dynamically -->
 <script>
 function showuser(str)
 { 
@@ -172,30 +172,19 @@ xreq.send();
 
 function hello(val){
     $(document).ready(function() {
-        //var $td= $(this).closest('tr').children('td'); 
+ 
         alert(val.innerHTML);
         var count = val.nextAll('td');
                 var tbl = document.getElementById("dd");
-        //var count = document.findElement("td");
-        alert(count.length);
-        //alert(count[0].innerHTML);
-        //alert($(this).html());
+
+
         alert('i will work');
 	$(".tblTest").hide();
         $("#contactdiv").css("display", "block");
-        
-        
-        //alert($td.length);
-       // alert($td.eq(1).text());
-        
 
         
     });
 
-    //setTimeout(popup, 3000);
-    //alert('hello');
-    //document.getElementById("contactdiv").style.display="block";
-    //document.getElementById("hello").style.display="none";
     }
 
         
@@ -203,21 +192,6 @@ function hello(val){
         
         
         var tbl = document.getElementById("dd");
-        /*var cells = tbl.rows[i].cells;
-        var x1=cells[0];
-        var x2=cells[1];
-        var x3=cells[2];
-        var x4=cells[3];
-        var x5=cells[4];
-        var x6=cells[5];
- 
-        document.getElementById("paragraph_1").value=x2;
-        document.getElementById("phone2").value=x3;
-        document.getElementById("email").value=x4;
-        document.getElementById("uuid").value="";
-        document.getElementById("group").value=x5;
-        document.getElementById("textarea").value=x6;*/
-
         if (tbl != null) {
 
             for (var i = 0; i < tbl.rows.length; i++) {
@@ -247,7 +221,7 @@ function hello(val){
     
 </script>
 
-<!-- ++++++++++++++++++++++++++++++++stuff ends -->
+<!-- +++++++++++++++++++++++++++++++ client-server ajax communication script ends here -->
 
     </head>
 
@@ -341,7 +315,7 @@ function hello(val){
 		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                    <!-- <a href="portfolio.jsp">REPORT</a>-->
-		     <a href="#">REPORT</a>
+		     <a href="portfolio.jsp">REPORT</a>
                 </div>    
             </div>
 

@@ -68,6 +68,8 @@
         <!-- jQuery -->
         <script src="../js/jquery-1.7.2.min.js"></script>
         <script src="../js/composepagejavascript.js"></script>
+        <script src="jquery_popup.js"></script>
+        <script src="../js/editcontact.js"></script>
         <script src="../js/editcontact_popup.js"></script>
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
@@ -89,6 +91,7 @@
         <link href='../css/site.css' rel='stylesheet'>
 	<link href='../css/grouptable.css' rel='stylesheet'>
         <link rel="stylesheet" href="poup.css" />
+        <link href="../css/poup.css" rel="stylesheet">
         
          <!--jqplot charts-->
         <!--<script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>-->
@@ -234,6 +237,9 @@
 
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
+        
+        
+        
 
       </head>
 
@@ -314,7 +320,7 @@
                     <a href="portfolio.jsp">REPORT</a>-->
 		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
-                    <a href="#">REPORT</a>
+                    <a href="portfolio.jsp">REPORT</a>
 			
                 </div>    
             </div>

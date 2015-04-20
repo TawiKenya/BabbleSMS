@@ -161,7 +161,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM MessageTemplate WHERE templatetitle = ?;");
+            pstmt = conn.prepareStatement("SELECT * FROM MessageTemplate WHERE title = ?;");
             pstmt.setString(1, title);
             rset = pstmt.executeQuery();
 
@@ -209,7 +209,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM MessageTemplate WHERE accountuuid=? ORDER BY templatetitle ASC;");
+            pstmt = conn.prepareStatement("SELECT * FROM MessageTemplate WHERE accountuuid=? ORDER BY title ASC;");
             pstmt.setString(1, accuuid);
             rset = pstmt.executeQuery();
 

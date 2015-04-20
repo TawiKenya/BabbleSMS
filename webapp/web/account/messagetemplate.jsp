@@ -85,7 +85,7 @@
     }
    
 %> 
-<jsp:include page="contactheader.jsp" />
+<jsp:include page="messageheader.jsp" />
 
 
 <div>
