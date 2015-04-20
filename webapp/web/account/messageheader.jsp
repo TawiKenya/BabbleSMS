@@ -68,6 +68,7 @@
         <!-- jQuery -->
         <script src="../js/jquery-1.7.2.min.js"></script>
         <script src="../js/composepagejavascript.js"></script>
+        <script src="../js/editcontact_popup.js"></script>
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
         <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
@@ -251,21 +252,7 @@
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >
-                        <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" id="themes">
-                                <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
-                                <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
-                                <li><a data-value="cyborg" href="#"><i class="icon-blank"></i> lake victoria</a></li>
-                                <li><a data-value="redy" href="#"><i class="icon-blank"></i>clement</a></li>
-                                <li><a data-value="journal" href="#"><i class="icon-blank"></i>nairobi</a></li>
-                                <li><a data-value="simplex" href="#"><i class="icon-blank"></i>mombasa</a></li>
-                                <li><a data-value="slate" href="#"><i class="icon-blank"></i>naivasha</a></li>
-                                <li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
-                                <li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
-                        </ul>-->
+
                     </div>
                     <!-- theme selector ends -->
 
@@ -345,12 +332,6 @@
                             <!--menu to change depending on page requested-->
                             <li class="nav-header hidden-tablet">Main</li>                                                     
 
-                          <!--   <li><a class="btn-danger" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>
-                           <li><a class="ajax-link" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet"> Dashboard</span></a></li>
-                            <li><a class="ajax-link" href="inbox.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
-                            <li><a class="ajax-link" href="sent.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent</span></a></li>
-                            <li><a class="ajax-link" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
-                            <li><a class="ajax-link" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
 -->
 		<li><a id ="btn-dangers1" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>	
 			<li><a class="ajax-link"id ="btn-dangers1" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet">Quick Reports</span></a></li>

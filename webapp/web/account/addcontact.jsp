@@ -224,7 +224,7 @@
                     <div class="control-group" id="mail">
                         <label class="control-label" for="email">Email</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="email" name="email[]" type="text" value="">
+                            <input class="input-xlarge focused" id="email" name="email1[]" type="text" value="">
                             <button id="addemail">+</button>
                         </div>
                     </div>

@@ -202,7 +202,7 @@
     </ul>
 </div>
 
-<div class="row-fluid sortable">		
+<div class="row-fluid sortable" id ="hello">		
     <div class="box span12">
         <div class="box-header well" data-original-title>
 		
@@ -460,7 +460,7 @@ more
 
  
 <!-- Contact Form  for the pop up starts-->
-<div id="contactdiv">
+<div id="contactdiv"style="display:none;">
 <form class="form"  action = "editContact" method = "POST" id="contact" >
 <!--onsubmit="return formValidator()"-->
 <b>Contact Details</b>

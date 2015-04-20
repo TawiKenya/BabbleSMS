@@ -209,7 +209,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM MessageTemplate WHERE accountuuid=?;");
+            pstmt = conn.prepareStatement("SELECT * FROM MessageTemplate WHERE accountuuid=? ORDER BY templatetitle ASC;");
             pstmt.setString(1, accuuid);
             rset = pstmt.executeQuery();
 
@@ -293,7 +293,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
      * @return success
      */
     @Override
-    public boolean updateMessageTemplate(String uuid,String templatetitle,String contents) {
+    public boolean updateMessageTemplate(MessageTemplate template) {
         boolean success = true;
 
         Connection conn = null;
@@ -301,15 +301,15 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE MessageTemplate SET templatetitle=?,contents=? WHERE uuid = ?;");
-            pstmt.setString(1, templatetitle);
-            pstmt.setString(2, contents);
-            pstmt.setString(3, uuid);
+            pstmt = conn.prepareStatement("UPDATE MessageTemplate SET title=?,contents=? WHERE uuid = ?;");
+            pstmt.setString(1, template.getTitle());
+            pstmt.setString(2, template.getContents());
+            pstmt.setString(3, template.getUuid());
 
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("SQL Exception when deleting messageTemplate with uuid " + uuid);
+            logger.error("SQL Exception when deleting"+ template);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         } finally {

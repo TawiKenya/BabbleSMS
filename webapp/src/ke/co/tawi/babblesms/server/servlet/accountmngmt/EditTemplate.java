@@ -1,4 +1,19 @@
-package ke.co.tawi.babblesms.server.servlet.client;
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import java.io.IOException;
 
@@ -24,7 +39,7 @@ import ke.co.tawi.babblesms.server.session.SessionConstants;
  *
  */
 
-public class Edittemplate extends HttpServlet {
+public class EditTemplate extends HttpServlet {
 	
 	private final String success = "Your message template has been updated successfully";
 	private final String failure ="failed to update your message template.Try again";
@@ -56,7 +71,7 @@ public class Edittemplate extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		
 		String title = request.getParameter("title");
-		String contents = request.getParameter("content");
+		String contents = request.getParameter("contents");
 		String templateuuid = request.getParameter("templateuuid");
 		
 		if(title.equals("")){

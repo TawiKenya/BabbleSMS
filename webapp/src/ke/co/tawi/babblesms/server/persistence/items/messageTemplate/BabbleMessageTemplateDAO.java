@@ -38,7 +38,7 @@ public interface BabbleMessageTemplateDAO {
      * @return		<code>true</code> if successfully deleted; <code>false</code> for
      * otherwise
      */
-    public boolean updateMessageTemplate(String uuid,String templatetitle,String contents);
+    public boolean updateMessageTemplate(MessageTemplate template);
 
     /**
      *

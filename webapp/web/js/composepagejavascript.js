@@ -1,4 +1,4 @@
-<!-- ++++  script to allow for user to select a template and use its contents +++ -->
+//<!-- ++++  script to allow for user to select a template and use its contents +++ -->
             $(document).ready(function() {
 
            $(".add_field_button").click(function(e){ //on add input button click

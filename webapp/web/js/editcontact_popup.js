@@ -261,6 +261,36 @@ var $tdd= $(this).closest('tr').children('td');
 	$(".groupstablee").show();
     });
 
+//for editing message template
+$(".templatestable td:nth-child(2)").click(function(event){  
+	//Prevent the hyperlink to perform default behavior  
+event.preventDefault();  
+
+var $tddd= $(this).closest('tr').children('td'); 
+
+	var template_title= $tddd.eq(1).text();  
+  
+	var template_contents= $tddd.eq(2).text(); 
+
+        var templates_uuid = $tddd.eq(3).text();  
+
+	$("#title").val(template_title);
+	$("#contents").val(template_contents);
+        $("#templateuuid").val(templates_uuid);
+        $(".templatestable").hide();
+        $("#contactdiv").css("display", "block");
+	});
+
+    $("#cancel").click(function(event) {
+	event.preventDefault();
+        $(this).parent().parent().hide();
+	$(".templatestable").show();
+    });
+    $("#close").click(function(event) {
+	event.preventDefault();
+        $(this).parent().parent().hide();
+	$(".templatestable").show();
+    });
 
 
 });

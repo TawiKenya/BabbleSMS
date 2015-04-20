@@ -1,41 +1,19 @@
-<%
-    /**
-    Copyright 2015 Tawi Commercial Services Ltd
 
-    Licensed under the Open Software License, Version 3.0 (the “License”); you may 
-    not use this file except in compliance with the License. You may obtain a copy 
-    of the License at:
-    http://opensource.org/licenses/OSL-3.0
-
-    Unless required by applicable law or agreed to in writing, software distributed 
-    under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
-    CONDITIONS OF ANY KIND, either express or implied.
-
-    See the License for the specific language governing permissions and limitations 
-    under the License.
-    */
-%>
-
-<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.contact.UserGroup"%>
-<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
-<%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.contacts.GroupDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.contacts.ContactGroupDAO"%>
-
-<%@page import="java.util.List"%>
-<%@page import="java.util.ArrayList"%>
-
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="net.sf.ehcache.Cache"%>
-<%@page import="net.sf.ehcache.CacheManager"%>
-
+<%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
-
+<%@page import="java.util.ArrayList"%>
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+<%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page import="java.util.List"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 
 <%
       // The following is for session management.    
@@ -56,7 +34,7 @@
     
 %>
 
-<jsp:include page="contactheader.jsp" />
+<jsp:include page="messageheader.jsp" />
 
 
 <div>
@@ -65,7 +43,7 @@
             <a href="#">Home</a> <span class="divider">/</span>
         </li>
         <li>
-            <a href="#">add contact</a>
+            <a href="#">add template</a>
         </li>
     </ul>
 </div>
@@ -78,11 +56,6 @@
         <div class="box-header well" data-original-title>
             <h2><i class="icon-edit"></i> Add message templates</h2>
             
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>
         </div>
         <div class="box-content">
             <form class="form-horizontal" method="POST" action="../addmsgtemplate">
@@ -93,17 +66,8 @@
                             <input class="input-xlarge focused"  id="title" id="contname" type="text" name="title">
                         </div>
                     </div>
-                    
-                     
-                    <div class="control-group">
-                        <label class="control-label" for="message">Template Contents:</label>
-                        <div class="controls">
-                            <textarea cols="200" rows="6" class="input-xlarge focused"  id="content" name="content"></textarea>
-                        </div>
-                      </div>          
-                    
-                     
-                   
+
+                        <label class="control-label" for="message">Template Contents:</label> <textarea cols="200" rows="6" class="input-xlarge focused"  id="content" name="content"></textarea>
 
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=accountuuid%>">

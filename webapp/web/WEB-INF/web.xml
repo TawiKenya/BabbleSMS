@@ -75,6 +75,10 @@
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.SendSMS</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditTemplate</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditTemplate</servlet-class>
+    </servlet>
     
     <servlet>
         <servlet-name>FontImageGenerator</servlet-name>
@@ -177,6 +181,11 @@
     <servlet-mapping>
         <servlet-name>SendSMS</servlet-name>
         <url-pattern>/account/SendSMS</url-pattern>
+    </servlet-mapping> 
+    
+    <servlet-mapping>
+        <servlet-name>EditTemplate</servlet-name>
+        <url-pattern>/account/EditTemplate</url-pattern>
     </servlet-mapping> 
     
     <servlet-mapping>

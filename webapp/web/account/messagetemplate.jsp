@@ -85,7 +85,7 @@
     }
    
 %> 
-<jsp:include page="messageheader.jsp" />
+<jsp:include page="contactheader.jsp" />
 
 
 <div>
@@ -155,11 +155,7 @@
         <div class="box-header well" data-original-title>
             <a class="btn" href="messagetemplate.jsp" title="view accounts" data-rel="tooltip">View</a>                  
             <a class="btn" href="addmsgtemplate.jsp" title="add accounts" data-rel="tooltip">Add</a>  
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>
+
         </div>
         <div class="box-content">
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
@@ -169,10 +165,10 @@
 
                         <th>Template Title</th>
                         <th>Contents</th>
-                        <th>actions</th>
+                        <th hidden>actions</th>
                     </tr>
                 </thead>   
-                <tbody>
+                <tbody class="templatestable">
                     <%
                         int count = 1;
                         if (list != null) {
@@ -181,22 +177,9 @@
                     <tr>
 
                         <td width="10%"><%=count%></td>
-                        <td class="center"><%=code.getTitle()%></td>
+                        <td class="center"><a href="#"><%=code.getTitle()%></a></td>
                         <td class="center"><%=code.getContents()%></td>
-                        
-
-                        <td class="center">
-                            <form name="edit" method="post" action="editmsgtemplate.jsp"> 
-                                <input type="hidden" name="title" value="<%=code.getTitle()%>">
-                                <input type="hidden" name="content" value="<%=code.getContents()%>">
-                                <input type="hidden" name="templateuuid" value="<%=code.getUuid()%>">
-                                <input class="btn btn-success" type="submit" name="edittemplate" id="submit" value="Edit" /> 
-                            </form>
-                            <form name="delete" method="post" action="../deletetemplate">
-                                <input type="hidden" name="templateuuid" value="<%=code.getUuid()%>">
-                                <input class="btn btn-success" type="submit" name="deletetemplate" id="submit" value="Delete" /> 
-                            </form>
-                        </td>
+                        <td class="center"  hidden><%=code.getUuid()%></td>
 
 
 
@@ -213,6 +196,27 @@
     </div><!--/span-->
 
 </div><!--/row-->
+<div id="contactdiv" style="display:none;">
+<form class="form" onsubmit="return formValidator()" action = "EditTemplate" method = "POST" id="contact" >
 
+<b>Template's Details</b>
+<label>Title: <span></span></label>
+<input type="text" id="title" name = "title" />
+<label>Contents <span></span></label>
+<textarea cols="3" rows="2" id ="contents" name = "contents"></textarea>
+<input type="hidden" id="templateuuid" name = "templateuuid" class="edit_area" />
+
+<br>
+<input type="submit"  value="save changes" />
+<input type="submit" id="cancel" value="Cancel"/>
+
+
+<br/>
+
+</form>
+</div>
+
+
+<!-- Contact Form  for the pop up ends-->
 
 <jsp:include page="footer.jsp" />

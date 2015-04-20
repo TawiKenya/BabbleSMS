@@ -57,6 +57,7 @@ import org.apache.log4j.Logger;
  */
 
 public class AddContacts extends HttpServlet {
+	private Logger logger=Logger.getLogger(this.getClass());
 	private final EmailDAO emailDAO = EmailDAO.getInstance();
 	private final PhoneDAO phoneDAO = PhoneDAO.getInstance();
 	private final ContactDAO ctDAO = ContactDAO.getInstance();
@@ -90,7 +91,7 @@ public class AddContacts extends HttpServlet {
 		// if add contacts is called
 		// if (userPath.equals("/account/addcontact")) {
 
-		String[] emailArray = request.getParameterValues("email[]");
+		String[] emailArray = request.getParameterValues("email1[]");
 		String[] phonenumArray = request.getParameterValues("phonenum[]");
 		String[] networkArray = request.getParameterValues("network[]");
 		String contactname = request.getParameter("contname");
@@ -105,12 +106,16 @@ public class AddContacts extends HttpServlet {
 		int duplicatephone = phonenumArray.length - mySet2.size();
 
 		// No First Name provided
-		if ((StringUtils.isBlank(contactname)) || (emailArray.length == 0)
-				|| (phonenumArray.length == 0) || (networkArray.length == 0)) {
+		if ((StringUtils.isBlank(contactname)) || (phonenumArray.length == 1) || (networkArray.length == 0)) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
-		} else if (!validemails(emailArray)) {
+		} 
+		if(emailArray.length >1){
+			logger.info("ddddddddd"+emailArray.length);
+		if (!validemails(emailArray)) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
-		} else if (existsEmail(emailArray)) {
+		}
+		}
+		else if (existsEmail(emailArray)) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_EMAIL_EXISTS);
 
 		} else if (duplicateemail >= 1) {
@@ -118,9 +123,7 @@ public class AddContacts extends HttpServlet {
 
 		} else if (duplicatephone >= 1) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_PUBLICATE_PHONE);
-		} /*else if (existsPhone(phonenumArray)) {
-            session.setAttribute(SessionConstants.ADD_ERROR, ERROR_PHONE_EXISTS);
-            } */
+		} 
 		else {
 
 			ct = new Contact();

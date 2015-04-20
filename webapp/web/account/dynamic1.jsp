@@ -137,12 +137,12 @@
     <head>  </head>
     
     <body>
-<table class="table table-striped table-bordered " id="table_id">
+<table class="table table-striped table-bordered " id="dd">
 
                 <thead>
                     <tr>
                         <th>count</th>
-                        <th><a href="#" onclick="hello()">Name</a></th>
+                        <th>Name</th>
                         <th style = "border-right: none;"><a href="#">Number</a></th> 
 			 <th style = "border-left: none;"> &nbsp;&nbsp;&nbsp;&nbsp;</th>                     
                         <th><a href="#">Email</a></th>
@@ -170,8 +170,8 @@
          <tr>
 
              
-	<td width="10%"><%=contactCount%></td>
-        <td class="center"><a href="#" onclick="hello()"><%=code.getName()%></a></td>
+             <td width="10%"><%=contactCount%></td>
+        <td class="center"><a href="#" id="abcd"><%=code.getName()%></a></td>
          <!--<td class="center"><a href="#"><%=code.getName()%></a></td>-->
 		<% if (phoneList != null) {
                          //for (Phone code2 :phoneList) {
@@ -254,7 +254,7 @@
         %>
         
        <!-- Group Form  for the pop up starts-->
-<div id="contactdiv" style="z-index: 10000;">
+<div id="contactdivvvvv" style="display:none;">
 <form class="form" onsubmit="return formValidator()" action = "editGroup" method = "POST" id="contact" >
 
 <b>Groups Details</b>
