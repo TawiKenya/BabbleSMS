@@ -193,17 +193,17 @@
 
 
  	 });
-	alert("here1");
+	
 	($td).css("background", "#808080");
 	group = $td.eq(0).text();
-	alert("here2");
+	
        group2 = $td.eq(1).text(); 
    $('.groupselected').each( function(){
-	alert("here wow");
+	
 	var testa2 = $(this).val();
-	alert(testa2);
+	
        if($(this).val().length != 0){
-	alert("here wow 2");
+	
        $(this).remove();
 	}
 
@@ -211,11 +211,11 @@
 
 
 });  
-	alert("here3");
+	
 	var field1 = $('.groupselected').clone().val(group2);
-         alert("here4");
+         
         field1.appendTo("#grouptable");
-	alert("here5");
+	
 	 });
 	
      });
