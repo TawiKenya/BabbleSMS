@@ -39,7 +39,7 @@
 
     NotificationDAO ntsDAO = NotificationDAO.getInstance();
     List<Notification> ntlist = new ArrayList();
-    ntlist = ntsDAO.getNotificationSystem(accountuuid);
+    ntlist = ntsDAO.getAllNotifications();
 
     NotificationStatusDAO nstatusDAO = NotificationStatusDAO.getInstance();
 %> 

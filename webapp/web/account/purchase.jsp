@@ -5,11 +5,11 @@
 <%@page import="java.util.Random"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.purchaseHistory.PurchaseHistory"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.PurchaseHistory"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.purchaseHistory.PurchaseHistoryDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.accountBalance.AccountBalance"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.accountBalance.AccountBalanceDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.AccountBalance"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>

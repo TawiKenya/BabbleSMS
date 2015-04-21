@@ -17,7 +17,7 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 
@@ -39,7 +39,7 @@
 
     NotificationDAO ntsDAO = NotificationDAO.getInstance();
     List<Notification> ntlist = new ArrayList();
-    ntlist = ntsDAO.getNotificationAdmin(accountuuid);
+    ntlist = ntsDAO.getAllNotifications();
 
     NotificationStatusDAO nstatusDAO = NotificationStatusDAO.getInstance();
 
