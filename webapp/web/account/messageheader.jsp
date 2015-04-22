@@ -63,9 +63,11 @@
             }
             .sidebar-nav {
                 padding: 9px 0;
+	     
             }
         </style>
         <!-- jQuery -->
+	<script src="../js/editcontact.js"></script>
         <script src="../js/jquery-1.7.2.min.js"></script>
         <script src="../js/composepagejavascript.js"></script>
         <script src="jquery_popup.js"></script>
@@ -103,6 +105,7 @@
 	
    	<style type= "text/css">
 .tokenize-sample { width: 300px ;}
+
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -143,8 +146,8 @@
         $(this).css('background-color', '#d41e24');
         }
     });
-	$("#scroll2").hide();
-	$("#scroll3").hide();
+	
+	$(".tablets").hide();
 	$('#destinationdiv').hide();
 	$('#label1').hide();
 	$('#label2').hide();
@@ -156,13 +159,13 @@
 	$('#label2').hide();
 	$('#sendtocontact').hide();
 	$("#scroll3").hide();$('.section').hide();	
-        $("#scroll2").show();
+       $(".tablets").show();
     }
 	
 	else if($(this).val()=="Contact"){
        
         $("#scroll2").hide();
-	
+	$(".tablets").hide();
 	$("#scroll3").hide();
 	
 	$('#label1').hide();

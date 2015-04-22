@@ -35,7 +35,8 @@ import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
-
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,7 @@ import java.util.ArrayList;
 public class SendSMS extends HttpServlet{
 	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
 	private Logger logger = Logger.getLogger(this.getClass());
+	
 	
 	/**
 	 * @param config
@@ -81,15 +83,16 @@ public class SendSMS extends HttpServlet{
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
 		HttpSession session = request.getSession(true);
 		
-		//String[] destination = request.getParameterValues("recipientcontact");
+		String  accountuuid = request.getParameter("account");
 		String [] groupselected = request.getParameterValues("groupselected");
 		String [] contactselected = request.getParameterValues("contactselected[]");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
                 String phones ="";
 		Group group;
-		
-		
+		AccountsDAO aDAO = AccountsDAO.getInstance();
+		 Account account = new Account();
+			account = aDAO.getAccount(accountuuid);
 		//removing any blank input field value passed here
 		List<String> grouplist = new ArrayList<String>();
                 if(groupselected.length >0){
@@ -125,19 +128,21 @@ public class SendSMS extends HttpServlet{
 			Contact contact = new Contact();
 			List<Phone> phonelist = new ArrayList<Phone>();
 			List<Contact> contactList = new ArrayList<>();
-			if(groupselected.length!=0){
-			for(int j =0;j<groupselected.length;j++){
-		     	group = gDAO.getGroup(groupselected[0]);
+			if(newgroupList != null){
+			for (String groupname : newgroupList) {
+		     	group = gDAO.getGroupByName(account ,groupname);
 			contactList = cgDAO.getContacts(group); 
 			for(Contact code:contactList){
 			for(int i =0; i < pDAO.getPhones(code).size();i++){
 			phonelist.add(pDAO.getPhones(code).get(i));
 		}	
 		}
+		}
+			List<Phone> newphoneList = new ArrayList<Phone>(new HashSet(phonelist));
 			logger.info("my phonenumbers"+ phonelist);
-			 for(Phone phone:phonelist){
+			 for(Phone phone:newphoneList){
                          phones +=phone.getPhonenumber()+";"; 
-                }
+                
 			 
 		} 
 			 logger.info("my phones"+phones);

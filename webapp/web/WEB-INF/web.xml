@@ -55,11 +55,7 @@
         <servlet-name>addcontact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>editaccount</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditAccount</servlet-class>
-    </servlet>
-    <servlet>
+     <servlet>
         <servlet-name>addgroup</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddGroup</servlet-class>
     </servlet>
@@ -75,6 +71,11 @@
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.SendSMS</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditAccount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditAccount</servlet-class>
+    </servlet>
+	 
     <servlet>
         <servlet-name>EditTemplate</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditTemplate</servlet-class>

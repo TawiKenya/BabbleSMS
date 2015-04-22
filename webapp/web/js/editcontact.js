@@ -4,6 +4,7 @@ var groupname;
 var groupuuid;
 var groups;
 var $tdclicked;
+var groupuuids;
 
 
 $("#tablet td:nth-child(1)").click(function(event){  
@@ -110,8 +111,8 @@ window.APP = {
         
         var row = APP.rowTemplate.clone();
         
-        row.find('td :eq(0)').text(groupname);
-        row.find('td :eq(1)').text(groupuuid);
+        row.find('td a:eq(0)').text(groupname);
+        row.find('td a:eq(1)').text(groupuuid);
         
         
         row.appendTo(table1);
@@ -139,6 +140,7 @@ $(document).on("click", "#td1", function (e) {
      $clickedgroupcontacttd =  $(target).closest('tr').children('td'); 
 	($clickedgroupcontacttd).css("background", "gray");
 	groups = $clickedgroupcontacttd.eq(0).text();
+	groupuuids = $clickedgroupcontacttd.eq(1).text();
     });
 
   var check = false; 
@@ -151,10 +153,18 @@ $(document).on("click", "#td1", function (e) {
 		check = true;
             $(this).remove();
         }
+	});
 
-
+	//var table2 = $("#tablet");
+	//var row = APP.rowTemplate.clone();
+        
+        //row.find('td a:eq(0)').text(groups);
+       // row.find('td a:eq(1)').text(groupuuids);
+        
+        
+       // row.appendTo(table2);
 	
-    });
+    
 
 	if(!(check)){
 	var field2 = $(".groupsdeleted").clone().val(groups);

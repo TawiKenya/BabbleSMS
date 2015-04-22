@@ -254,34 +254,61 @@
 			
 			<div class="control-group">
 			 <div class="controls" >
-			<table id='scroll2'  class="table table-striped table-bordered">
-			<thead>
-				<tr>
-				    <th>Select Group</th>
-				</tr>
-			    </thead>
-			<%
+			<!-- Group table here-->
+<div class="tablets">
+    <table id="scroll" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Select Groups</th>
+        </tr>
+    </thead>
+    <tbody id ="tablet">
+
+	<%
 	
-			if (contactsgrpList != null) {
+	if (contactsgrpList != null) {
+         for (Group code : contactsgrpList) {
+	%>
 
-			 for (Group code : contactsgrpList) {
-			%>
+        <tr>
+	   
+            <td class="center"><a href="#"><%=code.getName()%></a></td>
+	    <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
+			
+		
+        </tr>
+        <%   
+	
+	
+    }
+    } 
+	
+	%>
+  
+    </tbody>
+</table>
+<div id = "groupsform">
+<br/><br/><br/>
+<button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
+<button type="submit"  id = "remove2" > << Remove </button>
 
-			<tr style="width:30px">
-			   
-			 <td class="center"><a href="#"><%=code.getName()%></a></td>
-			 <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
-			</tr>
-			<%  
-			}
-			    } 
-			 
-			%>
-			  
-			 
-			</table>
-			<input type="hidden"  class ="groupselected" name="groupselected"  />
-			</div>
+<input type="hidden"  class ="groupsadded" name="account"  value="<%=account.getUuid()%>" />
+<input type="hidden"  class ="groupsadded" name="groupselected"  />
+</div>
+<table id="scroll1" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Selected Groups</th>
+        </tr>
+    </thead>
+    <tbody id = "resulttable">
+    
+	
+  
+    </tbody>
+</table>
+
+	</div>		</div>
 			</div>
 			
 			

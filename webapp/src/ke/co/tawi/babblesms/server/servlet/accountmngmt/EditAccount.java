@@ -34,7 +34,7 @@ import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 
 import java.io.IOException;
-
+import org.apache.log4j.Logger;
 /**
  * Receives a form request toedit a account's details
  * 
@@ -74,21 +74,36 @@ public class EditAccount extends HttpServlet{
 		
 		String accuuid = request.getParameter("accuuid");
 		String names = request.getParameter("names");
-		String username = request.getParameter("username");
+		
 		String password = request.getParameter("password");
+		String newpassword = request.getParameter("newpassword");
+		String confirmpassword = request.getParameter("confirmpassword");
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		
 		AccountsDAO aDAO = AccountsDAO.getInstance();
 		Account account = aDAO.getAccount(accuuid);
-		account.setUsername(username);
-		account.setLogpassword(password);
+		if(phone != null && names != null&& email!=null){
 		account.setMobile(phone);
 		account.setName(names);
 		account.setEmail( email);
 		
 		
 		aDAO.updateAccount(account);
+		}
+
+		if(password != "" && newpassword != ""){
+		  logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
+			AccountsDAO acDAO = AccountsDAO.getInstance();
+		Account accounts = acDAO.getAccount(accuuid);
+		     accounts.setLogpassword(newpassword);
+			logger.info("nnnnnnnnnnnnnnn+++++++++++"+accounts);
+			logger.info("nnnnnnnnnnnnnnn+++++++++++"+accounts.getLogpassword());
+		     acDAO.updateAccount(accounts);
+		}
+		   
+		logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
+		
 		
 			response.sendRedirect("setting.jsp");	
 		}

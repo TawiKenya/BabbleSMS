@@ -237,7 +237,7 @@ function hello(val){
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="index.jsp">  <span>Babble</span></a>
+                    <a class="brand" href="citymap.html">  <span>Babble</span></a>
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >

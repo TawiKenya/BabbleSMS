@@ -144,23 +144,9 @@
                     
                     </div>    
                             
-                    <div class="control-group">
-                        <label class="control-label" for="network">Username</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="username" value="<%= code.getUsername() %>" required="true">
-                            
-                        </div>
                     
-                    </div>
                     
-                    <div class="control-group">
-                        <label class="control-label" for="network">Password</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="password" name="password" value="<%= code.getLogpassword() %>">
-                            
-                        </div>
-                    
-                    </div>    
+                       
                             
                     <div class="control-group">
                         <label class="control-label" for="network">Phone Number</label>
@@ -195,6 +181,63 @@
             </form>
 
         </div>
+
+
+	<div class="form-actions" data-original-title>
+            
+            <h2><i class="icon-edit"></i> Edit Password</h2>            
+        </div>
+	<div class="box-content">
+            <form class="form-horizontal" action="editpassword" method="POST">
+                 <fieldset>
+                     <%    
+                        int counts = 1;
+                        if (accountlist != null) {
+                            for (Account codes : accountlist) {
+                                
+                    %>
+                    <input type="hidden" name="accuuid" value="<%= codes.getUuid() %>"/>
+	<div class="control-group">
+                        <label class="control-label" for="network">Old Password</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="password" name="oldpassword" value="<%= codes.getLogpassword() %>" required="true">
+                            
+                        </div>
+                    
+                    </div> 
+	<div class="control-group">
+                        <label class="control-label" for="network">New Password</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="password" name="newpassword" value=""required="true">
+                            
+                        </div>
+                    
+                    </div>
+	<div class="control-group">
+                        <label class="control-label" for="network">Confirm Password</label>
+                        <div class="controls">
+                       <input class="input-xlarge focused" id="receiver" type="password" name="confirmpassword" value="" required="true">
+                            
+                        </div>
+                    
+                    </div> 
+
+	 <%
+                                                          counts++;
+                                                              }
+                                                          }                                                      
+                                                     %>
+                    
+                      <div class="form-actions">
+
+                        <button type="submit" name="sendsms" value="Send" class="btn btn-primary">Edit Password</button>
+                     </div>
+                </fieldset>
+            </form>
+
+        </div>
+
+
     </div><!--/span-->
 
 </div><!--/row-->
