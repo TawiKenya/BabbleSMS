@@ -467,51 +467,8 @@ $.getJSON(urls2, function(data) {
     
 
 
-$(document).ready(function(){
-    var line1 = [['Nissan', 4],['Porche', 6],['Acura', 2],['Aston Martin', 5],['Rolls Royce', 6]];
-  //var line1 = FETCH_BARDATA.downloadData();
- 
-    $('#chart4').jqplot([line1], {
-        title:'Bar Chart with Varying Colors',
-        seriesDefaults:{
-            renderer:$.jqplot.BarRenderer,
-            pointLabels: { show: true },
-            rendererOptions: {
-                // Set the varyBarColor option to true to use different colors for each bar.
-                // The default series colors are used.
-            
-                varyBarColor: true
-            }
-        },
-        axes:{
-            xaxis:{
-                renderer: $.jqplot.CategoryAxisRenderer
-                
-            }
-        }
-    });
-});
-$(document).ready(function(){
- var line1 = FETCH_BARDATA.downloadData();
-  
-  var plot2 = jQuery.jqplot ('chart4', [line1],{
-      seriesDefaults: {
-        //renderer: jQuery.jqplot.PieRenderer,
-         renderer:$.jqplot.PieRenderer,
-        rendererOptions: {
-          // Turn off filling of slices.
-          fill: false,
-          showDataLabels: true,
-          // Add a margin to seperate the slices.
-          sliceMargin: 4,
-          // stroke the slices with a little thicker line.
-          lineWidth: 5
-        }
-      },
-      legend: { show:true, location: 'e' }
-    }
-  );
-});
+
+
 </script>
 
 <jsp:include page="footer.jsp" />
