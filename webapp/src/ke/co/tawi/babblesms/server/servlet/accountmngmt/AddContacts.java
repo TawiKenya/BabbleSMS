@@ -106,7 +106,7 @@ public class AddContacts extends HttpServlet {
 		int duplicatephone = phonenumArray.length - mySet2.size();
 
 		// No First Name provided
-		if ((StringUtils.isBlank(contactname)) || (phonenumArray.length == 1) || (networkArray.length == 0)) {
+		if ((StringUtils.isBlank(contactname)) || (phonenumArray.length == 0) || (networkArray.length == 0)) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
 		} 
 		if(emailArray.length >1){
