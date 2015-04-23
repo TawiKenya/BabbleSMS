@@ -307,7 +307,7 @@
 
   
                
-               <div id="chart2" style="width:650px; height:500px;"></div>
+               <div id="outgoingPieChart" style="width:650px; height:500px;"></div>
            
 
             
@@ -333,16 +333,6 @@
     </div>
 </div>
 
-<div class="row-fluid sortable">
-    <!--/span-->
-
-    <!--/span-->
-
-    <!--/span-->
-</div><!--/row-->
-
-<!--/row-->
-
 
 <script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
 <script src="../js/jquery.min.js"></script>
@@ -352,25 +342,15 @@
     
 
 
-<script language="javascript">
-    //<% String message="outputs";%>
-    //var msg='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
-
-    var msg2 ='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
-</script>
-
-
-
-
 <script type="text/javascript">
  
- /*
-  * Here we draw the Incoming SMS Pie Chart
-  * 
-  */
-            
+    /*
+    * Here we draw the Incoming SMS Pie Chart
+    * 
+    */
+
     var jsonURL = 'incomingPie?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>'
-            
+
     $.getJSON(jsonURL, function(data) {
         var items1 = new Array();
         var j=0;
@@ -379,7 +359,7 @@
             items.push(i,Number(data[i]));
             items1[j++] = items;
         }
-        
+
         var plot1 = jQuery.jqplot('incomingPieChart', eval([items1]), {
                     seriesDefaults:{
                         // Make this a pie chart.
@@ -397,7 +377,7 @@
                             //showDataLabels:true
                         }
                     },
-                    
+
                     //setting the slices color
                     seriesColors: ["#FFA500","#7BE319","#FF0000"],
                     highlighter: { show: true },
@@ -405,16 +385,15 @@
                 }
         );
     });
-   
-   
+
+
     /*
     * Here we draw the Outgoing SMS Pie Chart
     * 
     */
-    
-var urls2 = 'outgoingPie?'+msg2
-            
-$.getJSON(urls2, function(data) {
+    jsonURL = 'outgoingPie?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>'
+
+    $.getJSON(jsonURL, function(data) {
         var items1 = new Array();
         var j=0;
         for ( var i in data ) {
@@ -422,7 +401,7 @@ $.getJSON(urls2, function(data) {
             items.push(i,Number(data[i]));
             items1[j++] = items;
         }
-        var plot1 = jQuery.jqplot('chart2', eval([items1]), {
+        var plot1 = jQuery.jqplot('outgoingPieChart', eval([items1]), {
                     seriesDefaults:{
                         // Make this a pie chart.
                         renderer:jQuery.jqplot.PieRenderer,
@@ -447,8 +426,7 @@ $.getJSON(urls2, function(data) {
                     legend:{ show:true, location:'e' }
                 }
         );
-    });
-    
+    });    
 </script>
 
 
