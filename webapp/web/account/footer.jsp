@@ -61,7 +61,7 @@
 </div>
 
 <footer>
-    <p class="pull-left">&copy; <a href="#" target="_blank">Tawi Ltd</a> <%= Calendar.getInstance().get(Calendar.YEAR)%></p>
+    <center><p class="pull-left">&copy;Transparency international kenya - 2013</p><center>
     <!--<p class="pull-right">Powered by: <a href="#">Cha</a></p>-->
 </footer>
 

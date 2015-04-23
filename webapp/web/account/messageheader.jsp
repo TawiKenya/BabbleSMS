@@ -94,6 +94,7 @@
 	<link href='../css/grouptable.css' rel='stylesheet'>
         <link rel="stylesheet" href="poup.css" />
         <link href="../css/poup.css" rel="stylesheet">
+        <link href='../css/logos.css' rel='stylesheet'>
         
          <!--jqplot charts-->
         <!--<script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>-->
@@ -258,7 +259,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="index.jsp">  <span>Babble</span></a>
+                    <h1 class="logo">
+                      <a title="Transparency International Kenya" href="index.jsp"></a>
+                    </h1>
+
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >
@@ -342,7 +346,7 @@
                             <!--menu to change depending on page requested-->
                             <li class="nav-header hidden-tablet">Main</li>                                                     
 
--->
+
 		<li><a id ="btn-dangers1" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet"> Compose</span></a></li>	
 			<li><a class="ajax-link"id ="btn-dangers1" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet">Quick Reports</span></a></li>
                             <li><a class="ajax-link" id ="btn-dangers1"href="inbox.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>

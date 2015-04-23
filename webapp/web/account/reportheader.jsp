@@ -65,6 +65,7 @@
         <link href='../css/opa-icons.css' rel='stylesheet'>
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
+        <link href='../css/logos.css' rel='stylesheet'>
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -88,7 +89,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="index.html">  <span>Babble</span></a>
+                     <h1 class="logo">
+                      <a title="Transparency International Kenya" href="index.jsp">
+                        
+                    </a>
+                    </h1>
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >

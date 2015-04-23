@@ -84,6 +84,10 @@
 
 <script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
 <script class="code" type="text/javascript">
+<script src="https://sites.google.com/site/sourcetricksexamples/downloads/jquery.min.js"></script>
+    <script src="https://sites.google.com/site/sourcetricksexamples/downloads/jquery.jqplot.min.js"></script>
+    <script src="https://sites.google.com/site/sourcetricksexamples/downloads/jqplot.pieRenderer.min.js"></script>
+    <link href="https://sites.google.com/site/sourcetricksexamples/downloads/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>
 $(document).ready(function(){
   var data = [
     ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 

@@ -106,6 +106,7 @@
 	<link href="../css/bootstrap-cerulean.css" rel="stylesheet">
 	<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
 	<link rel="stylesheet" href="poup.css" />
+        <link href='../css/logos.css' rel='stylesheet'>
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -243,8 +244,11 @@ function hello(val){
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="index.jsp">  <span>Babble</span></a>
-
+                     <h1 class="logo">
+                      <a title="Transparency International Kenya" href="index.jsp">
+                        
+                    </a>
+                    </h1>
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >
                         <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
