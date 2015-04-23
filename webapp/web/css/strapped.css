@@ -61,7 +61,7 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 .jumbotron h1 {
   font-family: "gandhi serif", georgia, serif;
-  font-size: 3em;
+  font-size: 1em;
   font-weight: bold;
   text-shadow: 1px 1px 3px #000;
 }
@@ -70,7 +70,7 @@ body, h1, h2, h3, h4, h5, h6 {
   font-style: italic;
   font-weight: normal;
   line-height: 1.4em;
-  margin-bottom: 1.4em;
+  margin-bottom: 0.1em;
 }
 .jumbotron .btn {
   box-shadow: 1px 1px 3px #000;

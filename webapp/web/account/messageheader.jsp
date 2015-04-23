@@ -143,7 +143,7 @@
 	$(document).ready(function() {
     $("[href]").each(function() {
     if (this.href == window.location.href) {
-        $(this).css('background-color', '#d41e24');
+        $(this).css('background-color', '#cc0000');
         }
     });
 	

@@ -116,7 +116,11 @@
         <link rel="shortcut icon" href="img/favicon.ico">
         <script>
         $(document).ready(function() {
-
+		$("[href]").each(function() {
+    if (this.href == window.location.href) {
+        $(this).css('background-color', '#cc0000');
+        }
+    });
            
             $(".input_fields_wrap").on("click",".remove_field", function(e){ //user click on remove text
                 e.preventDefault(); $(this).parent('div').remove();

@@ -15,18 +15,21 @@ and open the template in the editor.
 }
 
 .topmenu a{
-    color:#000;
-    background:#FFF;
-    padding:5px 30px ;
+    color:#fff;
+    background:black;
+    padding:5px 45px ;
     text-decoration: none;
-    border-radius:5px 5px 0 0;
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
+    height: 46px;
+    font-size: 16px;
+    display:inline;
+    border-right: 1px solid #505050;
+    margin 0;
+
       
 }
 
 .topmenu a:hover,.topmenu a:active{
-    background:#eee;
+    background:#cc0000;
 }
 
 /* help */

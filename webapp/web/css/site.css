@@ -41,7 +41,7 @@
     display: block;
     font-weight: normal;
     line-height: 1.25;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 #captchaGuidelines em {
