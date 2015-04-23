@@ -34,6 +34,7 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="java.text.SimpleDateFormat"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -65,6 +66,8 @@
     Account account = accountsDAO.getAccountByName(username);
     list = GroupDAO.getInstance().getGroups(account);
     CountUtils cts = CountUtils.getInstance();
+
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy");
 %> 
 <jsp:include page="contactheader.jsp" />
 
@@ -154,7 +157,7 @@
                         <th>Total Contacts</th>
                         <th>SMS Sent</th>
                         <th style = "display:none">group uuid </th>
-                        <th>CreationDate</th>
+                        <th>Date of Creation</th>
                        <!-- <th>actions</th> -->
                     </tr>
                 </thead>   
@@ -171,7 +174,7 @@
                         <td class="center"><%=code.getDescription()%> </td>
                         <td class="center"><%=cts.getContactInGroup(code.getUuid())%> </td>
                         <td class="center"><%=cts.getCumulativeOutgoingGroup(code.getUuid())%> </td>
-                        <td class="center"><%=code.getCreationdate()%>
+                        <td class="center"><%= dateFormatter.format(code.getCreationdate()) %>
                         <td style="display:none"><%=code.getUuid()%></td>
 
                         <!--<td class="center">
