@@ -194,7 +194,7 @@
 
       
            
-            <div id="chart1" style="width:650px; height:500px;"></div>
+            <div id="incomingPieChart" style="width:650px; height:500px;"></div>
             
             <p>&nbsp;&nbsp;&nbsp;</p>
             
@@ -353,8 +353,8 @@
 
 
 <script language="javascript">
-    <% String message="outputs";%>
-    var msg='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
+    //<% String message="outputs";%>
+    //var msg='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
 
     var msg2 ='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
 </script>
@@ -363,36 +363,15 @@
 
 
 <script type="text/javascript">
- var FETCH_BARDATA ={
-        
-        /*Makes Ajax calls to Servlet to download student Data*/
-        downloadData:function() {
-                         
-            var formattedListArray =[];
+ 
+ /*
+  * Here we draw the Incoming SMS Pie Chart
+  * 
+  */
             
-                $.ajax({
-                    
-                  async: false,
-                  
-                  url: "StudentJsonDataServlet",
-                  
-                  dataType:"json",
-                  
-                  success: function(JsonData) {
-                    
-                    $.each(JsonData,function(index,aData){
-                        
-                         formattedListArray.push([aData.name,aData.count]);
-                    });
-                  }
-                });
-            return formattedListArray;
-        },
-        
-};
-	    var urls = 'incomingPie?'+msg
-            //alert(urls);
-$.getJSON(urls, function(data) {
+    var jsonURL = 'incomingPie?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>'
+            
+    $.getJSON(jsonURL, function(data) {
         var items1 = new Array();
         var j=0;
         for ( var i in data ) {
@@ -400,7 +379,8 @@ $.getJSON(urls, function(data) {
             items.push(i,Number(data[i]));
             items1[j++] = items;
         }
-        var plot1 = jQuery.jqplot('chart1', eval([items1]), {
+        
+        var plot1 = jQuery.jqplot('incomingPieChart', eval([items1]), {
                     seriesDefaults:{
                         // Make this a pie chart.
                         renderer:jQuery.jqplot.PieRenderer,
@@ -410,7 +390,7 @@ $.getJSON(urls, function(data) {
                             dataLabels:'value',
                             fill: true,
                             showDataLabels: true,
-                            // Add a margin to seperate the slices.
+                            // Add a margin to separate the slices.
                             //sliceMargin: 4,
                             // stroke the slices with a little thicker line.
                             //lineWidth: 5,
@@ -425,10 +405,15 @@ $.getJSON(urls, function(data) {
                 }
         );
     });
-    
+   
+   
+    /*
+    * Here we draw the Outgoing SMS Pie Chart
+    * 
+    */
     
 var urls2 = 'outgoingPie?'+msg2
-            //alert(urls2);
+            
 $.getJSON(urls2, function(data) {
         var items1 = new Array();
         var j=0;
@@ -464,11 +449,8 @@ $.getJSON(urls2, function(data) {
         );
     });
     
-    
-
-
-
-
 </script>
+
+
 
 <jsp:include page="footer.jsp" />
