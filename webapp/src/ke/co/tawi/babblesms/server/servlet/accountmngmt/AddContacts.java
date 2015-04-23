@@ -64,7 +64,7 @@ public class AddContacts extends HttpServlet {
 	private final  GroupDAO gDAO = GroupDAO.getInstance();
 	private final ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
 	private final EmailValidator emailValidator = EmailValidator.getInstance();
-	private final String ERROR_NO_NAME = "You have to input a value.";
+	private final String ERROR_NO_NAME = "You have to input a name.";
 	private final String ERROR_EMAIL_EXISTS = "The email provided already exists in the system.";
 	private final String ADD_SUCCESS = "created successfully.";
 	private final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
@@ -106,9 +106,19 @@ public class AddContacts extends HttpServlet {
 		int duplicatephone = phonenumArray.length - mySet2.size();
 
 		// No First Name provided
-		if ((StringUtils.isBlank(contactname)) || (phonenumArray.length == 1) || (networkArray.length == 0)) {
+		if ((StringUtils.isBlank(contactname)) ) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
 		} 
+		// No  phone number provided
+		if ( (StringUtils.isBlank(phonenumArray[]))) {
+			session.setAttribute(SessionConstants.ADD_ERROR, "phone number cannot be blank.");
+		} 
+		// No network selected
+		if ((StringUtils.isBlank (networkArray[]))) {
+			session.setAttribute(SessionConstants.ADD_ERROR, "please select phone network");
+		} 
+
+
 		if(emailArray.length >1){
 			logger.info("ddddddddd"+emailArray.length);
 		if (!validemails(emailArray)) {
@@ -138,7 +148,7 @@ public class AddContacts extends HttpServlet {
 			else{
 				session.setAttribute(SessionConstants.ADD_ERROR, "Contact  creation Failed.");  
 			}
-			//get contact bean to update cache
+			
 			String uuid = ct.getUuid();
 
 			ct = ctDAO.getContact(uuid);
