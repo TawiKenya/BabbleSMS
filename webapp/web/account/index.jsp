@@ -81,6 +81,32 @@
 
 %>
 <jsp:include page="messageheader.jsp" />
+
+<script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
+<script class="code" type="text/javascript">
+$(document).ready(function(){
+  var data = [
+    ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
+    ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
+  ];
+  var plot1 = jQuery.jqplot ('chart1', [data], 
+    { 
+      seriesDefaults: {
+        // Make this a pie chart.
+        renderer: jQuery.jqplot.PieRenderer, 
+        rendererOptions: {
+          // Put data labels on the pie slices.
+          // By default, labels show the percentage of the slice.
+          showDataLabels: true
+        }
+      }, 
+      legend: { show:true, location: 'e' }
+    }
+  );
+});
+</script>
+
+
 <div>
     <ul class="breadcrumb">
         <li>
@@ -346,14 +372,15 @@
 
 <!--/row-->
 
+
+
 <script language="javascript">
-<% String message="outputs";%>
-var msg='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
+    <% String message="outputs";%>
+    var msg='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
 
-var msg2 ='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
-
-
+    var msg2 ='<%out.print("accountuuid=" + URLEncoder.encode(accountuuid, "UTF-8"));%>';
 </script>
+
 
 <script type="text/javascript">
  var FETCH_BARDATA ={
@@ -399,6 +426,7 @@ $.getJSON(urls, function(data) {
             items1[j++] = items;
         }
 
+        /*
         var plot1 = jQuery.jqplot('chart1', eval([items1]), {
 
                     seriesDefaults:{
@@ -423,7 +451,7 @@ $.getJSON(urls, function(data) {
                         show: true
                     },
                     legend:{ show:true, location:'e' }
-                }
+                }*/
         );
 
     });
@@ -522,37 +550,7 @@ $.getJSON('StudentJsonDataServlet', function(data) {
         ); **/
 
     });
-/**
- $(document).ready(function(){
-        $.jqplot.config.enablePlugins = true;
-        var s1 = [2, 6, 7];
-        var formatStudentData =  FETCH_BARDATA.downloadData();
-        var ticks = ['safaricom', 'airtel'];
 
-        //alert(JSON.stringify(formatStudentData));
-         
-        plot1 = $.jqplot('chart1', formatStudentData, {
-            // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-            animate: !$.jqplot.use_excanvas,
-            seriesDefaults:{
-                renderer:$.jqplot.BarRenderer,
-                pointLabels: { show: true }
-            },
-            axes: {
-                xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks
-                }
-            },
-            highlighter: { show: false }
-        });
-     
-        $('chart1').bind('jqplotDataClick',
-            function (ev, seriesIndex, pointIndex, data) {
-                $('#info1').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-            }
-        );
-    });**/
 $(document).ready(function(){
     var line1 = [['Nissan', 4],['Porche', 6],['Acura', 2],['Aston Martin', 5],['Rolls Royce', 6]];
 
