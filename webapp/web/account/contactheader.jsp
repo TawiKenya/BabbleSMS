@@ -80,6 +80,8 @@
        	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script src="../js/editcontact.js"></script>
 	<script src="../js/editcontact_popup.js"></script>
+	<script src="../js/bootstrap-dropdown.js"></script>
+	<script src="../js/charisma.js"></script>
         
 	<!-- CSS -->
 	<link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -237,7 +239,7 @@ function hello(val){
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="citymap.html">  <span>Babble</span></a>
+                    <a class="brand" href="index.jsp">  <span>Babble</span></a>
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >

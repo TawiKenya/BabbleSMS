@@ -107,7 +107,7 @@ public class SendSMS extends HttpServlet{
 		//logger.info("wwwwwwwwwwwwwwwwwww+++++++++++"+groupselected[0]);
 		}
 			List<String> newgroupList = new ArrayList<String>(new HashSet(grouplist));
-			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+			
 			if(newgroupList != null){
 			for (String group1 : newgroupList) {
 			logger.info("yyyyyyyyyyyy+++++++++++"+group1);
@@ -174,7 +174,7 @@ public class SendSMS extends HttpServlet{
 			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
 			postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
 								// running in an application server.
-			
+			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
 			response.sendRedirect("sendsms.jsp");	
 		}
 	

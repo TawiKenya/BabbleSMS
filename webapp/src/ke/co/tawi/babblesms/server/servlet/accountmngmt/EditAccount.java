@@ -70,39 +70,35 @@ public class EditAccount extends HttpServlet{
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		
 		String accuuid = request.getParameter("accuuid");
 		String names = request.getParameter("names");
 		
-		String password = request.getParameter("password");
-		String newpassword = request.getParameter("newpassword");
-		String confirmpassword = request.getParameter("confirmpassword");
+		
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		
 		AccountsDAO aDAO = AccountsDAO.getInstance();
 		Account account = aDAO.getAccount(accuuid);
-		if(phone != null && names != null&& email!=null){
+		
 		account.setMobile(phone);
 		account.setName(names);
 		account.setEmail( email);
 		
 		
-		aDAO.updateAccount(account);
-		}
+		if(aDAO.updateAccount(account)){
 
-		if(password != "" && newpassword != ""){
-		  logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
-			AccountsDAO acDAO = AccountsDAO.getInstance();
-		Account accounts = acDAO.getAccount(accuuid);
-		     accounts.setLogpassword(newpassword);
-			logger.info("nnnnnnnnnnnnnnn+++++++++++"+accounts);
-			logger.info("nnnnnnnnnnnnnnn+++++++++++"+accounts.getLogpassword());
-		     acDAO.updateAccount(accounts);
+		session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
 		}
-		   
-		logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
+		else{
+
+		session.setAttribute(SessionConstants.ADD_ERROR, "Profile  Editing Failed.");
+              }
+		
+			
+
+		
 		
 		
 			response.sendRedirect("setting.jsp");	

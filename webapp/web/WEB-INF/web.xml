@@ -75,7 +75,10 @@
         <servlet-name>EditAccount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditAccount</servlet-class>
     </servlet>
-	 
+    <servlet>
+        <servlet-name>EditPassword</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditPassword</servlet-class>
+    </servlet> 
     <servlet>
         <servlet-name>EditTemplate</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditTemplate</servlet-class>
@@ -170,8 +173,12 @@
     </servlet-mapping> 
     
     <servlet-mapping>
-        <servlet-name>editaccount</servlet-name>
+        <servlet-name>EditAccount</servlet-name>
         <url-pattern>/account/editaccounts</url-pattern>
+    </servlet-mapping> 
+     <servlet-mapping>
+        <servlet-name>EditPassword</servlet-name>
+        <url-pattern>/account/editpassword</url-pattern>
     </servlet-mapping> 
     <servlet-mapping>
         <servlet-name>addgroup</servlet-name>
