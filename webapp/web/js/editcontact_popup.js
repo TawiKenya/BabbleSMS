@@ -1,3 +1,9 @@
+/*
+  Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
+  Licensed under the OSL-3.0 License:
+  http://opensource.org/licenses/OSL-3.0
+*/
+
 $(document).ready(function() {
 var phonenumCols = 0 ;
 var emailnumCols = 0 ;
@@ -84,10 +90,6 @@ var $td= $(this).closest('tr').children('td');
         
         row.appendTo(table1);
         }}
-
-
-
-
 	 
 	
 	});
@@ -108,10 +110,6 @@ var $td= $(this).closest('tr').children('td');
 	var description= $td.eq( phonenumCols + 8 + emailnumCols + groupnumCols ).text();
 	
   	var uuid= $td.eq(phonenumCols + 9 + emailnumCols+groupnumCols).text();
-	
-        
-  ;
-	
 
 	$("#paragraph_1").val(name);
 	$("#phone2").val(phone);
@@ -157,7 +155,7 @@ var $td= $(this).closest('tr').children('td');
 
  
 
-	function formValidator(){
+	function formValidator() {
         var name = $("#paragraph_1").val();
         var email = $("#email").val();
         var contact = $("#phone").val();

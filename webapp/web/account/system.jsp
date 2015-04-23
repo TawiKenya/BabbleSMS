@@ -1,25 +1,46 @@
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
 
+    Licensed under the Open Software License, Version 3.0 (the “License”); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
+
+<%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.notification.NotificationStatusDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.notification.Notification"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.notification.NotificationDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
-<%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
-<%@page import="net.sf.ehcache.CacheManager"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-
-<%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page import="java.util.List"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="java.text.SimpleDateFormat"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 <%
     // The following is for session management.    
@@ -42,6 +63,8 @@
     ntlist = ntsDAO.getAllNotifications();
 
     NotificationStatusDAO nstatusDAO = NotificationStatusDAO.getInstance();
+
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy");
 %> 
 <jsp:include page="reportheader.jsp" />
 
@@ -95,7 +118,7 @@
                         <td width="10%"><%=count%></td>
                         <td class="center"><%=code.getShortDesc()%></td>
                         <td class="center"><%=code.getLongDesc()%></td>
-                        <td class="center"><%=code.getNotificationDate()%></td>
+                        <td class="center"><%= dateFormatter.format(code.getNotificationDate()) %></td>
                         <td class="center">
                             <a class="btn btn-success" href="#">
                                 <i class="icon-zoom-in icon-white"></i>  

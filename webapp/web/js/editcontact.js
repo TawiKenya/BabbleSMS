@@ -1,4 +1,11 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            $(document).ready(function() {
+/*
+  Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
+  Licensed under the OSL-3.0 License:
+  http://opensource.org/licenses/OSL-3.0
+*/
+
+$(document).ready(function() {
+  
 var groupname;
 
 var groupuuid;
@@ -29,14 +36,8 @@ $("#tablet td:nth-child(1)").click(function(event){
             
 	} tdcounter++;
 	
-         
-
 
  	 });
-
-
-
-
 
   
   	($tdclicked).css("background", "#808080");
@@ -123,15 +124,6 @@ window.APP = {
 
 
 
-
-  
-
-
-
-
-
-
-
 var $clickedgroupcontacttd;
 //handler for remove button
 $(document).on("click", "#td1", function (e) {
@@ -192,11 +184,5 @@ window.location="../account/contact.jsp";
 
         });
  
-
-
-
-
-
-
 
 });

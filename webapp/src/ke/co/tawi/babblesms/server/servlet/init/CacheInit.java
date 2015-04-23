@@ -34,6 +34,7 @@ import ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO;
 import ke.co.tawi.babblesms.server.persistence.status.StatusDAO;
 import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -112,7 +113,8 @@ public class CacheInit extends HttpServlet {
      */
     protected void initCache() {
         DiskStoreConfiguration diskConfig = new DiskStoreConfiguration();
-        diskConfig.setPath(System.getProperty("java.io.tmpdir") + "/ehcache/BabbleSMS");
+        diskConfig.setPath(System.getProperty("java.io.tmpdir") + File.separator +
+        		"ehcache" + File.separator + "BabbleSMS");
 
         Configuration config = (new Configuration()).diskStore(diskConfig);
         config.setMaxBytesLocalHeap(Long.parseLong(PropertiesConfig.getConfigValue("MAX_BYTES_LOCAL_HEAP")));
@@ -153,6 +155,7 @@ public class CacheInit extends HttpServlet {
 
         initAccountsCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
         
+        
         initContactsCache(CacheVariables.CACHE_CONTACTS_BY_ACCOUNTUUID);
                 
         initGroupCache(CacheVariables.CACHE_GROUP_BY_ACCOUNTUUID);
@@ -169,7 +172,7 @@ public class CacheInit extends HttpServlet {
 
         initGenericCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
         initGenericCache(CacheVariables.CACHE_ALL_ACCOUNTS_STATISTICS);
-
+        
     }
 
     /**

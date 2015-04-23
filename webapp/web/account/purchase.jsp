@@ -1,8 +1,20 @@
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
 
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Locale"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Random"%>
+    Licensed under the Open Software License, Version 3.0 (the “License”); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.PurchaseHistory"%>
@@ -11,23 +23,32 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.account.AccountBalance"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
-<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.ehcache.Cache"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
-<%@page import="net.sf.ehcache.CacheManager"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page import="java.util.List"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Random"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="java.text.SimpleDateFormat"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
 
 <%
     // The following is for session management.    
@@ -55,7 +76,6 @@
     List keys;
     
     
-
     keys = networksCache.getKeys();
     for (Object key : keys) {
         element = networksCache.get(key);
@@ -71,7 +91,7 @@
 
     ShortcodeDAO shortcodeDAO=ShortcodeDAO.getInstance();
     
-    
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy");
 %> 
 <jsp:include page="reportheader.jsp" />
 
@@ -174,39 +194,28 @@
                 </thead>   
                 <tbody>
                     <%
-                          count = 1;
+                        count = 1;
+
                         if (psclist != null) {
                             for (PurchaseHistory msk : psclist) {
-                                
-                                
-                          //date formatting
-                               
-                          SimpleDateFormat sdf=new SimpleDateFormat("E MMM dd HH:mm:ss z Y");
-                          Date currentdate;
-                          String dateAsString = sdf.format(msk.getPurchasetime());
-                          currentdate=sdf.parse(dateAsString);
-                          SimpleDateFormat sdf2=new SimpleDateFormat("MMM dd,yyyy z yyyy");
-                         // System.out.println(sdf2.format(currentdate));
+                                                                                    
+                            shortcode = shortcodeDAO.getShortcodeBycodeNumber(msk.getSource(), msk.getNetworkuuid());
                           
-                          shortcode=shortcodeDAO.getShortcodeBycodeNumber(msk.getSource(),msk.getNetworkuuid());
-                          
-                          //System.out.println(shortcode);
-                          if(shortcode==null){
                     %>
-                    <tr>
-                        <td width="10%"><%=count%></td>
-                        <td width="10%"><%=msk.getSource()%></td>
-                        <td class="center"><%=msk.getAmount()%></td>
-                        <td class="center"><%=networkHash.get(msk.getNetworkuuid())%></td>
-                        <td class="center"><%=sdf2.format(currentdate)%></td>
+                            <tr>
+                                <td width="10%"><%=count%></td>
+                                <td width="10%"><%=msk.getSource()%></td>
+                                <td class="center"><%=msk.getAmount()%></td>
+                                <td class="center"><%=networkHash.get(msk.getNetworkuuid())%></td>
+                                <td class="center"><%=dateFormatter.format(msk.getPurchasetime())%></td>
 
-                    </tr>
+                            </tr>
 
                     <%
-                                count++;
-                            }
-                          }     
-                        }
+                            count++;
+
+                            }// end 'for (PurchaseHistory msk : psclist)'
+                        }// end 'if (psclist != null)'
                     %>
 
 
