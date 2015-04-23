@@ -195,11 +195,8 @@
       
            
             <div id="chart1" style="width:650px; height:500px;"></div>
-            <div style="width:500px; height:300px;" id="mobile"></div>
             
-            <p>
-                &nbsp;&nbsp;&nbsp;
-            </p>
+            <p>&nbsp;&nbsp;&nbsp;</p>
             
             <p>
                 <img id="inbar" 
@@ -581,43 +578,9 @@ $.getJSON('StudentJsonDataServlet', function(data) {
                     
                 }
         );
-        /**
-        $('chart2').bind('jqplotDataRightClick',
-            function (ev, seriesIndex, pointIndex, data) {
-                $('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-            }
-        ); **/
+        
     });
-/**
- $(document).ready(function(){
-        $.jqplot.config.enablePlugins = true;
-        var s1 = [2, 6, 7];
-        var formatStudentData =  FETCH_BARDATA.downloadData();
-        var ticks = ['safaricom', 'airtel'];
-        //alert(JSON.stringify(formatStudentData));
-         
-        plot1 = $.jqplot('chart1', formatStudentData, {
-            // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-            animate: !$.jqplot.use_excanvas,
-            seriesDefaults:{
-                renderer:$.jqplot.BarRenderer,
-                pointLabels: { show: true }
-            },
-            axes: {
-                xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks
-                }
-            },
-            highlighter: { show: false }
-        });
-     
-        $('chart1').bind('jqplotDataClick',
-            function (ev, seriesIndex, pointIndex, data) {
-                $('#info1').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-            }
-        );
-    });**/
+
 $(document).ready(function(){
     var line1 = [['Nissan', 4],['Porche', 6],['Acura', 2],['Aston Martin', 5],['Rolls Royce', 6]];
   //var line1 = FETCH_BARDATA.downloadData();
