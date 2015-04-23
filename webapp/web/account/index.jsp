@@ -82,34 +82,7 @@
 %>
 <jsp:include page="messageheader.jsp" />
 
-<script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/jquery.jqplot.min.js"></script>
-    <script src="../js/jqplot.pieRenderer.min.js"></script>
-    <link href="j../js/query.jqplot.min.css" type="text/css" rel="stylesheet"/>
-    <script>
-<script class="code" type="text/javascript">
-$(document).ready(function(){
-  var data = [
-    ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
-    ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
-  ];
-  var plot1 = jQuery.jqplot ('chart1', [data], 
-    { 
-      seriesDefaults: {
-        // Make this a pie chart.
-        renderer: jQuery.jqplot.PieRenderer, 
-        rendererOptions: {
-          // Put data labels on the pie slices.
-          // By default, labels show the percentage of the slice.
-          showDataLabels: true
-        }
-      }, 
-      legend: { show:true, location: 'e' }
-    }
-  );
-});
-</script>
+
 
 
 <div>
@@ -123,18 +96,16 @@ $(document).ready(function(){
     </ul>
 </div>
 <div class="sortable row-fluid">
-  <h2>Top Mobile OS - 2013</h2>
-    <div style="width:500px; height:300px;" id="mobile"/>
-   <!-- <a data-rel="tooltip" title="6 new groups." class="well span3 top-block" href="inbox.jsp">-->
-        <a data-rel="tooltip" title="6 new groups." class="well span3 top-block" href="#">
+  
+    <!-- <div style="width:500px; height:300px;" id="mobile"/> -->
+   <a data-rel="tooltip" title="6 new groups." class="well span3 top-block" href="inbox.jsp">
         <span class="icon32 icon-red icon-user"></span>
         <div>Incoming Messages</div>
         <div><%= incoming%></div>
         <span class="notification yellow"><%= incoming%></span>
     </a>
 
-    <!--<a data-rel="tooltip" title="4 new pro members." class="well span3 top-block" href="sent.jsp">-->
-        <a data-rel="tooltip" title="4 new pro members." class="well span3 top-block" href="#">
+    <a data-rel="tooltip" title="4 new pro members." class="well span3 top-block" href="sent.jsp">
         <span class="icon32 icon-color icon-star-on"></span>
         <div>Sent Messages</div>
         <div><%= outgoing%></div>
@@ -224,7 +195,8 @@ $(document).ready(function(){
       
            
             <div id="chart1" style="width:650px; height:500px;"></div>
-
+            <div style="width:500px; height:300px;" id="mobile"></div>
+            
             <p>
                 &nbsp;&nbsp;&nbsp;
             </p>
@@ -375,6 +347,37 @@ $(document).ready(function(){
 <!--/row-->
 
 
+<script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqplot.min.js"></script>
+<script src="../js/jqplot.pieRenderer.min.js"></script>
+<link href="../js/query.jqplot.min.css" type="text/css" rel="stylesheet"/>  
+    
+<script>        
+<script class="code" type="text/javascript">
+$(document).ready(function(){
+  var data = [
+    ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
+    ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
+  ];
+  var plot1 = jQuery.jqplot ('chart1', [data], 
+    { 
+      seriesDefaults: {
+        // Make this a pie chart.
+        renderer: jQuery.jqplot.PieRenderer, 
+        rendererOptions: {
+          // Put data labels on the pie slices.
+          // By default, labels show the percentage of the slice.
+          showDataLabels: true
+        }
+      }, 
+      legend: { show:true, location: 'e' }
+    }
+  );
+});
+</script>
+
+
 
 <script language="javascript">
     <% String message="outputs";%>
@@ -432,6 +435,234 @@ $(document).ready(function(){
 });
 
 
+</script>
+
+<script type="text/javascript">
+ var FETCH_BARDATA ={
+        
+        /*Makes Ajax calls to Servlet to download student Data*/
+        downloadData:function() {
+             
+            //alert(msg);
+            
+            var formattedListArray =[];
+            
+                $.ajax({
+                    
+                  async: false,
+                  
+                  url: "StudentJsonDataServlet",
+                  
+                  dataType:"json",
+                  
+                  success: function(JsonData) {
+                    
+                    $.each(JsonData,function(index,aData){
+                        
+                        //formattedListArray.push([aData.mathematicsMark,aData.computerMark]);
+                                                  formattedListArray.push([aData.name,aData.count]);
+                    });
+                  }
+                });
+            return formattedListArray;
+        },
+        
+};
+	    var urls = 'incomingPie?'+msg
+            //alert(urls);
+$.getJSON(urls, function(data) {
+        var items1 = new Array();
+        var j=0;
+        for ( var i in data ) {
+            var items = new Array();
+            items.push(i,Number(data[i]));
+            items1[j++] = items;
+        }
+        var plot1 = jQuery.jqplot('chart1', eval([items1]), {
+                    seriesDefaults:{
+                        // Make this a pie chart.
+                        renderer:jQuery.jqplot.PieRenderer,
+                        rendererOptions:{
+                            // Put data labels on the pie slices.
+                            // By default, labels show the percentage of the slice.
+                            dataLabels:'value',
+                            fill: true,
+                            showDataLabels: true,
+                            // Add a margin to seperate the slices.
+                            //sliceMargin: 4,
+                            // stroke the slices with a little thicker line.
+                            //lineWidth: 5,
+                            //showDataLabels:true
+                        }
+                    },
+                    //setting the slices color
+                    seriesColors: ["#FFA500","#7BE319","#FF0000"],
+                    highlighter: {
+                        show: true
+                    },
+                    legend:{ show:true, location:'e' }
+                }
+        );
+    });
+var urls2 = 'outgoingPie?'+msg2
+            //alert(urls2);
+$.getJSON(urls2, function(data) {
+        var items1 = new Array();
+        var j=0;
+        for ( var i in data ) {
+            var items = new Array();
+            items.push(i,Number(data[i]));
+            items1[j++] = items;
+        }
+        var plot1 = jQuery.jqplot('chart2', eval([items1]), {
+                    seriesDefaults:{
+                        // Make this a pie chart.
+                        renderer:jQuery.jqplot.PieRenderer,
+                        rendererOptions:{
+                            // Put data labels on the pie slices.
+                            // By default, labels show the percentage of the slice.
+                            dataLabels:'value',
+                            fill: true,
+                            showDataLabels: true,
+                            // Add a margin to seperate the slices.
+                            //sliceMargin: 4,
+                            // stroke the slices with a little thicker line.
+                            //lineWidth: 5,
+                            //showDataLabels:true
+                        }
+                    },
+                    //setting the slices color
+                    seriesColors: ["#FFA500","#7BE319","#FF0000"],
+                    highlighter: {
+                        show: true
+                    },
+                    legend:{ show:true, location:'e' }
+                }
+        );
+    });
+$.getJSON('StudentJsonDataServlet', function(data) {
+        var items1 = new Array();
+        var j=0;
+        for ( var i in data ) {
+            var items = new Array();
+            items.push(i,Number(data[i]));
+            items1[j++] = items;
+        }
+        var plot1 = jQuery.jqplot('chart5', eval([items1]), {
+            seriesDefaults:{
+            renderer:$.jqplot.BarRenderer,
+            //pointLabels: { show: true, location: 'e', edgeTolerance: -15 },
+            rendererOptions: {
+                 //pointLabels:'value',
+                // Set the varyBarColor option to true to use different colors for each bar.
+                // The default series colors are used.
+            
+                varyBarColor: true
+            }
+        },
+       
+        seriesColors: ["#7BE319", "#FF0000", "#FFA500"],
+                    highlighter: {
+                        show: true
+                    },
+            legend: {
+                //show: true,
+                location: 'e',
+                placement: 'outside'
+            },
+        axes:{
+            xaxis:{
+                renderer: $.jqplot.CategoryAxisRenderer
+               
+                
+            }
+        }
+                    
+                    
+                }
+        );
+        /**
+        $('chart2').bind('jqplotDataRightClick',
+            function (ev, seriesIndex, pointIndex, data) {
+                $('#info3').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+            }
+        ); **/
+    });
+/**
+ $(document).ready(function(){
+        $.jqplot.config.enablePlugins = true;
+        var s1 = [2, 6, 7];
+        var formatStudentData =  FETCH_BARDATA.downloadData();
+        var ticks = ['safaricom', 'airtel'];
+        //alert(JSON.stringify(formatStudentData));
+         
+        plot1 = $.jqplot('chart1', formatStudentData, {
+            // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
+            animate: !$.jqplot.use_excanvas,
+            seriesDefaults:{
+                renderer:$.jqplot.BarRenderer,
+                pointLabels: { show: true }
+            },
+            axes: {
+                xaxis: {
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks: ticks
+                }
+            },
+            highlighter: { show: false }
+        });
+     
+        $('chart1').bind('jqplotDataClick',
+            function (ev, seriesIndex, pointIndex, data) {
+                $('#info1').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+            }
+        );
+    });**/
+$(document).ready(function(){
+    var line1 = [['Nissan', 4],['Porche', 6],['Acura', 2],['Aston Martin', 5],['Rolls Royce', 6]];
+  //var line1 = FETCH_BARDATA.downloadData();
+ 
+    $('#chart4').jqplot([line1], {
+        title:'Bar Chart with Varying Colors',
+        seriesDefaults:{
+            renderer:$.jqplot.BarRenderer,
+            pointLabels: { show: true },
+            rendererOptions: {
+                // Set the varyBarColor option to true to use different colors for each bar.
+                // The default series colors are used.
+            
+                varyBarColor: true
+            }
+        },
+        axes:{
+            xaxis:{
+                renderer: $.jqplot.CategoryAxisRenderer
+                
+            }
+        }
+    });
+});
+$(document).ready(function(){
+ var line1 = FETCH_BARDATA.downloadData();
+  
+  var plot2 = jQuery.jqplot ('chart4', [line1],{
+      seriesDefaults: {
+        //renderer: jQuery.jqplot.PieRenderer,
+         renderer:$.jqplot.PieRenderer,
+        rendererOptions: {
+          // Turn off filling of slices.
+          fill: false,
+          showDataLabels: true,
+          // Add a margin to seperate the slices.
+          sliceMargin: 4,
+          // stroke the slices with a little thicker line.
+          lineWidth: 5
+        }
+      },
+      legend: { show:true, location: 'e' }
+    }
+  );
+});
 </script>
 
 <jsp:include page="footer.jsp" />
