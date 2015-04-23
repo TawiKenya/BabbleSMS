@@ -95,6 +95,15 @@
         <link rel="stylesheet" href="poup.css" />
         <link href="../css/poup.css" rel="stylesheet">
         <link href='../css/logos.css' rel='stylesheet'>
+
+
+
+        
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.jqplot.min.js"></script>
+    <script src="../js/jqplot.pieRenderer.min.js"></script>
+    <link href="j../js/query.jqplot.min.css" type="text/css" rel="stylesheet"/>
+    <script>
         
          <!--jqplot charts-->
         <!--<script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>-->
