@@ -47,6 +47,11 @@
             }
         </style>
         <!-- jQuery -->
+	<script src="../js/jquery-1.7.2.min.js"></script>
+	<script src="../js/jquery.min.js"></script>
+		
+	
+	<script src="../js/editcontact.js"></script>
         <script src="../js/jquery-1.7.2.min.js"></script>
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
@@ -126,7 +131,7 @@
                             <!--<li><a href="#">Profile</a></li>-->
                             <li class="divider"></li>
                             <li><a href="../logout">Logout</a></li>
-                            <li><a href="../Setting">Setting</a>
+                            <li><a href="setting.jsp">Setting</a>
                                 <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                 <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
                                 <span class="caret"></span>

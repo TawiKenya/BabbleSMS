@@ -183,6 +183,12 @@ window.location="../account/contact.jsp";
             $("#mail").append("<div class='controls'> <input style='margin-top:5px;' class='input-xlarge focused'  id='email' name='email[]' type='text'> </div>");
 
         });
- 
+ 		
+    $("[href]").each(function() {
+    if (this.href == window.location.href) {
+        $(this).css('background-color', '#cc0000');
+        }
+    });
+
 
 });
