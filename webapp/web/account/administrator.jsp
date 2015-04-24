@@ -93,7 +93,7 @@
                     %>
                     <tr>
 
-                        <td width="10%"><%=count%></td>
+                        <td width="5%"><%=count%></td>
                         <td class="center"><%=code.getShortDesc()%></td>
                         <td class="center"><%=code.getLongDesc()%></td>
                         <td class="center"><%=code.getNotificationDate()%></td>

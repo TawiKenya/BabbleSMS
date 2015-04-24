@@ -83,18 +83,16 @@ public class EditPassword extends HttpServlet{
 		
 
 		
-		  logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
 			AccountsDAO acDAO = AccountsDAO.getInstance();
 		Account accounts = acDAO.getAccount(accuuid);
 		     accounts.setLogpassword(newpassword);
-			logger.info("nnnnnnnnnnnnnnn+++++++++++"+accounts);
-			logger.info("nnnnnnnnnnnnnnn+++++++++++"+accounts.getLogpassword());
+			
 		    if( acDAO.updateAccount(accounts)){
-		session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "success");
 		   }
 
 			else{
-			session.setAttribute(SessionConstants.ADD_ERROR, "Password  Editing Failed.");  
+			session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Password  Editing Failed.");  
 
                    }
 		logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);

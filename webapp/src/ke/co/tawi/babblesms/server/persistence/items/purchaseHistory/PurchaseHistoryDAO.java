@@ -207,7 +207,7 @@ public class PurchaseHistoryDAO extends GenericDAO implements BabblePurchaseHist
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM PurchaseHistory where accountuuid = ?;");
+            pstmt = conn.prepareStatement("SELECT * FROM PurchaseHistory where accountuuid = ? ORDER BY purchasetime DESC;");
             pstmt.setString(1, account);
             rset = pstmt.executeQuery();
 

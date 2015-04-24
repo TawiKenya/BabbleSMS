@@ -89,11 +89,11 @@ public class EditAccount extends HttpServlet{
 		
 		if(aDAO.updateAccount(account)){
 
-		session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "success");
 		}
 		else{
 
-		session.setAttribute(SessionConstants.ADD_ERROR, "Profile  Editing Failed.");
+		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Profile  Editing Failed.");
               }
 		
 			

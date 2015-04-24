@@ -189,7 +189,7 @@ public class NotificationDAO extends GenericDAO implements
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Notification;");
+            pstmt = conn.prepareStatement("SELECT * FROM Notification ORDER BY NotificationDate DESC;");
 
             rset = pstmt.executeQuery();
 

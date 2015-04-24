@@ -167,7 +167,7 @@ CREATE TABLE groups (
 );
 
 -- import data from the CSV file for the group table
-\COPY groups(uuid,name,description,accountuuid,statusuuid) FROM '/tmp/Groups.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY groups(uuid,name,description,accountuuid,statusuuid,creationdate) FROM '/tmp/Groups.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE groups OWNER TO babblesms;
 
 

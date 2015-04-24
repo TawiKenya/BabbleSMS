@@ -100,21 +100,26 @@
                             if (paramHash == null) { 
                                 paramHash = new HashMap<String, String>();System.out.println("test14");
                             }
-
-                            if (StringUtils.isNotEmpty(addErrStr)) {
-                                out.println("<p class=\"error\">");
-                                out.println("Form error: " + addErrStr);
-                                out.println("</p>");
-                                session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, null);
-                            }
-
-                            if (StringUtils.isNotEmpty(addSuccessStr)) {
+			
+			if (StringUtils.isNotEmpty(addSuccessStr)) {
+				out.println("<p class=\"success\"></p>");
                                 out.println("<p class=\"success\">");
                                 out.println("You have successfully edited your settings.");
                                 out.println("</p>");
                                 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, null);
                           
+                            }	
+
+	 if (StringUtils.isNotEmpty(addErrStr)) {
+				out.println("<p class=\"error\"></p>");
+                                out.println("<p class=\"error\">");
+                                out.println( addErrStr);
+                                out.println("</p>");
+                                session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, null);
                             }
+                           
+
+                            
                         %>
         <div class="box-header well" data-original-title>
             
@@ -125,6 +130,8 @@
                 <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
             </div>
         </div>
+
+	
         <div class="box-content">
             <form class="form-horizontal" action="editaccounts" method="POST">
                  <fieldset>
@@ -200,7 +207,7 @@
 	<div class="control-group">
                         <label class="control-label" for="network">Old Password</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="password" name="oldpassword" value="<%= codes.getLogpassword() %>" required="true">
+                            <input class="input-xlarge focused" id="receiver" type="password" name="oldpassword" value="" required="true">
                             
                         </div>
                     
