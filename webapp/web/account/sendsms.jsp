@@ -106,7 +106,6 @@
     List<Mask> masklist = new ArrayList();
     List<MessageTemplate> list = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
-    List<Contact> contactlist = new ArrayList();
     List<Contact> contactList = new ArrayList();
 
 	GroupDAO gDAO=new GroupDAO();
@@ -172,18 +171,6 @@
 
     }
 
-    
-
-    keys = contactsCache.getKeys();
-    for (Object key : keys) {
-        element = contactsCache.get(key);
-        contacts = (Contact) element.getObjectValue();
-        if (account.getUuid().equals(contacts.getAccountUuid())) {
-
-            contactlist.add(contacts);
-        }
-
-    }
 
     keys = phoneCache.getKeys();
     for (Object key : keys) {
@@ -316,12 +303,12 @@
 
 <div class="fluid">
 <div class="span50">
-<form>
+
 <label for="tokenize_simple"class="control_label">Type a contact name here  :</label>
 <select id="tokenize_simple" class="tokenize-sample controls" name="contactselected[]"  multiple="multiple" style="margin: 0px; padding: 0px; border: 0px none; display: none;">
-<%for(Contact contact:contactList){ %>
-<option value=<%=contact.getUuid()%>><%=contact.getName()%></option>
-  <% }%>
+<%for(Contact contact : contactList){ %>
+    <option value=<%=contact.getUuid()%>><%=contact.getName()%></option>
+<% }%>
 </select>
 <div class="tokenize-samples Tokenizer">
 <ul class="TokensContainer">
@@ -331,7 +318,7 @@
 </ul>
 <ul class="Dropdown"></ul>
 </div>
-</form>
+
 </div>
 <!--<div class="span50">
 <label>Content of the select</label>

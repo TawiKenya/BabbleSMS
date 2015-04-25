@@ -15,17 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
-import java.io.IOException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
@@ -37,25 +26,35 @@ import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.ArrayList;
+
 /**
- * Receives a form request toedit a group's details
- * 
+ * Receives a form request to send SMS to Contact(s) or Group(s) 
  * <p>
  * 
  * @author dennis <a href="mailto:dennism@tawi.mobi">Dennis Mutegi</a>
- *
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-
 public class SendSMS extends HttpServlet{
 	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
+	
+	private AccountsDAO accountsDAO;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	
@@ -69,10 +68,13 @@ public class SendSMS extends HttpServlet{
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
+		accountsDAO = AccountsDAO.getInstance();
 	}
 	
+	
 	/**
-	 * method to handle form processing
+	 * Method to handle form processing
+	 * 
 	 * @param request
 	 * @param response
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -88,13 +90,14 @@ public class SendSMS extends HttpServlet{
 		String [] contactselected = request.getParameterValues("contactselected[]");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
-                String phones ="";
+        String phones = "";
+        
 		Group group;
-		AccountsDAO aDAO = AccountsDAO.getInstance();
-		 Account account = new Account();
-			account = aDAO.getAccount(accountuuid);
+		
+		Account account = accountsDAO.getAccount(accountuuid);
+		 
 		//removing any blank input field value passed here
-		List<String> grouplist = new ArrayList<String>();
+		List<String> grouplist = new ArrayList<>();
                 if(groupselected.length >0){
     		for(String s :groupselected ) {
       		  if(s != null && s.length() > 0) {
@@ -106,7 +109,9 @@ public class SendSMS extends HttpServlet{
 		
 		//logger.info("wwwwwwwwwwwwwwwwwww+++++++++++"+groupselected[0]);
 		}
-			List<String> newgroupList = new ArrayList<String>(new HashSet(grouplist));
+                
+                
+			List<String> newgroupList = new ArrayList<>(new HashSet(grouplist));
 			
 			if(newgroupList != null){
 			for (String group1 : newgroupList) {
@@ -126,7 +131,7 @@ public class SendSMS extends HttpServlet{
 			PhoneDAO pDAO = PhoneDAO.getInstance();
 			ContactDAO cDAO = ContactDAO.getInstance();
 			Contact contact = new Contact();
-			List<Phone> phonelist = new ArrayList<Phone>();
+			List<Phone> phonelist = new ArrayList<>();
 			List<Contact> contactList = new ArrayList<>();
 			if(newgroupList != null){
 			for (String groupname : newgroupList) {
@@ -138,7 +143,7 @@ public class SendSMS extends HttpServlet{
 		}	
 		}
 		}
-			List<Phone> newphoneList = new ArrayList<Phone>(new HashSet(phonelist));
+			List<Phone> newphoneList = new ArrayList<>(new HashSet(phonelist));
 			logger.info("my phonenumbers"+ phonelist);
 			 for(Phone phone:newphoneList){
                          phones +=phone.getPhonenumber()+";"; 
@@ -159,7 +164,7 @@ public class SendSMS extends HttpServlet{
                          phones +=phone.getPhonenumber()+";"; 
                  }}
                        logger.info("my phones"+phones);
-			Map<String,String> params = new HashMap<String,String>();
+			Map<String,String> params = new HashMap<>();
 			 
 			params.put("username", "tawi");		
 			params.put("password", "tawi123");
@@ -180,5 +185,4 @@ public class SendSMS extends HttpServlet{
 	
 		
 	}
-
 
