@@ -136,11 +136,7 @@ public class CacheInit extends HttpServlet {
 
         objList = msgDAO.getAllMessageStatus();
         initCacheByUuid(CacheVariables.CACHE_MESSAGE_STATUS_BY_UUID, objList);
-
-        initCacheByUuid(CacheVariables.CACHE_GROUP_BY_UUID, objList);
-        
-        initCacheByUuid(CacheVariables.CACHE_CONTACT_GROUP_BY_UUID, objList);
-        
+                
         objList = shortcodeDAO.getAllShortcode();
         initCacheByUuid(CacheVariables.CACHE_SHORTCODE_BY_UUID, objList);
         
@@ -154,14 +150,9 @@ public class CacheInit extends HttpServlet {
         initCacheByUuid(CacheVariables.CACHE_COUNTRY_BY_UUID, objList);
 
         initAccountsCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-        
-        
-        initContactsCache(CacheVariables.CACHE_CONTACTS_BY_ACCOUNTUUID);
                 
-        initGroupCache(CacheVariables.CACHE_GROUP_BY_ACCOUNTUUID);
-        
-        initContactGroupCache(CacheVariables.CACHE_CONTACT_GROUP_BY_ACCOUNTUUID);
-        
+        initContactsCache(CacheVariables.CACHE_CONTACTS_BY_ACCOUNTUUID);
+                        
         initShortcodeCache(CacheVariables.CACHE_SHORTCODE_BY_ACCOUNTUUID);
         
         initMaskCache(CacheVariables.CACHE_MASK_BY_ACCOUNTUUID);
@@ -259,50 +250,6 @@ public class CacheInit extends HttpServlet {
         }
     }
 
-      
-    /**
-     *
-     * @param cacheName
-     */
-    private void initGroupCache(String cacheName) {
-
-        if (!cacheManager.cacheExists(cacheName)) {
-            CacheConfiguration cacheConfig = new CacheConfiguration().sizeOfPolicy(sizeOfPolicyConfiguration);
-            cacheConfig.setCopyOnRead(false); // Whether the Cache should copy elements it returns
-            cacheConfig.setCopyOnWrite(false); // Whether the Cache should copy elements it gets
-            cacheConfig.setEternal(true); // Sets whether elements are eternal.    	
-            cacheConfig.setName(cacheName); // Sets the name of the cache.
-
-            Cache groupsCache = new Cache(cacheConfig);
-            cacheManager.addCacheIfAbsent(groupsCache);
-            if (groupsCache.getStatus() == Status.STATUS_UNINITIALISED) {
-                groupsCache.initialise();
-            }
-
-        }
-    }
-
-    /**
-     *
-     * @param cacheName
-     */
-    private void initContactGroupCache(String cacheName) {
-
-        if (!cacheManager.cacheExists(cacheName)) {
-            CacheConfiguration cacheConfig = new CacheConfiguration().sizeOfPolicy(sizeOfPolicyConfiguration);
-            cacheConfig.setCopyOnRead(false); // Whether the Cache should copy elements it returns
-            cacheConfig.setCopyOnWrite(false); // Whether the Cache should copy elements it gets
-            cacheConfig.setEternal(true); // Sets whether elements are eternal.    	
-            cacheConfig.setName(cacheName); // Sets the name of the cache.
-
-            Cache contactGroupsCache = new Cache(cacheConfig);
-            cacheManager.addCacheIfAbsent(contactGroupsCache);
-            if (contactGroupsCache.getStatus() == Status.STATUS_UNINITIALISED) {
-                contactGroupsCache.initialise();
-            }
-
-            }
-        }
 
     /**
      *
@@ -420,8 +367,6 @@ public class CacheInit extends HttpServlet {
                 for (Country a : allcountries) {
                     countryCache.put(new Element(a.getUuid(), a)); 	// Email as the key
                 }
-
-            
 
             }
         }

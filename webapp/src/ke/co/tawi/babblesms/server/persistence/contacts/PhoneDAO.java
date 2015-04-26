@@ -97,16 +97,18 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 				) {
 		   
 			psmt.setString(1, uuid);
-			ResultSet rset = psmt.executeQuery();
 			
-			if(rset.next()){
-				 phone = beanProcessor.toBean(rset, Phone.class);	
+			try(ResultSet rset = psmt.executeQuery();) {
+				if(rset.next()){
+					 phone = beanProcessor.toBean(rset, Phone.class);	
+				}
 			}
-
+			
 	   } catch (SQLException e) {
 		   		logger.error("SQLException when getting phone with uuid: " + uuid);
 	            logger.error(ExceptionUtils.getStackTrace(e));
-	        }
+       }
+	   
 	   return phone;
    }
 
@@ -117,25 +119,17 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	@Override
 	public List<Phone> getPhones(String phoneNum) {
 		List<Phone> phoneList = new ArrayList<>();
-		ResultSet rset = null;
+		
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
 				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM phone WHERE phonenumber ILIKE ?;");
 		   ){
+			
 			psmt.setString(1, "%" + phoneNum + "%");
-			rset = psmt.executeQuery();
-
-			//phoneList = beanProcessor.toBeanList(rset, Phone.class);
-			while(rset.next()){
-				Phone p = new Phone();
-				p.setContactsuuid(rset.getString("contactuuid"));
-				p.setUuid(rset.getString("uuid"));
-				p.setNetworkuuid(rset.getString("networkuuid"));
-				
-				p.setPhonenumber(rset.getString("phonenumber"));
-				p.setStatusuuid(rset.getString("statusuuid"));
-				phoneList.add(p);
+			
+			try(ResultSet rset = psmt.executeQuery();) {
+				phoneList = beanProcessor.toBeanList(rset, Phone.class);
 			}
 			
 		} catch (SQLException e) {
@@ -163,20 +157,21 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
         		){
             pstmt.setString(1, phone.getUuid());
             pstmt.setString(2, phone.getPhonenumber());
-            pstmt.setString(3, phone.getContactsuuid());
+            pstmt.setString(3, phone.getContactUuid());
             pstmt.setString(4, phone.getStatusuuid());
             pstmt.setString(5, phone.getNetworkuuid());
             
             pstmt.execute();
             
         } catch (SQLException e) {
-            logger.error("SQL Exception when trying to put: " + phone);
+            logger.error("SQLException when trying to put: " + phone);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         }
         
         return success;
     }
+    
     
     /** 
      * @see ke.co.tawi.babblesms.server.persistence.contacts.BabblePhoneDAO#updatePhone(java.lang.String, ke.co.tawi.babblesms.server.beans.contact.Phone)
@@ -215,8 +210,6 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	@Override
 	public List<Phone> getPhones(Contact contact) {
 		List<Phone> phoneList = new ArrayList<>();
-
-		ResultSet rset = null;
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
@@ -224,9 +217,10 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 				){
 			
 			pstmt.setString(1, contact.getUuid());
-			rset = pstmt.executeQuery();
-
-			phoneList = beanProcessor.toBeanList(rset, Phone.class);
+			
+			try(ResultSet rset = pstmt.executeQuery();) {
+				phoneList = beanProcessor.toBeanList(rset, Phone.class);
+			}
 		}
 		
 		 catch (SQLException e) {

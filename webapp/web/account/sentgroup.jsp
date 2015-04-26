@@ -16,24 +16,26 @@
     */
 %>
 
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 
-<%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
 <%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -54,38 +56,32 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
 
-    String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
-    OutgoingGroupLogDAO outgoinglogDAO = OutgoingGroupLogDAO.getInstance();
-    List<OutgoingGrouplog> outgoingList = outgoinglogDAO.getOutgoingGrouplogByAccount(accountuuid);
-
     CacheManager mgr = CacheManager.getInstance();
-    Cache groupsCache = mgr.getCache(CacheVariables.CACHE_GROUP_BY_UUID);
-    Cache msgstatusCache = mgr.getCache(CacheVariables.CACHE_MESSAGE_STATUS_BY_UUID);
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
 
-    HashMap<String, String> contactgrpHash = new HashMap<String, String>();
-    HashMap<String, String> messageHash = new HashMap<String, String>();
+    OutgoingGroupLogDAO outgoinglogDAO = OutgoingGroupLogDAO.getInstance();
+    
 
+    GroupDAO groupDAO = GroupDAO.getInstance();
+    
+    Account account = new Account();
     Element element;
-    List keys;
-    Group group;
-    MsgStatus msgt;
-
-    /*keys = groupsCache.getKeys();
-    for (Object key : keys) {
-        element = groupsCache.get(key);
-        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-        cntgrp = (Group) element.getObjectValue();
-         System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwwwww2");
-        contactgrpHash.put(cntgrp.getUuid(), cntgrp.getName());
-    }
-*/
-    keys = msgstatusCache.getKeys();
-    for (Object key : keys) {
-        element = msgstatusCache.get(key);
-        msgt = (MsgStatus) element.getObjectValue();
-        messageHash.put(msgt.getUuid(), msgt.getDescription());
+    if ((element = accountsCache.get(username)) != null) {
+        account = (Account) element.getObjectValue();
     }
 
+    List<OutgoingGrouplog> outgoingList = outgoinglogDAO.getOutgoingGrouplogByAccount(account.getUuid());
+
+    List<Group> groupList = groupDAO.getGroups(account);
+
+    HashMap<String, String> groupHash = new HashMap<String, String>();
+
+    for(Group group : groupList) {
+        groupHash.put(group.getUuid(), group.getName());
+    }
+
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h:mma");
+    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 %>    
 <jsp:include page="messageheader.jsp" />
 
@@ -117,39 +113,35 @@
                 <thead>
                     <tr>
 
-                        <th>*</th>
-                        <th>GroupSentId</th>
-                        <th>message</th>
-                        <th>source</th>
+                        <th>*</th>  
                         <th>Group</th>
-                        <th>time</th>
+                        <th>Message</th>
+                        <th>Source</th>                        
+                        <th>Time (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
+                        <th>Group Message Id</th>
                     </tr>
                 </thead>   
                 <tbody>
-                    <%                        int count = 1;
+                    <%                       
+                        int count = 1;
+
                         if (outgoingList != null) {
-                            for (OutgoingGrouplog code : outgoingList) {
-                                String groupname = contactgrpHash.get(code.getDestination());
-                           GroupDAO grpDAO = GroupDAO.getInstance();
-                           group = grpDAO.getGroup(code.getDestination());
-                         
-     
+                            for (OutgoingGrouplog code : outgoingList) {                                
                     %>
-                    <tr>
-
-                        <td width="10%"><%=count%></td>
-                        <td class="center"><%=code.getUuid()%> </td>
-                        <td class="center"><%=code.getMessage()%></td>
-                        <td class="center"><%=code.getOrigin()%> </td>
-                        <td class="center"><%=group.getName()%> </td>
-                        <td class="center"><%=code.getLogTime()%> </td>
-
-                    </tr>
+                    
+                                <tr>
+                                    <td width="10%"><%=count%></td>
+                                    <td class="center"><%= groupHash.get(code.getDestination()) %> </td>
+                                    <td class="center"><%= code.getMessage() %></td>
+                                    <td class="center"><%= code.getOrigin() %> </td>                        
+                                    <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
+                                    <td class="center"><%= code.getUuid() %> </td>
+                                </tr>
 
                     <%
                                 count++;
-                            }
-                        }
+                            }// end 'for (OutgoingGrouplog code : outgoingList)'
+                        }// end 'if (outgoingList != null)'
                     %>
                 </tbody>
             </table>            

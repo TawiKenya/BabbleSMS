@@ -55,11 +55,11 @@ public class Phone extends StorableBean {
         this.phoneNumber = StringUtils.trimToEmpty(phonenumber);
     }
 
-    public String getContactsuuid() {
+    public String getContactUuid() {
         return contactUuid;
     }
 
-    public void setContactsuuid(String contactsuuid) {
+    public void setContactUuid(String contactsuuid) {
         this.contactUuid = StringUtils.trimToEmpty(contactsuuid);
     }
 

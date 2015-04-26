@@ -48,51 +48,50 @@ public class TestPhoneDAO {
             PHONENUM_NEW = "254708976409",
             PHONENUM_UPDATE = "254708976411";
 
-    final String NETUUID = "741AC38C-3E40-6887-9CD6-365EF9EA1EF0",
-            NETUUID_NEW = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78";
+    final String NETWORK_UUID = "5C1D9939-136A-55DE-FD0E-61D8204E17C9",
+            NETWORK_UUID_NEW = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78";
 
     final String CONTACTUUID = "2735fd77-3f71-4846-9cc5-c9c53be9f92f",
             CONTACTUUID_NEW = "52ea7495-2568-4a0c-b952-abe7bed2d2de",
             CONTACTUUID_LATEST = "556e1c97-362c-4410-8e92-cd287e4c5c9b";
     
 
-    final String STATUSUUID = "5A13538F-AC41-FDE2-4CD6-B939FA03123B",
+    final String STATUSUUID = "396F2C7F-961C-5C12-3ABF-867E7FD029E6",
             STATUSUUID_NEW = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
     
-    final String UUID = "9c918b90-68f2-4d14-a9dd-969f2318f077" ,
-    		PHONE ="254722347063" , CUUID = "556e1c97-362c-4410-8e92-cd287e4c5c9b" ,
-    		SUUID = "396F2C7F-961C-5C12-3ABF-867E7FD029E6" ,
+    final String UUID = "9c918b90-68f2-4d14-a9dd-969f2318f077",
+    		PHONE ="254722347063" , CUUID = "556e1c97-362c-4410-8e92-cd287e4c5c9b",
+    		SUUID = "396F2C7F-961C-5C12-3ABF-867E7FD029E6",
     		NUUID = "741AC38C-3E40-6887-9CD6-365EF9EA1EF0";
     
     final String PHONEMATCH = "723";
-    
-    
-      
     
 
     private PhoneDAO storage;
     private ContactDAO storagenew;
     
+    
     /**
      * 
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testGetPhone() {
     	storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
-    	Phone p = storage.getPhone(UUID);
-    	assertEquals(p.getUuid(), UUID);
-    	assertEquals(p.getPhonenumber() , PHONE );
-    	assertEquals(p.getContactsuuid() , CUUID);
-    	assertEquals(p.getStatusuuid() , SUUID );
-    	assertEquals(p.getNetworkuuid() , NUUID );
+    	Phone p = storage.getPhone(PHONE_UUID);
+    	assertEquals(p.getUuid(), PHONE_UUID);
+    	assertEquals(p.getPhonenumber(), PHONENUM);
+    	assertEquals(p.getContactUuid(), CONTACTUUID);
+    	assertEquals(p.getStatusuuid(), STATUSUUID);
+    	assertEquals(p.getNetworkuuid(), NETWORK_UUID);
     }
     
  
     /**
      * 
      */
+    @Ignore
     @Test
     public void  testGetPhones(){
     	storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -133,7 +132,8 @@ public class TestPhoneDAO {
 
 	/**
 	 * 
-	 */   
+	 */ 
+    @Ignore 
 	@Test
    public void testupdatePhone(){
 		storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -160,10 +160,10 @@ public class TestPhoneDAO {
 		storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
 	    Phone phone = new Phone();
-	    phone.setContactsuuid(CONTACTUUID_NEW);
+	    phone.setContactUuid(CONTACTUUID_NEW);
 	    phone.setPhonenumber(PHONE);
 	    phone.setStatusuuid(STATUSUUID_NEW);
-	    phone.setNetworkuuid(NETUUID_NEW);
+	    phone.setNetworkuuid(NETWORK_UUID_NEW);
 	    phone.setUuid(PUTPHONEUUID);
 	    
 	    assertTrue(storage.putPhone(phone));
@@ -171,9 +171,9 @@ public class TestPhoneDAO {
 	    
     	assertEquals(p.getUuid(), PUTPHONEUUID);
     	assertEquals(p.getPhonenumber() , PHONE );
-    	assertEquals(p.getContactsuuid() , CONTACTUUID_NEW);
+    	assertEquals(p.getContactUuid() , CONTACTUUID_NEW);
     	assertEquals(p.getStatusuuid() , STATUSUUID_NEW );
-    	assertEquals(p.getNetworkuuid() , NETUUID_NEW );		
+    	assertEquals(p.getNetworkuuid() , NETWORK_UUID_NEW );		
 	}	
 
 }

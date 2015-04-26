@@ -139,7 +139,7 @@ public class EditContact extends HttpServlet {
 			Phone newPhone =new Phone();
 			String phonenums = phonenumArray[count];
 			newPhone.setPhonenumber(phonenums);
-			newPhone.setContactsuuid(cuuid);
+			newPhone.setContactUuid(cuuid);
 			newPhone .setStatusuuid(contactstatusuuid);
 			newPhone.setNetworkuuid(networkArray[count]);
 			phoneDAO.putPhone(newPhone);

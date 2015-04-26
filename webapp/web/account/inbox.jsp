@@ -270,7 +270,7 @@
                             //if phone number exists print out the contact name else print the number
                             if (phnDAO.getPhones(code.getOrigin()).size() >= 1) {
                                 Phone p =phnDAO.getPhones(code.getOrigin()).get(0);
-                                String contact = p.getContactsuuid();
+                                String contact = p.getContactUuid();
                                 String sourcename = ctssDAO.getContact(contact).getName();
                         %>
                         <td class="center"><%=sourcename%></td>  

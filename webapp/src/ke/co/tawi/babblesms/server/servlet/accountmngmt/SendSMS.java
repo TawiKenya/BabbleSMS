@@ -25,7 +25,7 @@ import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -33,6 +33,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 import org.apache.log4j.Logger;
 
@@ -53,7 +57,9 @@ import java.util.ArrayList;
 public class SendSMS extends HttpServlet{
 	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
 	
-	private AccountsDAO accountsDAO;
+	private Cache accountsCache;
+		
+	private PhoneDAO phoneDAO;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
@@ -67,8 +73,11 @@ public class SendSMS extends HttpServlet{
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-
-		accountsDAO = AccountsDAO.getInstance();
+		
+		phoneDAO = PhoneDAO.getInstance();
+		
+		CacheManager mgr = CacheManager.getInstance();
+        accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
 	}
 	
 	
@@ -82,19 +91,30 @@ public class SendSMS extends HttpServlet{
 	 * @throws IOException
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
+	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
 		
-		String  accountuuid = request.getParameter("account");
+		Account account = new Account();
+		
+		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
+		Element element;
+	    if ((element = accountsCache.get(username)) != null) {
+	        account = (Account) element.getObjectValue();
+	    }
+			    
 		String [] groupselected = request.getParameterValues("groupselected");
-		String [] contactselected = request.getParameterValues("contactselected[]");
+		String [] phones = request.getParameterValues("phones");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
-        String phones = "";
+       
         
 		Group group;
 		
-		Account account = accountsDAO.getAccount(accountuuid);
+		for(String phone : phones) {
+			System.out.println("Phone is: " + phoneDAO.getPhone(phone));
+		}
+		
+		/*
 		 
 		//removing any blank input field value passed here
 		List<String> grouplist = new ArrayList<>();
@@ -107,7 +127,6 @@ public class SendSMS extends HttpServlet{
 			//converting the list back to an array
    		 groupselected = grouplist.toArray(new String[grouplist.size()]);
 		
-		//logger.info("wwwwwwwwwwwwwwwwwww+++++++++++"+groupselected[0]);
 		}
                 
                 
@@ -179,6 +198,9 @@ public class SendSMS extends HttpServlet{
 			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
 			postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
 								// running in an application server.
+			
+			*/
+			
 			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
 			response.sendRedirect("sendsms.jsp");	
 		}

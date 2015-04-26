@@ -48,8 +48,6 @@ public class CacheVariables {
     public final static String CACHE_CONTACTS_BY_ACCOUNTUUID = "ContactsUser";
     public final static String CACHE_PHONE_BY_CONTACTS_UUID = "PhoneByUuid";
     public final static String CACHE_EMAIL_BY_CONTACTS_UUID = "EmailByUuid";
-    public final static String CACHE_GROUP_BY_ACCOUNTUUID = "GroupByUuid";
-    public final static String CACHE_CONTACT_GROUP_BY_ACCOUNTUUID = "ConatctGroupByUuid";
     public final static String CACHE_SHORTCODE_BY_ACCOUNTUUID = "ShortcodeByUuid";
     public final static String CACHE_MASK_BY_ACCOUNTUUID = "MaskByUuid";
     public final static String CACHE_MESSAGE_TEMPLATE_BY_ACCOUNTUUID = "MessageTemplateByUuid";

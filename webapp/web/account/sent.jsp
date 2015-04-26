@@ -282,7 +282,7 @@
                                
                                 List<Phone> phoneList = phnDAO.getPhones(code.getDestination());
                                 Phone phone = phoneList.get(0);
-                                 String contactuuid = phone.getContactsuuid();
+                                 String contactuuid = phone.getContactUuid();
 				Contact contacts = ctDAO.getContact(contactuuid);
 				String contactname = contacts.getName();
                         %>

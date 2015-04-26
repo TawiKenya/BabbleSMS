@@ -108,10 +108,13 @@
     List<Group> contactsgrpList = new ArrayList<Group>();
     List<Contact> contactList = new ArrayList();
 
-	GroupDAO gDAO=new GroupDAO();
-         contactsgrpList = gDAO.getGroups(account);
-	ContactDAO cDAO =  ContactDAO.getInstance();
-	contactList= cDAO.getContacts(account);
+    GroupDAO gDAO = new GroupDAO();
+    contactsgrpList = gDAO.getGroups(account);
+    ContactDAO cDAO =  ContactDAO.getInstance();
+    contactList= cDAO.getContacts(account);
+
+    PhoneDAO phoneDAO = PhoneDAO.getInstance();
+
    MaskDAO maskDAO = MaskDAO.getInstance();
    ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
    NetworkDAO networkDAO = NetworkDAO.getInstance();
@@ -129,7 +132,7 @@
     Network network;
    // Account account;
     Contact contacts;
-    Phone phone;
+    
 
     MessageTemplate messageTemplate;
     List<Phone> list2 = new ArrayList();
@@ -170,14 +173,6 @@
         }
 
     }
-
-
-    keys = phoneCache.getKeys();
-    for (Object key : keys) {
-        element = phoneCache.get(key);
-        phone = (Phone) element.getObjectValue();
-        phoneHash.put(phone.getContactsuuid(), phone);
-    }
     
     keys = networksCache.getKeys();
     for (Object key : keys) {
@@ -208,8 +203,10 @@
 
         </div>
         <div class="box-content" style="margin-top:4%">
-            <%                String addErrStr = (String) session.getAttribute(SessionConstants.SENT_ERROR);
+            <%                
+                String addErrStr = (String) session.getAttribute(SessionConstants.SENT_ERROR);
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.SENT_SUCCESS);
+
                  //display errors
                 if (StringUtils.isNotEmpty(addErrStr)) {
                     out.println("<p style='color:red'>");
@@ -225,6 +222,7 @@
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
             %>
+            
             <form id="sendsms" name="myform" class="form-horizontal" action="SendSMS" method="POST">
                 <fieldset>
                     <div class="control-group" id ="grouptable">
@@ -233,119 +231,127 @@
                         <div class="controls">
                            
 			<select name ="destination" id="destination" required="true">
-			<option value ="Choose">choose Group or Contact(s)</option>
+			<option value ="Choose">Choose Groups or Contacts</option>
 			<option value = "Group">Group</option>
 			
 			<option value = "Contact">Contact(s)</option>
 			</select></div>
 			
 			<div class="control-group">
-			 <div class="controls" >
-			<!-- Group table here-->
-<div class="tablets">
-    <table id="scroll" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Select Groups</th>
-        </tr>
-    </thead>
-    <tbody id ="tablet">
+                            <div class="controls" >
+                                <!-- Group table here-->
+                                <div class="tablets">
+                                    <p>&nbsp;&nbsp;&nbsp;</p>
+                                    
+                                    <table id="scroll" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                            <th>Select Groups</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id ="tablet">
 
-	<%
-	
-	if (contactsgrpList != null) {
-         for (Group code : contactsgrpList) {
-	%>
+                                            <%
+                                                if (contactsgrpList != null) {
+                                                    for (Group code : contactsgrpList) {
+                                            %>
 
-        <tr>
-	   
-            <td class="center"><a href="#"><%=code.getName()%></a></td>
-	    <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
-			
-		
-        </tr>
-        <%   
-	
-	
-    }
-    } 
-	
-	%>
-  
-    </tbody>
-</table>
-<div id = "groupsform">
-<br/><br/><br/>
-<button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-<button type="submit"  id = "remove2" > << Remove </button>
+                                                    <tr>
+                                                        <td class="center"><a href="#"><%=code.getName()%></a></td>
+                                                        <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
+                                                    </tr>
+                                                <%   
 
-<input type="hidden"  class ="groupsadded" name="account"  value="<%=account.getUuid()%>" />
-<input type="hidden"  class ="groupsadded" name="groupselected"  />
-</div>
-<table id="scroll1" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Selected Groups</th>
-        </tr>
-    </thead>
-    <tbody id = "resulttable">
-    
-	
-  
-    </tbody>
-</table>
 
-	</div>		</div>
+                                                    }// end 'for (Group code : contactsgrpList)'
+                                                }// end 'if (contactsgrpList != null)' 
+                                            %>
+
+                                        </tbody>
+                                    </table>
+                                    
+                                    <div id="groupsform">
+                                        <br/><br/><br/>
+                                        <button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
+                                        <button type="submit"  id = "remove2" > << Remove </button>
+
+                                        <input type="hidden"  class ="groupsadded" name="groupselected"  />
+                                    </div>
+                                    
+                                    <table id="scroll1" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Selected Groups</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id = "resulttable">
+
+                                        </tbody>
+                                    </table>
+
+                                </div>		
+                            </div>
 			</div>
 			
 			
-<div class="section control-group">
+                        <div class="section control-group">
 
-<div class="fluid">
-<div class="span50">
+                            <div class="fluid">
+                                <div class="span50">
 
-<label for="tokenize_simple"class="control_label">Type a contact name here  :</label>
-<select id="tokenize_simple" class="tokenize-sample controls" name="contactselected[]"  multiple="multiple" style="margin: 0px; padding: 0px; border: 0px none; display: none;">
-<%for(Contact contact : contactList){ %>
-    <option value=<%=contact.getUuid()%>><%=contact.getName()%></option>
-<% }%>
-</select>
-<div class="tokenize-samples Tokenizer">
-<ul class="TokensContainer">
-<li class="TokenSearch">
-<input size="5">
-</li>
-</ul>
-<ul class="Dropdown"></ul>
-</div>
+                                    <label for="tokenize_simple"class="control_label">Type a contact name here  :</label>
+                                    <select id="tokenize_simple" class="tokenize-sample controls" name="phones"  multiple="multiple" style="margin: 0px; padding: 0px; border: 0px none; display: none;">
+                                        <%
+                                            List<Phone> phoneList;
 
-</div>
-<!--<div class="span50">
-<label>Content of the select</label>
-<div class="demo code scroll">
-<pre id="tokenize_result_simple"><select multiple="multiple"> 
-  <%for(Contact contact:contactList){ %>
-<option value=<%=contact.getUuid()%>><%=contact.getName()%></option>
-  <% }%>
-</select></pre>
-</div>-->
-</div>
+                                            for(Contact contact : contactList) { 
+                                                // If a Contact has only one phone number, just print out the Contact name
+                                                // Else print the Contact name and associated phone number
+                                                phoneList = phoneDAO.getPhones(contact);
+                                                
+                                                if(phoneList.size() < 2) {
+                                                    out.println("<option value=\"" + phoneList.get(0).getUuid() + 
+                                                            "\">" + contact.getName() + "</option>"); 
+                                                                              
+                                                } else {
+                                                    for(Phone phone : phoneList) {
+                                        
+                                                        out.println("<option value=\"" + phone.getUuid() + 
+                                                            "\">" + contact.getName() + " (" + phone.getPhonenumber() +
+                                                            ")</option>");                                                    
 
+                                                    }// end 'for(Phone phone : phoneList)'
 
+                                                }
+                                            }// end 'for(Contact contact : contactList)'
+                                        %>
+                                    </select>
+                                    
+                                    <div class="tokenize-samples Tokenizer">
+                                        <ul class="TokensContainer">
+                                            <li class="TokenSearch">
+                                            <input size="5">
+                                            </li>
+                                        </ul>
+                                        <ul class="Dropdown"></ul>
+                                    </div>
+                                </div>                                
+                            </div>
 
-<script type="text/javascript">
-$('select#tokenize_simple').tokenize({
-onAddToken: function(){
-update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
-},
-onRemoveToken: function(){
-update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
-}
-});
-update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
-</script>
+                            <script type="text/javascript">
+                                $('select#tokenize_simple').tokenize({
+                                onAddToken: function(){
+                                    update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+                                },
+                                onRemoveToken: function(){
+                                    update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+                                }
+                                });
+                                    update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+                            </script>
 
-</div>	
+                        </div>	
+
 		<div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
