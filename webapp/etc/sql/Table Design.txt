@@ -169,9 +169,9 @@ Table Shortcode
  
 
 ---------------------
-Table mask
+Table Mask
 ---------------------
-Represents SMS masks.
+Represents SMS masks, that is, SMS with a Sender Id.
 - Id (primary key)
 - UUID
 - name
@@ -243,16 +243,57 @@ These are text that can be automatically used as the body of an SMS.
 - Account UUID references Account
 
 
----------------------
-Table purchaseHistory
----------------------
-- Id (primary key)
-- UUID
-- amount
-- source
-- timestamp
-- Account UUID references Account
-- Network UUID references Network
+
+------------------------
+Table ShortcodePurchase
+------------------------
+This table keeps a history of SMS credits that have been put in a client account
+for short codes.
+- uuid
+- Account uuid references Account(uuid)
+- Shortcode uuid references Shortcode(uuid)
+- count
+- purchase date
+
+
+-----------------------
+Table ShortcodeBalance
+-----------------------
+This table keeps a balance of client shortcodes. Upon purchasing SMS, the 
+balance of the account holder will be credited. The table above
+"ShortcodePurchase" is used to record this. As the account holder utilizes his 
+SMS, the count is deducted from this table. The count cannot go below zero. 
+Crediting and deducting logic is in the Java code.
+- uuid
+- Account uuid references Account(uuid)
+- Shortcode uuid references Shortcode(uuid)
+- count
+
+
+------------------------
+Table MaskPurchase
+------------------------
+This table keeps a history of SMS credits that have been put in a client account
+for SMS masks.
+- uuid
+- Account uuid references Account(uuid)
+- Mask uuid references Mask(uuid)
+- count
+- purchase date
+
+
+-----------------------
+Table MaskBalance
+-----------------------
+This table keeps a Mask credit balance. Upon purchasing SMS, the balance of the 
+account holder will be credited. The table above "MaskPurchase" is used to 
+record this. As the account holder utilizes his SMS, the count is deducted from
+this table. The count cannot go below zero. Crediting and deducting logic is in 
+the Java code.
+- uuid
+- Account uuid references Account(uuid)
+- Mask uuid references Mask(uuid)
+- count
 
 
 =========================
