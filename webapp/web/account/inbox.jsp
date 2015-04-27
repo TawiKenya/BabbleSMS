@@ -267,16 +267,21 @@
                         
                         <td class="center"><%=code.getMessage()%></td>
                         <%
-                            //if phone number exists print out the contact name else print the number
-                            if (phnDAO.getPhones(code.getOrigin()).size() >= 1) {
-                                Phone p =phnDAO.getPhones(code.getOrigin()).get(0);
-                                String contact = p.getContactUuid();
-                                String sourcename = ctssDAO.getContact(contact).getName();
+
+                            if (phnDAO.getPhones(code.getOrigin()).size() > 0){
+
+                               
+                                List<Phone> phoneList = phnDAO.getPhones(code.getOrigin());
+                                Phone phone = phoneList.get(0);
+                                String contactuuid = phone.getContactUuid();
+				Contact contacts = ctssDAO.getContact(contactuuid);
+				String sourcename = contacts.getName();
                         %>
-                        <td class="center"><%=sourcename%></td>  
+                       <td class="center"><%=sourcename%></td> 
                         <%} else {%>
                         <td class="center"><%=code.getOrigin()%></td>  
-                        <%}%>
+                      <%}%>
+
                         <td class="center"><%=code.getDestination()%></td>
                         <!-- <td class="center"></td>-->
                         <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>

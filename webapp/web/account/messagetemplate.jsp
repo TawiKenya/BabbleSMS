@@ -94,7 +94,7 @@
             <a href="#">Home</a> <span class="divider">/</span>
         </li>
         <li>
-            <a href="#">View contacts</a>
+            View contacts
         </li>
     </ul>
 </div>
@@ -207,7 +207,7 @@
 <input type="hidden" id="templateuuid" name = "templateuuid" class="edit_area" />
 
 <br>
-<input type="submit"  value="save changes" />
+<input type="submit"  value="Save" />
 <input type="submit" id="cancel" value="Cancel"/>
 
 

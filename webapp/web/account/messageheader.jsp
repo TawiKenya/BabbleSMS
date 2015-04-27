@@ -286,22 +286,13 @@
                     <!-- user dropdown ends -->
 
                     <div class="top-nav nav-collapse">
-                        <!--<ul class="nav">
-                                <li><a href="#">Visit Site</a></li>
-                                <li>
-                                        <form class="navbar-search pull-left">
-                                                <input placeholder="Search" class="search-query span2" name="query" type="text">
-                                        </form>
-                                </li>
-                        </ul>-->
+
                     </div><!--/.nav-collapse -->
 
                 </div>
                 <!-- top menu -->                        
                 <div class="topmenu">                     
-                <!--  < <a href="inbox.jsp">MESSAGES</a>
-                    <a href="contact.jsp">CONTACTS</a>
-                    <a href="portfolio.jsp">REPORT</a>-->
+
 		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                     <a href="portfolio.jsp">REPORT</a>

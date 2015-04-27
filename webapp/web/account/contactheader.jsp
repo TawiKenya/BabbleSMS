@@ -173,7 +173,7 @@ document.getElementById("showtext").innerHTML
                                    =xreq.responseText;
 }
 }
-xreq.open("get","dynamic1.jsp?q="+str,"true");
+xreq.open("get","search.jsp?q="+str,"true");
 xreq.send();
 }
 
