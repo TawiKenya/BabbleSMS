@@ -137,51 +137,6 @@
     MessageTemplate messageTemplate;
     List<Phone> list2 = new ArrayList();
     Group cgroup = new Group();
-/*
-    keys = networksCache.getKeys();
-    for (Object key : keys) {
-        element = networksCache.get(key);
-        network = (Network) element.getObjectValue();
-        networkList.add(network);
-    }
-
-    keys = shortcodeCache.getKeys();
-    for (Object key : keys) {
-        element = shortcodeCache.get(key);
-        shortcode = (Shortcode) element.getObjectValue();
-        if (account.getUuid().equals(shortcode.getAccountuuid())) {
-            shortcodelist.add(shortcode);
-        }
-    }
-
-    keys = maskCache.getKeys();
-    for (Object key : keys) {
-        element = maskCache.get(key);
-        mask = (Mask) element.getObjectValue();
-        if (account.getUuid().equals(mask.getAccountuuid())) {
-            masklist.add(mask);
-        }
-    }
-
-    keys = messagetemplateCache.getKeys();
-    for (Object key : keys) {
-        element = messagetemplateCache.get(key);
-        messageTemplate = (MessageTemplate) element.getObjectValue();
-        if (account.getUuid().equals(messageTemplate.getAccountuuid())) {
-
-            list.add(messageTemplate);
-        }
-
-    }
-    
-    keys = networksCache.getKeys();
-    for (Object key : keys) {
-        element = networksCache.get(key);
-        network = (Network) element.getObjectValue();
-        networkHash.put(network.getUuid(), network.getName());
-    }
-*/
-
 %>
 <jsp:include page="messageheader.jsp" />
 
@@ -191,10 +146,12 @@
             <a href="#">Home</a> <span class="divider">/</span>
         </li>
         <li>
-            <a href="#">new sms</a>
+           new sms
         </li>
     </ul>
 </div>
+
+
 
 <div class="row-fluid sortable">
     <div class="box span12">
@@ -202,7 +159,7 @@
             <h2><i class="icon-edit"></i> new sms</h2>
 
         </div>
-        <div class="box-content" style="margin-top:4%">
+        <div class="box-content">
             <%                
                 String addErrStr = (String) session.getAttribute(SessionConstants.SENT_ERROR);
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.SENT_SUCCESS);
@@ -223,10 +180,14 @@
                 }
             %>
             
+
+            
             <form id="sendsms" name="myform" class="form-horizontal" action="SendSMS" method="POST">
                 <fieldset>
                     <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>
+                        
+                        
 				
                         <div class="controls">
                            
@@ -236,6 +197,31 @@
 			
 			<option value = "Contact">Contact(s)</option>
 			</select></div>
+                        
+                     <div id="credittable">
+                                <table border="1">
+                                    <tr width="5%">
+                                        <th>NETWORK</th>
+                                        <th>Credit consumed</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                   <tr width="5%">
+                                        <td>Safaricom</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr width="5%">
+                                        <td>Airtel</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                   <tr width="5%">
+                                        <td>Orange</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                </table>
+                     </div>
 			
 			<div class="control-group">
                             <div class="controls" >
@@ -388,10 +374,7 @@
                             </select>
                         </div>
                     </div>    
-                    <!--<div class="control-group">
-                        <label class="control-label" for="network">Network:</label>
-                        
-                    </div>-->
+
 
                     <div class="control-group">
                         <label class="control-label" for="message">Message Template:</label>
@@ -434,13 +417,19 @@
                         <button type="submit" name="sendsms" id="send" value="Send" class="btn btn-primary">Send</button>
                         <!--<button class="btn">Trash       </button>-->
                     </div>
+                    </div>
                 </fieldset>
             </form>
+                           
+                       
 
         </div>
+                            
+                             
     </div><!--/span-->
 
 </div><!--/row-->
+
 
 
 

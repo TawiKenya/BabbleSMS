@@ -94,6 +94,7 @@
 	<link href='../css/grouptable.css' rel='stylesheet'>
         <link rel="stylesheet" href="poup.css" />
         <link href="../css/poup.css" rel="stylesheet">
+        <link href="../css/credit.css" rel="stylesheet">
         
          <!--jqplot charts-->
         <!--<script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>-->
@@ -196,16 +197,20 @@
        $(this).remove();
 	}
 
-
-
-
-});  
+          });  
 	
 	var field1 = $('.groupselected').clone().val(group2);
          
         field1.appendTo("#grouptable");
 	
 	 });
+         
+         //reaction when cancel on addmessagetemplate.jsp is clicked
+         $("#canceltemp").click(function(e){
+              e.preventDefault();
+              window.location.href="../account/messagetemplate.jsp";
+             
+         });
 	
      });
 
@@ -327,7 +332,7 @@
 
 
                         </ul>
-                        <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
+               
                     </div><!--/.well -->
                 </div><!--/span-->
                 <!-- left menu ends -->

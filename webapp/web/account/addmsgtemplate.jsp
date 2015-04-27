@@ -72,8 +72,8 @@
                    
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=accountuuid%>">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button class="btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button class="btn" id="canceltemp">Cancel</button>
                     </div>
                
             </form>
