@@ -219,26 +219,6 @@ CREATE TABLE mask (
 \COPY mask(uuid,maskname,accountuuid,networkuuid) FROM '/tmp/mask.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE mask OWNER TO babblesms;
 
-
- -- -------------------
--- Table purchaseHistory
--- -------------------
-CREATE TABLE purchaseHistory (
-    Id SERIAL PRIMARY KEY,
-    uuid text UNIQUE NOT NULL,
-    amount int,
-    source text,
-    purchasetime timestamp with time zone DEFAULT now(),
-    accountuuid text references account(uuid),
-    networkuuid text references network(uuid)
-);
-
--- import data from the CSV file for the Accounts table
-\COPY purchaseHistory(uuid,amount,source,accountuuid,networkuuid,purchasetime) FROM '/tmp/purchaseHistory.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE purchaseHistory OWNER TO babblesms;
-
-
-
 -- -------------------
 -- Table incominglog
 -- -------------------
@@ -324,22 +304,6 @@ CREATE TABLE messagetemplate (
 \COPY messagetemplate(uuid,title,contents,accountuuid) FROM '/tmp/MessageTemplate.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE messagetemplate OWNER TO babblesms;
 
-
--- -------------------
--- Table credit
--- -------------------
-CREATE TABLE credit (
-    Id SERIAL PRIMARY KEY,
-    uuid text UNIQUE NOT NULL,
-    source text,
-    credit int,
-    accountuuid text references account(uuid)
-);
-
--- import data from the CSV file for the Accounts table
-\COPY credit(uuid,source,credit,accountuuid) FROM '/tmp/credit.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE credit OWNER TO babblesms;
-
 -- -------------------
 -- Table Notification
 -- -------------------
@@ -373,19 +337,63 @@ CREATE TABLE NotificationStatus (
 \COPY NotificationStatus (uuid,NotificationUuid) FROM '/tmp/NotificationStatus.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE NotificationStatus OWNER TO babblesms;
 
--- --------------------
--- Table AccountBalance
--- --------------------
-CREATE TABLE AccountBalance(
-	Id SERIAL PRIMARY KEY,
-	Uuid text UNIQUE NOT NULL,
-	origin text NOT NULL,
-	accountuuid text references account(uuid),
-	networkuuid text references network(uuid),
-	balance integer NOT NULL CHECK (balance >= 0)
-);
+-- ----------------------
+-- Table ShortcodePurchase
+-- ----------------------
+CREATE TABLE ShortcodePurchase(
+          Id SERIAL PRIMARY KEY,
+          Uuid text UNIQUE NOT NULL,
+          accountuuid text references account(uuid),
+          shortcodeuuid text references Shortcode(uuid),
+          count integer NOT NULL CHECK (count>=0),
+          purchasedate timestamp with time zone   
+          );  
 
--- import data from the CSV file for the AccountBalance table
-\COPY AccountBalance (uuid,origin,accountuuid,networkuuid,balance) FROM '/tmp/AccountBalance.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE AccountBalance OWNER TO babblesms;
+-- import data from the CSV file for the ShortcodePurchase table
+\COPY ShortcodePurchase (Uuid,accountuuid,Shortcodeuuid,count,purchasedate) FROM '/tmp/ShortcodePurchase.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE ShortcodePurchase OWNER TO babblesms;
+
+
+-- ---------------------
+-- Table ShortcodeBalance
+-- ---------------------
+CREATE TABLE ShortcodeBalance(
+          Id SERIAL PRIMARY KEY,
+          Uuid text UNIQUE NOT NULL,
+          accountuuid text references account(uuid),
+          Shortcodeuuid text references Shortcode(uuid),
+          count integer NOT NULL CHECK(count>=0)
+         );
+-- import data from the CSV file for the ShortcodeBalance table
+\COPY ShortcodeBalance (Uuid,accountuuid,Shortcodeuuid,count) FROM '/tmp/ShortcodeBalance.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE ShortcodeBalance OWNER TO babblesms;
+
+-------------------------
+-- Table MaskPurchase
+-- ----------------------
+CREATE TABLE MaskPurchase(
+             Id SERIAL PRIMARY KEY,
+             Uuid text UNIQUE NOT NULL,
+             accountuuid text references account(uuid),
+             maskuuid text references Mask(uuid),
+             count integer NOT NULL CHECK (count>=0),
+             purchasedate timestamp with time zone 
+             );
+-- import data from the CSV file for the MaskPurchase table
+\COPY MaskPurchase (Uuid,accountuuid,maskuuid,count,purchasedate) FROM '/tmp/MaskPurchase.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE MaskPurchase OWNER TO babblesms;
+
+-- --------------------
+-- Table MaskBalance
+-- ---------------------
+CREATE TABLE MaskBalance(
+             Id SERIAL PRIMARY KEY,
+             Uuid text UNIQUE NOT NULL,
+             accountuuid text references account(uuid),
+             maskuuid text references Mask(uuid),
+             count integer NOT NULL CHECK (count>=0)  
+             );
+-- import data from the CSV file for the MaskPurchase table
+\COPY MaskBalance (Uuid,accountuuid,Maskuuid,count) FROM '/tmp/MaskBalance.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE MaskBalance OWNER TO babblesms;
 
