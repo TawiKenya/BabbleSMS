@@ -238,7 +238,7 @@ A list of all SMS that have been sent from the system to Groups.
 These are text that can be automatically used as the body of an SMS.
 - Id (primary key)
 - UUID
-- templatetitle
+- title
 - contents
 - Account UUID references Account
 
