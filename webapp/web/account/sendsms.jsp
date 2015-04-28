@@ -140,6 +140,14 @@
 %>
 <jsp:include page="messageheader.jsp" />
 
+<%
+/** Declare and initialize variables to be used for crediting**/
+
+int credit_Balance = 0;
+int credit_Consumed = 0;
+
+%>
+
 <div>
     <ul class="breadcrumb">
         <li>
@@ -207,18 +215,18 @@
                                     </tr>
                                    <tr width="5%">
                                         <td>Safaricom</td>
-                                        <td>0</td>
-                                        <td>0</td>
+                                        <td><%=credit_Consumed%></td>
+                                        <td><%=credit_Balance%></td>
                                     </tr>
                                     <tr width="5%">
                                         <td>Airtel</td>
-                                        <td>0</td>
-                                        <td>0</td>
+                                        <td><%=credit_Consumed%></td>
+                                        <td><%=credit_Balance%></td>
                                     </tr>
                                    <tr width="5%">
                                         <td>Orange</td>
-                                        <td>0</td>
-                                        <td>0</td>
+                                        <td><%=credit_Consumed%></td>
+                                        <td><%=credit_Balance%></td>
                                     </tr>
                                 </table>
                      </div>

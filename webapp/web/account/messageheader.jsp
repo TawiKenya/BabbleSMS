@@ -109,7 +109,6 @@
 
 </style>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="../js/jquery.tokenize.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
 
@@ -118,6 +117,7 @@
         <script type="text/javascript" src="../js/jqplot.categoryAxisRenderer.min.js"></script>
         <script type="text/javascript" src="../js/jqplot.pointLabels.min.js"></script>
         <script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
+         <script type="text/javascript" src="../js/composepagejavascript.js"></script>
         
 	<script>
         
@@ -264,11 +264,7 @@
                             <li class="divider"></li>
                             <li><a href="../logout">Logout</a></li>
                             <li><a href="setting.jsp">Setting</a>
-                                <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                                </a>-->
-
+                                
                                 <ul class="dropdown-menu" id="themes">
                                     <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
                                     <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
@@ -326,10 +322,6 @@
                             <li><a class="ajax-link"id ="btn-dangers1" href="sent.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent</span></a></li>
                          <li><a class="ajax-link" id ="btn-dangers1" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
                             <li><a class="ajax-link"id ="btn-dangers1" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
-
-
-
-
 
                         </ul>
                

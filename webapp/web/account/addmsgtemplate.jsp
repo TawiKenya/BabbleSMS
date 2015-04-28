@@ -35,6 +35,12 @@
 %>
 
 <jsp:include page="messageheader.jsp" />
+<script type="text/javascript">
+  function cancelme(){
+    alert('clickedd');
+    window.location.replace('http://www.w3schools.com');
+  }
+</script>
 
 
 <div>
@@ -72,8 +78,8 @@
                    
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=accountuuid%>">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button class="btn" id="canceltemp">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button onclick="window.location.replace('http://www.w3schools.com');">Cancel</button>
                     </div>
                
             </form>

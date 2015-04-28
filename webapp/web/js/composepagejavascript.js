@@ -4,6 +4,8 @@
            $(".add_field_button").click(function(e){ //on add input button click
                 e.preventDefault();
                 document.myform.message.value=this.value;
+                countChar(this);
+                
                //add input box
 
             });
