@@ -197,12 +197,13 @@
             <div id="incomingPieChart" style="width:650px; height:500px;"></div>
             
             <p>&nbsp;&nbsp;&nbsp;</p>
-            
-            <p>
+            <!--incoming SMS Bar chart-->
+            <div id="incomingSMSBarChart" style="height:400px;width:800px;"></div><br><br>
+            <!--<p>
                 <img id="inbar" 
                      src="incomingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>&from=03/04/2015&to=03/21/2015" 
                      alt="Incoming Daily Bar Chart" />
-            </p>
+            </p>-->
             
            
             
@@ -310,7 +311,11 @@
                <div id="outgoingPieChart" style="width:650px; height:500px;"></div>
            
 
-            
+            <!--<p>
+                <img id="outbar" src="outgoingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>" alt="Outgoing Daily Bar Chart" />
+            </p>-->
+            <!--outgoing SMS Bar chart-->
+            <div id="outgoingSMSBarChart" style="height:400px;width:800px;"></div><br><br>
             <div>
                 <form id="outgoingform">
                     <div class="col-md-3"><label for="outfrom">From<input type="text" id="outfrom" name="from"></label></div>
@@ -318,10 +323,8 @@
                     <button type="submit" id="outgoingpiebtn" class="btn btn-primary">Filter</button>
                 </form>
             </div>
+            <br><br>
             
-            <p>
-                <img id="outbar" src="outgoingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>" alt="Outgoing Daily Bar Chart" />
-            </p>
             
             <div class="clear"></div>
             <p class="center">
@@ -338,7 +341,9 @@
 <script src="../js/jquery.min.js"></script>
 <script src="../js/jquery.jqplot.min.js"></script>
 <script src="../js/jqplot.pieRenderer.min.js"></script>
-<link href="../js/query.jqplot.min.css" type="text/css" rel="stylesheet"/>  
+<script src="../js/jqplot.barRenderer.min.js"></script>
+<script src="../js/jqplot.categoryAxisRenderer.min.js"></script>
+<link href="../js/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>  
     
 
 
@@ -426,7 +431,97 @@
                     legend:{ show:true, location:'e' }
                 }
         );
-    });    
+    });
+   /*
+    *
+    *Here, we draw the outgoingSMS and incomingSMS bar chart
+    *
+    */
+    //function drawChart() {
+        //data from the 7days chosen
+        //outgoing
+        var _safaricom = [100, 120, 85, 69, 56, 96, 115];
+        var _airtel = [56, 52, 75, 67, 87, 69, 105];
+        var _orange = [103, 37, 60, 22, 17, 10, 56];    
+        //incoming
+        var safaricom = [10, 45, 85, 32, 25, 13, 46];
+        var airtel = [2, 15, 6, 45, 87, 25, 17];
+        var orange = [1, 37, 14, 9, 27, 5, 56]; 
+          
+        // put the chart data in form of an array
+        var dataArrayOutgoing = [_safaricom, _airtel, _orange];
+        var dataArrayIncoming = [safaricom, airtel, orange];
+                 // x-axis markers (these will be the dates [from:to] essentily, they have to be 7 days)
+        var markers = ['Mon', 'Tue', 'Wed', 'Thur','Fri', 'Sat', 'Sun'];
+        // chart rendering options for incoming
+        var incomingOptions = {
+        //stack the bars on top of each other
+        stackSeries: 'true',
+        //title for the graph
+        title: 'Incoming SMS for the last 7 days',
+        //declare properties for the legend
+        legend: { 
+            show: true,
+            location: 'ne',
+            placement: 'outsideGrid'    
+        },
+        //labels for the legend
+        series: [
+            {label: 'Safaricom'},
+            {label: 'Airtel'},
+            {label: 'Orange Ke'}
+        ],
+        //specifying the colors of be used for the bars. In this case, they are custom
+        seriesColors: [
+            '#6eb43f',
+            '#db030c',
+            '#ff6600'
+        ],
+        seriesDefaults: {
+            renderer:$.jqplot.BarRenderer
+        },
+        axes: {
+            xaxis: {
+            renderer: $.jqplot.CategoryAxisRenderer,
+            ticks: markers
+            }
+        }
+    };
+    // chart rendering options for outgoing
+    var outgoingOptions = {
+        stackSeries: 'true',            
+        title: 'Outgoing SMS for the last 7 days',
+        legend: { 
+            show: true,
+            location: 'ne',
+            placement: 'outsideGrid'    
+        },
+        //labels for the legend
+        series: [
+            {label: 'Safaricom'},
+            {label: 'Airtel'},
+            {label: 'Orange Ke'}
+        ],
+        //specifying the colors of be used for the bars. In this case, they are custom
+        seriesColors: [
+            '#6eb43f',
+            '#db030c',
+            '#ff6600'
+        ],
+        seriesDefaults: {
+            renderer:$.jqplot.BarRenderer
+        },
+        axes: {
+            xaxis: {
+            renderer: $.jqplot.CategoryAxisRenderer,
+            ticks: markers
+            }
+        }
+    };
+        // draw the charts
+        $.jqplot('incomingSMSBarChart', dataArrayIncoming, incomingOptions);
+        $.jqplot('outgoingSMSBarChart', dataArrayOutgoing, outgoingOptions);
+    //}
 </script>
 
 
