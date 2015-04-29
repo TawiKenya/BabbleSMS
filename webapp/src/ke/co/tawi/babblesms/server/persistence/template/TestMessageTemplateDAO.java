@@ -1,0 +1,160 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+package ke.co.tawi.babblesms.server.persistence.template;
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
+import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+/**
+ * Copyright (c) Tawi Commercial Services Ltd., April 28, 2015
+ *
+ * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
+ * @version %I%, %G%
+ */
+
+public class TestMessageTemplateDAO {
+
+    final String DB_NAME = "babblesmsdb";
+    final String DB_HOST = "localhost";
+    final String DB_USERNAME = "babblesms";
+    final String DB_PASSWD = "Hymfatsh8";
+    final int DB_PORT = 5432;
+
+    final String MT_UUID = "5b8d3eba-f90c-4993-b45a-0ce430f921eb", MT_UUID_NEW = "f0012y681d2e6-84f2-45ff-914c-522a3b076141";
+    final String MT_TITLE = "supermotility", MT_TITLE_NEW = "Metrostate" ,MT_TITLE_UPDATE = "UPDATED title";
+
+    final String CONTENT = "sent by the browser that asks for the data only",
+            CONTENT_NEW = "This is a new template contents",
+            CONTENT_UPDATED = "This is the updated template contents";
+
+    final String MTUUID = "C937CE62-C4A9-131F-C96E-2DB8A9E886AB",
+            MTUUID_NEW = "C937CE62-C4A9-131F-C96E-2DB8A9E886AB";
+
+    private MessageTemplateDAO storage;
+    
+    
+    /**
+     * Test method for
+     * {@link ke.co.tawi.babblesms.server.persistence.items.MessageTemplate#getMessageTemplate(java.lang.String)}.
+     */
+    @Test
+    public void testMessageTemplateString() {
+        storage = new MessageTemplateDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+
+        MessageTemplate mt = storage.getTemplate(MT_UUID);
+        assertEquals(mt.getUuid(), MT_UUID);
+        assertEquals(mt.getTitle(), MT_TITLE);
+        assertEquals(mt.getContents(), CONTENT);
+        assertEquals(mt.getAccountuuid(), MTUUID);
+
+    }
+
+    /**
+     * Test method for
+     * {@link ke.co.tawi.babblesms.server.persistence.items.MessageTemplateDAO#GetMessageTemplateByACCOUNT}.
+     */
+    //@Ignore
+    @Test
+    public void testGetMessageTemplateByACCOUNT() {
+        storage = new MessageTemplateDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+         
+        Account account = new Account();
+        account.setUuid(MTUUID);
+        List<MessageTemplate> list = storage.getTemplates(account);
+
+        //assertEquals(list.size(), 10);
+        //System.out.println(list);
+        for (MessageTemplate l : list) {
+            System.out.println(l);
+            assertTrue(l.getAccountuuid().equals(MTUUID));
+        }
+    }
+
+    /**
+     * Test method for
+     * {@link ke.co.tawi.babblesms.server.persistence.items.MessageTemplate#PutMessageTemplate(ke.co.tawi.babblesms.server.beans.MessageTemplate)}.
+     *
+     *
+     *
+     */
+    @Test
+    public void testPut() {
+        storage = new MessageTemplateDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+
+        MessageTemplate mt = new MessageTemplate();
+        mt.setUuid(MT_UUID_NEW);
+        mt.setTitle(MT_TITLE_NEW);
+        mt.setContents(CONTENT_NEW);
+        mt.setAccountuuid(MTUUID_NEW);
+
+        assertTrue(storage.put(mt));
+
+        mt = storage.getTemplate(MT_UUID_NEW);
+        assertEquals(mt.getUuid(), MT_UUID_NEW);
+        assertEquals(mt.getTitle(), MT_TITLE_NEW);
+        assertEquals(mt.getContents(), CONTENT_NEW);
+        assertEquals(mt.getAccountuuid(), MTUUID_NEW);
+    }
+   /**
+     * Test method for
+     * {@link ke.co.tawi.babblesms.server.persistence.items.MessageTemplate#UpdateMessageTemplate(ke.co.tawi.babblesms.server.beans.MessageTemplate)}.
+     *
+     *
+     *
+     */
+    @Ignore
+    @Test
+    public void testUpdateMessageTemplate() {
+        storage = new MessageTemplateDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+
+        
+        /* assertTrue(storage.updateMessageTemplate(MT_UUID_NEW, MT_TITLE_UPDATE, CONTENT_UPDATED));
+
+        MessageTemplate mt = storage.getMessageTemplate(MT_UUID_NEW);
+        assertEquals(mt.getUuid(), MT_UUID_NEW);
+        assertEquals(mt.getTitle(), MT_TITLE_UPDATE);
+        assertEquals(mt.getContents(), CONTENT_UPDATED);
+        assertEquals(mt.getAccountuuid(), MTUUID_NEW);*/
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
