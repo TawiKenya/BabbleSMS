@@ -57,7 +57,7 @@ padding: 9px 0;
 <script src="../js/jquery-1.7.2.min.js"></script>
 <script src="../js/composepagejavascript.js"></script>
 <script src="jquery_popup.js"></script>
-<script src="../js/editcontact.js"></script>
+
 <script src="../js/editcontact_popup.js"></script>
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
 <link href="../css/charisma-app.css" rel="stylesheet">
@@ -99,6 +99,10 @@ padding: 9px 0;
 <script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
 <script>
 $(document).ready(function() {
+// calling of password matcher function
+$("#txtConfirmPassword").keyup(checkPasswordMatch); 
+
+
 $("[href]").each(function() {
 if (this.href == window.location.href) {
 $(this).css('background-color', '#d41e24');
@@ -162,6 +166,20 @@ e.preventDefault();
 window.location.href="../account/messagetemplate.jsp";
 });
 });
+//function to check whether the passwords match in settings.jsp
+function checkPasswordMatch() {
+    var password = $("#txtNewPassword").val();
+    var confirmPassword = $("#txtConfirmPassword").val();
+
+    if (password != confirmPassword)
+        $("#divCheckPasswordMatch").html("Passwords do not match!");
+    	
+    else
+        $("#divCheckPasswordMatch").html("Passwords match.");
+}
+
+
+
 </script>
 <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

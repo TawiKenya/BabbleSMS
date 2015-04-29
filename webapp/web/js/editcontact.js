@@ -200,9 +200,10 @@ window.location="../account/contact.jsp";
         $(this).css('background-color', '#d41e24');
         }
     });
-	
-
+	//settings edit password matcher called
+  
 
 
 
 });
+ 

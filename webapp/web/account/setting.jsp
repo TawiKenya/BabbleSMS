@@ -215,7 +215,7 @@
 	<div class="control-group">
                         <label class="control-label" for="network">New Password</label>
                         <div class="controls">
-                <input class="input-xlarge focused" id="receiver" id="txtNewPassword" type="password" name="newpassword" value=""required="true">
+                <input class="input-xlarge focused"  id="txtNewPassword" type="password" name="newpassword" value=""required="true">
                             
                         </div>
                     
@@ -223,7 +223,7 @@
 	<div class="control-group">
                         <label class="control-label" for="network">Confirm Password</label>
                         <div class="controls">
-            <input class="input-xlarge focused" id="receiver" id="txtConfirmPassword" type="password" name="confirmpassword" value="" required="true"
+            <input class="input-xlarge focused"  id="txtConfirmPassword" type="password" name="confirmpassword" value="" required="true"
 		onChange="checkPasswordMatch();">
                             
                         </div>
@@ -253,6 +253,16 @@
     </div><!--/span-->
 
 </div><!--/row-->
+
+
+
+
+
+
+
+
+
+
 
 
 <jsp:include page="footer.jsp" />
