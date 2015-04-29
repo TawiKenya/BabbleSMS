@@ -30,8 +30,8 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
@@ -55,6 +55,12 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 
+<style type= "text/css">
+.tokenize-sample { width: 300px ;}
+</style>
+
+<script type="text/javascript" src="../js/jquery.tokenize.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
 
 
 <%
@@ -114,8 +120,8 @@
    MessageTemplateDAO msgtemplDAO = MessageTemplateDAO.getInstance();
   
 
-   masklist =maskDAO.getMasks(account);
-   shortcodelist = shortcodeDAO.getShortcodes(account);
+   masklist =maskDAO.getmaskbyaccount(account.getUuid());
+   shortcodelist = shortcodeDAO.getShortcodebyaccountuuid(account.getUuid());
    list = msgtemplDAO.getTemplates(account);
 
     //Element element;
@@ -130,16 +136,16 @@
     MessageTemplate messageTemplate;
     List<Phone> list2 = new ArrayList();
     Group cgroup = new Group();
-%>
-<jsp:include page="messageheader.jsp" />
 
-<%
 /** Declare and initialize variables to be used for crediting**/
 
 int credit_Balance = 0;
 int credit_Consumed = 0;
 
 %>
+<jsp:include page="messageheader.jsp" />
+
+
 
 <div>
     <ul class="breadcrumb">
@@ -189,15 +195,15 @@ int credit_Consumed = 0;
                         <label class="control-label" for="destination">TO:</label>
                         
                         
-				
+                
                         <div class="controls">
                            
-			<select name ="destination" id="destination" required="true">
-			<option value ="Choose">Choose Groups or Contacts</option>
-			<option value = "Group">Group</option>
-			
-			<option value = "Contact">Contact(s)</option>
-			</select></div>
+            <select name ="destination" id="destination" required="true">
+            <option value ="Choose">Choose Groups or Contacts</option>
+            <option value = "Group">Group</option>
+            
+            <option value = "Contact">Contact(s)</option>
+            </select></div>
                         
                      <div id="credittable">
                                 <table border="1">
@@ -208,23 +214,28 @@ int credit_Consumed = 0;
                                     </tr>
                                    <tr width="5%">
                                         <td>Safaricom</td>
-                                        <td><%=credit_Consumed%></td>
-                                        <td><%=credit_Balance%></td>
+                                        <td id="creditconsumed"><%=credit_Consumed%></td>
+                                        <td id="safcreditbalance"><%=credit_Balance%></td>
                                     </tr>
-                                    <tr width="5%">
+                                   <tr width="5%">
                                         <td>Airtel</td>
-                                        <td><%=credit_Consumed%></td>
-                                        <td><%=credit_Balance%></td>
+                                        <td id="airtelcreditconsumed"><%=credit_Consumed%></td>
+                                        <td id="airtelcreditbalance"><%=credit_Balance%></td>
                                     </tr>
                                    <tr width="5%">
                                         <td>Orange</td>
-                                        <td><%=credit_Consumed%></td>
-                                        <td><%=credit_Balance%></td>
+                                        <td id="orangecreditconsumed"><%=credit_Consumed%></td>
+                                        <td id="orangecreditbalance"><%=credit_Balance%></td>
+                                    </tr>
+                                     <tr width="5%">
+                                        <td>Yu</td>
+                                        <td id="yucreditconsumed"><%=credit_Consumed%></td>
+                                        <td id="yucreditbalance"><%=credit_Balance%></td>
                                     </tr>
                                 </table>
                      </div>
-			
-			<div class="control-group">
+            
+            <div class="control-group">
                             <div class="controls" >
                                 <!-- Group table here-->
                                 <div class="tablets">
@@ -276,11 +287,11 @@ int credit_Consumed = 0;
                                         </tbody>
                                     </table>
 
-                                </div>		
+                                </div>      
                             </div>
-			</div>
-			
-			
+            </div>
+            
+            
                         <div class="section control-group">
 
                             <div class="fluid">
@@ -337,19 +348,26 @@ int credit_Consumed = 0;
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                             </script>
 
-                        </div>	
+                        </div>  
 
-		<div class="control-group">
+        <div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
+                            <form action="sendsms.jsp">
                             <select name="source" id="source" required="true">
                                 <%
                                     //for mask
                                     int count = 1;
                                     if (masklist != null) {
                                         for (Mask code : masklist) {
+
                                 %>
-                                    <option value="<%= code.getMaskname()%>">
+                                
+                                
+                                    <option class="message_source" id="<%= code.getMaskname()%>" value="<%= code.getMaskname()%>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>">
+                                                       
+
+                                        
                                         <%= code.getMaskname() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")" %>
                                     </option>
                                 <%
@@ -362,7 +380,8 @@ int credit_Consumed = 0;
                                     if (shortcodelist != null) {
                                         for (Shortcode code : shortcodelist) {
                                 %>
-                                        <option value="<%= code.getCodenumber() %>">
+                                        <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getCodenumber() %>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>">
+                                      
                                             <%=code.getCodenumber() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")"%>
                                         </option>
                                 <%
@@ -370,11 +389,11 @@ int credit_Consumed = 0;
                                         }
 
                                     }
-
                                 %>
                             </select>
                         </div>
-                    </div>    
+                    </div>   
+                            
 
 
                     <div class="control-group">
@@ -387,7 +406,7 @@ int credit_Consumed = 0;
                                     if (list != null) {
                                         for (MessageTemplate code : list) {
                                 %>
-                                <option class = "add_field_button" value="<%= code.getContents()%>"><%= code.getTitle()%></option>
+                                <option class = "add_field_button" id="<%=code.getUuid()%>" value="<%= code.getContents()%>"><%= code.getTitle()%></option>
                                 
                                 <%
                                             count++;
@@ -395,6 +414,7 @@ int credit_Consumed = 0;
                                     }
                                 %>
                             </select>
+                            </form>
                         </div>
                     </div>       
 
@@ -416,7 +436,7 @@ int credit_Consumed = 0;
 
 
                         <button type="submit" name="sendsms" id="send" value="Send" class="btn btn-primary">Send</button>
-                        <!--<button class="btn">Trash       </button>-->
+
                     </div>
                     </div>
                 </fieldset>
@@ -428,8 +448,8 @@ int credit_Consumed = 0;
                             
                              
     </div><!--/span-->
-
-</div><!--/row-->
+    
+    </div><!--/row-->
 
 
 

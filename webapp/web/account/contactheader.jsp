@@ -67,17 +67,10 @@
         </style>
         
 
-
-
-         
-
-
-
-
         <!-- jQuery/javascript -->
         <script src="../js/jquery-1.7.2.min.js"></script>
 	<script src="jquery_popup.js"></script>
-       	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+       	<!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 	<script src="../js/editcontact.js"></script>
 	<script src="../js/editcontact_popup.js"></script>
 	<script src="../js/bootstrap-dropdown.js"></script>
@@ -104,7 +97,6 @@
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
 	<link href="../css/bootstrap-cerulean.css" rel="stylesheet">
-	<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
 	<link rel="stylesheet" href="poup.css" />
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -193,11 +185,6 @@ function hello(val){
     });
 
     }
-
-        
-        
-        
-        
         var tbl = document.getElementById("dd");
         if (tbl != null) {
 
@@ -248,21 +235,7 @@ function hello(val){
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >
-                        <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" id="themes">
-                                <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
-                                <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
-                                <li><a data-value="cyborg" href="#"><i class="icon-blank"></i> lake victoria</a></li>
-                                <li><a data-value="redy" href="#"><i class="icon-blank"></i>clement</a></li>
-                                <li><a data-value="journal" href="#"><i class="icon-blank"></i>nairobi</a></li>
-                                <li><a data-value="simplex" href="#"><i class="icon-blank"></i>mombasa</a></li>
-                                <li><a data-value="slate" href="#"><i class="icon-blank"></i>naivasha</a></li>
-                                <li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
-                                <li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
-                        </ul>-->
+
                     </div>
                     <!-- theme selector ends -->
 
@@ -278,10 +251,7 @@ function hello(val){
                             <li class="divider"></li>
                             <li><a href="../logout">Logout</a></li>
                             <li><a href="setting.jsp">Setting</a>
-                                <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                                </a>-->
+
 
                                 <ul class="dropdown-menu" id="themes">
                                     <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
