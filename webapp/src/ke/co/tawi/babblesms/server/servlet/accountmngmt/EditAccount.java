@@ -89,7 +89,7 @@ public class EditAccount extends HttpServlet{
 		
 		if(aDAO.updateAccount(account)){
 
-		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "success");
+		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "You have successfully edited your settings");
 		}
 		else{
 

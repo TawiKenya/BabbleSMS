@@ -27,7 +27,7 @@ import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
 import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
-import ke.co.tawi.babblesms.server.persistence.items.messageTemplate.MessageTemplateDAO;
+import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
 import ke.co.tawi.babblesms.server.persistence.network.CountryDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 import ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO;
@@ -143,8 +143,6 @@ public class CacheInit extends HttpServlet {
         objList = maskDAO.getAllMasks();
         initCacheByUuid(CacheVariables.CACHE_MASK_BY_UUID, objList);
         
-        objList = msgtDAO.getAllMessageTemplates();
-        initCacheByUuid(CacheVariables.CACHE_MESSAGE_TEMPLATE_BY_UUID, objList);
         
         objList = countryDAO.getAllCountries();
         initCacheByUuid(CacheVariables.CACHE_COUNTRY_BY_UUID, objList);
@@ -330,15 +328,7 @@ public class CacheInit extends HttpServlet {
                 msgTemplateCache.initialise();
             }
 
-            List<MessageTemplate> allMsgTemplates = msgtDAO.getAllMessageTemplates();
-
-            if (StringUtils.equals(cacheName, CacheVariables.CACHE_MESSAGE_TEMPLATE_BY_ACCOUNTUUID)) {
-                for (MessageTemplate a : allMsgTemplates) {
-                    msgTemplateCache.put(new Element(a.getAccountuuid(), a)); 	// Email as the key
-                }
             
-
-            }
         }
     }
     

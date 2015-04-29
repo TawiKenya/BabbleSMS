@@ -75,7 +75,7 @@ public class EditPassword extends HttpServlet{
 		String accuuid = request.getParameter("accuuid");
 		
 		
-		String password = request.getParameter("password");
+		String password = request.getParameter("oldpassword");
 		String newpassword = request.getParameter("newpassword");
 		String confirmpassword = request.getParameter("confirmpassword");
 		
@@ -84,19 +84,25 @@ public class EditPassword extends HttpServlet{
 
 		
 			AccountsDAO acDAO = AccountsDAO.getInstance();
-		Account accounts = acDAO.getAccount(accuuid);
-		     accounts.setLogpassword(newpassword);
+			Account accounts = acDAO.getAccount(accuuid);
+	if(password !=accounts.getLogpassword()){
+			session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Old password wrong!Please type again");
+			
+
+			}
+	else{		
+		    	 accounts.setLogpassword(newpassword);
 			
 		    if( acDAO.updateAccount(accounts)){
-		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "success");
+			 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "You have successfully edited your password");
 		   }
 
 			else{
-			session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Password  Editing Failed.");  
+			 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Password  Editing Failed.");  
 
                    }
 		logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
-		
+		}
 		
 			response.sendRedirect("setting.jsp");	
 		}

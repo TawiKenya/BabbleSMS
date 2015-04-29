@@ -40,7 +40,7 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.messageTemplate.MessageTemplateDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
@@ -123,7 +123,7 @@
 
    masklist =maskDAO.getmaskbyaccount(account.getUuid());
    shortcodelist = shortcodeDAO.getShortcodebyaccountuuid(account.getUuid());
-   list = msgtemplDAO.getAllMessageTemplatesbyuuid(account.getUuid());
+   list = msgtemplDAO.getTemplates(account);
 
     //Element element;
     List keys;
@@ -408,7 +408,7 @@ int credit_Consumed = 0;
                     <div class="control-group">
                         <label class="control-label" for="message">Message:</label>
                         <div class="controls">
-                            <textarea cols="200" rows="6" class="input-xlarge focused input_fields_wrap"  id="messaged" name="message" required="true"onkeyup="countChar(this)"></textarea>
+                            <textarea cols="200" rows="6" class="input-xlarge focused input_fields_wrap"  id="messaged" name="message" required="true"this.change="countChar(this)"></textarea>
                         </div>
                        <div class="controls">
                             <label  class="control-label" for="message" id="sms"> SMS  <quote id="smsNum"></quote></label><label class="control-label" for="message" id="count"> Characters <quote id="charCount"></quote></label>

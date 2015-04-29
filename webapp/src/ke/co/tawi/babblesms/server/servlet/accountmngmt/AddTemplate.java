@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
-import ke.co.tawi.babblesms.server.persistence.items.messageTemplate.MessageTemplateDAO;
+import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 
 /**
@@ -85,7 +85,7 @@ public class AddTemplate extends HttpServlet{
 			template.setAccountuuid(accountUuid);
 			logger.info(template);
 			MessageTemplateDAO templateDAO = MessageTemplateDAO.getInstance();
-			if(templateDAO.putMessageTemplate(template)){
+			if(templateDAO.put(template)){
 				session.setAttribute(SessionConstants.UPDATE_SUCCESS, success);
 			}
 			else{

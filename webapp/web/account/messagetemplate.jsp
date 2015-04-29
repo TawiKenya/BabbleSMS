@@ -21,11 +21,15 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO"%>
+
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -66,24 +70,16 @@
     HashMap<String, Phone> phoneHash = new HashMap();
     HashMap<String, Email> emailHash = new HashMap();
 
-    Element element;
-    MessageTemplate messageTemplate;
     
+    MessageTemplate messageTemplate;
+    MessageTemplateDAO msgtDAO = MessageTemplateDAO.getInstance();
+    Account account = new Account();
+    account.setUuid(accountuuid);
 
     List<MessageTemplate> list = new ArrayList();
     List keys;
-
-    keys = messagetemplateCache.getKeys();
-    for (Object key : keys) {
-        element = messagetemplateCache.get(key);
-        messageTemplate = (MessageTemplate) element.getObjectValue();
-          if (accountuuid.equals(messageTemplate.getAccountuuid())) {
-
-            list.add(messageTemplate);
-       
-          }
-    }
-   
+    list = msgtDAO.getTemplates(account);
+    
 %> 
 <jsp:include page="messageheader.jsp" />
 

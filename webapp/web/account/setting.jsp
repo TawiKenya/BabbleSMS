@@ -104,7 +104,7 @@
 			if (StringUtils.isNotEmpty(addSuccessStr)) {
 				out.println("<p class=\"success\"></p>");
                                 out.println("<p class=\"success\">");
-                                out.println("You have successfully edited your settings.");
+                                out.println(addSuccessStr);
                                 out.println("</p>");
                                 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, null);
                           
@@ -215,7 +215,7 @@
 	<div class="control-group">
                         <label class="control-label" for="network">New Password</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="password" name="newpassword" value=""required="true">
+                <input class="input-xlarge focused" id="receiver" id="txtNewPassword" type="password" name="newpassword" value=""required="true">
                             
                         </div>
                     
@@ -223,12 +223,17 @@
 	<div class="control-group">
                         <label class="control-label" for="network">Confirm Password</label>
                         <div class="controls">
-                       <input class="input-xlarge focused" id="receiver" type="password" name="confirmpassword" value="" required="true">
+            <input class="input-xlarge focused" id="receiver" id="txtConfirmPassword" type="password" name="confirmpassword" value="" required="true"
+		onChange="checkPasswordMatch();">
                             
                         </div>
                     
                     </div> 
-
+		<div class="control-group"><div class="controls">
+	<div class="registrationFormAlert" id="divCheckPasswordMatch">
+       </div>
+	</div>
+	</div>
 	 <%
                                                           counts++;
                                                               }
@@ -248,7 +253,6 @@
     </div><!--/span-->
 
 </div><!--/row-->
-
 
 
 <jsp:include page="footer.jsp" />
