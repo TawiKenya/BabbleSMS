@@ -30,8 +30,8 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
@@ -55,13 +55,6 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
 
-<style type= "text/css">
-.tokenize-sample { width: 300px ;}
-</style>
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="../js/jquery.tokenize.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
 
 
 <%
@@ -121,8 +114,8 @@
    MessageTemplateDAO msgtemplDAO = MessageTemplateDAO.getInstance();
   
 
-   masklist =maskDAO.getmaskbyaccount(account.getUuid());
-   shortcodelist = shortcodeDAO.getShortcodebyaccountuuid(account.getUuid());
+   masklist =maskDAO.getMasks(account);
+   shortcodelist = shortcodeDAO.getShortcodes(account);
    list = msgtemplDAO.getTemplates(account);
 
     //Element element;
