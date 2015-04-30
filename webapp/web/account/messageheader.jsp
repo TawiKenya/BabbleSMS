@@ -53,10 +53,10 @@ padding: 9px 0;
 }
 </style>
 <!-- jQuery -->
-<script src="../js/editcontact.js"></script>
 <script src="../js/jquery-1.7.2.min.js"></script>
+<script src="../js/editcontact.js"></script>
 <script src="../js/composepagejavascript.js"></script>
-<script src="jquery_popup.js"></script>
+<script src="../js/jquery_popup.js"></script>
 
 <script src="../js/editcontact_popup.js"></script>
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -78,7 +78,6 @@ padding: 9px 0;
 <link href='../css/template.css' rel='stylesheet'>
 <link href='../css/site.css' rel='stylesheet'>
 <link href='../css/grouptable.css' rel='stylesheet'>
-<link rel="stylesheet" href="poup.css" />
 <link href="../css/poup.css" rel="stylesheet">
 <link href="../css/credit.css" rel="stylesheet">
 <!--jqplot charts-->
