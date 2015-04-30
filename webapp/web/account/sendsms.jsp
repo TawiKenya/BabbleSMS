@@ -421,7 +421,7 @@ int credit_Consumed = 0;
                     <div class="control-group">
                         <label class="control-label" for="message">Message:</label>
                         <div class="controls">
-                            <textarea cols="200" rows="6" class="input-xlarge focused input_fields_wrap"  id="messaged" name="message" required="true"this.change="countChar(this)"></textarea>
+                            <textarea cols="200" rows="6" class="input-xlarge focused input_fields_wrap"  id="messaged" name="message" required="true"onkeyup="countChar(this)"></textarea>
                         </div>
                        <div class="controls">
                             <label  class="control-label" for="message" id="sms"> SMS  <quote id="smsNum"></quote></label><label class="control-label" for="message" id="count"> Characters <quote id="charCount"></quote></label>
