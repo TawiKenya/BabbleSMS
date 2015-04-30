@@ -214,7 +214,7 @@ int credit_Consumed = 0;
                                     </tr>
                                    <tr width="5%">
                                         <td>Safaricom</td>
-                                        <td id="creditconsumed"><%=credit_Consumed%></td>
+                                        <td id="safcreditconsumed"><%=credit_Consumed%></td>
                                         <td id="safcreditbalance"><%=credit_Balance%></td>
                                     </tr>
                                    <tr width="5%">
