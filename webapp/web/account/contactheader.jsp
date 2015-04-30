@@ -69,7 +69,7 @@
 
         <!-- jQuery/javascript -->
         <script src="../js/jquery-1.7.2.min.js"></script>
-	<script src="jquery_popup.js"></script>
+	<script src="../js/jquery_popup.js"></script>
        	<!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 	<script src="../js/editcontact.js"></script>
 	<script src="../js/editcontact_popup.js"></script>
@@ -97,7 +97,6 @@
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
 	<link href="../css/bootstrap-cerulean.css" rel="stylesheet">
-	<link rel="stylesheet" href="poup.css" />
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
