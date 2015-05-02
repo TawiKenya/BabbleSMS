@@ -15,13 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.report.chart.bar;
 
-import ke.co.tawi.babblesms.server.beans.network.Network;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
-import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
-import ke.co.tawi.babblesms.server.session.SessionStatistics;
-
-import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
@@ -37,23 +30,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
+import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
+import ke.co.tawi.babblesms.server.session.SessionStatistics;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.StackedBarRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * This class draws an image of the incoming SMS for the last seven days.
@@ -76,8 +66,7 @@ public class IncomingBarDay extends HttpServlet {
      */
     public static final int DAY_COUNT = 7; // Number of days over which to display the graph
 
-    private DefaultCategoryDataset dataset;
-
+	
     private CountUtils countUtils;
     private NetworkDAO networkDAO;
     
@@ -170,12 +159,10 @@ public class IncomingBarDay extends HttpServlet {
      * @return	a Json String
      */
     private String getJsonIncoming(String accountUuid) {
-    	//Gson g = new GsonBuilder().disableHtmlEscaping().create();
-    	JSONObject parent = new  JSONObject();
-    	JSONObject child = new  JSONObject();
-    	JSONArray jArray = new  JSONArray();
+    	Gson g = new GsonBuilder().disableHtmlEscaping().create();
+
     	
-    	//HashMap<String, Map<String,Object>> countHash = new HashMap<>();
+    	HashMap<String, Map<String,Object>> countHash = new HashMap<>();
         
         ///////////////////////////////////
         
@@ -218,15 +205,6 @@ public class IncomingBarDay extends HttpServlet {
                 while (networkIter.hasNext()) {
                 	
                     network = networkIter.next();
-                    //networkSMSCount.put("date", dateStr.toString());
-                    try {
-						child.put("date", dateStr);
-						child.put(network.getName(), networkIncomingUSSDCount.get(network));
-						jArray.put(child);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
                     
                     
                     //networkSMSCount.put(network.getName(), networkIncomingUSSDCount.get(network));
@@ -241,14 +219,8 @@ public class IncomingBarDay extends HttpServlet {
             numDays++;
            
         } while (numDays < DAY_COUNT);
-        try {
-			parent.put("incoming", jArray);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return parent.toString();
-       // return g.toJson(countHash);
+
+       return g.toJson(countHash);
     }
 
     

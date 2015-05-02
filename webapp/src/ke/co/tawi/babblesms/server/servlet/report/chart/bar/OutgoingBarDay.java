@@ -41,12 +41,9 @@ import net.sf.ehcache.Element;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-//import com.google.gson.Gson;
-//import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
  
 /**
  * Produces a bar chart for the Outgoing SMS in a user account.
@@ -167,12 +164,10 @@ public class OutgoingBarDay extends HttpServlet {
      * @return	a Json String
      */
     private String getJsonOutgoing(String accountUuid) {
-    	//Gson g = new GsonBuilder().disableHtmlEscaping().create();
-    	JSONObject parent = new  JSONObject();
-    	JSONObject child = new  JSONObject();
-    	JSONArray jArray = new  JSONArray();
+    	Gson g = new GsonBuilder().disableHtmlEscaping().create();
+
     	
-    	//HashMap<String, Map<String,Object>> countHash = new HashMap<>();
+    	HashMap<String, Map<String,Object>> countHash = new HashMap<>();
         
         ///////////////////////////////////
         
@@ -201,7 +196,7 @@ public class OutgoingBarDay extends HttpServlet {
         networkOutgoingUSSDCountDay = statistics.getNetworkOutgoingUSSDCountDay();
 
         Map<Network, Integer> networkOutgoingUSSDCount;
-        //Map<String, Object> networkSMSCount = new HashMap<String, Object>();
+        Map<String, Object> networkSMSCount = new HashMap<String, Object>();
         
         Iterator<Network> networkIter;
         Network network;
@@ -216,15 +211,6 @@ public class OutgoingBarDay extends HttpServlet {
                 	
                     network = networkIter.next();
                     //networkSMSCount.put("date", dateStr.toString());
-                    try {
-						child.put("date", dateStr);
-						child.put(network.getName(), networkOutgoingUSSDCount.get(network));
-						jArray.put(child);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                    
                     
                     //networkSMSCount.put(network.getName(), networkOutgoingUSSDCount.get(network));
                     //countHash.put("data", networkSMSCount);
@@ -238,14 +224,8 @@ public class OutgoingBarDay extends HttpServlet {
             numDays++;
            
         } while (numDays < DAY_COUNT);
-        try {
-			parent.put("outgoing", jArray);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return parent.toString();
-       // return g.toJson(countHash);
+        
+       return g.toJson(countHash);
     }
    
     

@@ -15,10 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.report.chart.pie;
 
-import ke.co.tawi.babblesms.server.session.SessionStatistics;
-import ke.co.tawi.babblesms.server.beans.network.Network;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
@@ -32,12 +28,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.session.SessionStatistics;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
-
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -104,9 +102,8 @@ public class IncomingPie extends HttpServlet {
      * @return	a Json String
      */
 	private String getJsonIncoming(String accountUuid) {    	
-    	//Gson g = new GsonBuilder().disableHtmlEscaping().create();
-		JSONObject jObject = new JSONObject();
-        //HashMap<String, Integer> countHash = new HashMap<String, Integer>();
+    	Gson g = new GsonBuilder().disableHtmlEscaping().create();
+        HashMap<String, Integer> countHash = new HashMap<String, Integer>();
        
         Element element;
         SessionStatistics statistics = null;
@@ -121,16 +118,9 @@ public class IncomingPie extends HttpServlet {
 
         while (incomingIter.hasNext()) {
             network = incomingIter.next();
-            try {
-				jObject.put(network.getName(), networkIncomingSMSCount.get(network));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            //countHash.put(network.getName(), networkOutgoingSMSCount.get(network));            
+            countHash.put(network.getName(), networkIncomingSMSCount.get(network));            
         }        
-        return jObject.toString();
-        //return g.toJson(countHash);
+        return g.toJson(countHash);
     }
     	
     	

@@ -18,6 +18,7 @@ package ke.co.tawi.babblesms.server.servlet.report.chart.pie;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -30,16 +31,14 @@ import javax.servlet.http.HttpServletResponse;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.session.SessionStatistics;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Produces a pie chart for outgoing SMS.
@@ -101,9 +100,8 @@ public class OutgoingPie extends HttpServlet {
      * @return	a Json String
      */
     private String getJsonOutgoing(String accountUuid) {
-    	//Gson g = new GsonBuilder().disableHtmlEscaping().create();
-    	JSONObject jObject = new JSONObject();
-        //HashMap<String, Integer> countHash = new HashMap<>();
+    	Gson g = new GsonBuilder().disableHtmlEscaping().create();
+        HashMap<String, Integer> countHash = new HashMap<>();
         
         Element element;
         SessionStatistics statistics = null;
@@ -120,16 +118,10 @@ public class OutgoingPie extends HttpServlet {
 
         while (outgoingIter.hasNext()) {
             network = outgoingIter.next();
-            try {
-				jObject.put(network.getName(), networkOutgoingSMSCount.get(network));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            //countHash.put(network.getName(), networkOutgoingSMSCount.get(network));            
+           
+            countHash.put(network.getName(), networkOutgoingSMSCount.get(network));            
         }        
-        return jObject.toString();
-        //return g.toJson(countHash);
+        return g.toJson(countHash);
     }
     
     
