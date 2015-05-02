@@ -32,8 +32,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -85,7 +88,7 @@ public class IncomingPie extends HttpServlet {
 		response.setDateHeader("Expires", new Date().getTime()); // Expiration date
 		response.setDateHeader("Date", new Date().getTime()); // Date and time
 															  // that the message was sent
-		
+		System.out.println("Incoming: " + getJsonIncoming(accountUuid));
 		out.write(getJsonIncoming(accountUuid).getBytes());
 		out.flush();
 		out.close();		
@@ -101,9 +104,9 @@ public class IncomingPie extends HttpServlet {
      * @return	a Json String
      */
 	private String getJsonIncoming(String accountUuid) {    	
-    	Gson g = new GsonBuilder().disableHtmlEscaping().create();
-    	
-        HashMap<String, Integer> countHash = new HashMap<String, Integer>();
+    	//Gson g = new GsonBuilder().disableHtmlEscaping().create();
+		JSONObject jObject = new JSONObject();
+        //HashMap<String, Integer> countHash = new HashMap<String, Integer>();
        
         Element element;
         SessionStatistics statistics = null;
@@ -118,10 +121,16 @@ public class IncomingPie extends HttpServlet {
 
         while (incomingIter.hasNext()) {
             network = incomingIter.next();
-            countHash.put(network.getName(), networkIncomingSMSCount.get(network));
-        }
-               
-        return g.toJson(countHash);
+            try {
+				jObject.put(network.getName(), networkIncomingSMSCount.get(network));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            //countHash.put(network.getName(), networkOutgoingSMSCount.get(network));            
+        }        
+        return jObject.toString();
+        //return g.toJson(countHash);
     }
     	
     	

@@ -206,8 +206,8 @@ public class DateResetUtil extends GenericDAO {
 		System.out.println("Have started resetting dates, in progress ...");
 		
 		// Below is the Start Date and End Date in format yyyy-MM-dd HH:mm:ss
-		//util.resetIncomingDates("2015-02-01 00:00:00", "2015-04-12 15:00:00"); 
-		util.resetOutgoingDates("2015-02-01 00:00:00", "2015-04-12 15:00:00"); 
+		util.resetIncomingDates("2015-01-20 00:00:00", "2015-04-30 15:00:00"); 
+		util.resetOutgoingDates("2015-01-20 00:00:00", "2015-04-30 15:00:00"); 
 		
 		System.out.println("Have finished resetting dates.");
 	}
