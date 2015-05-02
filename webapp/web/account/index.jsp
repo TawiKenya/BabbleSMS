@@ -489,7 +489,9 @@
                 }
             }
         };
+        //draw the chart
         $.jqplot('outgoingSMSBarChart', dataArrayOutgoing, outgoingOptions);
+        //prevent default refreshing of the page once the form is submitted
         return false;
     });
     /*
@@ -557,8 +559,9 @@
                 }
             }
         };
-        // draw the charts
+        // draw the chart
         $.jqplot('incomingSMSBarChart', dataArrayIncoming, incomingOptions);
+        //prevent default refreshing of the page once the form is submitted
         return false;
     });
         
