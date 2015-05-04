@@ -204,12 +204,11 @@ int credit_Consumed = 0;
             
             <option value = "Contact">Contact(s)</option>
             </select></div>
-                        
-                     <div id="credittable">
+                        <div id="credittable">
                                 <table border="1">
                                     <tr width="5%">
-                                        <th>NETWORK</th>
-                                        <th>Credit consumed</th>
+                                        <th>Network</th>
+                                        <th>Credit Consumed</th>
                                         <th>Balance</th>
                                     </tr>
                                    <tr width="5%">

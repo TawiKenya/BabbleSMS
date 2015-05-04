@@ -1254,7 +1254,7 @@ legend + .control-group {
 .form-horizontal .controls {
   *display: inline-block;
   *padding-left: 20px;
-  margin-left: 160px;
+  margin-left: 150px;
   *margin-left: 0;
 }
 .form-horizontal .controls:first-child {
@@ -1272,6 +1272,7 @@ table {
   background-color: transparent;
   border-collapse: collapse;
   border-spacing: 0;
+  font-size: 13px;
 }
 .table {
   width: 100%;
@@ -1280,13 +1281,13 @@ table {
 .table th,
 .table td {
   padding: 8px;
-  line-height: 18px;
-  text-align: left;
+  line-height: 15px;
+  text-align: center;;
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
 .table th {
-  font-weight: bold;
+  font-weight:bold;
 }
 .table thead th {
   vertical-align: bottom;

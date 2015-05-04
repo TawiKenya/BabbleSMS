@@ -30,7 +30,7 @@ margin: 0 1.5%;
 }
 #groupsform {
 float: left;
- width: 200px;
+ width: 100px;
 margin: 0 1.5%;
 }
 #add {
@@ -53,10 +53,9 @@ margin: 0 1.5%;
 
 #add1 {
 
- margin-left:27%;
- margin-right:27%;
- margin-top:30%;
- 
+ margin-left:0;
+ margin-right:0;
+ margin-top:30%; 
  
 }
 
@@ -67,8 +66,8 @@ margin-bottom:30%;
 }
 
 #remove2{
-margin-left:27%;
-margin-right:27%;
+margin-left:0;
+margin-right:0;
 margin-bottom:30%;
 }
 
