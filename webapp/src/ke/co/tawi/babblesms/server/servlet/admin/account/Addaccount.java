@@ -38,13 +38,11 @@ public class Addaccount extends HttpServlet {
     final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
     final String ERROR_NO_LOGIN_PASSWD = "Please provide a website login password.";
     final String ERROR_LOGIN_PASSWD_MISMATCH = "The website login passwords that you have provided do not match.";
-    final String ERROR_NO_SMS_PASSWD = "Please provide an SMS API password.";
-    final String ERROR_SMS_PASSWD_MISMATCH = "The SMS API passwords that you have provided do not match.";
     final String ERROR_UNIQUENAME_EXISTS = "The Username provided already exists in the system.";
     final String ERROR_EMAIL_EXISTS = "The email provided already exists in the system.";
-    final String ERROR_NO_SMS_USERNAME = "Please provide an SMS API username.";
+  
 
-    private String firstName, lastName, username, email, loginPasswd, loginPasswd2, phone, smsPasswd, smsPasswd2, smsusername;
+    private String firstName, lastName, username, email, loginPasswd, loginPasswd2, phone;
 
     // This is used to store parameter names and values from the form.
     private HashMap<String, String> paramHash;
@@ -111,18 +109,6 @@ public class Addaccount extends HttpServlet {
             } else if (!StringUtils.equals(loginPasswd, loginPasswd2)) {
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_LOGIN_PASSWD_MISMATCH);
 
-                // No smsusername provided
-            } else if (StringUtils.isBlank(smsusername)) {
-                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_SMS_USERNAME);
-
-                // No SMS API password provided
-            } else if (StringUtils.isBlank(smsPasswd) || StringUtils.isBlank(smsPasswd2)) {
-                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_SMS_PASSWD);
-
-                // The SMS API passwords provided do not match
-            } else if (!StringUtils.equals(smsPasswd, smsPasswd2)) {
-                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_SMS_PASSWD_MISMATCH);
-
                 // The username already exists in the system    
             } else if (existsUniqueName(username)) {
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_UNIQUENAME_EXISTS);
@@ -149,8 +135,6 @@ public class Addaccount extends HttpServlet {
             String accountuuid = request.getParameter("accountuuid");
             String username = request.getParameter("username");
             String name = request.getParameter("name");
-            String apiusername = request.getParameter("apiusername");
-            String apipassword = request.getParameter("apipassword");
             String mobile = request.getParameter("mobile");
             int dailysmslimit = Integer.parseInt(request.getParameter("dailysmslimit"));
             String email = request.getParameter("email");
@@ -162,8 +146,6 @@ public class Addaccount extends HttpServlet {
             account.setEmail(email);
             account.setMobile(mobile);
             account.setStatusuuid(statusuuid);
-            account.setApipassword(apipassword);
-            account.setApiusername(apiusername);
             account.setDailysmslimit(dailysmslimit);
             account.setUuid(accountuuid);
 
@@ -199,8 +181,6 @@ public class Addaccount extends HttpServlet {
         a.setName(firstName);
         a.setUsername(username);
         a.setLogpassword(loginPasswd);
-        a.setApiusername(smsusername);
-        a.setApipassword(smsPasswd);
         a.setEmail(email);
         a.setMobile(phone);
         a.setStatusuuid("396F2C7F-961C-5C12-3ABF-867E7FD029E6");
@@ -232,9 +212,7 @@ public class Addaccount extends HttpServlet {
         loginPasswd = StringUtils.trimToEmpty(request.getParameter("password"));
         loginPasswd2 = StringUtils.trimToEmpty(request.getParameter("password2"));
         phone = StringUtils.trimToEmpty(request.getParameter("mobile"));
-        smsusername = StringUtils.trimToEmpty(request.getParameter("apiusername"));
-        smsPasswd = StringUtils.trimToEmpty(request.getParameter("apipassword"));
-        smsPasswd2 = StringUtils.trimToEmpty(request.getParameter("apipassword2"));
+      
 
     }
 
@@ -251,9 +229,6 @@ public class Addaccount extends HttpServlet {
         paramHash.put("email", email);
         paramHash.put("loginPasswd", loginPasswd);
         paramHash.put("loginPasswd2", loginPasswd2);
-        paramHash.put("smsusername", smsusername);
-        paramHash.put("smsPasswd", smsPasswd);
-        paramHash.put("smsPasswd2", smsPasswd2);
         paramHash.put("phone", phone);
     }
 

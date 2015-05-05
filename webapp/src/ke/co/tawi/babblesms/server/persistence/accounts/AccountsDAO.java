@@ -83,23 +83,21 @@ public class AccountsDAO extends GenericDAO implements BabbleAccountsDAO {
     @Override
     public boolean putAccount(Account accounts) {
         boolean success = true;
-
+//apiusername, apipassword, 
         try (
         		Connection conn = dbCredentials.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username, logpassword,"
-                		+ "apiusername, apipassword, name, mobile, email, statusuuid) "
-                		+ "VALUES (?,?,?,?,?,?,?,?,?);")
+                		+ "name, mobile, email, statusuuid) "
+                		+ "VALUES (?,?,?,?,?,?,?);")
             ) {
         	
             pstmt.setString(1, accounts.getUuid());
             pstmt.setString(2, accounts.getUsername());
             pstmt.setString(3, accounts.getLogpassword());
-            pstmt.setString(4, accounts.getApiusername());
-            pstmt.setString(5, accounts.getApipassword());
-            pstmt.setString(6, accounts.getName());
-            pstmt.setString(7, accounts.getMobile());
-            pstmt.setString(8, accounts.getEmail());
-            pstmt.setString(9, accounts.getStatusuuid());
+            pstmt.setString(4, accounts.getName());
+            pstmt.setString(5, accounts.getMobile());
+            pstmt.setString(6, accounts.getEmail());
+            pstmt.setString(7, accounts.getStatusuuid());
 
             pstmt.execute();
             
@@ -108,42 +106,7 @@ public class AccountsDAO extends GenericDAO implements BabbleAccountsDAO {
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         }
-        
-        /*
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username, logpassword,"
-            		+ "apiusername, apipassword, name, mobile, email, statusuuid) "
-            		+ "VALUES (?,?,?,?,?,?,?,?,?);");
-            pstmt.setString(1, accounts.getUuid());
-            pstmt.setString(2, accounts.getUsername());
-            pstmt.setString(3, accounts.getLogpassword());
-            pstmt.setString(4, accounts.getApiusername());
-            pstmt.setString(5, accounts.getApipassword());
-            pstmt.setString(6, accounts.getName());
-            pstmt.setString(7, accounts.getMobile());
-            pstmt.setString(8, accounts.getEmail());
-            pstmt.setString(9, accounts.getStatusuuid());
-
-            pstmt.execute();
-
-        } catch (SQLException e) {
-            logger.error("SQLException when trying to put: " + accounts);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-            
-        } finally {
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-            
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }*/
+      
         
         return success;
     }
@@ -493,19 +456,17 @@ public class AccountsDAO extends GenericDAO implements BabbleAccountsDAO {
 
         Connection conn = null;
         PreparedStatement pstmt = null;
-
+                                            //,apiusername=?,apipassword=?
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE Account SET username=?,apiusername=?,apipassword=?,name=?,mobile=?,email=?,dailysmslimit=?,statusuuid=? WHERE Uuid = ?;");
+            pstmt = conn.prepareStatement("UPDATE Account SET username=?,name=?,mobile=?,email=?,dailysmslimit=?,statusuuid=? WHERE Uuid = ?;");
             pstmt.setString(1, accounts.getUsername());
-            pstmt.setString(2, accounts.getApiusername());
-            pstmt.setString(3, accounts.getApipassword());
-            pstmt.setString(4, accounts.getName());
-            pstmt.setString(5, accounts.getMobile());
-            pstmt.setString(6, accounts.getEmail());
-            pstmt.setInt(7, accounts.getDailysmslimit());
-            pstmt.setString(8, accounts.getStatusuuid());
-            pstmt.setString(9, accounts.getUuid());
+            pstmt.setString(2, accounts.getName());
+            pstmt.setString(3, accounts.getMobile());
+            pstmt.setString(4, accounts.getEmail());
+            pstmt.setInt(5, accounts.getDailysmslimit());
+            pstmt.setString(6, accounts.getStatusuuid());
+            pstmt.setString(7, accounts.getUuid());
 
             pstmt.executeUpdate();
 

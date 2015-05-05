@@ -166,8 +166,9 @@
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
                                 <input type="hidden" name="name" value="<%=code.getName()%>">
-                                <input type="hidden" name="apiusername" value="<%=code.getApiusername()%>">
-                                <input type="hidden" name="apipassword" value="<%=code.getApipassword()%>">
+
+                               
+
                                 <input type="hidden" name="mobile" value="<%=code.getMobile()%>">
                                 <input type="hidden" name="dailysmslimit" value="<%=code.getDailysmslimit()%>">
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">

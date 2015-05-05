@@ -145,37 +145,11 @@
 
                     </div> 
 
-                    <div class="control-group">
-                        <label class="control-label" for="name">SMS API Username*</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="apiusername" value="" required="true">
-
-                        </div>
-
-                    </div> 
 
                     <div class="control-group">
-                        <label class="control-label" for="name">SMS API Password**</label>
+                        <label class="control-label" for="name">Phone Number</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="password" name="apipassword" value="" required="true">
-
-                        </div>
-
-                    </div> 
-
-                    <div class="control-group">
-                        <label class="control-label" for="name">Repeat SMS API Password*</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="password" name="apipassword2" value="" required="true">
-
-                        </div>
-
-                    </div> 
-
-                    <div class="control-group">
-                        <label class="control-label" for="name">Mobile*</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="mobile" value="" required="true">
+                            <input class="input-xlarge focused" id="receiver" type="text" name="mobile" value="" >
 
                         </div>
 
