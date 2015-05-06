@@ -70,6 +70,15 @@
 
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
+        
+
+       <script language="javascript" type="text/javascript" src="../js/phoneno.js"></script>
+
+
+
+
+
+
 
     </head>
 

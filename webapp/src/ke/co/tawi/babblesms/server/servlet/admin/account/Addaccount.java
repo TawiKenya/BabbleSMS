@@ -36,6 +36,7 @@ public class Addaccount extends HttpServlet {
     final String ERROR_NO_FIRSTNAME = "Please provide a First Name.";
     final String ERROR_NO_USERNAME = "Please provide a Username.";
     final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
+    //final String ERROR_INVALID_PHONE = "Please provide a valid phone number.";
     final String ERROR_NO_LOGIN_PASSWD = "Please provide a website login password.";
     final String ERROR_LOGIN_PASSWD_MISMATCH = "The website login passwords that you have provided do not match.";
     final String ERROR_UNIQUENAME_EXISTS = "The Username provided already exists in the system.";
@@ -47,6 +48,7 @@ public class Addaccount extends HttpServlet {
     // This is used to store parameter names and values from the form.
     private HashMap<String, String> paramHash;
     private EmailValidator emailValidator;
+    //private PhoneValidator phoneValidator;
 
     private AccountsDAO accountsDAO;
 
@@ -63,11 +65,22 @@ public class Addaccount extends HttpServlet {
         super.init(config);
 
         emailValidator = EmailValidator.getInstance();
+       // phoneValidator = PhoneValidator.getInstance();
 
         accountsDAO = AccountsDAO.getInstance();
 
         cacheManager = CacheManager.getInstance();
     }
+
+
+
+
+
+
+
+
+
+
 
     /**
      *
@@ -100,6 +113,12 @@ public class Addaccount extends HttpServlet {
                 // An invalid email provided    
             } else if (!emailValidator.isValid(email)) {
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_INVALID_EMAIL);
+
+          // An invalid phone provided    
+          //  } else if (!phoneValidator.isValid(mobile)) {
+            //    session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_INVALID_PHONE);
+
+
 
                 // No website login password provided
             } else if (StringUtils.isBlank(loginPasswd) || StringUtils.isBlank(loginPasswd2)) {

@@ -127,7 +127,9 @@ public class Account extends StorableBean {
      * @return mobile
      */
     public String getMobile() {
+        
         return mobile;
+
     }
 
     /**
@@ -201,6 +203,17 @@ public class Account extends StorableBean {
     public void setStatusuuid(String statusuuid) {
         this.statusuuid = StringUtils.trimToEmpty(statusuuid);
     }
+
+
+
+public void validate(){
+
+
+
+}
+
+
+
 
     
 	/**
