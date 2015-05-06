@@ -166,9 +166,18 @@
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
                                 <input type="hidden" name="name" value="<%=code.getName()%>">
+<<<<<<< .mine
+
+
 
                                
 
+
+=======
+
+                               
+
+>>>>>>> .r97
                                 <input type="hidden" name="mobile" value="<%=code.getMobile()%>">
                                 <input type="hidden" name="dailysmslimit" value="<%=code.getDailysmslimit()%>">
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">

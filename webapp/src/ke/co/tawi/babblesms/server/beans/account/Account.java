@@ -89,15 +89,6 @@ public class Account extends StorableBean {
         this.logpassword = StringUtils.trimToEmpty(logpassword);
     }
 
-
-    /**
-     * 
-     * @return usertype
-     */
-    public String getUsertype() {
-        return usertype;
-    }
-
     /**
      * 
      * @param usertype 
