@@ -59,6 +59,7 @@
 .tokenize-sample { width: 300px ;}
 </style>
 
+<script type='text/javascript' src='../js/credittablejavascript.js'></script>
 <script type="text/javascript" src="../js/jquery.tokenize.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
 
@@ -212,22 +213,22 @@ int credit_Consumed = 0;
                                         <th>Balance</th>
                                     </tr>
                                    <tr width="5%">
-                                        <td>Safaricom</td>
+                                       <td id="Safaricom"><font color="green">Safaricom</font></td>
                                         <td id="safcreditconsumed"><%=credit_Consumed%></td>
                                         <td id="safcreditbalance"><%=credit_Balance%></td>
                                     </tr>
                                    <tr width="5%">
-                                        <td>Airtel</td>
+                                        <td id="Airtel">Airtel</td>
                                         <td id="airtelcreditconsumed"><%=credit_Consumed%></td>
                                         <td id="airtelcreditbalance"><%=credit_Balance%></td>
                                     </tr>
                                    <tr width="5%">
-                                        <td>Orange</td>
+                                        <td id="Orange">Orange</td>
                                         <td id="orangecreditconsumed"><%=credit_Consumed%></td>
                                         <td id="orangecreditbalance"><%=credit_Balance%></td>
                                     </tr>
                                      <tr width="5%">
-                                        <td>Yu</td>
+                                        <td id="Yu">Yu</td>
                                         <td id="yucreditconsumed"><%=credit_Consumed%></td>
                                         <td id="yucreditbalance"><%=credit_Balance%></td>
                                     </tr>
@@ -270,7 +271,7 @@ int credit_Consumed = 0;
                                     <div id="groupsform">
                                         <br/><br/><br/>
                                         <button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-                                        <button type="submit"  id = "remove2" > << Remove </button>
+                                        <button type="submit"  id = "remove2"> << Remove </button>
 
                                         <input type="hidden"  class ="groupsadded" name="groupselected"  />
                                     </div>
@@ -363,7 +364,7 @@ int credit_Consumed = 0;
                                 %>
                                 
                                 
-                                    <option class="message_source" id="<%= code.getMaskname()%>" value="<%= code.getMaskname()%>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>">
+                                    <option class="message_source" id="<%= code.getMaskname()%>" value="<%= code.getMaskname()%>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>"  onclick="networkselect(this)">
                                                        
 
                                         
@@ -379,7 +380,7 @@ int credit_Consumed = 0;
                                     if (shortcodelist != null) {
                                         for (Shortcode code : shortcodelist) {
                                 %>
-                                        <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getCodenumber() %>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>">
+                                   <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getCodenumber() %>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>" onclick="networkselect(this)">
                                       
                                             <%=code.getCodenumber() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")"%>
                                         </option>

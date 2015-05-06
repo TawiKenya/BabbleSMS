@@ -15,14 +15,15 @@
 //function for dynamic character and messages count
 function countChar(val) {
         var len = val.value.length;
-        var smsCount = Math.floor(len/160)+1;
+        var smsCount = Math.floor(len/160)+1;        
+              
 
-        if(len===0){
+        if(len===0){ 
           $('#charCount').text(0);
           $('#smsNum').text(0);   
         }
         else{
-          $('#charCount').text(len);
+        	 $('#charCount').text(len);
           $('#smsNum').text(smsCount);
           if(len<=160){
           document.getElementById("count").style.color = "green"; 
@@ -37,4 +38,41 @@ function countChar(val) {
         document.getElementById("smsNum").style.color = "red"; 
       }
         }
+        
+        //checks creditconsumed row on credittable based on the selected  network..
+        
+        var sms = val.value.length; 
+        var Count=200*(Math.floor(sms/160)+1);
+        var net =document.getElementById("source");
+        var netcheck = net.options[net.selectedIndex].label;
+         //alert('System check1 by Migwi Ndungu '+netcheck+' on the '+Count);
+        
+       if (netcheck=='Safaricom KE') {       	
+   document.getElementById("safcreditconsumed").innerHTML='<td><font color=green>'+Count+'</font></td>';
+	document.getElementById("orangecreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("yucreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("airtelcreditconsumed").innerHTML='<td>0</td>';
+	}
+	
+else if (netcheck=='Yu KE') {	 
+  	document.getElementById("yucreditconsumed").innerHTML='<td><font color=blue>'+Count+'</font></td>';
+	document.getElementById("safcreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("orangecreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("airtelcreditconsumed").innerHTML='<td>0</td>';
+	}
+	
+else if(netcheck=='Airtel KE'){	
+	document.getElementById("airtelcreditconsumed").innerHTML='<td><font color=red>'+Count+'</font></td>';
+	document.getElementById("safcreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("orangecreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("yucreditconsumed").innerHTML='<td>0</td>';
+	}
+	
+else if (netcheck=='Orange KE'){
+	document.getElementById("orangecreditconsumed").innerHTML='<td><font color=orange>'+Count+'</font></td>';
+	document.getElementById("safcreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("yucreditconsumed").innerHTML='<td>0</td>';
+	document.getElementById("airtelcreditconsumed").innerHTML='<td>0</td>';
+}
+       
         }
