@@ -86,15 +86,9 @@ public class AccountsDAO extends GenericDAO implements BabbleAccountsDAO {
 //apiusername, apipassword, 
         try (
         		Connection conn = dbCredentials.getConnection();
-<<<<<<< .mine
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username,apiusername, apipassword, logpassword,"
-                		+ "name, mobile, email, statusuuid) "
-                		+ "VALUES (?,?,?,?,?,?,?);")
-=======
                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username, logpassword,"
                 		+ "name, mobile, email, statusuuid) "
                 		+ "VALUES (?,?,?,?,?,?,?);")
->>>>>>> .r97
             ) {
         	
             pstmt.setString(1, accounts.getUuid());
@@ -462,18 +456,10 @@ public class AccountsDAO extends GenericDAO implements BabbleAccountsDAO {
 
         Connection conn = null;
         PreparedStatement pstmt = null;
-<<<<<<< .mine
-                                 //,apiusername=?,apipassword=?
-=======
                                             //,apiusername=?,apipassword=?
->>>>>>> .r97
         try {
             conn = dbCredentials.getConnection();
-<<<<<<< .mine
-            pstmt = conn.prepareStatement("UPDATE Account SET username=?,name=?,mobile=?,apiusername=?,apipassword=?,email=?,dailysmslimit=?,statusuuid=? WHERE Uuid = ?;");
-=======
             pstmt = conn.prepareStatement("UPDATE Account SET username=?,name=?,mobile=?,email=?,dailysmslimit=?,statusuuid=? WHERE Uuid = ?;");
->>>>>>> .r97
             pstmt.setString(1, accounts.getUsername());
             pstmt.setString(2, accounts.getName());
             pstmt.setString(3, accounts.getMobile());
