@@ -56,8 +56,6 @@ suspended, deleted etc
  - UUID
  - username
  - password
- - apiusername
- - apipassword
  - usertype
  - Creation Date
  - name
