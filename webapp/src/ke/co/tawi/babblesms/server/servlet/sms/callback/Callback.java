@@ -1,4 +1,4 @@
-package ke.co.tawi.babblesms.server.servlet.callback;
+package ke.co.tawi.babblesms.server.servlet.sms.callback;
 
 import java.io.IOException;
 import java.io.PrintWriter;

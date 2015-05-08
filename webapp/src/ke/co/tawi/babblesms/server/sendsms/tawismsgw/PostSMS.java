@@ -166,8 +166,6 @@ public class PostSMS extends Thread {
             HttpEntity responseEntity = response.getEntity();
             
             //for debugging
-            System.out.println("Response content type: " + responseEntity.getContentType());
-            System.out.println("Response content length: " + responseEntity.getContentLength());
             System.out.println(EntityUtils.toString(responseEntity));
                         
 		} catch (UnsupportedEncodingException e) {

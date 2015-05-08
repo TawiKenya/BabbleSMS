@@ -27,6 +27,12 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
  */
 public class Network extends StorableBean {
 
+	// This is to match what is in the RDBMS table 'network'
+	public final static String YU_KE = "741AC38C-3E40-6887-9CD6-365EF9EA1EF0";
+	public final static String AIRTEL_KE = "0DE968C9-7309-C481-58F7-AB6CDB1011EF";
+	public final static String ORANGE_KE = "5C1D9939-136A-55DE-FD0E-61D8204E17C9";
+	public final static String SAFARICOM_KE = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78";
+	
     private String name;
     private String countryuuid;
 
@@ -87,4 +93,6 @@ public class Network extends StorableBean {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 }

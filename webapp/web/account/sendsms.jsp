@@ -256,7 +256,8 @@ int credit_Consumed = 0;
 
                                                     <tr>
                                                         <td class="center"><a href="#"><%=code.getName()%></a></td>
-                                                        <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
+                                                        <td class="center" id="hideANDseek"><%=code.getUuid()%></td>
+                                                        
                                                     </tr>
                                                 <%   
 
@@ -270,10 +271,10 @@ int credit_Consumed = 0;
                                     
                                     <div id="groupsform">
                                         <br/><br/><br/>
-                                        <button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-                                        <button type="submit"  id = "remove2"> << Remove </button>
+                                        <button type="submit" id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
+                                        <button type="submit" id = "remove2"> << Remove </button>
 
-                                        <input type="hidden"  class ="groupsadded" name="groupselected"  />
+                                         <input type="hidden" class="groupsadded" name="groupselected" /> 
                                     </div>
                                     
                                     <table id="scroll1" class="table table-striped table-bordered">

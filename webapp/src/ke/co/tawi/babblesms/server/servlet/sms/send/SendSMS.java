@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.servlet.accountmngmt;
+package ke.co.tawi.babblesms.server.servlet.sms.send;
 
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
@@ -23,9 +23,11 @@ import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
+import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.utils.StringUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -45,18 +47,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Receives a form request to send SMS to Contact(s) or Group(s) 
  * <p>
  * 
- * @author dennis <a href="mailto:dennism@tawi.mobi">Dennis Mutegi</a>
+ * @author <a href="mailto:dennism@tawi.mobi">Dennis Mutegi</a>
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class SendSMS extends HttpServlet{
-	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
-	
+public class SendSMS extends HttpServlet {
+	final String SMSGW_URL_HTTP = PropertiesConfig.getConfigValue("SMSGW_API_URL"); 
+	final String SMSGW_USERNAME = PropertiesConfig.getConfigValue("SMSGW_USERNAME");
+	final String SMSGW_PASSWORD = PropertiesConfig.getConfigValue("SMSGW_PASSWORD");
+			
+			
 	private Cache accountsCache;
 		
 	private PhoneDAO phoneDAO;
@@ -108,10 +113,21 @@ public class SendSMS extends HttpServlet{
 		String message = request.getParameter("message");
        
         
-		Group group;
+		//Group group;
 		
+		for(String group : groupselected) {
+			System.out.println("Group is: '" + group + "'");
+		}
+		
+		if(phones == null) {
+			phones = new String[0];
+		}
+		phones = StringUtil.removeDuplicates(phones);
+		
+		
+		List<Phone> phoneList = new LinkedList<>();
 		for(String phone : phones) {
-			System.out.println("Phone is: " + phoneDAO.getPhone(phone));
+			phoneList.add(phoneDAO.getPhone(phone));
 		}
 		
 		/*
@@ -183,28 +199,29 @@ public class SendSMS extends HttpServlet{
                          phones +=phone.getPhonenumber()+";"; 
                  }}
                        logger.info("my phones"+phones);
-			Map<String,String> params = new HashMap<>();
-			 
-			params.put("username", "tawi");		
-			params.put("password", "tawi123");
-			params.put("source", "2024");
-			params.put("destination", phones);
-			params.put("message", message);
-			params.put("network", "safaricom_ke");
-					
-			
+           */
+		
+			Map<String,String> params;
 			PostSMS postThread;
-					
-			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-			postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
-								// running in an application server.
 			
-			*/
+			for(Phone phone : phoneList) {
+				params = new HashMap<>();
+			
+				params.put("username", SMSGW_USERNAME);		
+				params.put("password", SMSGW_PASSWORD);
+				params.put("source", source);
+				params.put("destination", phone.getPhonenumber());
+				params.put("message", message);
+				params.put("network", "safaricom_ke");
+											
+				System.out.println("Data to post: " + StringUtil.mapToString(params));
+				
+				postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
+				postThread.start(); 				
+			}
 			
 			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
 			response.sendRedirect("sendsms.jsp");	
 		}
-	
-		
-	}
-
+			
+}

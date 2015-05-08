@@ -15,6 +15,15 @@
  */
 package ke.co.tawi.babblesms.server.sendsms.tawismsgw;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.contact.Contact;
+import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.beans.contact.Phone;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
+import ke.co.tawi.babblesms.server.utils.comparator.PhonesByNetworkPredicate;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -22,13 +31,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.contact.Contact;
-import ke.co.tawi.babblesms.server.beans.contact.Phone;
-import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
-import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
-import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 
 import org.junit.Test;
 
@@ -76,10 +78,15 @@ public class TestPostSMS {
 			allPhones.addAll(phoneDAO.getPhones(c));
 		}
 		
-		/* System.out.println("Phone size: " + allPhones.size());		
-		for(Phone p : allPhones) {
+		System.out.println("All phone size: " + allPhones.size());		
+		/* for(Phone p : allPhones) {
 			System.out.println(p.getNetworkuuid());
 		}*/
+		
+		List<Phone> safaricomPhones = new ArrayList<>();
+		safaricomPhones.addAll(CollectionUtils.select(allPhones, 
+				new PhonesByNetworkPredicate(Network.SAFARICOM_KE)));
+		System.out.println("Safaricm phone size: " + safaricomPhones.size());
 		
 		// Create a list of Outgoing SMS from the Phones 
 		List<OutgoingLog> logList = new ArrayList<OutgoingLog>();
@@ -98,7 +105,8 @@ public class TestPostSMS {
 		
 		// These are Safaricom bound Outgoing SMS
 		List<OutgoingLog> safaricomLogs = new ArrayList<>();
-		safaricomLogs.addAll(CollectionUtils.select(logList, new SafaricomPredicate()));
+		//safaricomLogs.addAll(CollectionUtils.select(logList, 
+		//		new PhonesByNetworkPredicate(Network.SAFARICOM_KE)));
 		
 		//for(OutgoingLog safaricomLog : safaricomLogs) {
 		//	System.out.println(safaricomLog.getNetworkuuid());
@@ -116,7 +124,7 @@ public class TestPostSMS {
 		PostSMS postThread;
 				
 		postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-		postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
+		//postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
 							// running in an application server.
 	}
 

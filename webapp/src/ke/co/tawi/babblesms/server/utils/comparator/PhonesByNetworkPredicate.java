@@ -13,35 +13,50 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.sendsms.tawismsgw;
+package ke.co.tawi.babblesms.server.utils.comparator;
 
-import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+import ke.co.tawi.babblesms.server.beans.contact.Phone;
 
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Used to filter only Safaricom Outgoing SMS.
+ * Used to filter {@link Phone}s by a Network.
  * <p>
  * 
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * 
  */
-public class SafaricomPredicate implements Predicate {
+public class PhonesByNetworkPredicate implements Predicate {
 
-	// The following matches what is in the database table 'Network'.
-	final String NETWORKUUID_SAFARICOM_KE = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78";
-			
+	// The following should match what is in the database table 'Network'.	
+	private String networkUuid;
+	
+	
+	/**
+	 * Disable the default constructor.
+	 */
+	private PhonesByNetworkPredicate() {}
+	
+	
+	/**
+	 * @param networkUuid
+	 */
+	public PhonesByNetworkPredicate(String networkUuid) {
+		this.networkUuid = networkUuid;
+	}
+	
+	
 	/**
 	 * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
 	 */
 	@Override
 	public boolean evaluate(Object obj) {
 		
-		if(obj instanceof OutgoingLog) {
-			OutgoingLog log = (OutgoingLog) obj;
+		if(obj instanceof Phone) {
+			Phone p = (Phone) obj;
 			
-			return StringUtils.equalsIgnoreCase(NETWORKUUID_SAFARICOM_KE, log.getNetworkuuid());			
+			return StringUtils.equalsIgnoreCase(networkUuid, p.getNetworkuuid());			
 		}
 		
 		return false;
