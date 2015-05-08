@@ -37,9 +37,10 @@ public interface BabbleAccountsDAO {
 
     
     /**
+     *	
      *
      * @param account
-     * @return	code>true</code> if successfully deleted; <code>false</code> for
+     * @return	code>true</code> if successfully inserted; <code>false</code> for
      * otherwise
      */
     public boolean updateAccount(Account account);
