@@ -187,11 +187,11 @@
 
       
            
-            <div id="incomingPieChart" style="width:650px; height:500px;"></div>
+            <div id="incomingPieChart" style="width:800px; height:500px;"></div>
             
             <p>&nbsp;&nbsp;&nbsp;</p>
             <!--incoming SMS Bar chart-->
-            <div id="incomingSMSBarChart" style="height:400px;width:800px;"></div><br><br>
+            <div id="incomingSMSBarChart" style="height:500px;width:800px;"></div><br><br>
             <!--<p>
                 <img id="inbar" 
                      src="incomingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>&from=03/04/2015&to=03/21/2015" 
@@ -201,7 +201,7 @@
            
             
             <div>
-                <form id="incomingform" action='incomingBarDay' method='post'>
+                <form id="incomingform">
                     <%--
                         <p>Select Duration</p>
                         <p>
@@ -301,16 +301,16 @@
 
   
                
-               <div id="outgoingPieChart" style="width:650px; height:500px;"></div>
+               <div id="outgoingPieChart" style="width:800px; height:500px;"></div>
            
 
             <!--<p>
                 <img id="outbar" src="outgoingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>" alt="Outgoing Daily Bar Chart" />
             </p>-->
             <!--outgoing SMS Bar chart-->
-            <div id="outgoingSMSBarChart" style="height:400px;width:800px;"></div><br><br>
+            <div id="outgoingSMSBarChart" style="height:500px;width:800px;"></div><br><br>
             <div>
-                <form id="outgoingform" action='incomingBarDay' method='post'>
+                <form id="outgoingform">
                     <div class="col-md-3"><label for="outfrom">From<input type="date" id="outfrom" name="from"></label></div>
                     <div class="col-md-3"><label for="outto">to<input type="date" id="outto" name="to"></label></div>
                     <button type="submit" id="outgoingpiebtn" class="btn btn-primary" >Filter</button>
@@ -330,12 +330,13 @@
 </div>
 
 
-<script type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/jquery.jqplot.min.js"></script>
 <script src="../js/jqplot.pieRenderer.min.js"></script>
 <script src="../js/jqplot.barRenderer.min.js"></script>
 <script src="../js/jqplot.categoryAxisRenderer.min.js"></script>
+<script src="../js/jqplot.highlighter.min.js"></script>
+<script src="../js/jqplot.cursor.min.js"></script>
 <link href="../js/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>  
     
 
@@ -430,140 +431,155 @@
     *Here, we draw the outgoingSMS bar chart
     *
     */
-    $('#outgoingform').submit(function(e){
+    //$('#outgoingform').submit(function(e){
         var jsonURL = 'outgoingBarDay?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>';
-        $.getJSON(jsonURL, function(data){
-           /* var outgoing = data.outgoing;
-            var _safaricom = [];
-            var _airtel = [];
-            var _orange = [];
-            var _markers = [];
-            for(var i in outgoing){
-                console.log(outgoing[i].Safaricom_KE);
-
-                markers.push(outgoing[i].date);
-               _safaricom.push(outgoing[i].Safaricom_KE);
-                 _airtel.push(outgoing[i].Airtel_KE);
-                _orange.push(outgoing[i].Orange_KE);
-            }*/
-        });
-        
         //outgoing data for each network for 7days
-        var _safaricom = [100, 120, 85, 69, 56, 96, 115];
-        var _airtel = [56, 52, 75, 67, 87, 69, 105];
-        var _orange = [103, 37, 60, 22, 17, 10, 56];    
-        // put the chart data in form of an array
-        var dataArrayOutgoing = [_safaricom, _airtel, _orange];
-        
-        // x-axis markers (these will be the dates [from:to] essentily, they have to be 7 days)
-        var markers = ['Mon', 'Tue', 'Wed', 'Thur','Fri', 'Sat', 'Sun'];
-      
-        // chart rendering options for outgoing
-        var outgoingOptions = {
-            stackSeries: 'true',            
-            title: 'Outgoing SMS for the last 7 days',
-            legend: { 
-                show: true,
-                location: 'ne',
-                placement: 'outsideGrid'    
-            },
-            //labels for the legend
-            series: [
-                {label: 'Safaricom'},
-                {label: 'Airtel'},
-                {label: 'Orange'}
-            ],
-            //specifying the colors of be used for the bars. In this case, they are custom
-            seriesColors: [
-                '#6eb43f',
-                '#db030c',
-                '#ff6600'
-            ],
-            seriesDefaults: {
-                renderer:$.jqplot.BarRenderer
-            },
-            axes: {
-                xaxis: {
-                renderer: $.jqplot.CategoryAxisRenderer,
-                ticks: markers
-                }
+        var _safaricom = [];
+        var _airtel = [];
+        var _orange = []; 
+        //x-axis markers (these will be the dates [from:to] essentily, they have to be 7 days)
+        var _markers = [];
+
+        $.getJSON(jsonURL, function(data){ 
+
+            for (var i = 0; i < data.outgoingData.length; i++) {
+                //add data to the arrays but first check if some networks values are unavailable
+                if(typeof data.outgoingData[i].airtel_ke === 'undefined')
+                    _airtel.push(0);
+                else
+                    _airtel.push(data.outgoingData[i].airtel_ke);
+                if(typeof data.outgoingData[i].orange_ke === 'undefined')
+                    _orange.push(0);
+                else
+                    _orange.push(data.outgoingData[i].orange_ke);
+                if(typeof data.outgoingData[i].safaricom_ke === 'undefined')
+                    _safaricom.push(0);
+                else
+                    _safaricom.push(data.outgoingData[i].safaricom_ke);
+
+                //the dates to be used as markers for the graph
+                _markers.push(data.outgoingData[i].date);
             }
-        };
-        //draw the chart
-        $.jqplot('outgoingSMSBarChart', dataArrayOutgoing, outgoingOptions);
-        //prevent default refreshing of the page once the form is submitted
-        return false;
-    });
+            // put the chart data in form of an array
+            var dataArrayOutgoing = [_safaricom, _airtel, _orange];
+            // chart rendering options for outgoing
+            var outgoingOptions = {
+                stackSeries: 'true',
+                title: 'Outgoing SMS for the last ' + data.outgoingData.length + ' days',
+                legend: { 
+                    show: true,
+                    location: 'ne',
+                    placement: 'outsideGrid'    
+                },
+                //labels for the legend
+                series: [
+                    {label: 'Safaricom'},
+                    {label: 'Airtel'},
+                    {label: 'Orange'}
+                ],
+                //specifying the colors of be used for the bars. In this case, they are custom
+                seriesColors: [
+                    '#6eb43f',
+                    '#db030c',
+                    '#ff6600'
+                ],
+                seriesDefaults: {
+                    renderer:$.jqplot.BarRenderer,
+                    rendererOptions:{barMargin: 25},
+                    pointLabels:{show:true, stackedValue: true}
+                },
+                axes: {
+                    xaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer,
+                        ticks: _markers,
+                    }
+                }
+            };
+            //draw the chart
+            $.jqplot('outgoingSMSBarChart', dataArrayOutgoing, outgoingOptions);
+        });
+        //e.preventDefault();
+        //return false;
+    //});
     /*
     *
     *Here, we draw the outgoingSMS bar chart
     *
     */
-    $('#incomingform').submit(function(e){
+    //$('#incomingform').submit(function(e){
         var jsonURL = 'incomingBarDay?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>';
+        //outgoing data for each network for 7days
+        var safaricom = [];
+        var airtel = [];
+        var orange = []; 
+        //x-axis markers (these will be the dates [from:to] essentily, they have to be 7 days)
+        var markers = [];
+        
         $.getJSON(jsonURL, function(data){
-           /* var outgoing = data.outgoing;
-            var _safaricom = [];
-            var _airtel = [];
-            var _orange = [];
-            var _markers = [];
-            for(var i in outgoing){
-                console.log(outgoing[i].Safaricom_KE);
+            for (var i = 0; i < data.incomingData.length; i++) {
+                 //add data to the arrays but first check if some networks values are unavailable
+                if(typeof data.outgoingData[i].airtel_ke === 'undefined')
+                    airtel.push(0);
+                else
+                    airtel.push(data.outgoingData[i].airtel_ke);
+                if(typeof data.outgoingData[i].orange_ke === 'undefined')
+                    orange.push(0);
+                else
+                    orange.push(data.outgoingData[i].orange_ke);
+                if(typeof data.outgoingData[i].safaricom_ke === 'undefined')
+                    safaricom.push(0);
+                else
+                    safaricom.push(data.outgoingData[i].safaricom_ke);
 
-                markers.push(outgoing[i].date);
-               _safaricom.push(outgoing[i].Safaricom_KE);
-                 _airtel.push(outgoing[i].Airtel_KE);
-                _orange.push(outgoing[i].Orange_KE);
-            }*/
-        });
-        //incoming data for each network for 7days
-        var safaricom = [10, 45, 85, 32, 25, 13, 46];
-        var airtel = [2, 15, 6, 45, 87, 25, 17];
-        var orange = [1, 37, 14, 9, 27, 5, 56]; 
-        // put the chart data in form of an array
-        var dataArrayIncoming = [safaricom, airtel, orange];
-        // x-axis markers (these will be the dates [from:to] essentily, they have to be 7 days)
-        var markers = ['Mon', 'Tue', 'Wed', 'Thur','Fri', 'Sat', 'Sun'];
-
-        //options for chart
-        var incomingOptions = {
-            //stack the bars on top of each other
-            stackSeries: 'true',
-            //title for the graph
-            title: 'Incoming SMS for the last 7 days',
-            //declare properties for the legend
-            legend: { 
-                show: true,
-                location: 'ne',
-                placement: 'outsideGrid'    
-            },
-            //labels for the legend
-            series: [
-                {label: 'Safaricom'},
-                {label: 'Airtel'},
-                {label: 'Orange'}
-            ],
-            //specifying the colors of be used for the bars. In this case, they are custom
-            seriesColors: [
-                '#6eb43f',
-                '#db030c',
-                '#ff6600'
-            ],
-            seriesDefaults: {
-                renderer:$.jqplot.BarRenderer
-            },
-            axes: {
-                xaxis: {
-                renderer: $.jqplot.CategoryAxisRenderer,
-                ticks: markers
-                }
+                //the dates to be used as markers for the graph
+               markers.push(data.incomingData[i].date);
             }
-        };
-        // draw the chart
-        $.jqplot('incomingSMSBarChart', dataArrayIncoming, incomingOptions);
-        //prevent default refreshing of the page once the form is submitted
-        return false;
-    });
+             
+            // put the chart data in form of an array
+            var dataArrayIncoming = [safaricom, airtel, orange];
+            //options for chart
+            var incomingOptions = {
+                //stack the bars on top of each other
+                stackSeries: 'true',
+                //title for the graph
+                title: 'Incoming SMS for the last ' + data.incomingData.length + ' days',
+                //declare properties for the legend
+                legend: { 
+                    show: true,
+                    location: 'ne',
+                    placement: 'outsideGrid'    
+                },
+                //labels for the legend
+                series: [
+                    {label: 'Safaricom'},
+                    {label: 'Airtel'},
+                    {label: 'Orange'}
+                ],
+                //specifying the colors of be used for the bars. In this case, they are custom
+                seriesColors: [
+                    '#6eb43f',
+                    '#db030c',
+                    '#ff6600'
+                ],
+                seriesDefaults: {
+                    renderer:$.jqplot.BarRenderer,
+                    rendererOptions:{barMargin: 25},
+                    pointLabels:{show:true, stackedValue: true}
+                },
+                axes: {
+                    xaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer,
+                        ticks: markers,
+                    }
+                }                                  
+            };
+            // draw the chart
+            $.jqplot('incomingSMSBarChart', dataArrayIncoming, incomingOptions);
+            //prevent default refreshing of the page once the form is submitted
+           //  e.preventDefault();
+            //return false;
+        });
+   // });
         
         
     //}

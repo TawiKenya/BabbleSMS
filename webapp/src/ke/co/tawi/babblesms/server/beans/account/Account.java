@@ -33,6 +33,8 @@ public class Account extends StorableBean {
 
     private String username;
     private String logpassword;
+    private String apiusername;
+    private String apipassword;
     private String usertype;
     private String name;
     private String mobile;
@@ -48,6 +50,8 @@ public class Account extends StorableBean {
         super();
         username = "";
         logpassword = "";
+        apiusername = "";
+        apipassword = "";
         usertype = "";
         name = "";
         mobile = "";
@@ -89,6 +93,37 @@ public class Account extends StorableBean {
         this.logpassword = StringUtils.trimToEmpty(logpassword);
     }
 
+    /**
+     * 
+     * @return apiusername
+     */
+    public String getApiusername() {
+        return apiusername;
+    }
+
+    /**
+     * 
+     * @param apiusername 
+     */
+    public void setApiusername(String apiusername) {
+        this.apiusername = StringUtils.trimToEmpty(apiusername);
+    }
+
+    /**
+     * 
+     * @return apipassword
+     */
+    public String getApipassword() {
+        return apipassword;
+    }
+
+    /**
+     * 
+     * @param apipassword 
+     */
+    public void setApipassword(String apipassword) {
+        this.apipassword = StringUtils.trimToEmpty(apipassword);
+    }
 
     /**
      * 
@@ -127,9 +162,7 @@ public class Account extends StorableBean {
      * @return mobile
      */
     public String getMobile() {
-        
         return mobile;
-
     }
 
     /**
@@ -204,17 +237,6 @@ public class Account extends StorableBean {
         this.statusuuid = StringUtils.trimToEmpty(statusuuid);
     }
 
-
-
-public void validate(){
-
-
-
-}
-
-
-
-
     
 	/**
 	 * @see java.lang.Object#toString()
@@ -228,6 +250,10 @@ public void validate(){
 		builder.append(username);
 		builder.append(", logpassword=");
 		builder.append(logpassword);
+		builder.append(", apiusername=");
+		builder.append(apiusername);
+		builder.append(", apipassword=");
+		builder.append(apipassword);
 		builder.append(", usertype=");
 		builder.append(usertype);
 		builder.append(", name=");

@@ -84,7 +84,6 @@ public class OutgoingPie extends HttpServlet {
         response.setDateHeader("Expires", new Date().getTime()); // Expiration date
         response.setDateHeader("Date", new Date().getTime()); // Date and time that the message was sent
 
-        System.out.println("Outging: " + getJsonOutgoing(accountUuid));
         out.write(getJsonOutgoing(accountUuid).getBytes());
         out.flush();
         out.close();

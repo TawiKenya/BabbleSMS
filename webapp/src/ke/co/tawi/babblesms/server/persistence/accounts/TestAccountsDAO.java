@@ -90,6 +90,8 @@ public class TestAccountsDAO {
         assertEquals(acc.getUuid(), ACC_UUID);
         assertEquals(acc.getUsername(), ACC_USERNAME);
         assertEquals(acc.getLogpassword(), LOG_PASSWORD);
+        assertEquals(acc.getApiusername(), API_USERNAME);
+        assertEquals(acc.getApipassword(), API_PASSWORD);
         assertEquals(acc.getName(), NAME);
         assertEquals(acc.getMobile(), MOBILE);
         assertEquals(acc.getEmail(), EMAIL);
@@ -139,6 +141,8 @@ public class TestAccountsDAO {
         acc.setUuid(ACC_UUID_NEW);
         acc.setUsername(ACC_USERNAME_NEW);
         acc.setLogpassword(LOG_PASSWORD_NEW);
+        acc.setApiusername(API_USERNAME_NEW);
+        acc.setApipassword(API_PASSWORD_NEW);
         acc.setName(NAME_NEW);
         acc.setMobile(MOBILE_NEW);
         acc.setEmail(EMAIL_NEW);
@@ -150,6 +154,8 @@ public class TestAccountsDAO {
         assertEquals(acc.getUuid(), ACC_UUID_NEW);
         assertEquals(acc.getUsername(), ACC_USERNAME_NEW);
         assertEquals(acc.getLogpassword(), LOG_PASSWORD_NEW);
+        assertEquals(acc.getApiusername(), API_USERNAME_NEW);
+        assertEquals(acc.getApipassword(), API_PASSWORD_NEW);
         assertEquals(acc.getName(), NAME_NEW);
         assertEquals(acc.getMobile(), MOBILE_NEW);
         assertEquals(acc.getEmail(), EMAIL_NEW);

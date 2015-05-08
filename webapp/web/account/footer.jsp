@@ -190,8 +190,7 @@
 
         // process the form
         $('#incomingform').submit(function(event) {
-            document.getElementById('inbar').src = '../incomingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>&from='+$('#infrom').val()+'&to='+$('#into').val();
-            
+            document.getElementById('inbar').src = '../incomingBarDay?accountuuid=<%=URLEncoder.encode(accountuuid, "UTF-8")%>&from='+$('#infrom').val()+'&to='+$('#into').val();            
             // stop the form from submitting the normal way and refreshing the page
             event.preventDefault();
         });
