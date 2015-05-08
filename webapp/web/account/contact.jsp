@@ -113,14 +113,9 @@
         element = networksCache.get(key);
         network = (Network) element.getObjectValue();
         networkHash.put(network.getUuid(), network.getName());
-    }
-	List keys2;
-     keys2 = networksCache.getKeys();
-    for (Object key : keys) {
-        element = networksCache.get(key);
-        network = (Network) element.getObjectValue();
         networkList.add(network);
     }
+	
         
     //pagination logic
     
@@ -297,12 +292,12 @@ more
                 if (contactPageList != null) {
                     int count1 =1;
 
-                 for (Contact code:contactPageList) {
+                 for (Contact contact : contactPageList) {
                 
                     
-                    emailList = emailDAO.getEmails(code);
-                    contactGroupList = cgDAO.getGroups(code,account);
-                    phoneList = phoneDAO.getPhones(code);
+                    emailList = emailDAO.getEmails(contact);
+                    contactGroupList = cgDAO.getGroups(contact, account);
+                    phoneList = phoneDAO.getPhones(contact);
                   
                     // if (phoneList != null) {
                         // for (Phone code2 :phoneList) {
@@ -312,7 +307,7 @@ more
 
              
 	<td width="10%"><%=contactCount%></td>
-	 <td class="center"><a href="#"><%=code.getName()%></a></td>
+	 <td class="center"><a href="#"><%=contact.getName()%></a></td>
 		<% if (phoneList != null) {
                          //for (Phone code2 :phoneList) {
 			if(phoneList.size() > 1) {
@@ -329,14 +324,14 @@ more
 		<%
                      }
 			
-			if(phoneList.size()>1){
-			for (int i = 1;i < phoneList.size();i++) {
-				%>
-			<td class="center" id = "hiddenphones" style = "display: none;"><%=phoneList.get(i).getPhonenumber()%></td>
-			<%
+			if(phoneList.size()>1) {
+                            for (int i = 1; i < phoneList.size(); i++) {
+                                    %>
+                                <td class="center" id = "hiddenphones" style = "display: none;"><%=phoneList.get(i).getPhonenumber()%></td>
+                            <%
 
-			}
-			}
+                            }
+			}// end 'if(phoneList.size()>1)'
 		}
 		%>
 		
@@ -356,19 +351,19 @@ more
 		<%
                      }
 			
-			if( emailList.size()>1){
-			for (int i = 1;i <  emailList.size();i++) {
-				%>
-			<td  id = "hiddenemails" style = "display: none;"><%= emailList.get(i).getAddress()%></td>
-			<%
+			if(emailList.size() > 1) {
+                            for (int i = 1; i <  emailList.size(); i++) {
+                            %>
+                                <td  id = "hiddenemails" style = "display: none;"><%= emailList.get(i).getAddress()%></td>
+                            <%
 
-			}
-			}
+                            }
+			}// end 'if(emailList.size() > 1)'
 		}
 		%>
 		
 	     <%  
-			 if (contactGroupList.size()>1){
+			 if (contactGroupList.size() > 1) {
 		  %>
              <td class="center" style = "border-right: none;"><%=contactGroupList.get(0).getName()%></td>
 	     <td class="center" style = "border-left: none;"><%=contactGroupList.get(1).getName()%></td>
@@ -397,15 +392,14 @@ more
 
 
 
-  	<td style="display:none"><%=code.getDescription()%></td>
-	<td style="display:none"><%=code.getUuid()%></td>
+  	<td style="display:none"><%=contact.getDescription()%></td>
+	<td style="display:none"><%=contact.getUuid()%></td>
 
 
          </tr>
 
          <%     
-                       //  }
-                   //  }
+                     
                      contactCount++;
                  }
              }			
@@ -484,9 +478,9 @@ more
                                 <%
                                     int count2 = 1;
                                     if (networkList != null) {
-                                        for (Network code : networkList) {
+                                        for (Network netwk : networkList) {
                                 %>
-                                    <option value="<%= code.getUuid()%>"><%= code.getName()%></option>
+                                    <option value="<%= netwk.getUuid()%>"><%= netwk.getName()%></option>
                                 <%
                                             count2++;
                                         }
@@ -529,13 +523,13 @@ more
 	<%
 	
 	if (contactsgrpList != null) {
-         for (Group code : contactsgrpList) {
+         for (Group group : contactsgrpList) {
 	%>
 
         <tr>
 	   
-            <td class="center" id ="td2"><a href="#"><%=code.getName()%></a></td>
-	    <td class="center" id="hideANDseek"><%=code.getUuid()%></td>
+            <td class="center" id ="td2"><a href="#"><%=group.getName()%></a></td>
+	    <td class="center" id="hideANDseek"><%=group.getUuid()%></td>
 			
 		
         </tr>

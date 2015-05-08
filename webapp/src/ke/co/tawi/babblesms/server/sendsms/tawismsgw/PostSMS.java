@@ -15,6 +15,8 @@
  */
 package ke.co.tawi.babblesms.server.sendsms.tawismsgw;
 
+import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
