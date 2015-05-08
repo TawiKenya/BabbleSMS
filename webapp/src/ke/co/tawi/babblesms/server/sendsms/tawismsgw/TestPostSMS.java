@@ -22,8 +22,8 @@ import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
+import ke.co.tawi.babblesms.server.utils.ListPartitioner;
 import ke.co.tawi.babblesms.server.utils.comparator.PhonesByNetworkPredicate;
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.apache.commons.collections.CollectionUtils;
 
 /**
@@ -46,6 +45,7 @@ public class TestPostSMS {
 
 	
 	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
+	final String SMSGW_USERNAME = "tawi", SMSGW_PASSWORD = "tawi123";
 	final String MESSAGE = 	"A test message.";
 	final String SOURCE = 	"2024";
 	
@@ -88,7 +88,39 @@ public class TestPostSMS {
 				new PhonesByNetworkPredicate(Network.SAFARICOM_KE)));
 		System.out.println("Safaricm phone size: " + safaricomPhones.size());
 		
+		
+		List<List<Phone>> phonePartition = ListPartitioner.partition(safaricomPhones, 10);
+		assertEquals(phonePartition.size(), 4);
+		assertEquals(phonePartition.get(0).size(), 10);
+		assertEquals(phonePartition.get(1).size(), 10);
+		assertEquals(phonePartition.get(2).size(), 10);
+		assertEquals(phonePartition.get(3).size(), 9);
+		
+		
+		Map<String,String> params;
+		PostSMS postThread;
+		
+		for(List<Phone> list : phonePartition) {
+			params = new HashMap<String,String>();
+			params.put("username", SMSGW_USERNAME);		
+			params.put("password", SMSGW_PASSWORD);
+			params.put("source", SOURCE);
+			params.put("destination", "254720123456");
+			params.put("message", MESSAGE);
+			params.put("network", "safaricom_ke");
+					
+			
+			
+					
+			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
+			//postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
+								// running in an application server.
+		}
+		
+		
+		
 		// Create a list of Outgoing SMS from the Phones 
+		/*
 		List<OutgoingLog> logList = new ArrayList<OutgoingLog>();
 		
 		OutgoingLog log;
@@ -102,30 +134,7 @@ public class TestPostSMS {
 						
 			logList.add(log);
 		}
-		
-		// These are Safaricom bound Outgoing SMS
-		List<OutgoingLog> safaricomLogs = new ArrayList<>();
-		//safaricomLogs.addAll(CollectionUtils.select(logList, 
-		//		new PhonesByNetworkPredicate(Network.SAFARICOM_KE)));
-		
-		//for(OutgoingLog safaricomLog : safaricomLogs) {
-		//	System.out.println(safaricomLog.getNetworkuuid());
-		//}
-		
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("username", "tawi");		
-		params.put("password", "tawi123");
-		params.put("source", "2024");
-		params.put("destination", "254720123456");
-		params.put("message", "A test message.");
-		params.put("network", "safaricom_ke");
-				
-		
-		PostSMS postThread;
-				
-		postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-		//postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
-							// running in an application server.
+		*/		
 	}
 
 }
