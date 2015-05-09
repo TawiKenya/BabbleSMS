@@ -89,8 +89,6 @@
         account = (Account) element.getObjectValue();
     }
     
-    
-
     Network network;
     Phone phone;
     Email email;
@@ -305,7 +303,9 @@ more
                         if (phoneList != null) {
                             out.println("<td>");
                             for(Phone ph : phoneList) {
-                                out.println(ph.getPhonenumber() + "<br/>");           
+                                out.println(ph.getPhonenumber() + " (" +
+                                    StringUtils.split( networkHash.get(ph.getNetworkuuid()) )[0] + 
+                                    ")<br/>");           
                             }
                             out.println("</td>");
 
