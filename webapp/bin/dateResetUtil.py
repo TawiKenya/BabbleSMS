@@ -33,28 +33,84 @@
 
 import psycopg2
 import sys
+import datetime
+from datetime import timedelta
+from random import randint
 
 
+class reg(object):
+    def __init__(self, cursor, row):
+	for (attr, val) in zip((d[0] for d in cursor.description), row) :
+	    setattr(self, attr, val)
+
+
+#-------------------------------------------------------------------------------
+# Gives us a random time between a start and an end date
+# Note that both 'start' and 'end' arguments should be datetime objects.
+#-------------------------------------------------------------------------------
+def random_date(start, end):
+    return start + timedelta(
+        seconds = randint(0, int((end - start).total_seconds())))
+
+
+#-------------------------------------------------------------------------------
+# This method subtracts 'delta' number of months from a datetime object
+#-------------------------------------------------------------------------------
+def monthdelta(date, delta):
+    m, y = (date.month-delta) % 12, date.year + ((date.month)+delta-1) // 12
+    if not m: m = 12
+    d = min(date.day, [31,
+        29 if y%4==0 and not y%400==0 else 28,31,30,31,30,31,31,30,31,30,31][m-1])
+    return date.replace(day=d,month=m, year=y)
+
+
+#-------------------------------------------------------------------------------
+# Database functionality below
+#-------------------------------------------------------------------------------
 con = None
 
 try:
+    print "Have started Incoming and Outgoing log date reset utility."
+    
+    monthDelta = 2 # The number of months in the past from now for which the dates should fall in between
+   
+    dateNow = datetime.datetime.now()    
+    dateStart = monthdelta(dateNow, monthDelta)
+        
     con = psycopg2.connect("dbname='babblesmsdb' user='babblesms' host='localhost' password='Hymfatsh8'")
 
-    cur = con.cursor()    
-    cur.execute("SELECT * FROM Account")
+    cur = con.cursor() 
+    cur2 = con.cursor()
+    cur.execute("SELECT * FROM incominglog")
 
-    rows = cur.fetchall()
-
-    for row in rows:
-        print row
+    while True:
+      
+        row = cur.fetchone()
+        
+        if row == None:
+            break
+		
+	r = reg(cur, row)
+	uuid = r.uuid
+	#print uuid
+	 
+	cur2.execute("UPDATE incominglog SET logTime=%s WHERE uuid=%s", (random_date(dateStart, dateNow), uuid))        
+	con.commit()
 
 
 except psycopg2.DatabaseError, e:
     print 'Error %s' % e    
     sys.exit(1)
-    
-    
+
+
 finally:
+    print "Have finished running utility."
     
     if con:
         con.close()
+
+
+
+
+
+
