@@ -74,8 +74,7 @@
     PhoneDAO phoneDAO = PhoneDAO.getInstance();
     EmailDAO emailDAO = EmailDAO.getInstance();
     ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-    GroupDAO gDAO = GroupDAO.getInstance();
-    ContactDAO cdao = ContactDAO.getInstance();
+    GroupDAO groupDAO = GroupDAO.getInstance();
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
@@ -103,8 +102,7 @@
     List<Group> contactGroupList = new ArrayList<Group>();
     List<Group> contactsgrpList = new ArrayList<Group>(); 
      
-     //GroupDAO gDAO=new GroupDAO();
-     contactsgrpList = gDAO.getGroups(account); 
+    contactsgrpList = groupDAO.getGroups(account); 
 
     List keys;
      
@@ -278,131 +276,75 @@ more
                     <tr>
                         <th>*</th>
                         <th><a href="#">Name</a></th>
-                        <th style = "border-right: none;"><a href="#">Number</a></th> 
-			 <th style = "border-left: none;"> &nbsp;&nbsp;&nbsp;&nbsp;</th>                     
+                        <th><a href="#">Phone</a></th>
                         <th><a href="#">Email</a></th>
-			<th style = "border-left: none;"> &nbsp;&nbsp;&nbsp;&nbsp;</th>
-                        <th><a href="#">Group(s)</a></th>
-			<th style = "border-left: none;"> &nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th><a href="#">Group</a></th>
                     </tr>
                 </thead>   
        
 		<tbody class="tblTest">
+                    
             <%
                 if (contactPageList != null) {
-                    int count1 =1;
+                    int count1 = 1;
 
                  for (Contact contact : contactPageList) {
-                
-                    
+                                    
                     emailList = emailDAO.getEmails(contact);
                     contactGroupList = cgDAO.getGroups(contact, account);
-                    phoneList = phoneDAO.getPhones(contact);
-                  
-                    // if (phoneList != null) {
-                        // for (Phone code2 :phoneList) {
-         %>
+                    phoneList = phoneDAO.getPhones(contact);                  
+            %>
           
-         <tr>
+                    <tr>
 
-             
-	<td width="10%"><%=contactCount%></td>
-	 <td class="center"><a href="#"><%=contact.getName()%></a></td>
-		<% if (phoneList != null) {
-                         //for (Phone code2 :phoneList) {
-			if(phoneList.size() > 1) {
-		%>
-             <td class="center" style = "border-right: none;"><%=phoneList.get(0).getPhonenumber()%></td>&nbsp;
-	     <td class="center" style = "border-left: none;"><%=phoneList.get(1).getPhonenumber()%></td>
-			<%
-				      }
-		else {
-
-			%>
-		<td class="center" style = "border-right: none;"><%=phoneList.get(0).getPhonenumber()%></td>&nbsp;
-	        <td class="center" style = "border-left: none;">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		<%
-                     }
-			
-			if(phoneList.size()>1) {
-                            for (int i = 1; i < phoneList.size(); i++) {
-                                    %>
-                                <td class="center" id = "hiddenphones" style = "display: none;"><%=phoneList.get(i).getPhonenumber()%></td>
-                            <%
-
+                       <td width="10%"><%=contactCount%></td>
+                       <td class="center"><a href="#"><%=contact.getName()%></a></td>
+         				
+                    <% 
+                        // Print Phone Numbers
+                        if (phoneList != null) {
+                            out.println("<td>");
+                            for(Phone ph : phoneList) {
+                                out.println(ph.getPhonenumber() + "<br/>");           
                             }
-			}// end 'if(phoneList.size()>1)'
-		}
-		%>
-		
-	     <% if ( emailList != null) {
-                         
-			if( emailList.size() > 1) {
-		%>
-             <td  style = "border-right: none;"><%= emailList.get(0).getAddress()%></td>&nbsp;
-	     <td  style = "border-left: none;"><%= emailList.get(1).getAddress()%></td>
-			<%
-				      }
-		else {
+                            out.println("</td>");
 
-			%>
-		<td  style = "border-right: none;"><%= emailList.get(0).getAddress()%></td>&nbsp;
-	        <td  style = "border-left: none;">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		<%
-                     }
-			
-			if(emailList.size() > 1) {
-                            for (int i = 1; i <  emailList.size(); i++) {
-                            %>
-                                <td  id = "hiddenemails" style = "display: none;"><%= emailList.get(i).getAddress()%></td>
-                            <%
+                        } else { // end 'if (phoneList != null)'
+                            out.println("<td>&nbsp;</td>");
+                        }
 
+
+                        // Print Emails
+                        if (emailList != null) {
+                            out.println("<td>");
+                            for(Email mail : emailList) {
+                                out.println(mail.getAddress() + "<br/>");           
                             }
-			}// end 'if(emailList.size() > 1)'
-		}
-		%>
-		
-	     <%  
-			 if (contactGroupList.size() > 1) {
-		  %>
-             <td class="center" style = "border-right: none;"><%=contactGroupList.get(0).getName()%></td>
-	     <td class="center" style = "border-left: none;"><%=contactGroupList.get(1).getName()%></td>
-             
-                 <%  } 
+                            out.println("</td>");
 
-             else if (contactGroupList.size()>0) {
-		 %>
-            <td class="center" style = "border-right: none;"><%=contactGroupList.get(0).getName()%></td>
-	    <td class = "center"style = "border-left: none;">&nbsp </td>
-            <% } 
-     			else if (contactGroupList.size()<=0) { %>
-                <td class = "center" style = "border-right: none;">&nbsp </td>
-		<td class = "center" style = "border-left: none;">&nbsp </td>
- 		 <% } 
-  
-	    if(contactGroupList.size()>0){
-			for (int i = 0;i < contactGroupList.size();i++) {   
-				%>
-			<td class="center" id = "hiddengroups" style = "display: none;"><%=contactGroupList.get(i).getName()%></td>
-			<%
+                        } else { // end 'if ( emailList != null)'
+                            out.println("<td>&nbsp;</td>");
+                        }               
+                      
+                        // Print Groups
+                        if (contactGroupList != null) {                        
+                            out.println("<td>");
+                            for(Group gr : contactGroupList) {
+                                out.println(gr.getName() + "<br/>");           
+                            }
+                            out.println("</td>");
 
-			}
-			}
-			%>
-
-
-
-  	<td style="display:none"><%=contact.getDescription()%></td>
-	<td style="display:none"><%=contact.getUuid()%></td>
-
-
-         </tr>
-
-         <%     
+                        } else { // end 'if ( contactGroupList != null)'
+                            out.println("<td>&nbsp;</td>");
+                        }  
                      
+
                      contactCount++;
-                 }
-             }			
+                     out.println("</tr>");
+
+             	}// end 'for (Contact contact : contactPageList)'		
+
+            }// end 'if (contactPageList != null)'
         %>
                
 
@@ -571,7 +513,7 @@ more
 <input type="hidden" name="statusuuid" value="<%=Contact.ACTIVE_STATUSUUID%>">
 <br/><br/>
 <div id="savecancelButtons2">
-<button type="submit" id="save" class="btn btn-primary">Save changes</button>
+<button type="submit" id="save" class="btn btn-primary">Save</button>
 <button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
  </div>
 
