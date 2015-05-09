@@ -43,9 +43,6 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	
 	private static AccountDAO accountDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
-    private BeanProcessor beanProcessor = new BeanProcessor();
-	
-
     /**
      * @return the {@link AccountDAO}
      */
@@ -85,34 +82,92 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public Account getAccount(String uuid) {
 		Account account = null;
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        BeanProcessor b = new BeanProcessor();
 		
+        try {
+            conn = dbCredentials.getConnection();
+            pstmt = conn.prepareStatement("SELECT * FROM Account WHERE Uuid = ?;");
+            pstmt.setString(1, uuid);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                account = b.toBean(rset, Account.class);
+            }
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception when getting accounts with uuid: " + uuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+        } finally {
+            if (rset != null) {
+                try {
+                    rset.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return account;
 		
-		try(
-			Connection conn = dbCredentials.getConnection();
-			 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Account WHERE Uuid = ?;");    		   
-			   ) {
-			  pstmt.setString(1, uuid);           
-		       ResultSet rset = pstmt.executeQuery();
-		       
-		       if (rset.next()) {
-	               account = beanProcessor.toBean(rset, Account.class);
-	           }
-			
-			
-		} catch(SQLException e){
-			
-			   logger.error("SQLException when getting account with uuid: " + uuid);
-	           logger.error(ExceptionUtils.getStackTrace(e));
-		}
-		
-		
-		return account;
 	}
 
 	@Override
 	public Account getAccountByName(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		 Account accounts = null;
+
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rset = null;
+	        BeanProcessor b = new BeanProcessor();
+
+	        try {
+	            conn = dbCredentials.getConnection();
+	            pstmt = conn.prepareStatement("SELECT * FROM Account WHERE username = ?;");
+	            pstmt.setString(1, username);
+	            rset = pstmt.executeQuery();
+
+	            if (rset.next()) {
+	                accounts = b.toBean(rset, Account.class);
+	            }
+
+	        } catch (SQLException e) {
+	            logger.error("SQL Exception when getting accounts with uuid: " + username);
+	            logger.error(ExceptionUtils.getStackTrace(e));
+	        } finally {
+	            if (rset != null) {
+	                try {
+	                    rset.close();
+	                } catch (SQLException e) {
+	                }
+	            }
+	            if (pstmt != null) {
+	                try {
+	                    pstmt.close();
+	                } catch (SQLException e) {
+	                }
+	            }
+	            if (conn != null) {
+	                try {
+	                    conn.close();
+	                } catch (SQLException e) {
+	                }
+	            }
+	        }
+	        return accounts;
 	}
 	
 	/**
@@ -174,30 +229,32 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public boolean putAccount(Account account) {
 		boolean success = true;
-		
-		try(
-				Connection conn = dbCredentials.getConnection();
-	      	    PreparedStatement pstmt = conn.prepareStatement("INSERT INTO account "
-	         	 + "(uuid, name, description, accountuuid, statusuuid) VALUES (?,?,?,?,?);"); )
-	         	 {
-			pstmt.setString(1, account.getUuid());   
-            pstmt.setString(2, account.getName());
-            pstmt.setString(3, account.getDescription());
-            pstmt.setString(4, account.getStatusUuid());
-  	       
-            pstmt.executeUpdate();
-			
-			
-			
-		}catch(SQLException e){
-			
-			logger.error("SQLException when trying to put " + account);
+
+        try (
+        		Connection conn = dbCredentials.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username, logpassword,"
+                		+ "name, mobile, email, statusuuid) "
+                		+ "VALUES (?,?,?,?,?,?,?);")
+            ) {
+        	
+            pstmt.setString(1, account.getUuid());
+            pstmt.setString(2, account.getUsername());
+            pstmt.setString(3, account.getLogpassword());
+            pstmt.setString(4, account.getName());
+            pstmt.setString(5, account.getMobile());
+            pstmt.setString(6, account.getEmail());
+            pstmt.setString(7, account.getStatusuuid());
+
+            pstmt.execute();
+            
+        } catch (SQLException e) {
+        	logger.error("SQLException when trying to put: " + account);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-		}
-		
-		
-		return success;
+        }
+      
+        
+        return success;
 	}
 
     /**
@@ -205,27 +262,42 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	 */
 	@Override
 	public boolean updateAccount(String uuid, Account account) {
-		boolean success = true;
-		
-		try(Connection conn = dbCredentials.getConnection();
-	      	 PreparedStatement pstmt = conn.prepareStatement("UPDATE account SET name=?, "
-	         + "description=?,  statusuuid=? WHERE Uuid=?;");   ){
-			
-			pstmt.setString(1, account.getName());
-            pstmt.setString(2, account.getDescription());
-            pstmt.setString(3, account.getStatusUuid());
-            pstmt.setString(4, account.getUuid()); 
-            
-            pstmt.executeUpdate();
-			
-		}catch(SQLException e){
-			 logger.error("SQLException when trying to put " + account);
-             logger.error(ExceptionUtils.getStackTrace(e));
-             success = false;
-			
-		}
-		
-		return success;
+		 boolean success = true;
+
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
+
+	        try {
+	            conn = dbCredentials.getConnection();
+	            pstmt = conn.prepareStatement("UPDATE Account SET username=?,logpassword=?,name=?,mobile=?,email=? WHERE Uuid = ?;");
+	            pstmt.setString(1, account.getUsername());
+	            pstmt.setString(2, account.getLogpassword());
+	            pstmt.setString(3, account.getName());
+	            pstmt.setString(4, account.getMobile());
+	            pstmt.setString(5, account.getEmail());
+	            pstmt.setString(6, account.getUuid());
+
+	            pstmt.executeUpdate();
+
+	        } catch (SQLException e) {
+	            logger.error("SQL Exception when deleting accounts with uuid " + account);
+	            logger.error(ExceptionUtils.getStackTrace(e));
+	            success = false;
+	        } finally {
+	            if (pstmt != null) {
+	                try {
+	                    pstmt.close();
+	                } catch (SQLException e) {
+	                }
+	            }
+	            if (conn != null) {
+	                try {
+	                    conn.close();
+	                } catch (SQLException e) {
+	                }
+	            }
+	        }
+	        return success;
 	}
 
 	
