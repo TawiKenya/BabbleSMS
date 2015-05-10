@@ -15,52 +15,28 @@
  */
 package ke.co.tawi.babblesms.server.beans.maskcode;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
-
 /**
  * An SMS short code.
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Shortcode extends StorableBean {
-
-    private String codenumber;
-    private String accountuuid;
-    private String networkuuid;
-
+public class Shortcode extends SMSSource {
+    
     
     /**
      * 
      */
     public Shortcode() {
         super();
-        accountuuid = "";
-        networkuuid = "";
     }
     
     public String getCodenumber() {
-        return codenumber ;
+        return getSource() ;
     }
 
     public void setCodenumber(String codenumber ) {
-        this.codenumber  = codenumber ;
-    }
-
-    public String getAccountuuid() {
-        return accountuuid ;
-    }
-
-    public void setAccountuuid(String accountuuid ) {
-        this.accountuuid  = accountuuid ;
-    }
-
-    public String getNetworkuuid() {
-        return networkuuid;
-    }
-
-    public void setNetworkuuid(String networkuuid) {
-        this.networkuuid = networkuuid;
+    	setSource(codenumber);
     }
 
     
@@ -74,11 +50,11 @@ public class Shortcode extends StorableBean {
         builder.append("[uuid=");
         builder.append(getUuid());
         builder.append(", codenumber=");
-        builder.append(codenumber);
+        builder.append(getSource());
         builder.append(", accountuuid=");
-        builder.append(accountuuid);
+        builder.append(getAccountuuid());
         builder.append(", networkuuid=");
-        builder.append(networkuuid);
+        builder.append(getNetworkuuid());
         builder.append("]");
         return builder.toString();
     }

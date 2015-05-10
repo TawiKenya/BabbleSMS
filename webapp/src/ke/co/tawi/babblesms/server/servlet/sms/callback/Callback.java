@@ -12,7 +12,7 @@ import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 import net.sf.ehcache.CacheManager;
@@ -75,7 +75,7 @@ public class Callback extends HttpServlet {
                     //get source uuid
                     ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
                     Shortcode shortcode = new Shortcode();                    
-                    shortcode=shortcodeDAO.getShortcodeBycodeNumber(request.getParameter("destination"),network.getUuid());
+                    //shortcode=shortcodeDAO.getShortcodeBycodeNumber(request.getParameter("destination"),network.getUuid());
                    
                     incomingLog.setMessage(request.getParameter("message"));
                     incomingLog.setOrigin(request.getParameter("source"));

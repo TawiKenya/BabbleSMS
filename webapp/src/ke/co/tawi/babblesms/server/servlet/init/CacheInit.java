@@ -25,8 +25,8 @@ import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
 import ke.co.tawi.babblesms.server.persistence.network.CountryDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
@@ -137,7 +137,7 @@ public class CacheInit extends HttpServlet {
         objList = msgDAO.getAllMessageStatus();
         initCacheByUuid(CacheVariables.CACHE_MESSAGE_STATUS_BY_UUID, objList);
                 
-        objList = shortcodeDAO.getAllShortcode();
+        objList = shortcodeDAO.getAllShortcodes();
         initCacheByUuid(CacheVariables.CACHE_SHORTCODE_BY_UUID, objList);
         
         objList = maskDAO.getAllMasks();
@@ -268,7 +268,7 @@ public class CacheInit extends HttpServlet {
                 shortcodeCache.initialise();
             }
 
-            List<Shortcode> allShortcodes = shortcodeDAO.getAllShortcode();
+            List<Shortcode> allShortcodes = shortcodeDAO.getAllShortcodes();
 
             if (StringUtils.equals(cacheName, CacheVariables.CACHE_SHORTCODE_BY_ACCOUNTUUID)) {
                 for (Shortcode a : allShortcodes) {
@@ -331,6 +331,7 @@ public class CacheInit extends HttpServlet {
             
         }
     }
+    
     
     /**
      *

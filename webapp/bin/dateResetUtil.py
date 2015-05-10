@@ -38,10 +38,15 @@ from datetime import timedelta
 from random import randint
 
 
+#-------------------------------------------------------------------------------
+# This class allows us to fetch an index in a database row of a resultset by 
+# name instead of by index number.
+#-------------------------------------------------------------------------------
 class reg(object):
     def __init__(self, cursor, row):
 	for (attr, val) in zip((d[0] for d in cursor.description), row) :
 	    setattr(self, attr, val)
+
 
 
 #-------------------------------------------------------------------------------
@@ -51,6 +56,7 @@ class reg(object):
 def random_date(start, end):
     return start + timedelta(
         seconds = randint(0, int((end - start).total_seconds())))
+
 
 
 #-------------------------------------------------------------------------------
@@ -64,53 +70,58 @@ def monthdelta(date, delta):
     return date.replace(day=d,month=m, year=y)
 
 
+
 #-------------------------------------------------------------------------------
 # Database functionality below
 #-------------------------------------------------------------------------------
-con = None
+def resetDates(dbTable, dbColumn):
+    con = None
 
-try:
-    print "Have started Incoming and Outgoing log date reset utility."
+    try:
+        monthDelta = 3 # The number of months in the past from now for which the dates should fall in between
     
-    monthDelta = 2 # The number of months in the past from now for which the dates should fall in between
-   
-    dateNow = datetime.datetime.now()    
-    dateStart = monthdelta(dateNow, monthDelta)
+        dateNow = datetime.datetime.now()    
+        dateStart = monthdelta(dateNow, monthDelta)
+            
+        con = psycopg2.connect("dbname='babblesmsdb' user='babblesms' host='localhost' password='Hymfatsh8'")
+
+        cur = con.cursor() 
+        cur2 = con.cursor()
         
-    con = psycopg2.connect("dbname='babblesmsdb' user='babblesms' host='localhost' password='Hymfatsh8'")
+        cur.execute("SELECT * FROM " + str(dbTable) + ";")
 
-    cur = con.cursor() 
-    cur2 = con.cursor()
-    cur.execute("SELECT * FROM incominglog")
-
-    while True:
-      
-        row = cur.fetchone()
+        while True:
         
-        if row == None:
-            break
-		
-	r = reg(cur, row)
-	uuid = r.uuid
-	#print uuid
-	 
-	cur2.execute("UPDATE incominglog SET logTime=%s WHERE uuid=%s", (random_date(dateStart, dateNow), uuid))        
-	con.commit()
+            row = cur.fetchone()
+            
+            if row == None:
+                break
+            
+            r = reg(cur, row)
+            uuid = r.uuid
+            
+            cur2.execute("UPDATE " + str(dbTable) + " SET " + str(dbColumn) + " =%s WHERE uuid=%s;", (random_date(dateStart, dateNow), uuid))            
+            con.commit()
 
 
-except psycopg2.DatabaseError, e:
-    print 'Error %s' % e    
-    sys.exit(1)
+    except psycopg2.DatabaseError, e:
+        print 'Error %s' % e    
+        sys.exit(1)
 
 
-finally:
-    print "Have finished running utility."
-    
-    if con:
-        con.close()
-
-
+    finally:        
+        if con:
+            con.close()
 
 
 
+#-------------------------------------------------------------------------------
+# Main method
+#-------------------------------------------------------------------------------
+print "Have started the date reset utility."
 
+resetDates("incominglog", "logTime")
+resetDates("outgoinglog", "logTime")
+resetDates("outgoingGrouplog", "logTime")
+
+print "Have finished running utility."

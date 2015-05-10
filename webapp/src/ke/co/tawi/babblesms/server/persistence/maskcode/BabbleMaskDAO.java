@@ -46,14 +46,19 @@ public interface BabbleMaskDAO {
      */
     public boolean put(Mask mask);
 
-    
-    
+        
     /**
      * @param account
      * @return a List of {@link Mask}s belonging to this account.
      */
     public List<Mask> getMasks(Account account);
     
+    
+    /**
+     * 
+     * @return a List of all {@link Mask}s
+     */
+    public List<Mask> getAllMasks();
     
     
     /**

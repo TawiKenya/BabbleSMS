@@ -55,6 +55,13 @@ public interface BabbleShortcodeDAO {
    public List<Shortcode> getShortcodes(Account account);
    
    
+   /**
+   *
+   * @return a list of all {@link Shortcode}s.
+   */
+  public List<Shortcode> getAllShortcodes();
+  
+   
     /**
      * Update a Shortcode with the matching UUID.
      *

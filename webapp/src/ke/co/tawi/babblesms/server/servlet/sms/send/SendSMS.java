@@ -16,12 +16,15 @@
 package ke.co.tawi.babblesms.server.servlet.sms.send;
 
 import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.beans.contact.Contact;
+import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
+import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
@@ -65,6 +68,8 @@ public class SendSMS extends HttpServlet {
 	private Cache accountsCache;
 		
 	private PhoneDAO phoneDAO;
+	private MaskDAO maskDAO;
+	private ShortcodeDAO shortcodeDAO;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
@@ -80,6 +85,8 @@ public class SendSMS extends HttpServlet {
 		super.init(config);
 		
 		phoneDAO = PhoneDAO.getInstance();
+		maskDAO = MaskDAO.getInstance();
+		shortcodeDAO = ShortcodeDAO.getInstance();
 		
 		CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
@@ -112,6 +119,14 @@ public class SendSMS extends HttpServlet {
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
        
+		
+		// Determine the source to use (shortcode or mask)
+		SMSSource smsSource = null;
+		
+		if((smsSource = maskDAO.get(source)) == null) {
+			smsSource = shortcodeDAO.get(source);
+		}
+		
         
 		//Group group;
 		
@@ -130,98 +145,39 @@ public class SendSMS extends HttpServlet {
 			phoneList.add(phoneDAO.getPhone(phone));
 		}
 		
-		/*
-		 
-		//removing any blank input field value passed here
-		List<String> grouplist = new ArrayList<>();
-                if(groupselected.length >0){
-    		for(String s :groupselected ) {
-      		  if(s != null && s.length() > 0) {
-         	  grouplist.add(s);
-      		  }
-    		}
-			//converting the list back to an array
-   		 groupselected = grouplist.toArray(new String[grouplist.size()]);
 		
-		}
-                
-                
-			List<String> newgroupList = new ArrayList<>(new HashSet(grouplist));
-			
-			if(newgroupList != null){
-			for (String group1 : newgroupList) {
-			logger.info("yyyyyyyyyyyy+++++++++++"+group1);
-				}}
-			logger.info("my message is"+message+"sent by"+source+"to"+"whose phone is"+contactselected);
-			if(contactselected!=null){
-			for(int i=0;i<contactselected.length;i++){
-			logger.info("xxxxxxxxxxxxxxxi+++++"+i+"++++++"+contactselected[i]);
-			
-		}}
-			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-			GroupDAO gDAO = GroupDAO.getInstance();
-			
-
-
-			PhoneDAO pDAO = PhoneDAO.getInstance();
-			ContactDAO cDAO = ContactDAO.getInstance();
-			Contact contact = new Contact();
-			List<Phone> phonelist = new ArrayList<>();
-			List<Contact> contactList = new ArrayList<>();
-			if(newgroupList != null){
-			for (String groupname : newgroupList) {
-		     	group = gDAO.getGroupByName(account ,groupname);
-			contactList = cgDAO.getContacts(group); 
-			for(Contact code:contactList){
-			for(int i =0; i < pDAO.getPhones(code).size();i++){
-			phonelist.add(pDAO.getPhones(code).get(i));
-		}	
-		}
-		}
-			List<Phone> newphoneList = new ArrayList<>(new HashSet(phonelist));
-			logger.info("my phonenumbers"+ phonelist);
-			 for(Phone phone:newphoneList){
-                         phones +=phone.getPhonenumber()+";"; 
-                
-			 
-		} 
-			 logger.info("my phones"+phones);
-		}
-
-			if(contactselected!=null){
-			for(String contactuuid:contactselected){
-			contact = cDAO.getContact(contactuuid);
-			for(int i =0; i < pDAO.getPhones(contact).size();i++){
-			phonelist.add(pDAO.getPhones(contact).get(i));
-			}}
-			logger.info("my phonenumbers"+ phonelist);
-                       for(Phone phone:phonelist){
-                         phones +=phone.getPhonenumber()+";"; 
-                 }}
-                       logger.info("my phones"+phones);
-           */
 		
-			Map<String,String> params;
-			PostSMS postThread;
+		Map<String,String> params;
+		PostSMS postThread;
+		
+		for(Phone phone : phoneList) {
+			params = new HashMap<>();
+		
+			params.put("username", SMSGW_USERNAME);		
+			params.put("password", SMSGW_PASSWORD);
+			params.put("source", smsSource.getSource());
+			params.put("destination", phone.getPhonenumber());
+			params.put("message", message);
 			
-			for(Phone phone : phoneList) {
-				params = new HashMap<>();
-			
-				params.put("username", SMSGW_USERNAME);		
-				params.put("password", SMSGW_PASSWORD);
-				params.put("source", source);
-				params.put("destination", phone.getPhonenumber());
-				params.put("message", message);
-				params.put("network", "safaricom_ke");
-											
-				System.out.println("Data to post: " + StringUtil.mapToString(params));
-				
-				postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-				postThread.start(); 				
+			switch (smsSource.getNetworkuuid()) {
+				case Network.SAFARICOM_KE:
+					params.put("network", "safaricom_ke");
+					break;
+					
+				case Network.AIRTEL_KE:
+					params.put("network", "airtel_ke");
+					break;
 			}
 			
-			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
-			response.sendRedirect("sendsms.jsp");	
+										
+			//System.out.println("Data to post: " + StringUtil.mapToString(params));
+			
+			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
+			postThread.start(); 				
 		}
+		
+		session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+		response.sendRedirect("sendsms.jsp");	
+	}
 			
 }

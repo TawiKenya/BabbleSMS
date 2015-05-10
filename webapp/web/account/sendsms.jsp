@@ -29,9 +29,10 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
+
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
@@ -39,8 +40,8 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO"%>
+
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
@@ -80,7 +81,13 @@
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
 
     Account account = new Account(); 
-   
+    HashMap<String, Phone> phoneHash = new HashMap();
+    HashMap<String, String> networkHash = new HashMap<String, String>();
+
+    Shortcode shortcode;
+    Mask mask;
+    Network network;
+
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
     Cache shortcodeCache = mgr.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID);
@@ -97,14 +104,20 @@
         account = (Account) element.getObjectValue();
     }
 
-
-    HashMap<String, Phone> phoneHash = new HashMap();
-    HashMap<String, String> networkHash = new HashMap();
+    List keys;
+     
+    keys = networksCache.getKeys();
+    for (Object key : keys) {
+        element = networksCache.get(key);
+        network = (Network) element.getObjectValue();
+        networkHash.put(network.getUuid(), network.getName());
+    }
+    
 
     List<Network> networkList = new ArrayList();
     List<Shortcode> shortcodelist = new ArrayList();
-    List<Mask> masklist = new ArrayList();
-    List<MessageTemplate> list = new ArrayList();
+    List<Mask> masklist;
+    List<MessageTemplate> msgTemplatelist = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
     List<Contact> contactList = new ArrayList();
 
@@ -117,26 +130,23 @@
 
    MaskDAO maskDAO = MaskDAO.getInstance();
    ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
-   NetworkDAO networkDAO = NetworkDAO.getInstance();
    MessageTemplateDAO msgtemplDAO = MessageTemplateDAO.getInstance();
   
 
-   masklist =maskDAO.getmaskbyaccount(account.getUuid());
-   shortcodelist = shortcodeDAO.getShortcodebyaccountuuid(account.getUuid());
-   list = msgtemplDAO.getTemplates(account);
-
-    //Element element;
-    List keys;
-    Shortcode shortcode;
-    Mask mask;
-    Network network;
-   // Account account;
+   masklist = maskDAO.getMasks(account);
+   shortcodelist = shortcodeDAO.getShortcodes(account);
+   msgTemplatelist = msgtemplDAO.getTemplates(account);
+    
+    
+   
     Contact contacts;
     
-
     MessageTemplate messageTemplate;
     List<Phone> list2 = new ArrayList();
     Group cgroup = new Group();
+
+    
+    
 
 /** Declare and initialize variables to be used for crediting**/
 
@@ -164,7 +174,7 @@ int credit_Consumed = 0;
 <div class="row-fluid sortable">
     <div class="box span12">
         <div class="box-header well" data-original-title>
-            <h2><i class="icon-edit"></i> new sms</h2>
+            <h2><i class="icon-edit"></i>Compose SMS</h2>
 
         </div>
         <div class="box-content">
@@ -355,43 +365,44 @@ int credit_Consumed = 0;
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
                             <form action="sendsms.jsp">
-                            <select name="source" id="source" required="true">
-                                <%
-                                    //for mask
-                                    int count = 1;
-                                    if (masklist != null) {
-                                        for (Mask code : masklist) {
-
-                                %>
                                 
-                                
-                                    <option class="message_source" id="<%= code.getMaskname()%>" value="<%= code.getMaskname()%>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>"  onclick="networkselect(this)">
-                                                       
+                                <select name="source" id="source" required="true">
+                                    <%
+                                        //for mask
+                                        int count = 1;
+                                        if (masklist != null) {
+                                            for (Mask code : masklist) {
 
-                                        
-                                        <%= code.getMaskname() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")" %>
-                                    </option>
-                                <%
-                                            count++;
-                                        }
+                                    %>
 
-                                    }
-                                    //for shortcode
-                                    count = 1;
-                                    if (shortcodelist != null) {
-                                        for (Shortcode code : shortcodelist) {
-                                %>
-                                   <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getCodenumber() %>" label="<%=networkDAO.getNetwork(code.getNetworkuuid()).getName()%>" onclick="networkselect(this)">
-                                      
-                                            <%=code.getCodenumber() + " (" + networkDAO.getNetwork(code.getNetworkuuid()).getName() + ")"%>
+
+                                        <option class="message_source" id="<%= code.getMaskname()%>" value="<%= code.getUuid() %>" label="<%= networkHash.get(code.getNetworkuuid()) %>"  onclick="networkselect(this)">
+
+                                            <%= code.getMaskname() + " (" + networkHash.get(code.getNetworkuuid()) + ")" %>
                                         </option>
-                                <%
-                                            count++;
-                                        }
+                                        
+                                    <%
+                                                count++;
+                                            }// end 'for (Mask code : masklist)'
+                                        }// end 'if (masklist != null)'
 
-                                    }
-                                %>
-                            </select>
+
+                                        //for shortcode
+                                        count = 1;
+                                        if (shortcodelist != null) {
+                                            for (Shortcode code : shortcodelist) {
+                                    %>
+                                       <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getUuid() %>" label="<%= networkHash.get(code.getNetworkuuid()) %>" onclick="networkselect(this)">
+
+                                                <%=code.getCodenumber() + " (" + networkHash.get(code.getNetworkuuid()) + ")"%>
+                                            </option>
+                                    <%
+                                                count++;
+                                            }
+
+                                        }
+                                    %>
+                                </select>
                         </div>
                     </div>   
                             
@@ -404,8 +415,8 @@ int credit_Consumed = 0;
                                 <option class = "add_field_button" value="">Please Select One</option>
                                 <%
                                     count = 1;
-                                    if (list != null) {
-                                        for (MessageTemplate code : list) {
+                                    if (msgTemplatelist != null) {
+                                        for (MessageTemplate code : msgTemplatelist) {
                                 %>
                                 <option class = "add_field_button" id="<%=code.getUuid()%>" value="<%= code.getContents()%>"><%= code.getTitle()%></option>
                                 
