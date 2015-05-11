@@ -82,15 +82,14 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public Account getAccount(String uuid) {
 		Account account = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 		
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Account WHERE Uuid = ?;");
+        try (  Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Account WHERE Uuid = ?;");
+        		
+        		){
+           
             pstmt.setString(1, uuid);
             rset = pstmt.executeQuery();
 
@@ -112,15 +111,16 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public Account getAccountByName(String username) {
 		 Account accounts = null;
-
-	        Connection conn = null;
-	        PreparedStatement pstmt = null;
 	        ResultSet rset = null;
 	        BeanProcessor b = new BeanProcessor();
 
-	        try {
-	            conn = dbCredentials.getConnection();
-	            pstmt = conn.prepareStatement("SELECT * FROM Account WHERE username = ?;");
+	        try(Connection conn = dbCredentials.getConnection();
+	            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Account WHERE username = ?;");
+	        		
+	        		)
+	        
+	        {
+	            
 	            pstmt.setString(1, username);
 	            rset = pstmt.executeQuery();
 
@@ -142,15 +142,15 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public List<Account> getAllAccounts() {
 		List<Account> list = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
         
-        try{
-        	conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Account;");
+        try(   
+        		 Connection 	 conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Account;");
+        		
+        		){
+        	
             rset = pstmt.executeQuery();
 
             list = b.toBeanList(rset, Account.class);
@@ -206,12 +206,13 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	public boolean updateAccount(String uuid, Account account) {
 		 boolean success = true;
 
-	        Connection conn = null;
-	        PreparedStatement pstmt = null;
+	        
 
-	        try {
-	            conn = dbCredentials.getConnection();
-	            pstmt = conn.prepareStatement("UPDATE Account SET username=?,logpassword=?,name=?,mobile=?,email=? WHERE Uuid = ?;");
+	        try (  Connection conn = dbCredentials.getConnection();
+	        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Account SET username=?,logpassword=?,name=?,mobile=?,email=? WHERE Uuid = ?;");
+	        		){
+	            
+	            
 	            pstmt.setString(1, account.getUsername());
 	            pstmt.setString(2, account.getLogpassword());
 	            pstmt.setString(3, account.getName());
