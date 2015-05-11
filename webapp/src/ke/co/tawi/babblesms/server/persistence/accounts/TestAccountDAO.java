@@ -21,6 +21,7 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -68,15 +69,9 @@ public class TestAccountDAO {
 	//@Ignore
 	@Test
 	public void testGetAccount() {
-		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD,
+				DB_PORT);
 		
-		Account a = new Account();
-		a.setUuid(ACC_UUID);
-		a.setUsername(ACC_USERNAME);
-		a.setLogpassword(LOG_PASSWORD);
-		a.setName(NAME);
-		a.setMobile(MOBILE);
-		a.setEmail(EMAIL);
 		
 		Account acc= storage.getAccount(ACC_UUID);
 		
@@ -94,22 +89,22 @@ public class TestAccountDAO {
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#getAccountByName(java.lang.String)}
 	 * .
 	 */
-	// @Ignore
+	//@Ignore
 	@Test
-	public void testGetAccountByName() {
-		
-	storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-		
-		Account a = storage.getAccount(ACC_UUID);
-		
-		assertEquals(a.getUuid(),ACC_UUID);
-        assertEquals(a.getUsername(), ACC_USERNAME);
-        assertEquals(a.getLogpassword(), LOG_PASSWORD);
-        assertEquals(a.getName(), NAME);
-        assertEquals(a.getMobile(), MOBILE);
-        assertEquals(a.getEmail(), EMAIL);
-	}
 	
+	public void testGetAccountByName() {
+	storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD,DB_PORT);
+	
+		Account acc = storage.getAccountByName(ACC_USERNAME);
+		  assertEquals(acc.getUuid(),ACC_UUID);
+		  assertEquals(acc.getUsername(), ACC_USERNAME);
+	      assertEquals(acc.getLogpassword(), LOG_PASSWORD);
+	      assertEquals(acc.getName(), NAME);
+	      assertEquals(acc.getMobile(), MOBILE);
+	      assertEquals(acc.getEmail(), EMAIL);
+	
+		
+	}
 
 	/**
 	 * Test method for
@@ -124,14 +119,13 @@ public class TestAccountDAO {
 
 		List<Account> list = storage.getAllAccounts();
 
-		//assertEquals(list.size(), 10);
+		assertEquals(list.size(), 6);
 		System.out.println(list);
 		for (Account l : list) {
 			System.out.println(l);
 			
 		}
 	}
-	
 
 	/**
 	 * Test method for
@@ -141,8 +135,10 @@ public class TestAccountDAO {
 	//@Ignore
 	@Test
 	public void testPutAccount() {
+
 		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 
+		
 		Account acc = new Account();
 		
 		acc.setUuid(ACC_UUID);
@@ -153,15 +149,17 @@ public class TestAccountDAO {
 		acc.setEmail(EMAIL);
 		
 		acc = storage.getAccount(ACC_UUID);
+		
 		assertEquals(acc.getUuid(), ACC_UUID);
 		assertEquals(acc.getUsername(), ACC_USERNAME);
-		assertEquals(acc.getLogpassword(), LOG_PASSWORD);
-		assertEquals(acc.getName(), NAME);
-		assertEquals(acc.getMobile(), MOBILE);
-		assertEquals(acc.getEmail(), EMAIL);		
+		assertEquals(acc.getLogpassword(),LOG_PASSWORD);
+		assertEquals(acc.getName(),NAME);
+		assertEquals(acc.getMobile(),MOBILE);
+		assertEquals(acc.getEmail(),EMAIL);
+		
+
 	}
 
-	
 	/**
 	 * Test method for
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)}
@@ -171,9 +169,11 @@ public class TestAccountDAO {
 	@Test
 	public void testUpdateAccount() {
 
-		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD,
+				DB_PORT);
+
 		
-		Account acc = new Account();
+		  Account acc = new Account();
 		  
 		 acc.setUuid(ACC_UUID); 
 		 acc.setUsername(ACC_USERNAME);
@@ -181,6 +181,7 @@ public class TestAccountDAO {
 		 acc.setName(NAME);
 		 acc.setMobile(MOBILE);
 		 acc.setEmail(EMAIL);
+		  
 		 
 		assertTrue(storage.updateAccount( ACC_UUID, acc));
 		acc = storage.getAccount(ACC_UUID);
@@ -191,6 +192,8 @@ public class TestAccountDAO {
 		 assertEquals(acc.getName(), NAME); 
 		 assertEquals(acc.getMobile(), MOBILE); 
 		 assertEquals(acc.getEmail(), EMAIL);
+		 
+
 	}
 
 }
