@@ -8,6 +8,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -33,11 +35,13 @@ public class TestAccountDAO {
 
 	final String NAME = "Gloria", NAME_NEW = "kiaragwi",
 			NAME_UPDATE = "UPDATEkiaragwi";
-
-	final String MOBILE = "0871 727 2000", MOBILE_NEW = "254738382923",
+//0871 727 2000
+	final String MOBILE = "0871 727 2000",
+	             MOBILE_NEW = "254738382923",
 			MOBILE_UPDATE = "254738382999";
-
-	final String EMAIL = "ukeria86@yahoo.com", EMAIL_NEW = "SSASA@gmail.com",
+//ukeria86@yahoo.com
+	final String EMAIL = "ukeria86@yahoo.com",
+			EMAIL_NEW = "SSASA@gmail.com",
 			EMAIL_UPDATE = "UPDATE@gmail.com";
 
 	private AccountDAO storage;
@@ -135,13 +139,23 @@ public class TestAccountDAO {
 		
 		acc.setUuid(ACC_UUID);
 		acc.setUsername(ACC_USERNAME);
+		acc.setLogpassword(LOG_PASSWORD);
+		acc.setName(NAME);
+		acc.setMobile(MOBILE);
+		acc.setEmail(EMAIL);
 		
 
-		//assertTrue(storage.putAccount(acc));
+		
+		
+		assertTrue(storage.updateAccount( ACC_UUID, acc));
 		
 		acc = storage.getAccount(ACC_UUID);
 		assertEquals(acc.getUuid(), ACC_UUID);
 		assertEquals(acc.getUsername(), ACC_USERNAME);
+		assertEquals(acc.getLogpassword(),LOG_PASSWORD);
+		assertEquals(acc.getName(),NAME);
+		assertEquals(acc.getMobile(),MOBILE);
+		assertEquals(acc.getEmail(),EMAIL);
 		
 
 	}
