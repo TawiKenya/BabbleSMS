@@ -75,9 +75,9 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 			String dbPassword, int dbPort){
 		super(dbName,dbHost,dbUsername,dbPassword,dbPort);
 	}
-	
-	/**
-	 * @see ke.co.tawi.babblesms.server.beans.account.BabbleAccountDAO#getAccountByUuid(java.lang.String)
+
+	/* (non-Javadoc)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#getAccount(java.lang.String)
 	 */
 	@Override
 	public Account getAccount(String uuid) {
@@ -124,7 +124,10 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         return account;
 		
 	}
-
+    
+	/* (non-Javadoc)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#getAccountByName(java.lang.String)
+	 */
 	@Override
 	public Account getAccountByName(String username) {
 		 Account accounts = null;
@@ -170,8 +173,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	        return accounts;
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#getAllAccounts()
 	 */
 
 	@Override
@@ -222,10 +225,9 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	}
 	
 
-    /**
-     * @see ke.co.tawi.babblesms.server.persistence.account.BabbleAccountDAO#putAccount(Account)
-     */
-
+	/* (non-Javadoc)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#putAccount(ke.co.tawi.babblesms.server.beans.account.Account)
+	 */
 	@Override
 	public boolean putAccount(Account account) {
 		boolean success = true;
@@ -233,8 +235,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         try (
         		Connection conn = dbCredentials.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username, logpassword,"
-                		+ "name, mobile, email, statusuuid) "
-                		+ "VALUES (?,?,?,?,?,?,?);")
+                		+ "name, mobile, email) "
+                		+ "VALUES (?,?,?,?,?,?);")
             ) {
         	
             pstmt.setString(1, account.getUuid());
@@ -243,7 +245,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.setString(4, account.getName());
             pstmt.setString(5, account.getMobile());
             pstmt.setString(6, account.getEmail());
-            pstmt.setString(7, account.getStatusuuid());
+         
 
             pstmt.execute();
             
@@ -257,8 +259,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         return success;
 	}
 
-    /**
-	 * @see ke.co.tawi.babblesms.server.persistence.account.BabbleAccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)
+	/* (non-Javadoc)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
 	@Override
 	public boolean updateAccount(String uuid, Account account) {
