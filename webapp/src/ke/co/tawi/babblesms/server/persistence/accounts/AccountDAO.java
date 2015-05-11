@@ -76,7 +76,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 		super(dbName,dbHost,dbUsername,dbPassword,dbPort);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#getAccount(java.lang.String)
 	 */
 	@Override
@@ -101,31 +101,12 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting accounts with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return account;
 		
 	}
     
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#getAccountByName(java.lang.String)
 	 */
 	@Override
@@ -148,32 +129,13 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	            }
 
 	        } catch (SQLException e) {
-	            logger.error("SQL Exception when getting accounts with uuid: " + username);
+	            logger.error("SQL Exception when getting accounts with username: " + username);
 	            logger.error(ExceptionUtils.getStackTrace(e));
-	        } finally {
-	            if (rset != null) {
-	                try {
-	                    rset.close();
-	                } catch (SQLException e) {
-	                }
-	            }
-	            if (pstmt != null) {
-	                try {
-	                    pstmt.close();
-	                } catch (SQLException e) {
-	                }
-	            }
-	            if (conn != null) {
-	                try {
-	                    conn.close();
-	                } catch (SQLException e) {
-	                }
-	            }
-	        }
+	        } 
 	        return accounts;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#getAllAccounts()
 	 */
 
@@ -197,35 +159,13 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         	logger.error("SQL Exception when getting all accountss");
             logger.error(ExceptionUtils.getStackTrace(e));
         }
-        finally{
-        	if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        	
-        }
-        
-        
+       
 		 
 		return list;
 	}
 	
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#putAccount(ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
 	@Override
@@ -259,7 +199,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
 	@Override
@@ -282,23 +222,10 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	            pstmt.executeUpdate();
 
 	        } catch (SQLException e) {
-	            logger.error("SQL Exception when deleting accounts with uuid " + account);
+	            logger.error("SQL Exception when updating accounts with uuid " + account);
 	            logger.error(ExceptionUtils.getStackTrace(e));
 	            success = false;
-	        } finally {
-	            if (pstmt != null) {
-	                try {
-	                    pstmt.close();
-	                } catch (SQLException e) {
-	                }
-	            }
-	            if (conn != null) {
-	                try {
-	                    conn.close();
-	                } catch (SQLException e) {
-	                }
-	            }
-	        }
+	        } 
 	        return success;
 	}
 

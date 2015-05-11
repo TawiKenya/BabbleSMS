@@ -1,5 +1,17 @@
 /**
+ * Copyright 2015 Tawi Commercial Services Ltd
  * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
  */
 package ke.co.tawi.babblesms.server.persistence.accounts;
 
@@ -9,12 +21,14 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * @author peter
- *
+ *  description for {@link Account}s.
+ * <p> 
+ * 
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
+ * 
  */
 public class TestAccountDAO {
 
@@ -35,11 +49,11 @@ public class TestAccountDAO {
 
 	final String NAME = "Gloria", NAME_NEW = "kiaragwi",
 			NAME_UPDATE = "UPDATEkiaragwi";
-//0871 727 2000
+
 	final String MOBILE = "0871 727 2000",
 	             MOBILE_NEW = "254738382923",
 			MOBILE_UPDATE = "254738382999";
-//ukeria86@yahoo.com
+
 	final String EMAIL = "ukeria86@yahoo.com",
 			EMAIL_NEW = "SSASA@gmail.com",
 			EMAIL_UPDATE = "UPDATE@gmail.com";
@@ -119,7 +133,7 @@ public class TestAccountDAO {
 		System.out.println(list);
 		for (Account l : list) {
 			System.out.println(l);
-			// assertTrue(l.getUuid().equals(ACC_UUID));
+			
 		}
 	}
 
@@ -143,11 +157,6 @@ public class TestAccountDAO {
 		acc.setName(NAME);
 		acc.setMobile(MOBILE);
 		acc.setEmail(EMAIL);
-		
-
-		
-		
-		assertTrue(storage.updateAccount( ACC_UUID, acc));
 		
 		acc = storage.getAccount(ACC_UUID);
 		assertEquals(acc.getUuid(), ACC_UUID);
@@ -183,7 +192,7 @@ public class TestAccountDAO {
 		 acc.setEmail(EMAIL);
 		  
 		 
-		assertTrue(storage.updateAccount( ACC_USERNAME, acc));
+		assertTrue(storage.updateAccount( ACC_UUID, acc));
 		acc = storage.getAccount(ACC_UUID);
 		 
 		 assertEquals(acc.getUuid(), ACC_UUID);
