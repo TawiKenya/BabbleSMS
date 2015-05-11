@@ -151,11 +151,10 @@
                    <div class="container">
                          <div class="left-panel"><h1 class="promo-title">Your Convenient SMS Messenger</h1>
                          <p class="promo-text promo-text_main">Allows for you to send SMS from the convenience of your web browser.</p>
-                         <div class="promo-form-wrapper">
+                         <div class="promo-form-background">
                              <div class="promo-form">
-                             
                              </div>
-                             
+                                                          
                          </div>                        
                            </div>
                    </div>
@@ -164,9 +163,10 @@
       </div>
   </div>
   <div class="b-paranja b-paranja_hostroot g-hidden js-paranja"></div>
+  
         
     <div class="new-footer">    
-   Copyright &copy; <a class="new-link"> Tawi Commercial Services</a> 2015   
+   Copyright &copy; <a class="new-link"><font-color="grey"> Tawi Commercial Services</font></a> 2015   
     
     </div>
     

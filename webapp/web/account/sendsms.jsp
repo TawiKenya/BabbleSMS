@@ -248,16 +248,11 @@ int credit_Consumed = 0;
             <div class="control-group">
                             <!--<div class="controls" >-->
                                 <!-- Group table here-->
-                                <div class="tablets" >
+                                <div class="tablets" ><div class="tablets"> 
+                                </div>
                                     <!--<p>&nbsp;&nbsp;&nbsp;</p>-->
                                     <div id="scrolltable">
-                                    <table id="scroll" class="table table-striped table-bordered">
-                                       <thead>
-                                              <tr>
-                                            <th>Select Groups</th>
-                                            </tr>
-                                            </thead>
-                                            
+                                    <table id="scroll" class="table table-striped table-bordered">                                                                                
                                             
                                         <tbody id = "resulttable">
 

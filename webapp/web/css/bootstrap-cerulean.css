@@ -2788,7 +2788,7 @@ input[type="submit"].btn.btn-mini {
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
   color: #555555;
-  background-color: #ffffff;
+  background-color: rgba(6,156,6,.83);
   border: 1px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -4232,7 +4232,7 @@ a.badge:hover {
   font-family: 'Karla', sans-serif;
 }
 .navbar .navbar-inner {
-  background-color: #195e68;
+  background-color: #B8c4cc;
 }
 .navbar-inner{
   background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(0,0,0,0.15) 50%, rgba(30,30,30,0) 100%);

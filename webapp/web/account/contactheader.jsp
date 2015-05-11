@@ -110,7 +110,7 @@
 	
 		$("[href]").each(function() {
     if (this.href == window.location.href) {
-        $(this).css('background-color', '#d41e24');
+        $(this).css('background-color', 'rgba(6,156,6,.83)');
         }
     });
            
@@ -307,7 +307,7 @@ function hello(val){
                     <div class="well nav-collapse sidebar-nav">
                         <ul class="nav nav-tabs nav-stacked main-menu">
                             <!--menu to change depending on page requested-->
-                            <li class="nav-header hidden-tablet" style="background:red">Contacts</li>
+                            <li class="nav-header hidden-tablet">Contacts</li>
                             <li><div class="dropdown">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
   <span class="caret"></span>    

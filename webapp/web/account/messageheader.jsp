@@ -104,7 +104,7 @@ $("#txtConfirmPassword").keyup(checkPasswordMatch);
 
 $("[href]").each(function() {
 if (this.href == window.location.href) {
-$(this).css('background-color', '#d41e24');
+$(this).css('background-color', 'rgba(6,156,6,.83)');
 }
 });
 $(".tablets").hide();
@@ -147,9 +147,11 @@ else if((count2 % 2) != 0) {
 $(this).css("background", "transparent");
 } count2++;
 });
+
 ($td).css("background", "#808080");
 group = $td.eq(0).text();
 group2 = $td.eq(1).text();
+
 $('.groupselected').each( function(){
 var testa2 = $(this).val();
 if($(this).val().length != 0){

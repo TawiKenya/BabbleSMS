@@ -5878,7 +5878,7 @@ html,body{
 	padding: 0;
 	color:#000;
 	background-position:right top;
-	background-image: url(../img/loginpage-ground.gif);
+	background-image: url(../img/background.jpg);
 	display:-webkit-box;
 	display:-webkit-flex;
 	display:-ms-flexbox;
@@ -6404,6 +6404,7 @@ html,body{
 }
 
 .new-footer{
+	background-color:rgba(6,156,6,.83);
 	position:absolute;
 	right:0;
 	bottom:0;
@@ -6412,8 +6413,7 @@ html,body{
 	height:4.3rem;
 	padding:0 70px;
 	line-height:43px;
-	line-height:4.3rem;
-	background:#195e68
+	line-height:4.3rem;	
 }
 
 .new-footer-item{
@@ -6720,18 +6720,23 @@ html,body{
 	margin-top:0;
 	margin-bottom:-5px
 }
-
-.promo-form-wrapper{
-	height:67px
+.promo-form-background{
+	height:250px;
+	width:500px;
+	position: bottom;
+    right: 0px;
+  bottom: 0px;
+   left: 0px;   
+    
 }
 
-.promo-form{
-	position:absolute;
+/*.promo-form{
+	position:bottom;
 	width:100%;
 	margin:-18px -14px 0 -14px;
-	padding:18px 14px 4px
-}
-
+	padding:18px 14px 4px;
+	}
+*/
 .promo-form-failed{
 	color:#b32727
 }
