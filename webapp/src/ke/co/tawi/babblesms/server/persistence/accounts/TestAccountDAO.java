@@ -40,33 +40,37 @@ public class TestAccountDAO {
 	final int DB_PORT = 5432;
 
 	final String ACC_UUID = "C3CFA249-F2A3-8253-1F44-B1C594C6A8D2",
-			ACC_UUID_NEW = "f7uL81d2e6-84f2-45ff-914c-522a3b076141";
+			ACC_UUID_NEW = "a7uL81d2e6-84f2-45ff-914c-522a3b076141";
 
-	final String ACC_USERNAME = "Lacota", ACC_USERNAME_NEW = "newusername",
+	final String ACC_USERNAME = "Lacota", 
+			ACC_USERNAME_NEW = "Neewusername",
 			ACC_USERNAME_UPDATE = "updateusername";
 
-	final String LOG_PASSWORD = "lac32@$", LOG_PASSWORD_NEW = "NEWpassword",
+	final String LOG_PASSWORD = "lac32@$",
+			LOG_PASSWORD_NEW = "Neewpassword",
 			LOG_PASSWORD_UPDATE = "UPDATEpassword";
 
-	final String NAME = "Gloria", NAME_NEW = "kiaragwi",
+	final String NAME = "Gloria", 
+			NAME_NEW = "kiiaragwii",
 			NAME_UPDATE = "UPDATEkiaragwi";
 
 	final String MOBILE = "0871 727 2000",
-	             MOBILE_NEW = "254738382923",
+	             MOBILE_NEW = "252739382923",
 			MOBILE_UPDATE = "254738382999";
 
 	final String EMAIL = "ukeria86@yahoo.com",
-			EMAIL_NEW = "SSASA@gmail.com",
+			EMAIL_NEW = "ssss@gmail.com",
 			EMAIL_UPDATE = "UPDATE@gmail.com";
 
 	private AccountDAO storage;
+	
 
 	/**
 	 * Test method for
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#getAccount(java.lang.String)}
 	 * .
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAccount() {
 		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD,
@@ -89,7 +93,7 @@ public class TestAccountDAO {
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#getAccountByName(java.lang.String)}
 	 * .
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	
 	public void testGetAccountByName() {
@@ -119,7 +123,7 @@ public class TestAccountDAO {
 
 		List<Account> list = storage.getAllAccounts();
 
-		assertEquals(list.size(), 6);
+		assertEquals(list.size(), 9);
 		System.out.println(list);
 		for (Account l : list) {
 			System.out.println(l);
@@ -132,30 +136,30 @@ public class TestAccountDAO {
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#putAccount(ke.co.tawi.babblesms.server.beans.account.Account)}
 	 * .
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testPutAccount() {
-
 		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 
 		
 		Account acc = new Account();
+		acc.setUuid(ACC_UUID_NEW);
+		acc.setUsername(ACC_USERNAME_NEW);
+		acc.setLogpassword(LOG_PASSWORD_NEW);
+		acc.setName(NAME_NEW);
+		acc.setMobile(MOBILE_NEW);
+		acc.setEmail(EMAIL_NEW);
+	
 		
-		acc.setUuid(ACC_UUID);
-		acc.setUsername(ACC_USERNAME);
-		acc.setLogpassword(LOG_PASSWORD);
-		acc.setName(NAME);
-		acc.setMobile(MOBILE);
-		acc.setEmail(EMAIL);
+		assertTrue(storage.putAccount(acc));
+		acc = storage.getAccount(ACC_UUID_NEW);
 		
-		acc = storage.getAccount(ACC_UUID);
-		
-		assertEquals(acc.getUuid(), ACC_UUID);
-		assertEquals(acc.getUsername(), ACC_USERNAME);
-		assertEquals(acc.getLogpassword(),LOG_PASSWORD);
-		assertEquals(acc.getName(),NAME);
-		assertEquals(acc.getMobile(),MOBILE);
-		assertEquals(acc.getEmail(),EMAIL);
+		assertEquals(acc.getUuid(),ACC_UUID_NEW);
+		assertEquals(acc.getUsername(),ACC_USERNAME_NEW);
+		assertEquals(acc.getLogpassword(),LOG_PASSWORD_NEW);
+		assertEquals(acc.getName(),NAME_NEW);
+		assertEquals(acc.getMobile(),MOBILE_NEW);
+		assertEquals(acc.getEmail(),EMAIL_NEW);
 		
 
 	}
@@ -165,7 +169,7 @@ public class TestAccountDAO {
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)}
 	 * .
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testUpdateAccount() {
 
@@ -175,23 +179,23 @@ public class TestAccountDAO {
 		
 		  Account acc = new Account();
 		  
-		 acc.setUuid(ACC_UUID); 
-		 acc.setUsername(ACC_USERNAME);
-		 acc.setLogpassword(LOG_PASSWORD);
-		 acc.setName(NAME);
-		 acc.setMobile(MOBILE);
-		 acc.setEmail(EMAIL);
+		 acc.setUuid(ACC_UUID_NEW); 
+		 acc.setUsername(ACC_USERNAME_UPDATE);
+		 acc.setLogpassword(LOG_PASSWORD_UPDATE);
+		 acc.setName(NAME_UPDATE);
+		 acc.setMobile(MOBILE_UPDATE);
+		 acc.setEmail(EMAIL_UPDATE);
 		  
 		 
-		assertTrue(storage.updateAccount( ACC_UUID, acc));
-		acc = storage.getAccount(ACC_UUID);
+		assertTrue(storage.updateAccount( ACC_UUID_NEW, acc));
+		acc = storage.getAccount(ACC_UUID_NEW);
 		 
-		 assertEquals(acc.getUuid(), ACC_UUID);
-		 assertEquals(acc.getUsername(), ACC_USERNAME);
-		 assertEquals(acc.getLogpassword(), LOG_PASSWORD);
-		 assertEquals(acc.getName(), NAME); 
-		 assertEquals(acc.getMobile(), MOBILE); 
-		 assertEquals(acc.getEmail(), EMAIL);
+		 assertEquals(acc.getUuid(), ACC_UUID_NEW);
+		 assertEquals(acc.getUsername(), ACC_USERNAME_UPDATE);
+		 assertEquals(acc.getLogpassword(), LOG_PASSWORD_UPDATE);
+		 assertEquals(acc.getName(), NAME_UPDATE); 
+		 assertEquals(acc.getMobile(), MOBILE_UPDATE); 
+		 assertEquals(acc.getEmail(), EMAIL_UPDATE);
 		 
 
 	}

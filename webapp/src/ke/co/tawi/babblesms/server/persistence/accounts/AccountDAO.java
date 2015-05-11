@@ -174,8 +174,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 
         try (
         		Connection conn = dbCredentials.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account (Uuid, username, logpassword,"
-                		+ "name, mobile, email) VALUES (?,?,?,?,?,?);")
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account" 
+        		+"(Uuid, username, logpassword, name, mobile, email) VALUES (?,?,?,?,?,?);");
             ) {
         	
             pstmt.setString(1, account.getUuid());
@@ -185,7 +185,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.setString(5, account.getMobile());
             pstmt.setString(6, account.getEmail());         
 
-            pstmt.execute();
+            pstmt.executeUpdate();
             
         } catch (SQLException e) {
         	logger.error("SQLException when trying to put: " + account);
