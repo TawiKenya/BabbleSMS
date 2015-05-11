@@ -3,13 +3,20 @@
  Licensed under the OSL-3.0 License:
  http://opensource.org/licenses/OSL-3.0
 */
+#scrolltable{
+    width: 200px;
+    height: 200px;
+    margin-left: 15%;
+    overflow: scroll;
+text-align: left;
+}
 #scroll {
-    width: 200px;  /* Optional */
+    width: 100%;  /* Optional */
     /* border-collapse: collapse; */
     border-spacing: 0;
     border: 2px solid black;
-	float:left;
-margin: 0 1.5%;
+	float:left;          
+    
 }
 #scroll2 {
     width: 200px;  /* Optional */
@@ -74,13 +81,13 @@ margin-bottom:30%;
 
 
 #scroll1 {
-    width: 200px;  /* Optional */
+    /*width: 100px;  /* Optional */
     /* border-collapse: collapse; */
     border-spacing: 0;
     border: 2px solid black;
     float:left;	
-margin: 0 1.5%;
-}
+     margin: 0 1.5%;
+     }
 
 
 
@@ -88,23 +95,23 @@ margin: 0 1.5%;
 
 
 
-
+/*
 #scroll tbody,
 #scroll thead,#scroll1 tbody,
-#scroll1 thead { display: block; }
+#scroll1 thead { display: block; }*/
 
-thead tr th { 
+/*thead tr th { 
     height: 30px;
     line-height: 30px;
-    /* text-align: left; */
-}
+    /* text-align: left; 
+}*/
 
 #hideANDseek
 {
     display: none;
 }
 
-#tr{
+/*#tr{
  height: 15px;
     line-height: 30px;
 
@@ -120,7 +127,7 @@ thead tr th {
     overflow-y: auto;
     overflow-x: hidden;
     width:200px;
-}
+}*/
 .textarea{
 width:30%;
 
@@ -138,7 +145,7 @@ margin: 0  33%;
 
 }
 
-
+/*
 
 
 tbody { border-top: 2px solid black; }
@@ -146,9 +153,9 @@ tbody { border-top: 2px solid black; }
 tbody td, thead th {
     /* width: 20%; */ /* Optional */
     /*border-right: 1px solid black;*/
-    /* white-space: nowrap; */
+    /* white-space: nowrap; 
 }
 
-tbody td:last-child, thead th:last-child {
+/*tbody td:last-child, thead th:last-child {
     border-right: none;
-}
+}*/

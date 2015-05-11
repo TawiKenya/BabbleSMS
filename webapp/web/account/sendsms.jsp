@@ -246,18 +246,20 @@ int credit_Consumed = 0;
                      </div>
             
             <div class="control-group">
-                            <div class="controls" >
+                            <!--<div class="controls" >-->
                                 <!-- Group table here-->
-                                <div class="tablets">
-                                    <p>&nbsp;&nbsp;&nbsp;</p>
-                                    
+                                <div class="tablets" >
+                                    <!--<p>&nbsp;&nbsp;&nbsp;</p>-->
+                                    <div id="scrolltable">
                                     <table id="scroll" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
+                                       <thead>
+                                              <tr>
                                             <th>Select Groups</th>
                                             </tr>
-                                        </thead>
-                                        <tbody id ="tablet">
+                                            </thead>
+                                            
+                                            
+                                        <tbody id = "resulttable">
 
                                             <%
                                                 if (contactsgrpList != null) {
@@ -265,9 +267,9 @@ int credit_Consumed = 0;
                                             %>
 
                                                     <tr>
-                                                        <td class="center"><a href="#"><%=code.getName()%></a></td>
-                                                        <td class="center" id="hideANDseek"><%=code.getUuid()%></td>
-                                                        
+                                                        <td class="center"><input type="checkbox" id="remember" value=<%=code.getUuid()%> name="groupselected"/>
+                                                        <a href="#"><%=code.getName()%></a></td>
+
                                                     </tr>
                                                 <%   
 
@@ -275,19 +277,19 @@ int credit_Consumed = 0;
                                                     }// end 'for (Group code : contactsgrpList)'
                                                 }// end 'if (contactsgrpList != null)' 
                                             %>
-
-                                        </tbody>
+                                             </tbody>                                             
                                     </table>
+                                </div>
                                     
-                                    <div id="groupsform">
+                                   <!--<div id="groupsform">
                                         <br/><br/><br/>
                                         <button type="submit" id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
                                         <button type="submit" id = "remove2"> << Remove </button>
 
                                          <input type="hidden" class="groupsadded" name="groupselected" /> 
-                                    </div>
+                                    </div>-->
                                     
-                                    <table id="scroll1" class="table table-striped table-bordered">
+                                   <!-- <table id="scroll1" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>Selected Groups</th>
@@ -296,11 +298,11 @@ int credit_Consumed = 0;
                                         <tbody id = "resulttable">
 
                                         </tbody>
-                                    </table>
+                                    </table>-->
 
                                 </div>      
                             </div>
-            </div>
+            <!--</div>-->
             
             
                         <div class="section control-group">

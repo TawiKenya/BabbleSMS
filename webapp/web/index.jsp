@@ -125,7 +125,7 @@
                                          <span class="_nb-checkbox-flag _nb-checkbox-normal-flag">
                                                      <span class="_nb-checkbox-flag-icon"></span>
                                          </span>
-                                         <span class="_nb-checkbox-label">Don't remember me</span>
+                                         <span class="_nb-checkbox-label">Remember Me</span>
                                          </label> 
                                          
                                          </div>
