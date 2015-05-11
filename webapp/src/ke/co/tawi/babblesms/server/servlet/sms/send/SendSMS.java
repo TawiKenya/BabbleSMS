@@ -130,9 +130,15 @@ public class SendSMS extends HttpServlet {
         
 		//Group group;
 		
+		if(groupselected == null) {
+			groupselected = new String[0];
+		}
+		
+		
 		for(String group : groupselected) {
 			System.out.println("Group is: '" + group + "'");
 		}
+		
 		
 		if(phones == null) {
 			phones = new String[0];
@@ -170,10 +176,10 @@ public class SendSMS extends HttpServlet {
 			}
 			
 										
-			//System.out.println("Data to post: " + StringUtil.mapToString(params));
+			System.out.println("Data to post: " + StringUtil.mapToString(params));
 			
 			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-			postThread.start(); 				
+			//postThread.start(); 				
 		}
 		
 		session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
