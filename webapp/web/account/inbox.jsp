@@ -1,4 +1,4 @@
-<%
+	<%
     /**
     Copyright 2015 Tawi Commercial Services Ltd
 
@@ -258,8 +258,8 @@
                                 List<Phone> phoneList = phnDAO.getPhones(code.getOrigin());
                                 Phone phone = phoneList.get(0);
                                 String contactuuid = phone.getContactUuid();
-				Contact contacts = ctssDAO.getContact(contactuuid);
-				String sourcename = contacts.getName();
+								Contact contacts = ctssDAO.getContact(contactuuid);
+								String sourcename = contacts.getName();
                         %>
                        <td class="center"><%=sourcename%></td> 
                         <%} else {%>

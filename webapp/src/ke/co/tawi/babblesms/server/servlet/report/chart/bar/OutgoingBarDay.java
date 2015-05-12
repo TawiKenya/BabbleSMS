@@ -58,14 +58,10 @@ public class OutgoingBarDay extends HttpServlet {
 
 	private static final long serialVersionUID = -7965916253424645316L;
 
-	final String CHART_TITLE = "Outgoing SMS by Day";
-	final int CHART_WIDTH = 800;
-	final int CHART_HEIGHT = 600;
-
 	/**
 	 * Number of days over which to display the graph
 	 */
-	public static final int DAY_COUNT = 7; // Number of days over which to
+	public static final int DAY_COUNT = 7; 
 	private String accountUuid = "";
 	Date fromDate = new Date();
 	Date toDate = new Date();
