@@ -22,11 +22,11 @@ import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
 import ke.co.tawi.babblesms.server.beans.network.Country;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
-import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
 import ke.co.tawi.babblesms.server.persistence.network.CountryDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
@@ -64,7 +64,7 @@ import org.apache.log4j.Logger;
  */
 public class CacheInit extends HttpServlet {
 
-    protected AccountsDAO accountsDAO;
+    protected AccountDAO accountDAO;
     protected StatusDAO statusDAO;
     protected NetworkDAO networkDAO;
     protected GroupDAO groupDAO;
@@ -88,7 +88,7 @@ public class CacheInit extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        accountsDAO = AccountsDAO.getInstance();
+        accountDAO = AccountDAO.getInstance();
         statusDAO = StatusDAO.getInstance();
         networkDAO = NetworkDAO.getInstance();
         groupDAO = GroupDAO.getInstance();
@@ -125,7 +125,7 @@ public class CacheInit extends HttpServlet {
 
         List<? extends StorableBean> objList;
 
-        objList = accountsDAO.getAllAccounts();
+        objList = accountDAO.getAllAccounts();
         initCacheByUuid(CacheVariables.CACHE_ACCOUNTS_BY_UUID, objList);
 
         objList = statusDAO.getAllStatus();
@@ -137,7 +137,7 @@ public class CacheInit extends HttpServlet {
         objList = msgDAO.getAllMessageStatus();
         initCacheByUuid(CacheVariables.CACHE_MESSAGE_STATUS_BY_UUID, objList);
                 
-        objList = shortcodeDAO.getAllShortcodes();
+        objList = shortcodeDAO.getAllShortcode();
         initCacheByUuid(CacheVariables.CACHE_SHORTCODE_BY_UUID, objList);
         
         objList = maskDAO.getAllMasks();
@@ -208,7 +208,7 @@ public class CacheInit extends HttpServlet {
                 accountsCache.initialise();
             }
 
-            List<Account> allAccounts = accountsDAO.getAllAccounts();
+            List<Account> allAccounts = accountDAO.getAllAccounts();
 
             if (StringUtils.equals(cacheName, CacheVariables.CACHE_ACCOUNTS_BY_USERNAME)) {
                 for (Account a : allAccounts) {
@@ -268,7 +268,7 @@ public class CacheInit extends HttpServlet {
                 shortcodeCache.initialise();
             }
 
-            List<Shortcode> allShortcodes = shortcodeDAO.getAllShortcodes();
+            List<Shortcode> allShortcodes = shortcodeDAO.getAllShortcode();
 
             if (StringUtils.equals(cacheName, CacheVariables.CACHE_SHORTCODE_BY_ACCOUNTUUID)) {
                 for (Shortcode a : allShortcodes) {
@@ -331,7 +331,6 @@ public class CacheInit extends HttpServlet {
             
         }
     }
-    
     
     /**
      *

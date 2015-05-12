@@ -2,7 +2,7 @@ package ke.co.tawi.babblesms.server.servlet.admin.account;
 
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class Addaccount extends HttpServlet {
     private HashMap<String, String> paramHash;
     private EmailValidator emailValidator;
 
-    private AccountsDAO accountsDAO;
+    private AccountDAO accountsDAO;
 
     private CacheManager cacheManager;
     private HttpSession session;
@@ -66,7 +66,7 @@ public class Addaccount extends HttpServlet {
 
         emailValidator = EmailValidator.getInstance();
 
-        accountsDAO = AccountsDAO.getInstance();
+        accountsDAO = AccountDAO.getInstance();
 
         cacheManager = CacheManager.getInstance();
     }
@@ -167,11 +167,6 @@ public class Addaccount extends HttpServlet {
             account.setDailysmslimit(dailysmslimit);
             account.setUuid(accountuuid);
 
-            if(accountsDAO.adminupdateAccount(account)){
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Account updated successfully.");
-            } else {
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Account update failed.");
-            }
             
 
             response.sendRedirect("admin/accounts.jsp");
@@ -179,12 +174,7 @@ public class Addaccount extends HttpServlet {
         } // if delete account is called
         else if (userPath.equals("/deleteaccount")) {
 
-            String accountuuid = request.getParameter("accountuuid");
-            if(accountsDAO.deleteAccount(accountuuid)){
-                session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Account deleted successfully.");
-            } else {
-                session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Account deletion failed.");
-            }
+            
             
             response.sendRedirect("admin/accounts.jsp");
         }
@@ -207,7 +197,7 @@ public class Addaccount extends HttpServlet {
 
         accountsDAO.putAccount(a);           
         
-        a = accountsDAO.getAccountByEmail(email);       // Ensures the account is populated with the correct ID
+        a = accountsDAO.getAccount(email);       // Ensures the account is populated with the correct ID
         updateAccountCache(a);
     }
 
@@ -280,7 +270,7 @@ public class Addaccount extends HttpServlet {
     private boolean existsEmail(final String email) {
         boolean exists = false;
 
-        if (accountsDAO.getAccountByEmail(email) != null) {
+        if (accountsDAO.getAccount(email) != null) {
             exists = true;
         }
 

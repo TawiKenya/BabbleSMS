@@ -25,7 +25,7 @@ import java.util.List;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 
 import org.junit.Test;
@@ -93,7 +93,7 @@ public class TestOutgoingLogDAO {
     @Test
     public void testGetOutgoingLogDListOfAccountIntInt() {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-        AccountsDAO acDAO = AccountsDAO.getInstance();
+        AccountDAO acDAO = AccountDAO.getInstance();
         Account account = new Account();
         account = acDAO.getAccount(SENDERUUID);
         List<OutgoingLog> list = storage.getOutgoingLog(account, 5, 15);

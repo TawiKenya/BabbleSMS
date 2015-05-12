@@ -16,7 +16,7 @@
 <%@page import="java.util.List"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 
 <%

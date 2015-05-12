@@ -33,7 +33,7 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.items.network.NetworkDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.items.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.contact.ContactPaginator"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.contact.ContactPage"%>

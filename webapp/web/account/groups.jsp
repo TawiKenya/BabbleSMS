@@ -22,7 +22,7 @@
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 
@@ -62,8 +62,8 @@
     Element element;
     List keys;
 
-    AccountsDAO accountsDAO = AccountsDAO.getInstance();
-    Account account = accountsDAO.getAccountByName(username);
+    AccountDAO accountDAO = AccountDAO.getInstance();
+    Account account = accountDAO.getAccountByName(username);
     list = GroupDAO.getInstance().getGroups(account);
     CountUtils cts = CountUtils.getInstance();
 

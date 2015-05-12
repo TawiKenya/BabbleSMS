@@ -17,7 +17,7 @@ package ke.co.tawi.babblesms.server.persistence.contacts;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,8 @@ public class TestContactDAO {
 	final int ACCOUNT_CONTACTCOUNT = 100;
 	
 	private ContactDAO storage;
-	private AccountsDAO storagenew;
+	
+	private AccountDAO storagee;
 	
 	
 	/**
@@ -126,7 +127,7 @@ public class TestContactDAO {
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO#putContact(ke.co.tawi.babblesms.server.beans.contact.Contact)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testPutContact() {
 		storage = new ContactDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -152,7 +153,7 @@ public class TestContactDAO {
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO#updateContact(java.lang.String, ke.co.tawi.babblesms.server.beans.contact.Contact)}.
 	 */
-	
+	@Ignore
 	@Test
 	public void testUpdateContact() {
 		storage = new ContactDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -177,12 +178,13 @@ public class TestContactDAO {
 	/**
 	 * 
 	 */
+	@Ignore
 	@Test
 	public void testGetContactList(){
 		storage = new ContactDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-		storagenew = new AccountsDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		storagee = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
-		Account account = storagenew.getAccount(ACCOUNT_UUID);
+		Account account = storagee.getAccount(ACCOUNT_UUID);
 		
 		List<Contact> contactList = storage.getContactList(account, 0, 15);
 		

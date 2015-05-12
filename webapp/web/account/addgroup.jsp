@@ -20,7 +20,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -48,8 +48,8 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
 
-     AccountsDAO accountsDAO = AccountsDAO.getInstance();
-     Account account = accountsDAO.getAccountByName(username);
+     AccountDAO accountDAO = AccountDAO.getInstance();
+     Account account = accountDAO.getAccountByName(username);
 
     String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();

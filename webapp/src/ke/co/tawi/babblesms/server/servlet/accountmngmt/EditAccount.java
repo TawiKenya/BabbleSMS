@@ -29,12 +29,9 @@ import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 
 import ke.co.tawi.babblesms.server.session.SessionConstants;
-
-import java.io.IOException;
-import org.apache.log4j.Logger;
 /**
  * Receives a form request toedit a account's details
  * 
@@ -79,7 +76,7 @@ public class EditAccount extends HttpServlet{
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		
-		AccountsDAO aDAO = AccountsDAO.getInstance();
+		AccountDAO aDAO = AccountDAO.getInstance();
 		Account account = aDAO.getAccount(accuuid);
 		
 		account.setMobile(phone);
@@ -87,7 +84,7 @@ public class EditAccount extends HttpServlet{
 		account.setEmail( email);
 		
 		
-		if(aDAO.updateAccount(account)){
+		if(aDAO.updateAccount(email, account)){
 
 		session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "You have successfully edited your settings");
 		}

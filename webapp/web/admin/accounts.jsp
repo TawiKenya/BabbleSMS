@@ -11,7 +11,7 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 
 <%
     // The following is for session management.    
@@ -166,18 +166,7 @@
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
                                 <input type="hidden" name="name" value="<%=code.getName()%>">
-<<<<<<< .mine
 
-
-
-                               
-
-
-=======
-
-                               
-
->>>>>>> .r97
                                 <input type="hidden" name="mobile" value="<%=code.getMobile()%>">
                                 <input type="hidden" name="dailysmslimit" value="<%=code.getDailysmslimit()%>">
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">

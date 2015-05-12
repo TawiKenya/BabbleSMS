@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -47,7 +47,7 @@ public class Editsetting extends HttpServlet {
     private HashMap<String, String> paramHash;
     
     
-    private AccountsDAO accountsDAO;    
+    private AccountDAO accountsDAO;    
     private CacheManager cacheManager;
     private HttpSession session;
     
@@ -62,7 +62,7 @@ public class Editsetting extends HttpServlet {
         super.init(config);
 
         
-        accountsDAO = AccountsDAO.getInstance();
+        accountsDAO = AccountDAO.getInstance();
       
         cacheManager = CacheManager.getInstance();
     }
@@ -102,11 +102,7 @@ public class Editsetting extends HttpServlet {
             // No email provided	
         } else if (StringUtils.isBlank(email)) {
             session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, ERROR_NO_EMAIL);
-        
-        // The email already exists in the system	
-        } else if ((existsEmail(email)) && !existsEmailuuid(accuuid,email)) {
-            session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, ERROR_EMAIL_EXISTS);
-    
+       
             
         } else {
             // If we get this far then all parameter checks are ok.		
@@ -138,7 +134,7 @@ public class Editsetting extends HttpServlet {
 
         
 
-         accountsDAO.updateAccount(a);
+        // accountDAO.updateAccount(a);
         
         
         updateAccountCache(a);
@@ -187,36 +183,7 @@ public class Editsetting extends HttpServlet {
         
     }
     
-    /**
-     *
-     * @param email
-     * @return whether or not the unique name exists in the system
-     */
-    private boolean existsEmail(final String email) {
-        boolean exists = false;
-
-        if (accountsDAO.getAccountByEmail(email) != null) {
-            exists = true;
-        }
-
-        return exists;
-    }
-    
-    /**
-     *
-     * @param email
-     * @return whether or not the unique name exists in the system
-     */
-    private boolean existsEmailuuid(final String accuuid,final String email) {
-        boolean exists = false;
-
-        if (accountsDAO.getAccountByEmailuuid(accuuid, email) != null) {
-            exists = true;
-        }
-
-        return exists;
-    }
-    
+   
     /**
      *
      * @param request

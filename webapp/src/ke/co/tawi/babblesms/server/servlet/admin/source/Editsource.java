@@ -1,26 +1,4 @@
-/**
- * Copyright 2015 Tawi Commercial Services Ltd
- * 
- * Licensed under the Open Software License, Version 3.0 (the “License”); you may
- * not use this file except in compliance with the License. You may obtain a copy
- * of the License at:
- * http://opensource.org/licenses/OSL-3.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed
- * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
- * CONDITIONS OF ANY KIND, either express or implied.
- * 
- * See the License for the specific language governing permissions and limitations
- * under the License.
- */
 package ke.co.tawi.babblesms.server.servlet.admin.source;
-
-import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
-import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
-import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,6 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
+import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
 import net.sf.ehcache.CacheManager;
 
 import org.apache.commons.validator.routines.EmailValidator;
@@ -104,7 +88,7 @@ public class Editsource extends HttpServlet {
             String networkuuid = request.getParameter("networkuuid");
             String sourceuuid = request.getParameter("sourceuuid");
 
-            if (maskDAO.get(sourceuuid) != null) {
+            if (maskDAO.getMask(sourceuuid) != null) {
 
                 Mask mask = new Mask();
                 mask.setAccountuuid(accountuuid);
@@ -112,13 +96,13 @@ public class Editsource extends HttpServlet {
                 mask.setNetworkuuid(networkuuid);
                 mask.setUuid(sourceuuid);
 
-                if (maskDAO.updateMask(mask, sourceuuid)) {
+                if (maskDAO.updateMask(mask)) {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Mask updated successfully.");
                 } else {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Mask update failed.");
 
                 }
-              } else if (shortcodeDAO.get(sourceuuid) != null) {
+              } else if (shortcodeDAO.getShortcode(sourceuuid) != null) {
 
                 Shortcode shortcode = new Shortcode();
                 shortcode.setAccountuuid(accountuuid);
@@ -126,7 +110,7 @@ public class Editsource extends HttpServlet {
                 shortcode.setNetworkuuid(networkuuid);
                 shortcode.setUuid(sourceuuid);
 
-                if (shortcodeDAO.update(shortcode, sourceuuid)) {
+                if (shortcodeDAO.updateShortcode(shortcode)) {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Shortcode updated successfully.");
                 } else {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Shortcode update failed.");
@@ -141,20 +125,16 @@ public class Editsource extends HttpServlet {
 
             String sourceuuid = request.getParameter("sourceuuid");
 
-            if (maskDAO.get(sourceuuid) != null) {
-                if (false
-                		//maskDAO.deleteMask(sourceuuid)
-                		) {
+            if (maskDAO.getMask(sourceuuid) != null) {
+                if (maskDAO.deleteMask(sourceuuid)) {
 
                     session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Mask deleted successfully.");
                 } else {
                     session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Mask deletion failed.");
 
                 }
-            } else if (shortcodeDAO.get(sourceuuid) != null) {
-                if (false
-                		//shortcodeDAO.deleteShortcode(sourceuuid)
-                		) {
+            } else if (shortcodeDAO.getShortcode(sourceuuid) != null) {
+                if (shortcodeDAO.deleteShortcode(sourceuuid)) {
 
                     session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Shortcode deleted successfully.");
                 } else {

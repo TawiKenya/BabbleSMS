@@ -15,6 +15,8 @@
  */
 package ke.co.tawi.babblesms.server.beans.maskcode;
 
+import ke.co.tawi.babblesms.server.beans.StorableBean;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -23,41 +25,61 @@ import org.apache.commons.lang3.StringUtils;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Mask extends SMSSource {
-    
-    /**
-     * 
-     */
+public class Mask extends StorableBean {
+
+    private String maskname;
+    private String accountuuid;
+    private String networkuuid;
+
     public Mask() {
         super();
+        maskname = "";
+        accountuuid = "";
+        networkuuid = "";
     }
 
-    
+    public String getAccountuuid() {
+         System.out.println(accountuuid);
+        return accountuuid;
+    }
+
+    public void setAccountuuid(String accountuuid) {
+        //System.out.println(accountuuid);
+        this.accountuuid = StringUtils.trimToEmpty(accountuuid);
+    }
+
+    public String getNetworkuuid() {
+        return networkuuid;
+    }
+
+    public void setNetworkuuid(String networkuuid) {
+        this.networkuuid = StringUtils.trimToEmpty(networkuuid);
+    }
+
     public String getMaskname() {
-        return getSource();
+        return maskname;
     }
 
     public void setMaskname(String maskname) {
-    	setSource(StringUtils.trimToEmpty(maskname));
+        this.maskname = StringUtils.trimToEmpty(maskname);
     }
 
-    
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Mask [getUuid()=");
-		builder.append(getUuid());
-		builder.append(", maskname=");
-		builder.append(getSource());
-		builder.append(", accountuuid=");
-		builder.append(getAccountuuid());
-		builder.append(", networkuuid=");
-		builder.append(getNetworkuuid());
-		builder.append("]");
-		return builder.toString();
-	}    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Mask ");
+        builder.append("[id=");
+        builder.append(getId());
+        builder.append(", uuid=");
+        builder.append(getUuid());
+        builder.append(", maskname=");
+        builder.append(maskname);
+        builder.append(", accountuuid=");
+        builder.append(accountuuid);
+        builder.append(", networkuuid=");
+        builder.append(networkuuid);
+        builder.append("]");
+        return builder.toString();
+    }
 
 }

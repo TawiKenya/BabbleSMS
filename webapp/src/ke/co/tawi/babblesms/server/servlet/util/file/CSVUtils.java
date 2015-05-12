@@ -16,7 +16,7 @@
 package ke.co.tawi.babblesms.server.servlet.util.file;
 
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 
 import java.io.File;

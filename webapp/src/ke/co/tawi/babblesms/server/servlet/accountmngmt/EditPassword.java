@@ -29,12 +29,9 @@ import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 
 import ke.co.tawi.babblesms.server.session.SessionConstants;
-
-import java.io.IOException;
-import org.apache.log4j.Logger;
 /**
  * Receives a form request toedit a account's details
  * 
@@ -83,7 +80,7 @@ public class EditPassword extends HttpServlet{
 		
 
 		
-			AccountsDAO acDAO = AccountsDAO.getInstance();
+			AccountDAO acDAO = AccountDAO.getInstance();
 			Account accounts = acDAO.getAccount(accuuid);
 	if(password !=accounts.getLogpassword()){
 			session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Old password wrong!Please type again");
@@ -93,7 +90,7 @@ public class EditPassword extends HttpServlet{
 	else{		
 		    	 accounts.setLogpassword(newpassword);
 			
-		    if( acDAO.updateAccount(accounts)){
+		    if( acDAO.updateAccount(confirmpassword, accounts)){
 			 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "You have successfully edited your password");
 		   }
 
@@ -109,5 +106,6 @@ public class EditPassword extends HttpServlet{
 	
 		
 	}
+
 
 

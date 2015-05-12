@@ -37,7 +37,8 @@ public class TestAccountBalanceDAO {
     final String DB_PASSWD = "Hymfatsh8";
     final int DB_PORT = 5432;
 
-    final String ACC_UUID = "143bd229-bb55-4b6d-b1c4-ca7b8f4c78a7", ACC_UUID_NEW = "fwk681d2e6-84f2-45ff-914c-522a3b076141";
+    final String ACC_UUID = "143bd229-bb55-4b6d-b1c4-ca7b8f4c78a7", 
+    		ACC_UUID_NEW = "fwk681d2e6-84f2-45ff-914c-522a3b076141";
     final String ACC_ORIGIN = "Notice", ACC_ORIGIN_NEW = "Info";
     
     final int ACC_BALANCE = 1852,

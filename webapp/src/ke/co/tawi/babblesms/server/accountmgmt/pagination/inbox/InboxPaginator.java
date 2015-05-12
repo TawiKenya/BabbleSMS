@@ -18,7 +18,7 @@ package ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
 
@@ -41,7 +41,7 @@ public class InboxPaginator {
     private IncomingLogDAO incomingLogDAO;
     private CountUtils countUtils;
     
-    //private String accountuuid;
+    private String accountuuid;
     private List<String> shortcodes;
     private ShortcodeDAO shortCodeDAO;
     
@@ -59,14 +59,16 @@ public class InboxPaginator {
      * @param accountuuid
      */
     public InboxPaginator(String accountuuid) {
+        this.accountuuid = accountuuid;
         countUtils = CountUtils.getInstance();
-        incomingLogDAO = IncomingLogDAO.getInstance();        
+        incomingLogDAO = IncomingLogDAO.getInstance();
+        
         shortCodeDAO = ShortcodeDAO.getInstance();
         
+        getShortCodes(); // Populate with the list of shortcodes belonging to this account
+
         account = new Account();
-        account.setUuid(accountuuid); 
-        
-        getShortCodes(); // Populate with the list of shortcodes belonging to this account        
+        account.setUuid(accountuuid);  
     }
     
 
@@ -92,7 +94,7 @@ public class InboxPaginator {
      */
     private void getShortCodes() {
         shortcodes = new ArrayList<>();
-        List<Shortcode> smsCodes = shortCodeDAO.getShortcodes(account);
+        List<Shortcode> smsCodes = shortCodeDAO.getShortcodebyaccountuuid(accountuuid);
 
         for (Shortcode code : smsCodes) {
             shortcodes.add(code.getUuid());
@@ -128,7 +130,7 @@ public class InboxPaginator {
         int totalPage = getTotalPage();
 
         startIndex = (totalPage - 1) * PAGESIZE;
-        sessionCount = countUtils.getIncomingCount(account.getUuid());
+        sessionCount = countUtils.getIncomingCount(accountuuid);
         
         smsList = incomingLogDAO.getIncomingLog(account, startIndex, sessionCount);
 
@@ -190,7 +192,7 @@ public class InboxPaginator {
         int totalSize = 0;
 
         //get the number of all sms belonging to this account
-        totalSize = countUtils.getIncomingCount(account.getUuid());
+        totalSize = countUtils.getIncomingCount(accountuuid);
 
         return ((totalSize - 1) / PAGESIZE) + 1;
     }

@@ -23,8 +23,8 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.beans.contact.Phone;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
+
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class TestGroupDAO {
     
     
     private GroupDAO storage;
-    private AccountsDAO storagenew;
+    private AccountDAO storagee;
 
     /**
      * Test method for
@@ -95,9 +95,9 @@ public class TestGroupDAO {
      */
     @Test
     public void testGetGroupAccount(){
-    	storagenew = new AccountsDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+    	storagee = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
-    	Account account = storagenew.getAccount(ACCUUID);
+    	Account account = storagee.getAccount(ACCUUID);
     	
     	storage = new GroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
@@ -106,6 +106,7 @@ public class TestGroupDAO {
     	assertEquals(list.size(), 20);
     	
     }
+    
     
     
     /**

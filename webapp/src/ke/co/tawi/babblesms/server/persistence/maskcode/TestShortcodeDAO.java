@@ -23,7 +23,6 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 
 import org.junit.Test;
-import org.junit.Ignore;
 
 /**
  * Tests our persistence implementation for {@link Shortcode}
@@ -47,8 +46,8 @@ public class TestShortcodeDAO {
             SH_SOURCE_NEW = "234322",
             SH_SOURCE_UPDATE = "12345";
 
-    final String ACCOUNT_UUID = "C3CFA249-F2A3-8253-1F44-B1C594C6A8D2",
-            ACCOUNTUUID_DEMO = "650195B6-9357-C147-C24E-7FBDAEEC74ED",	// The 'demo' account uuid
+    final String ACCOUNT = "C3CFA249-F2A3-8253-1F44-B1C594C6A8D2",
+            ACCOUNT1 = "650195B6-9357-C147-C24E-7FBDAEEC74ED",
             ACCOUNT_UPDATE = "8038D870-5455-A2D6-18A9-BD5FA1D0A10A";
             
 
@@ -56,16 +55,12 @@ public class TestShortcodeDAO {
             NETWORK_UUID_NEW = "5C1D9939-136A-55DE-FD0E-61D8204E17C9",
             NETWORK_UUID_UPDATE = "0DE968C9-7309-C481-58F7-AB6CDB1011EF";
 
-    final int SHORTCODE_COUNT = 7;
-    final int SHORTCODE_COUNT_DEMO = 3;
-    
     private ShortcodeDAO storage;
 
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.shedit#GetShortcodeByuuidString(java.lang.String)}.
      */
-    @Ignore
     @Test
     public void testGetShortcodeByuuid() {
         storage = new ShortcodeDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -74,31 +69,30 @@ public class TestShortcodeDAO {
 
         assertEquals(sh.getUuid(), SH_UUID);
         assertEquals(sh.getCodenumber(), SH_SOURCE);
-        assertEquals(sh.getAccountuuid(), ACCOUNTUUID_DEMO);
+        assertEquals(sh.getAccountuuid(), ACCOUNT1);
         assertEquals(sh.getNetworkuuid(), NETWORK_UUID);
 
     }
 
     /**
      * Test method for
-     * {@link ke.co.tawi.babblesms.server.persistence.maskcode.Shortcode.getShortcodes#}.
+     * {@link ke.co.tawi.babblesms.server.persistence.items.maskcode.Shortcode#ShortcodeByAccount}.
      */
     //@Ignore
     @Test
     public void testShortcodeByAccount() {
         storage = new ShortcodeDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
         Account account = new Account();
-        account.setUuid(ACCOUNTUUID_DEMO);
+        account.setUuid(ACCOUNT);
         List<Shortcode> list = storage.getShortcodes(account);
 
-        assertEquals(list.size(), SHORTCODE_COUNT_DEMO);
-        
-        
-        for (Shortcode c : list) {
-            System.out.println(c);
-            /*assertTrue(l.getCodenumber().equals(SH_SOURCE2)
+        //assertEquals(list.size(), 10);
+        System.out.println(list);
+        for (Shortcode l : list) {
+            //System.out.println(l);
+            assertTrue(l.getCodenumber().equals(SH_SOURCE2)
                     || l.getCodenumber().equals(SH_SOURCE3)
-                    || l.getCodenumber().equals(SH_SOURCE4));*/
+                    || l.getCodenumber().equals(SH_SOURCE4));
         }
     }
 
@@ -106,7 +100,6 @@ public class TestShortcodeDAO {
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.maskcode#PutShortcode(ke.co.tawi.babblesms.server.beans.maskcode.Shortcode)}.
      */
-    @Ignore
     @Test
     public void testPutShortcode() {
         storage = new ShortcodeDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -115,7 +108,7 @@ public class TestShortcodeDAO {
         sh.setUuid(SH_UUID_NEW);
         sh.setCodenumber(SH_SOURCE_NEW);
         sh.setNetworkuuid(NETWORK_UUID_NEW);
-        sh.setAccountuuid(ACCOUNT_UUID);
+        sh.setAccountuuid(ACCOUNT);
 
         assertTrue(storage.put(sh));
 
@@ -123,17 +116,15 @@ public class TestShortcodeDAO {
 
         assertEquals(sh.getUuid(), SH_UUID_NEW);
         assertEquals(sh.getCodenumber(), SH_SOURCE_NEW);
-        assertEquals(sh.getAccountuuid(), ACCOUNT_UUID);
+        assertEquals(sh.getAccountuuid(), ACCOUNT);
         assertEquals(sh.getNetworkuuid(), NETWORK_UUID_NEW);
 
     }
-    
     
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.maskcode#UpdateShortcode(ke.co.tawi.babblesms.server.beans.maskcode.Shortcode)}.
      */
-    @Ignore
     @Test
     public void testUpdateShortcode() {
         storage = new ShortcodeDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -152,22 +143,6 @@ public class TestShortcodeDAO {
         assertEquals(sh.getCodenumber(), SH_SOURCE_UPDATE);
         assertEquals(sh.getAccountuuid(), ACCOUNT_UPDATE);
         assertEquals(sh.getNetworkuuid(), NETWORK_UUID_UPDATE);
+
     }
-    
-    
-    /**
-     * 
-     */
-    @Ignore
-    @Test
-    public void testGetAllShortcodes() {
-    	storage = new ShortcodeDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-    	
-    	List<Shortcode> allCodes = storage.getAllShortcodes();
-    	
-    	assertEquals(allCodes.size(), SHORTCODE_COUNT);    	
-    }
-    
-    
-    
 }

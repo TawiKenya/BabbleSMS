@@ -21,7 +21,7 @@ import java.util.List;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
 import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountsDAO;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 
 import org.junit.Ignore;
 import org.junit.Test;
