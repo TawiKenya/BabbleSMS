@@ -332,15 +332,16 @@ int credit_Consumed = 0;
                                             }// end 'for(Contact contact : contactList)'
                                         %>
                                     </select>
+
                                     
-                                    <div class="tokenize-samples Tokenizer">
+                                   <!-- <div class="tokenize-samples Tokenizer">
                                         <ul class="TokensContainer">
                                             <li class="TokenSearch">
-                                            <input size="5">
+                                            <input size="5" >
                                             </li>
                                         </ul>
                                         <ul class="Dropdown"></ul>
-                                    </div>
+                                    </div>-->
                                 </div>                                
                             </div>
 
@@ -348,6 +349,7 @@ int credit_Consumed = 0;
                                 $('select#tokenize_simple').tokenize({
                                 onAddToken: function(){
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+                                    remove();
                                 },
                                 onRemoveToken: function(){
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
@@ -356,7 +358,7 @@ int credit_Consumed = 0;
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                             </script>
 
-                        </div>  
+                   </div>  
 
         <div class="control-group">
                         <label class="control-label" for="source">Source:</label>

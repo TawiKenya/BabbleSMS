@@ -120,14 +120,15 @@
                 }, 20);
             });
 
-            $(document).on('click', function(){
+            $(document).on('click', function(){ 
+                 $this.searchInput.val(undefined);
                 $this.dropdownHide();
-                if($this.options.maxElements == 1){
+                if($this.options.maxElements === 1){
                     if($this.searchInput.val()){
-                        $this.tokenAdd($this.searchInput.val(), '');
+                        $this.tokenAdd($this.searchInput.val(), '');                                            
                     }
                 }
-            });
+            });            
 
             this.resizeSearchInput();
 

@@ -101,7 +101,7 @@ div.Tokenize ul.TokensContainer li.Token a.Close
     margin: 1px 0 0 5px;
     padding: 0;
     cursor: pointer;
-    color: #a6b4ce;
+    color: #f00;
 }
 
 div.Tokenize.Disabled ul.TokensContainer li.Token a.Close {
