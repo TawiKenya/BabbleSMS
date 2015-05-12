@@ -32,14 +32,9 @@ public class ContactsResetUtil extends GenericDAO {
 	private List<Phone> phoneList = new LinkedList<Phone>();
 
 	private final Logger logger = Logger.getLogger(this.getClass());
+	// change the account uuid to your desire
 
-	private static String accountUUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";// change
-																				// the
-																				// account
-																				// uuid
-																				// to
-																				// your
-																				// desire
+	private static String accountUUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
 
 	private static String dbName = "babblesmsdb";
 	private static String dbHost = "localhost";
