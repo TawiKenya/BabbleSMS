@@ -162,8 +162,6 @@ public class Addaccount extends HttpServlet {
             account.setEmail(email);
             account.setMobile(mobile);
             account.setStatusuuid(statusuuid);
-            account.setApipassword(apipassword);
-            account.setApiusername(apiusername);
             account.setDailysmslimit(dailysmslimit);
             account.setUuid(accountuuid);
 
@@ -189,8 +187,6 @@ public class Addaccount extends HttpServlet {
         a.setName(firstName);
         a.setUsername(username);
         a.setLogpassword(loginPasswd);
-        a.setApiusername(smsusername);
-        a.setApipassword(smsPasswd);
         a.setEmail(email);
         a.setMobile(phone);
         a.setStatusuuid("396F2C7F-961C-5C12-3ABF-867E7FD029E6");

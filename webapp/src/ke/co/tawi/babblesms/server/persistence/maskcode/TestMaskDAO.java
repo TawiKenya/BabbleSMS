@@ -15,15 +15,15 @@
  */
 package ke.co.tawi.babblesms.server.persistence.maskcode;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
 
+import org.junit.Ignore;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests our persistence implementation for {@link Mask}
@@ -54,12 +54,15 @@ public class TestMaskDAO {
             MSUUID_NEW = "C3CFA249-F2A3-8253-1F44-B1C594C6A8D2",
             MSUUID_UPDATED = "8038D870-5455-A2D6-18A9-BD5FA1D0A10A";
 
+    final int MASK_COUNT = 6;
+    
     private MaskDAO storage;
 
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.Maskcode.Mask#getMask(java.lang.String)}.
      */
+    @Ignore
     @Test
     public void testgetMaskString() {
         storage = new MaskDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -69,17 +72,18 @@ public class TestMaskDAO {
         assertEquals(ms.getMaskname(), MS_MASK);
         assertEquals(ms.getNetworkuuid(), NETWORKUUID);
         assertEquals(ms.getAccountuuid(), MSUUID);
-
     }
 
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.Maskcode.MASKDAO#getMaskByACCOUNT}.
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testgetMaskByACCOUNT() {
         storage = new MaskDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+        
         Account account = new Account();
         account.setUuid(MSUUID_NEW);
         List<Mask> list = storage.getMasks(account);
@@ -93,13 +97,12 @@ public class TestMaskDAO {
         }
     }
 
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.Maskcode.Mask#PutMask(ke.co.tawi.babblesms.server.beans.Maskcode.Mask)}.
-     *
-     *
-     *
      */
+    @Ignore
     @Test
     public void testPutMask() {
         storage = new MaskDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -119,13 +122,12 @@ public class TestMaskDAO {
         assertEquals(ms.getAccountuuid(), MSUUID);
     }
     
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.Maskcode.Mask#UpdateMask(ke.co.tawi.babblesms.server.beans.Maskcode.Mask)}.
-     *
-     *
-     *
      */
+    @Ignore
     @Test
     public void testUpdateMask() {
         storage = new MaskDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -143,6 +145,18 @@ public class TestMaskDAO {
         assertEquals(ms.getMaskname(), MS_MASK_UPDATE);
         assertEquals(ms.getNetworkuuid(), NETWORKUUID_UPDATED);
         assertEquals(ms.getAccountuuid(), MSUUID_UPDATED);
+    }
+    
+    
+    /**
+     * 
+     */
+    @Test
+    public void testGetAllMasks() {
+        storage = new MaskDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+        
+        List<Mask> list = storage.getAllMasks();
+        assertEquals(list.size(), MASK_COUNT);
     }
 }
 

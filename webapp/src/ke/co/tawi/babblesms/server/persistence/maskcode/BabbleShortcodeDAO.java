@@ -52,7 +52,13 @@ public interface BabbleShortcodeDAO {
     * @param account
     * @return a list of {@link Shortcode}s belonging to this account.
     */
-   public List<Shortcode> getShortcodes(Account account);
+   public List<Shortcode> getShortcodes (Account account);
+   
+   
+   /**
+    * @return a list of all {@link Shortcode}s
+    */
+   public List<Shortcode> getAllShortcodes();
    
    
     /**

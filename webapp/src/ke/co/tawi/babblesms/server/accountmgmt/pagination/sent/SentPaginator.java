@@ -17,7 +17,6 @@ package ke.co.tawi.babblesms.server.accountmgmt.pagination.sent;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
 
@@ -32,37 +31,36 @@ import java.util.List;
  */
 public class SentPaginator {
 
-    /**
-     *
-     */
+  
     public static final int PAGESIZE = 15; // The number of SMS to display per page
-    private final OutgoingLogDAO outgoingLogDAO;
-    private final CountUtils countUtils;
-    private String accountuuid;
+    private OutgoingLogDAO outgoingLogDAO;
+    private CountUtils countUtils;
+    
     Account account = new Account();
+    
+    
     /**
      *
      * @param accountuuid
      */
     public SentPaginator(String accountuuid) {
-        this.accountuuid = accountuuid;
-        AccountDAO acDAO = AccountDAO.getInstance();
-        account = acDAO.getAccount(accountuuid);
+    	account = new Account();
+        account.setUuid(accountuuid); 
+        
         countUtils = CountUtils.getInstance();
         outgoingLogDAO = OutgoingLogDAO.getInstance();
-
     }
+    
 
     /**
      *
-     * @param email
      * @param dbName
      * @param dbHost
      * @param dbUsername
      * @param dbPasswd
      * @param dbPort
      */
-    public SentPaginator(String email, String dbName, String dbHost,
+    public SentPaginator(String dbName, String dbHost,
             String dbUsername, String dbPasswd, int dbPort) {
 
         //initialize the DAOs
@@ -76,17 +74,11 @@ public class SentPaginator {
      * @return
      */
     public SentPage getFirstPage() {
-	System.out.println("accountuuid1:::::::::::::::::::::::::::" +accountuuid);
         SentPage page = new SentPage();
-	System.out.println("accountuuid2:::::::::::::::::::::::::::" +accountuuid);
         List<OutgoingLog> userList = outgoingLogDAO.getOutgoingLog(account,0, PAGESIZE);
-	System.out.println("accountuuid3:::::::::::::::::::::::::::" +accountuuid);
-        page = new SentPage(1, getTotalPage(), PAGESIZE, userList);
-	System.out.println("accountuuid4:::::::::::::::::::::::::::" +accountuuid);
-        //result = new IncomingSMSPage (1, getTotalPage(), PAGESIZE, smsList);	    
+        page = new SentPage(1, getTotalPage(), PAGESIZE, userList);   
 
         return page;
-	
     }
     
 
@@ -103,7 +95,7 @@ public class SentPaginator {
         int totalPage = getTotalPage();
 
         startIndex = (totalPage - 1) * PAGESIZE;
-        sessionCount = countUtils.getIncomingCount(accountuuid);
+        sessionCount = countUtils.getIncomingCount(account.getUuid());
         sessionList = outgoingLogDAO.getOutgoingLog(account,startIndex, sessionCount);
 
         page = new SentPage(totalPage, totalPage, PAGESIZE, sessionList);
@@ -124,7 +116,8 @@ public class SentPaginator {
 
         SentPage page = new SentPage();
 
-        List<OutgoingLog> sessionList = outgoingLogDAO.getOutgoingLog(account,currentPage.getPageNum() * PAGESIZE, ((currentPage.getPageNum() * PAGESIZE) + PAGESIZE));
+        List<OutgoingLog> sessionList = outgoingLogDAO.getOutgoingLog(account,currentPage.getPageNum() * 
+        		PAGESIZE, ((currentPage.getPageNum() * PAGESIZE) + PAGESIZE));
 
         page = new SentPage(currentPage.getPageNum() + 1, totalPage, PAGESIZE, sessionList);
 
@@ -162,7 +155,7 @@ public class SentPaginator {
         int totalSize = 0;
 
         //get the number of all sessions belonging to this email
-        totalSize = countUtils.getOutgoingLog(accountuuid);
+        totalSize = countUtils.getOutgoingLog(account.getUuid());
 
         //TODO: divide by the page size and add one to take care of remainders and what else?
         return ((totalSize - 1) / PAGESIZE) + 1;

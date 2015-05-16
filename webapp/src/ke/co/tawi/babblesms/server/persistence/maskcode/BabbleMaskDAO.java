@@ -55,6 +55,12 @@ public interface BabbleMaskDAO {
     public List<Mask> getMasks(Account account);
     
     
+    /**
+     * 
+     * @return a List of all {@link Mask}s
+     */
+    public List<Mask> getAllMasks();
+    
     
     /**
      * Update a Mask with the corresponding UUID.
