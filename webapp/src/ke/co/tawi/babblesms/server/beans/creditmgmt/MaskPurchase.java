@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.beans.maskcode;
+package ke.co.tawi.babblesms.server.beans.creditmgmt;
 
 import ke.co.tawi.babblesms.server.beans.StorableBean;
 
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * A Maskbalance
+ *  MaskPurchases
  * <p>
  *  
  * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
  */
-public class MaskBalance extends SmsBalance {
+public class MaskPurchase extends SMSPurchase {
 
-    
-   
     private String maskuuid;
-
-    public MaskBalance() {
+     
+    public MaskPurchase() {
         super();
         maskuuid = "";
     }
@@ -41,15 +39,19 @@ public class MaskBalance extends SmsBalance {
    public String getMaskuuid() {
        return maskuuid;
    }
-
+   
    public void setMaskuuid(String maskuuid) {
        this.maskuuid = StringUtils.trimToEmpty(maskuuid);
    }
-    
+
+  
+
+   
+   
    @Override
    public String toString() {
        StringBuilder builder = new StringBuilder();
-       builder.append("Shortcodebalance ");
+       builder.append("ShortcodePurchases");
        builder.append("[id=");
        builder.append(getId());
        builder.append(", uuid=");
@@ -58,8 +60,10 @@ public class MaskBalance extends SmsBalance {
        builder.append(getCount());
        builder.append(", accountuuid=");
        builder.append(getAccountuuid());
-       builder.append(", maskuuid=");
+       builder.append(", networkuuid=");
        builder.append(maskuuid);
+       builder.append(", purchasedate=");
+       builder.append(getPurchasedate());
        builder.append("]");
        return builder.toString();
    }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.beans.maskcode;
+package ke.co.tawi.babblesms.server.beans.creditmgmt;
 
 import ke.co.tawi.babblesms.server.beans.StorableBean;
 
@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
  *  
  * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
  */
-public class ShortcodePurchase extends SmsPurchase{
+public class ShortcodePurchase extends SMSPurchase{
 
     
     private String shortcodeuuid;

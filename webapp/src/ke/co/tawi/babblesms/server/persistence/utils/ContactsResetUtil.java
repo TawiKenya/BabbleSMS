@@ -1,12 +1,19 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
 package ke.co.tawi.babblesms.server.persistence.utils;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
@@ -15,164 +22,133 @@ import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.log4j.Logger;
 
 /**
- * Utility that updates the origin of the SMS to an existing phone number
+ * Utility that updates the origin of the SMS to phone numbers that exist in 
+ * an Account's address book.
  * <p>
  * 
  * @author <a href="mailto:eugene.g99@gmail.com">Eugene Wang'ombe</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 
 public class ContactsResetUtil extends GenericDAO {
 
-	private List<Contact> contactsList = new ArrayList<Contact>();
-	private List<Phone> phoneList = new LinkedList<Phone>();
-
-	private final Logger logger = Logger.getLogger(this.getClass());
-	// change the account uuid to your desire
-
-	private static String accountUUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
-
-	private static String dbName = "babblesmsdb";
-	private static String dbHost = "localhost";
-	private static String dbUsername = "babblesms";
-	private static String dbPassword = "Hymfatsh8";
-	private static int dbPort = 5432;
-
-	private static ContactDAO contactDAO = new ContactDAO(dbName, dbHost,
-			dbUsername, dbPassword, dbPort);
-	private static PhoneDAO phoneDAO = new PhoneDAO(dbName, dbHost, dbUsername,
-			dbPassword, dbPort);
-
-	private static ContactsResetUtil resetUtil;
-
-	public static ContactsResetUtil getInstance() {
-		if (resetUtil == null) {
-			resetUtil = new ContactsResetUtil();
-		}
-
-		return resetUtil;
-	}
-
-	protected ContactsResetUtil() {
-		super();
-	}
-
+	// Our Database credentials
+	final String DB_NAME = "babblesmsdb";
+	final String DB_HOST = "localhost";
+	final String DB_USERNAME = "babblesms";
+	final String DB_PASSWORD = "Hymfatsh8";
+	final int DB_PORT = 5432;
+	
+	private ContactDAO contactDAO;
+	private PhoneDAO phoneDAO;
+	
+	private Account account;
+	private Logger logger;
+	
+	
 	/**
-	 * @param dbName
-	 * @param dbHost
-	 * @param dbUsername
-	 * @param dbPassword
-	 * @param dbPort
+	 * @param accountUuid
 	 */
-	public ContactsResetUtil(String dbName, String dbHost, String dbUsername,
-			String dbPassword, int dbPort) {
-		super(dbName, dbHost, dbUsername, dbPassword, dbPort);
+	public ContactsResetUtil(String accountUuid) {
+		contactDAO = new ContactDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT);
+		phoneDAO = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT);
+		
+		account = new Account();		
+		account.setUuid(accountUuid);
+		
+		logger = Logger.getLogger(this.getClass());
 	}
 
-	/**
-	 * @param accountUUID
-	 * @return list of all Contact objects related to an Account
-	 */
-	public List<Contact> getContactsByAccountUUID(String accountUUID) {
-
-		Account account = new Account();
-		account.setUuid(accountUUID);
-		return contactDAO.getContacts(account);
-
-	}
+	
 
 	/**
-	 * @param contactUUID
-	 * @return {@link List<>} a of Phone objects
 	 * 
 	 */
-	public List<Phone> getPhoneNumbersByContactUUID(String contactUUID) {
-
-		Contact contact = new Contact();
-		contact.setUuid(contactUUID);
-		return phoneDAO.getPhones(contact);
-
-	}
-
-	/**
-	 * @param accountUUID
-	 */
-	public void resetPhoneContacts(String accountUuid) {
-
+	public void resetPhoneContacts() {
 		RandomDataGenerator randomGenerator = new RandomDataGenerator();
-		// get all message uuids for this account
-		List<String> uuids = new ArrayList<>();
-		try (Connection conn = dbCredentials.getConnection();
-				PreparedStatement pstmt = conn
-						.prepareStatement("SELECT uuid FROM incominglog WHERE recipientuuid=?;");) {
-			pstmt.setString(1, accountUuid);
-			ResultSet rset = pstmt.executeQuery();
-
-			while (rset.next()) {
-				uuids.add(rset.getString("uuid"));
-			}
-
-		} catch (SQLException e) {
-			logger.error("SQLException when getting uuids of contact from selected account.");
-			logger.error(ExceptionUtils.getStackTrace(e));
+		
+		// get all contact uuids for this account
+		List<String> uuids = new LinkedList<>();
+		
+		List<Contact> contactsList =  contactDAO.getContacts(account);
+		
+		for(Contact contact : contactsList) {
+			uuids.add(contact.getUuid());
 		}
-
-		// get all the contacts associated with the following account UUID
-		contactsList = getContactsByAccountUUID(accountUuid);
-		try (Connection conn = dbCredentials.getConnection();
-				PreparedStatement updateOriginQuery = conn
-						.prepareStatement("UPDATE incominglog SET origin=? WHERE recipientuuid=? AND uuid=?");) {
-
-			// the contact's phone list
-			List<Phone> ctPhoneList;
-			for (Contact singleContact : contactsList) {
-				// get a list of all phone object associated with a contact
-				ctPhoneList = getPhoneNumbersByContactUUID(singleContact
-						.getUuid());
-				phoneList.addAll(ctPhoneList);
-
-			}
-			// get all phonenumbers specifically
-			List<String> phoneNumbers = new ArrayList<String>();
-			for (Phone phone : phoneList)
-				phoneNumbers.add(phone.getPhonenumber());
-
-			// generate new phone numbers
-			for (int i = 0; i < 50; i++) {
-				String phonenumber = "254"
-						+ Integer.toString(randomGenerator.nextInt(700000000,
-								729000000));
-				phoneNumbers.add(phonenumber);
-			}
-
-			// update the database
-
+		
+		
+		// Get all the phone objects of this account
+		List<Phone> phoneList = new LinkedList<>();
+		
+		List<Phone> ctPhoneList;
+		for (Contact contact : contactsList) {
+			// get a list of all phone object associated with a contact
+			ctPhoneList = phoneDAO.getPhones(contact);
+			phoneList.addAll(ctPhoneList);
+		}
+		
+		// get all phone numbers specifically
+		List<String> phoneNumbers = new LinkedList<>();
+		for (Phone phone : phoneList) {
+			phoneNumbers.add(phone.getPhonenumber());
+		}
+		
+		// generate new phone numbers and add to the list
+		String phonenumber;
+		for (int j = 0; j < 50; j++) {
+			phonenumber = "254" + 
+					Integer.toString(randomGenerator.nextInt(700000000,	729000000));
+			phoneNumbers.add(phonenumber);
+		}
+					
+		
+		// Update the IncomingLog with the new phone numbers		
+		try (
+				Connection conn = dbCredentials.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE incominglog SET origin=? "
+						+ "WHERE recipientuuid=? AND uuid=?");) {
+			
+			int index;
 			for (String uuid : uuids) {
-				int index = randomGenerator.nextInt(0, phoneNumbers.size() - 1);
-				updateOriginQuery.setString(1, phoneNumbers.get(index));
-				updateOriginQuery.setString(2, accountUuid);
-				updateOriginQuery.setString(3, uuid);
-				updateOriginQuery.executeUpdate();
+				index = randomGenerator.nextInt(0, phoneNumbers.size() - 1);
+				
+				pstmt.setString(1, phoneNumbers.get(index));
+				pstmt.setString(2, account.getUuid());
+				pstmt.setString(3, uuid);
+				pstmt.executeUpdate();
 			}
+			
 		} catch (SQLException e) {
-			logger.error("SQLException when updating origin phonenumbers");
+			logger.error("SQLException when updating IncomingLog phonenumbers");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
-
 	}
 
-	public static void main(String... args) {
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
 
-		ContactsResetUtil cru = new ContactsResetUtil(dbName, dbHost,
-				dbUsername, dbPassword, dbPort);
+		// This is the Account UUID of 'demo'
+		String accountUuid = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
+		
 		System.out.println("Updating source phone numbers...");
-
-		cru.resetPhoneContacts(accountUUID);
-
+		
+		ContactsResetUtil util = new ContactsResetUtil(accountUuid);
+		util.resetPhoneContacts();
+		
 		System.out.println("Done!");
 	}
 }
