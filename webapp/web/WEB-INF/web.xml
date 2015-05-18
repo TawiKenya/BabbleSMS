@@ -119,6 +119,10 @@
         <servlet-name>Loggin</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
     </servlet>
+
+
+
+
     <!--<servlet>
         <servlet-name>addnetwork</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.network.Addnetwork2</servlet-class>
@@ -157,6 +161,8 @@
     
     <!-- Servlet mapping start -->
     
+
+
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>

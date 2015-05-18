@@ -1,4 +1,4 @@
-	<%
+<%
     /**
     Copyright 2015 Tawi Commercial Services Ltd
 
@@ -15,6 +15,8 @@
     under the License.
     */
 %>
+
+
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox.InboxPage"%>
@@ -258,8 +260,8 @@
                                 List<Phone> phoneList = phnDAO.getPhones(code.getOrigin());
                                 Phone phone = phoneList.get(0);
                                 String contactuuid = phone.getContactUuid();
-								Contact contacts = ctssDAO.getContact(contactuuid);
-								String sourcename = contacts.getName();
+			        Contact contacts = ctssDAO.getContact(contactuuid);
+				String sourcename = contacts.getName();
                         %>
                        <td class="center"><%=sourcename%></td> 
                         <%} else {%>

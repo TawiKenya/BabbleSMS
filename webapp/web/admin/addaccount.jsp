@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="box-content">
-            <form  name ="form1" class="form-horizontal"  onSubmit="return validatePhone(this); return false;"   action="../addaccount" method="POST">
+            <form  class="form-horizontal"   action="../addaccount" method="POST" >
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="name">Names*</label>
@@ -155,7 +155,7 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Phone Number</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="mobile" type="text" onkeypress='return validateQty(event);' name="mobile" value="" >
+                            <input class="input-xlarge focused" id="mobile" type="text" name="mobile" value="" >
 
                         </div>
 
@@ -173,7 +173,7 @@
 
                     <div class="form-actions">
 
-                        <button type="submit" name="sendsms" value="Send"  onclick="phonenumber(document.form1.mobile)" class="btn btn-primary">Add</button>
+                        <button type="submit" name="sendsms" value="Send"   class="btn btn-primary">Add</button>
                     </div>
                 </fieldset>
             </form>

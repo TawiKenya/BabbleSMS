@@ -54,8 +54,10 @@ suspended, deleted etc
  "State" is a future reserved SQL keyword.
  - Id
  - UUID
- - username (unique)
+ - username
  - password
+ - apiusername
+ - apipassword
  - usertype
  - Creation Date
  - name

@@ -12,7 +12,6 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.network.NetworkDAO"%>
 
 <%
     // The following is for session management.    

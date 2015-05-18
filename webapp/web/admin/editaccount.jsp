@@ -12,7 +12,6 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.network.NetworkDAO"%>
 
 <%
     // The following is for session management.    
@@ -87,7 +86,7 @@
         </div>
         <div class="box-content">
 
-            <form class="form-horizontal" method="POST" action="../editaccount">
+            <form class="form-horizontal" action="../editaccount" method="POST"  >
                 <fieldset>
 
                     <div class="control-group">
@@ -100,35 +99,23 @@
                          <div class="control-group">
                         <label class="control-label" for="network">Names</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  id="networkname" name="names" type="text" value="<%=request.getParameter("name")%>">
+                            <input class="input-xlarge focused"  id="networkname" name="name" type="text" value="<%=request.getParameter("name")%>">
                         </div>
                     </div>
                         
-                         <div class="control-group">
-                        <label class="control-label" for="network">API Username</label>
+                     
+
+                     <div class="control-group">
+                        <label class="control-label" for="network">Log Password</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  id="networkname" name="apiusername" type="text" value="<%=request.getParameter("apiusername")%>">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="network">API Password</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused"  id="networkname" name="apipassword" type="text" value="<%=request.getParameter("apipassword")%>">
+                            <input class="input-xlarge focused"  id="networkname" name="loginPasswd" type="text" value="<%=request.getParameter("loginPasswd")%>">
                         </div>
                     </div>
 
-
                     <div class="control-group">
-                        <label class="control-label" for="network">Mobile</label>
+                        <label class="control-label" for="network">Phone Number</label>
                         <div class="controls">
                             <input class="input-xlarge focused"  id="networkname" name="mobile" type="text" value="<%=request.getParameter("mobile")%>">
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="network">Daily SMSlimit</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused"  id="networkname" name="dailysmslimit" type="text" value="<%=request.getParameter("dailysmslimit")%>">
                         </div>
                     </div>
 
@@ -139,31 +126,7 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="network">Status</label>
-                        <div class="controls">
-                           <select id="selectError3" data-rel="chosenn" name="statusuuid">
-                               <option value="<%=request.getParameter("statusuuid")%>"><%=statusHash.get(request.getParameter("statusuuid")).getDescription()%></option>
-                                <% 
-                                    
-                                    int count = 1;
-                                    for (Status code : list) {
-                                     if(!code.getUuid().equals(request.getParameter("statusuuid"))){    
-                                %>
-                                <option value="<%=code.getUuid()%>"><%=code.getDescription()%></option>
-                                <%  
-                                     
-                                        count++;
-                                     }
-                                    }
-                                %>   
-
-                            </select>
-                        </div>
-                    </div>
-
-
-
+                   
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">
                         <button type="submit" class="btn btn-primary">Save changes</button>

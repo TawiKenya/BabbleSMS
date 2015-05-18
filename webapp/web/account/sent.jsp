@@ -86,7 +86,7 @@
     Contact contct;
     int incount = 0;  // Generic counter
 
-    keys = msgstatusCache.getKeys();
+    keys = msgstatusCache.getKeys();   //
     for (Object key : keys) {
         element = msgstatusCache.get(key);
         msgt = (MsgStatus) element.getObjectValue();
