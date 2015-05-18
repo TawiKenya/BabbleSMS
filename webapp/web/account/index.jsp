@@ -518,18 +518,18 @@
         $.getJSON(jsonURL, function(data){
             for (var i = 0; i < data.incomingData.length; i++) {
                  //add data to the arrays but first check if some networks values are unavailable
-                if(typeof data.outgoingData[i].airtel_ke === 'undefined')
+                if(typeof data.incomingData[i].airtel_ke === 'undefined')
                     airtel.push(0);
                 else
-                    airtel.push(data.outgoingData[i].airtel_ke);
-                if(typeof data.outgoingData[i].orange_ke === 'undefined')
+                    airtel.push(data.incomingData[i].airtel_ke);
+                if(typeof data.incomingData[i].orange_ke === 'undefined')
                     orange.push(0);
                 else
-                    orange.push(data.outgoingData[i].orange_ke);
-                if(typeof data.outgoingData[i].safaricom_ke === 'undefined')
+                    orange.push(data.incomingData[i].orange_ke);
+                if(typeof data.incomingData[i].safaricom_ke === 'undefined')
                     safaricom.push(0);
                 else
-                    safaricom.push(data.outgoingData[i].safaricom_ke);
+                    safaricom.push(data.incomingData[i].safaricom_ke);
 
                 //the dates to be used as markers for the graph
                markers.push(data.incomingData[i].date);

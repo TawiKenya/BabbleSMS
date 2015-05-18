@@ -227,8 +227,6 @@ public class CountUtils extends GenericDAO {
      * Gets the count of all incoming USSD belonging to this account holder and
      * from a particular network, between a time interval.
      * <p>
-     * Note: This method assumes that a particular short code can only be held
-     * by one account holder.
      *
      * @param accountuuid
      * @param network
@@ -246,19 +244,20 @@ public class CountUtils extends GenericDAO {
         try {
             conn = dbCredentials.getConnection();
 
-            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM incomingLog WHERE destination "
-                    + "IN (SELECT uuid FROM shortcode WHERE networkUuid = ? AND accountUuid = ?) "
-                    + "AND logTime BETWEEN ? AND ?;");
+            /*pstmt = conn.prepareStatement("SELECT COUNT(*) FROM incomingLog WHERE destination "
+                    + "IN (SELECT codenumber FROM shortcode WHERE networkUuid = ? AND accountUuid = ?) "
+                    + "AND logTime BETWEEN ? AND ?;");*/
+            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM incominglog WHERE networkuuid = ? AND recipientuuid = ? AND logTime BETWEEN ? AND ?;");
             pstmt.setString(1, network.getUuid());
             pstmt.setString(2, accountuuid);
             pstmt.setTimestamp(3, new Timestamp(startTime.getTime()));
             pstmt.setTimestamp(4, new Timestamp(endTime.getTime()));
 
             rset = pstmt.executeQuery();
-
             if (rset.next()) {
                 count = count + rset.getInt(1);
             }
+
 
         } catch (SQLException e) {
             logger.error("SQLException while getting all incoming SMS count of account with uuid '"

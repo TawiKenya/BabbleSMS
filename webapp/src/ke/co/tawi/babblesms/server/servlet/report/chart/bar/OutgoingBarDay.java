@@ -61,7 +61,7 @@ public class OutgoingBarDay extends HttpServlet {
 	/**
 	 * Number of days over which to display the graph
 	 */
-	public static final int DAY_COUNT = 7; 
+	public static final int DAY_COUNT = 7;
 	private String accountUuid = "";
 	Date fromDate = new Date();
 	Date toDate = new Date();
@@ -147,14 +147,14 @@ public class OutgoingBarDay extends HttpServlet {
 	 * {@link Network}s.
 	 * <p>
 	 * An example is:<br/>
-	 * {"incomingData":[{"date":"Apr 20","orange_ke":98,"safaricom_ke":145,"airtel_ke":63},
-	 * 					{"date":"Apr 21","orange_ke":70,"safaricom_ke":180,"airtel_ke":120},
-	 * 					{"date":"Apr 22","orange_ke":20,"safaricom_ke":100,"airtel_ke":140},
-	 * 					{"date":"Apr 23","orange_ke":5,"safaricom_ke":20,"airtel_ke":9},
-	 * 					{"date":"Apr 24","orange_ke":65,"safaricom_ke":56,"airtel_ke":10},
-	 * 					{"date":"Apr 25","orange_ke":27,"safaricom_ke":72,"airtel_ke":75},
-	 * 					{"date":"Apr 26","orange_ke":102,"safaricom_ke":63,"airtel_ke":48}
-	 * ]}
+	 * {"outgoingData":[{"date":"Apr 20","orange_ke":98,"safaricom_ke":145,"airtel_ke":63},
+	 *					{"date":"Apr 21","orange_ke":70,"safaricom_ke":180,"airtel_ke":120},
+						{"date":"Apr 22","orange_ke":20,"safaricom_ke":100,"airtel_ke":140},
+	 					{"date":"Apr 23","orange_ke":5,"safaricom_ke":20,"airtel_ke":9},
+						{"date":"Apr 24","orange_ke":65,"safaricom_ke":56,"airtel_ke":10},
+						{"date":"Apr 25","orange_ke":27,"safaricom_ke":72,"airtel_ke":75},
+						{"date":"Apr 26","orange_ke":102,"safaricom_ke":63,"airtel_ke":48} ]}
+	 * 
 	 * @return a Json String
 	 */
 	private String getJsonOutgoing(String accountUuid) {
@@ -171,11 +171,10 @@ public class OutgoingBarDay extends HttpServlet {
 			statistics = (SessionStatistics) element.getObjectValue();
 		}
 		Map<String, Map<Network, Integer>> networkOutgoingUSSDCountDay = new HashMap<String, Map<Network, Integer>>();
-		//TODO sort out calculations of dates
+		// TODO sort out calculations of dates
 		DateTime dateMidnightStart;
 		if (fromDate == null) {
 			dateMidnightStart = new DateTime(fromDate);
-			
 		} else {
 			dateMidnightStart = DateTime.now().minus(
 					Hours.hours(24 * (DAY_COUNT)));
@@ -205,10 +204,9 @@ public class OutgoingBarDay extends HttpServlet {
 			// recreate the Map in order to void duplicating data
 			HashMap<String, Object> dateNetworkCount = new HashMap<String, Object>();
 
-			if (networkOutgoingUSSDCount != null) { // It is possible that on
-													// particular days the
-													// account has no incoming
-													// SMS
+			// It is possible that on particular days the account has no
+			// incoming SMS
+			if (networkOutgoingUSSDCount != null) {
 				networkIter = networkOutgoingUSSDCount.keySet().iterator();
 				dateNetworkCount.put("date", dateStr.toString());
 				while (networkIter.hasNext()) {
@@ -221,16 +219,17 @@ public class OutgoingBarDay extends HttpServlet {
 							networkOutgoingUSSDCount.get(network));
 
 				}
+				// add the network statistics and the date to an array. It will
+				// be converted to a JSON array
 				dateNetworkCountArray.add(dateNetworkCount);
-
 			}
-			// add the network statistics and the date to an array. It will
-			// be converted to a JSON array
+
 			dateMidnightStart = dateMidnightStart.plus(Hours.hours(24));
 			numDays++;
 
 		} while (numDays < DAY_COUNT);
-
+		// finally put the array into a Map which can be converted into a JSON
+		// object
 		countHash.put("outgoingData", dateNetworkCountArray);
 		return g.toJson(countHash);
 	}

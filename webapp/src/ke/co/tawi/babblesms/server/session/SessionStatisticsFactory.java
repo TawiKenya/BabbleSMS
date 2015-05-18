@@ -91,11 +91,12 @@ public class SessionStatisticsFactory {
         }
 
         // Set up data for the bar charts
-        DateTime dateMidnightStart = DateTime.now().minus(Hours.hours(24 * (IncomingBarDay.DAY_COUNT - 1)));
+        DateTime dateMidnightStart = DateTime.now().minus(Hours.hours(24 * (IncomingBarDay.DAY_COUNT )));
         DateTime dateMidnightEnd = dateMidnightStart.plus(Hours.hours(24));
         int numDays = 0;
         do {
             for (Network network : networkList) {
+            	
                 //get the daily count for incoming
                 count = countUtils.getIncomingCount(accountUuid, network,
                         new Date(dateMidnightStart.getMillis()), new Date(dateMidnightEnd.getMillis()));

@@ -60,9 +60,7 @@ public class IncomingBarDay extends HttpServlet {
 
 	private static final long serialVersionUID = -5252762935809336653L;
 
-	final String CHART_TITLE = "Incoming SMS by Day";
-	final int CHART_WIDTH = 800;
-	final int CHART_HEIGHT = 600;
+
 
 	/**
 	 * Number of days over which to display the graph
@@ -126,7 +124,7 @@ public class IncomingBarDay extends HttpServlet {
 		try {
 			String from = request.getParameter("from");
 			String to = request.getParameter("to");
-			
+
 			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
 			fromDate = formatter.parse(from);
@@ -148,18 +146,17 @@ public class IncomingBarDay extends HttpServlet {
 	 * <p>
 	 * An example is:<br/>
 	 * {"incomingData":[{"date":"Apr 20","orange_ke":98,"safaricom_ke":145,"airtel_ke":63},
-	 * 					{"date":"Apr 21","orange_ke":70,"safaricom_ke":180,"airtel_ke":120},
-	 * 					{"date":"Apr 22","orange_ke":20,"safaricom_ke":100,"airtel_ke":140},
-	 * 					{"date":"Apr 23","orange_ke":5,"safaricom_ke":20,"airtel_ke":9},
-	 * 					{"date":"Apr 24","orange_ke":65,"safaricom_ke":56,"airtel_ke":10},
-	 * 					{"date":"Apr 25","orange_ke":27,"safaricom_ke":72,"airtel_ke":75},
-	 * 					{"date":"Apr 26","orange_ke":102,"safaricom_ke":63,"airtel_ke":48}
-	 * ]}
+	 					{"date":"Apr 21","orange_ke":70,"safaricom_ke":180,"airtel_ke":120},
+						{"date":"Apr 22","orange_ke":20,"safaricom_ke":100,"airtel_ke":140},
+	 					{"date":"Apr 23","orange_ke":5,"safaricom_ke":20,"airtel_ke":9},
+						{"date":"Apr 24","orange_ke":65,"safaricom_ke":56,"airtel_ke":10},
+						{"date":"Apr 25","orange_ke":27,"safaricom_ke":72,"airtel_ke":75},
+						{"date":"Apr 26","orange_ke":102,"safaricom_ke":63,"airtel_ke":48} ]}
 	 *
 	 * @return a Json String
 	 */
 	private String getJsonIncoming(String accountUuid) {
-		
+
 		Gson g = new GsonBuilder().disableHtmlEscaping()
 				.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
 				.setPrettyPrinting().serializeNulls().create();
@@ -175,12 +172,13 @@ public class IncomingBarDay extends HttpServlet {
 		Map<String, Map<Network, Integer>> networkIncomingUSSDCountDay = new HashMap<String, Map<Network, Integer>>();
 
 		DateTime dateMidnightStart;
-		//TODO sort out calculations of dates
+		// TODO sort out calculations of dates
 		if (fromDate == null) {
 			dateMidnightStart = new DateTime(fromDate);
 		} else {
 			dateMidnightStart = DateTime.now().minus(
 					Hours.hours(24 * (DAY_COUNT)));
+			
 		}
 
 		int numDays = 0;
@@ -206,12 +204,12 @@ public class IncomingBarDay extends HttpServlet {
 
 			// recreate the Map in order to void duplicating data
 			HashMap<String, Object> dateNetworkCount = new HashMap<String, Object>();
-
-			if (networkIncomingUSSDCount != null) { // It is possible that on
-													// particular days the
-													// account has no incoming
-													// SMS
+			
+			// It is possible that on particular days the account has no
+			// incoming SMS
+			if (networkIncomingUSSDCount != null) {
 				networkIter = networkIncomingUSSDCount.keySet().iterator();
+				dateNetworkCount.put("date", dateStr.toString());
 				while (networkIter.hasNext()) {
 
 					network = networkIter.next();

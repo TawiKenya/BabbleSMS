@@ -43,8 +43,8 @@ public class TestCountUtils {
     final String ACCOUNT_USERNAME = "tawi";
     final String DEMO_ACCOUNTUUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
     final String SAFARICOM_NETWORKUUID = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78";
-    final String FDB_DATE= "07/04/2014";
-    final String FDB_DATE2 = "07/10/2014";
+    final String FDB_DATE= "04/04/2015";
+    final String FDB_DATE2 = "05/14/2015";
        
     private CountUtils storage;
     
@@ -81,6 +81,7 @@ public class TestCountUtils {
 	/**
 	 * Test method for {@link CountUtils#getOutgoingCount(java.lang.String, Network)}.
 	 */
+    @Ignore
 	@Test
 	public void testGetOutgoingCount() {
 		storage = new CountUtils(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -95,7 +96,7 @@ public class TestCountUtils {
 	/**
 	 * Test method for {@link CountUtils#getAllIncomingSMSCount(java.lang.String)}.
 	 */
-	@Ignore
+	
 	@Test
 	public void testgetIncomingCount2() throws ParseException {
 		storage = new CountUtils(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);

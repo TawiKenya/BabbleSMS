@@ -30,31 +30,31 @@ import org.apache.commons.validator.routines.EmailValidator;
  * @author <a href="mailto:josephk@tawi.mobi">Joseph Kimani</a>
  */
 @WebServlet(name = "addaccount",
-        urlPatterns = {"/addaccount", "/editaccount"})
+        urlPatterns = {"/addaccount", "/editaccount", "/deleteaccount"})
 public class Addaccount extends HttpServlet {
 
-    /**
-	 * 
-	 */
-	//private static final long serialVersionUID = 1L;
-	final String ERROR_NO_FIRSTNAME = "Please provide a First Name.";
+    final String ERROR_NO_FIRSTNAME = "Please provide a First Name.";
     final String ERROR_NO_USERNAME = "Please provide a Username.";
     final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
     final String ERROR_NO_LOGIN_PASSWD = "Please provide a website login password.";
     final String ERROR_LOGIN_PASSWD_MISMATCH = "The website login passwords that you have provided do not match.";
+    final String ERROR_NO_SMS_PASSWD = "Please provide an SMS API password.";
+    final String ERROR_SMS_PASSWD_MISMATCH = "The SMS API passwords that you have provided do not match.";
     final String ERROR_UNIQUENAME_EXISTS = "The Username provided already exists in the system.";
     final String ERROR_EMAIL_EXISTS = "The email provided already exists in the system.";
-   
+    final String ERROR_NO_SMS_USERNAME = "Please provide an SMS API username.";
 
-    private String firstName, lastName, username, email, loginPasswd, loginPasswd2, phone;
+    private String firstName, lastName, username, email, loginPasswd, loginPasswd2, phone, smsPasswd, smsPasswd2, smsusername;
 
     // This is used to store parameter names and values from the form.
     private HashMap<String, String> paramHash;
     private EmailValidator emailValidator;
 
-    private AccountDAO accountDAO;
+    private AccountDAO accountsDAO;
 
     private CacheManager cacheManager;
+    private HttpSession session;
+
     /**
      *
      * @param config
@@ -66,7 +66,7 @@ public class Addaccount extends HttpServlet {
 
         emailValidator = EmailValidator.getInstance();
 
-        accountDAO = AccountDAO.getInstance();
+        accountsDAO = AccountDAO.getInstance();
 
         cacheManager = CacheManager.getInstance();
     }
@@ -84,7 +84,7 @@ public class Addaccount extends HttpServlet {
         String userPath = request.getServletPath();
         HttpSession session = request.getSession(false);
 
-        // if add account is calledz
+        // if add account is called
         if (userPath.equals("/addaccount")) {
             setClassParameters(request);
 
@@ -111,9 +111,25 @@ public class Addaccount extends HttpServlet {
             } else if (!StringUtils.equals(loginPasswd, loginPasswd2)) {
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_LOGIN_PASSWD_MISMATCH);
 
+                // No smsusername provided
+            } else if (StringUtils.isBlank(smsusername)) {
+                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_SMS_USERNAME);
+
+                // No SMS API password provided
+            } else if (StringUtils.isBlank(smsPasswd) || StringUtils.isBlank(smsPasswd2)) {
+                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_SMS_PASSWD);
+
+                // The SMS API passwords provided do not match
+            } else if (!StringUtils.equals(smsPasswd, smsPasswd2)) {
+                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_SMS_PASSWD_MISMATCH);
+
                 // The username already exists in the system    
             } else if (existsUniqueName(username)) {
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_UNIQUENAME_EXISTS);
+
+                // The email already exists in the system       
+            } else if (existsEmail(email)) {
+                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_EMAIL_EXISTS);
 
             } else {
                 // If we get this far then all parameter checks are ok.         
@@ -129,59 +145,36 @@ public class Addaccount extends HttpServlet {
 
             response.sendRedirect("admin/accounts.jsp");
         } // if edit account is called
-       
         else if (userPath.equals("/editaccount")) {
-        	
-        	 
-        	
             String accountuuid = request.getParameter("accountuuid");
             String username = request.getParameter("username");
-            String password = request.getParameter("loginPasswd");
             String name = request.getParameter("name");
+            String apiusername = request.getParameter("apiusername");
+            String apipassword = request.getParameter("apipassword");
             String mobile = request.getParameter("mobile");
+            int dailysmslimit = Integer.parseInt(request.getParameter("dailysmslimit"));
             String email = request.getParameter("email");
-          
+            String statusuuid = request.getParameter("statusuuid");
 
             Account account = new Account();
-            account.setUuid(accountuuid);
             account.setUsername(username);
-            account.setLogpassword(password);
             account.setName(name);
-            account.setMobile(mobile);
             account.setEmail(email);
-            
-            updateAccountCache(account);
-          
-            if(accountDAO.updateAccount(accountuuid, account)){
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Account updated successfully.");
-            } else {
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Account update failed."); 
-              
-                
-              
-            }
+            account.setMobile(mobile);
+            account.setStatusuuid(statusuuid);
+            account.setDailysmslimit(dailysmslimit);
+            account.setUuid(accountuuid);
+
             
 
             response.sendRedirect("admin/accounts.jsp");
 
-        } 
-        else if(userPath.equals("/deleteaccount")){
-        	
-        	String accountuuid = request.getParameter("accountuuid");
-        	//boolean b = true;
-        	if(accountuuid == request.getParameter(accountuuid)){
-        		
-        		Account acc = new Account();
-      
-            	acc.setStatusuuid("19CAAC90-0D72-59D4-1DC1-2C86808459F9");
+        } // if delete account is called
+        else if (userPath.equals("/deleteaccount")) {
+
             
-            	session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Account deleted successfully.");
-        	}else{
-        		 session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Account delete failed."); 
-                 
-        	}
-        	
-        	response.sendRedirect("admin/accounts.jsp");
+            
+            response.sendRedirect("admin/accounts.jsp");
         }
     }
 
@@ -198,9 +191,9 @@ public class Addaccount extends HttpServlet {
         a.setMobile(phone);
         a.setStatusuuid("396F2C7F-961C-5C12-3ABF-867E7FD029E6");
 
-        accountDAO.putAccount(a);           
+        accountsDAO.putAccount(a);           
         
-        a = accountDAO.getAccountByName(username);      // Ensures the account is populated with the correct ID
+        a = accountsDAO.getAccount(email);       // Ensures the account is populated with the correct ID
         updateAccountCache(a);
     }
 
@@ -225,7 +218,10 @@ public class Addaccount extends HttpServlet {
         loginPasswd = StringUtils.trimToEmpty(request.getParameter("password"));
         loginPasswd2 = StringUtils.trimToEmpty(request.getParameter("password2"));
         phone = StringUtils.trimToEmpty(request.getParameter("mobile"));
-       
+        smsusername = StringUtils.trimToEmpty(request.getParameter("apiusername"));
+        smsPasswd = StringUtils.trimToEmpty(request.getParameter("apipassword"));
+        smsPasswd2 = StringUtils.trimToEmpty(request.getParameter("apipassword2"));
+
     }
 
     /**
@@ -241,6 +237,9 @@ public class Addaccount extends HttpServlet {
         paramHash.put("email", email);
         paramHash.put("loginPasswd", loginPasswd);
         paramHash.put("loginPasswd2", loginPasswd2);
+        paramHash.put("smsusername", smsusername);
+        paramHash.put("smsPasswd", smsPasswd);
+        paramHash.put("smsPasswd2", smsPasswd2);
         paramHash.put("phone", phone);
     }
 
@@ -252,13 +251,27 @@ public class Addaccount extends HttpServlet {
     private boolean existsUniqueName(final String username) {
         boolean exists = false;
 
-        if (accountDAO.getAccountByName(username) != null) {
+        if (accountsDAO.getAccountByName(username) != null) {
             exists = true;
         }
 
         return exists;
     }
 
+    /**
+     *
+     * @param email
+     * @return whether or not the unique name exists in the system
+     */
+    private boolean existsEmail(final String email) {
+        boolean exists = false;
+
+        if (accountsDAO.getAccount(email) != null) {
+            exists = true;
+        }
+
+        return exists;
+    }
 
     /**
      *

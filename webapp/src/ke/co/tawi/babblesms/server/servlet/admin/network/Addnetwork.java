@@ -111,25 +111,18 @@ public class Addnetwork extends HttpServlet {
 
         } // if edit network is called
         else if (userPath.equals("/editnetwork")) {
-             
-       
+
             String networkuuid = request.getParameter("networkuuid");
             String networkname = request.getParameter("networkname");
-            
-            Network network = new Network();
-            network.setUuid(networkuuid);
-            network.setName(networkname);
-            updateNetworkCache(network);
-           
+
             if (networkDAO.updateNetwork(networkuuid, networkname)) {
                 session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Network updated successfully.");
             } else {
                 session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Network update failed.");
             }
-           
-           response.sendRedirect("admin/network.jsp");
-           //updateNetworkCache(networkuuid,networkname);
-           
+
+            response.sendRedirect("admin/network.jsp");
+
         } // if delete network is called
         else if (userPath.equals("/deletenetwork")) {
 
@@ -165,7 +158,7 @@ private void addNetwork() {
      * @param acc
      */
     private void updateNetworkCache(Network net) {
-       // cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(net.getId(), net));
+        //cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME).put(new Element(acc.getEmail(), acc));
         cacheManager.getCache(CacheVariables.CACHE_NETWORK_BY_UUID).put(new Element(net.getUuid(), net));
     }
 
@@ -220,3 +213,14 @@ private void addNetwork() {
     }
 }
 
+/*
+ ** Local Variables:
+ **   mode: java
+ **   c-basic-offset: 2
+ **   tab-width: 2
+ **   indent-tabs-mode: nil
+ ** End:
+ **
+ ** ex: set softtabstop=2 tabstop=2 expandtab:
+ **
+ */
