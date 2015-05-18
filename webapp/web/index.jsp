@@ -141,15 +141,19 @@
                                                           </div>
                             </fieldset>  
                  </form>
-            </div>
-                         
+            </div>                        
+                 
+                   <div class="made-in-kenya"></div> 
+                            </div>
                  </div>
-                 </div>
-                 </div>
+                            
+              
         <div class="new-right">
               <div class="new-content new-content_promo js-promo">
                    <div class="container">
-                         <div class="left-panel"><h1 class="promo-title">Your Convenient SMS Messenger</h1>
+                         <div class="left-panel">
+                         <h2 class="promo-title"><a href="?">Babble SMS</a></h2>
+                         <h1 class="promo-title">Your Convenient SMS Messenger</h1>
                          <p class="promo-text promo-text_main">Allows for you to send SMS from the convenience of your web browser.</p>
                          <div class="promo-form-background">
                              <div class="promo-form">
@@ -160,9 +164,8 @@
                    </div>
               </div>
         <i class="js-pdd-domik-anchor"></i>
-      </div>
-  </div>
-  <div class="b-paranja b-paranja_hostroot g-hidden js-paranja"></div>
+      </div>  
+                            
   
         
     <div class="new-footer">    

@@ -76,3 +76,36 @@ else if (netcheck=='Orange KE'){
 }
        
         }
+
+        //function change color of button in the compose page modal
+        function changecolor(val){          
+          if( val.disabled !=="true"){
+          val.disabled="true";
+          val.style.backgroundColor="grey"
+        }
+          else{
+            val.style.backgroundColor="rgba(6, 156, 6, 0.45)";
+            val.disabled="false";
+          }         
+        }
+
+        function changecolor1z(val){          
+          if( val.disabled !=="true"){
+          val.disabled="true";
+          val.style.backgroundColor="grey"
+        }
+          else{
+            val.style.backgroundColor="rgba(6, 156, 6, 0.45)";
+            val.disabled="false";
+          }         
+        }
+
+        function changecolorf(val){
+          alert();
+          alert(val.selected.name);
+          alert(val.selected.class);
+          val.selected.disabled="true";
+          alert(val.selected.class);
+        }
+
+        

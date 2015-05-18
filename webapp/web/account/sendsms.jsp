@@ -105,12 +105,16 @@
     }
 
     List keys;
-     
-    keys = networksCache.getKeys();
+     int i=0;
+       keys = networksCache.getKeys();
+       String [] NetworkName = new String[keys.size()];
+
     for (Object key : keys) {
         element = networksCache.get(key);
         network = (Network) element.getObjectValue();
         networkHash.put(network.getUuid(), network.getName());
+        NetworkName[i]=network.getUuid();
+        i++;
     }
     
 
@@ -262,9 +266,10 @@ int credit_Consumed = 0;
                                             %>
 
                                                     <tr>
-                                                        <td class="center"><input type="checkbox" id="remember" value=<%=code.getUuid()%> name="groupselected"/>
-                                                        <a href="#"><%=code.getName()%></a></td>
-
+                                                        <td class="center" >
+                                                        <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
+                                                        <a href="#"  data-toggle="modal" data-target="#groupcheck" data-id="<%=code.getUuid()%>" name="<%=code.getUuid()%>"><%=code.getName()%></a>
+                                                        </td>
                                                     </tr>
                                                 <%   
 
@@ -272,10 +277,10 @@ int credit_Consumed = 0;
                                                     }// end 'for (Group code : contactsgrpList)'
                                                 }// end 'if (contactsgrpList != null)' 
                                             %>
-                                             </tbody>                                             
+                                                                                         </tbody>                                             
                                     </table>
-                                </div>
-                                    
+                                </div>                               
+                                                                   
                                    <!--<div id="groupsform">
                                         <br/><br/><br/>
                                         <button type="submit" id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
@@ -452,6 +457,83 @@ int credit_Consumed = 0;
                     </div>
                 </fieldset>
             </form>
+
+            
+
+
+ <div class="modal fade" id="groupcheck" tabindex="-1" role="dialog" arialabelled="exampleModalLabeled" aria-hidden="true">
+
+ <%
+                                            List<Phone> phoneLists;
+                                            int countnet= (NetworkName.length)-1;
+                                             int count1=0, count2=0, count3=0, count4=0, count6=0;
+                                            for(Contact contact1 : contactList) { 
+                                                   phoneLists = phoneDAO.getPhones(contact1);
+
+                                                   for(Phone hone : phoneLists) {                                                  
+
+                                                   count6++; 
+                                                    if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet])){
+                                                  count1++;
+                                                }
+
+                                                else if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet-1])){
+                                                  count2++;
+                                                }
+
+                                                else if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet-2])){
+                                                  count3++;
+                                                } 
+
+                                                else if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet-3])){
+                                                  count4++;
+                                                }
+
+
+
+                                                }
+                                                }
+                                            
+                                        %>
+                                            <div class="modal-content1">
+                                            <a>Management <%=count6%> </a>Total Contacts<br>
+                                           <br>                                       
+                                          <table id="scroll21">  <tr>
+                                                       <td size="50%"> Network provider</td>
+                                                      <td size="50%">Number of contacts</td>
+                                                </tr>
+                                                </table>
+
+                                            </div>
+                                     <div class="modal-dialog">
+                                       <table id="displaycontacts" class="table table-striped table-bordered">
+                                       
+                                            
+                                                   <tr border="1px">
+                                                     <td size="50%"><%=networkHash.get(NetworkName[countnet])%></td>
+                                                      <td size="50%"><%=count1%></td>
+                                                   </tr>
+                                                   <tr border="1px">
+                                                      <td size="50%"><%=networkHash.get(NetworkName[countnet-1])%></td>
+                                                      <td size="50%" ><%=count2%></td>
+                                                </tr> 
+                                                <tr border="1px">
+                                                     <td size="50%"><%=networkHash.get(NetworkName[countnet-2])%></td>
+                                                      <td size="50%"><%=count3%></td>
+                                                </tr>
+                                                <tr border="1px">
+                                                      <td size="50%"><%=networkHash.get(NetworkName[countnet-3])%></td>
+                                                      <td size="50%" ><%=count4%></td>
+                                                </tr>           
+
+                                                  
+                                                
+                                          
+                                        </table>                                
+                                      </div>
+                                   
+                                </div>
+
                            
                        
 

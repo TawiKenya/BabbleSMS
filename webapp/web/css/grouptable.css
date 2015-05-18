@@ -19,13 +19,13 @@ text-align: left;
 	float:left;          
     
 }
-#scroll2 {
-    width: 200px;  /* Optional */
+#scroll21 {
+    width: 100%;  /* Optional */
     /* border-collapse: collapse; */
     border-spacing: 0;
-   
-	float:left;
-margin: 0 1.5%;
+    border: 2px solid black;
+    text-align: center;
+	float:left; 
 }
 #scroll3 {
     width: 200px;  /* Optional */
@@ -160,3 +160,39 @@ tbody td, thead th {
 /*tbody td:last-child, thead th:last-child {
     border-right: none;
 }*/
+#groupcheck{
+  box-shadow: 0px 15px 15px rgba(6, 156, 6, 0.86);
+}
+.modal-dialog{
+  height: 80%;
+  width: 100%;
+  overflow: auto;   
+}
+
+.modal-content1{
+  text-align: center;
+  margin-top: 2%;
+  height: 50px;
+}
+
+.modal-content2{
+text-align: right; 
+  height: 30px;
+  background-color:#B8c4cc;
+}
+
+.groupcontactadd{
+background-color:rgba(6, 156, 6, 0.45);
+}
+
+.groupcontactdelete{
+background-color:rgba(6, 156, 6, 0.45);
+}
+
+.groupcontactsave{
+background-color:rgba(70, 47, 0, 0.54);
+}
+.groupcontactcancel .groupcontactsave .groupcontactadd .groupcontactdelete:focus{
+box-shadow: 0 13px 17px rgba(96, 64, 0, 0.4);
+color:rgba(6, 156, 6, 0.45); 
+}

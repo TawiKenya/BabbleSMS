@@ -913,6 +913,13 @@ input[type=file]:hover:not(:checked)+._nb-small-dark-button:before,._nb-small-da
 	box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)
 }
 
+.made-in-kenya{
+    align-contents: bottom;
+    height:136px;
+    width:250px;    
+    background: url("../img/made-in-kenya.png");
+}
+
 ._nb-small-pseudo-inverted-button{
 	font-size:15px;
 	line-height:22px;
@@ -4460,7 +4467,7 @@ body{
 	display:block;
 	align-content: center;
 	vertical-align:baseline;
-	
+
 }
 
 .b-page_login .b-stamp{
@@ -5831,11 +5838,15 @@ html,body{
 	color:#d00
 }
 
+.input-prepend:focus{
+	box-shadow: 0 13px 17px rgba(96, 64, 0, 0.4);
+}
+
 .new-left{
 	position:absolute;
 	top:0;
 	left:0;	
-	bottom:30%;
+	bottom:10%;
 	text-align:center;
 	width: 30%;	
 	padding:0 70px;
@@ -6694,6 +6705,7 @@ html,body{
 }
 
 .left-panel{
+	text-align: center;
 	position:relative;
 	min-width:346px;
 	margin-right:33px
