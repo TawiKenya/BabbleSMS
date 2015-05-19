@@ -175,7 +175,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         try (
         		Connection conn = dbCredentials.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account" 
-        		+"(Uuid, username, logpassword, name, mobile, email) VALUES (?,?,?,?,?,?);");
+        		+"(Uuid, username, logpassword, name, mobile, email,statusuuid) VALUES (?,?,?,?,?,?,?);");
             ) {
         	
             pstmt.setString(1, account.getUuid());
@@ -183,7 +183,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.setString(3, account.getLogpassword());
             pstmt.setString(4, account.getName());
             pstmt.setString(5, account.getMobile());
-            pstmt.setString(6, account.getEmail());         
+            pstmt.setString(6, account.getEmail()); 
+            pstmt.setString(7, account.getStatusuuid());
 
             pstmt.executeUpdate();
             
@@ -226,5 +227,35 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         
         return success;
 	}
+	
+	
+	
+	
+	
+	public boolean updateStatus(String uuid, String statusuuid) {
+		 boolean success = true;
 
+       try (  Connection conn = dbCredentials.getConnection();
+       	PreparedStatement p = conn.prepareStatement("UPDATE Account SET statusuuid=? WHERE Uuid = ?");
+       	) {
+           
+           p.setString(1, statusuuid);
+           p.setString(2, uuid);
+          
+
+           p.executeUpdate();
+
+       } catch (SQLException e) {
+           logger.error("SQL Exception when updating accounts with uuid " + uuid);
+           logger.error(ExceptionUtils.getStackTrace(e));
+           success = false;
+       } 
+       
+       return success;
+	}
+	
+	
+	
+	
+	
 }
