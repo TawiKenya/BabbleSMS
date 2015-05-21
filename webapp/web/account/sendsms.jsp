@@ -60,6 +60,7 @@
 .tokenize-sample { width: 300px ;}
 </style>
 
+<script type="text/javascript" src="../js/message.js"></script>
 <script type='text/javascript' src='../js/credittablejavascript.js'></script>
 <script type="text/javascript" src="../js/jquery.tokenize.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
@@ -159,7 +160,6 @@ int credit_Consumed = 0;
 
 %>
 <jsp:include page="messageheader.jsp" />
-
 
 
 <div>
@@ -268,7 +268,7 @@ int credit_Consumed = 0;
                                                     <tr>
                                                         <td class="center" >
                                                         <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
-                                                        <a href="#"  data-toggle="modal" data-target="#groupcheck" data-id="<%=code.getUuid()%>" name="<%=code.getUuid()%>"><%=code.getName()%></a>
+                                                        <a href="#"  data-toggle="modal" data-target="#groupcheck" data-id="<%=code.getUuid()%>" name="<%=code.getUuid()%>" onclick='sendRequest(this,"NetworkCount")'><%=code.getName()%></a>
                                                         </td>
                                                     </tr>
                                                 <%   
@@ -462,41 +462,9 @@ int credit_Consumed = 0;
 
 
  <div class="modal fade" id="groupcheck" tabindex="-1" role="dialog" arialabelled="exampleModalLabeled" aria-hidden="true">
-
- <%
-                                            List<Phone> phoneLists;
-                                            int countnet= (NetworkName.length)-1;
-                                             int count1=0, count2=0, count3=0, count4=0, count6=0;
-                                            for(Contact contact1 : contactList) { 
-                                                   phoneLists = phoneDAO.getPhones(contact1);
-
-                                                   for(Phone hone : phoneLists) {                                                  
-
-                                                   count6++; 
-                                                    if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet])){
-                                                  count1++;
-                                                }
-
-                                                else if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet-1])){
-                                                  count2++;
-                                                }
-
-                                                else if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet-2])){
-                                                  count3++;
-                                                } 
-
-                                                else if((hone.getNetworkuuid()).equalsIgnoreCase(NetworkName[countnet-3])){
-                                                  count4++;
-                                                }
-
-
-
-                                                }
-                                                }
-                                            
-                                        %>
+ 
                                             <div class="modal-content1">
-                                            <a>Management <%=count6%> </a>Total Contacts<br>
+                                            <a>Management  </a>   Total Contacts<br>
                                            <br>                                       
                                           <table id="scroll21">  <tr>
                                                        <td size="50%"> Network provider</td>
@@ -509,23 +477,6 @@ int credit_Consumed = 0;
                                        <table id="displaycontacts" class="table table-striped table-bordered">
                                        
                                             
-                                                   <tr border="1px">
-                                                     <td size="50%"><%=networkHash.get(NetworkName[countnet])%></td>
-                                                      <td size="50%"><%=count1%></td>
-                                                   </tr>
-                                                   <tr border="1px">
-                                                      <td size="50%"><%=networkHash.get(NetworkName[countnet-1])%></td>
-                                                      <td size="50%" ><%=count2%></td>
-                                                </tr> 
-                                                <tr border="1px">
-                                                     <td size="50%"><%=networkHash.get(NetworkName[countnet-2])%></td>
-                                                      <td size="50%"><%=count3%></td>
-                                                </tr>
-                                                <tr border="1px">
-                                                      <td size="50%"><%=networkHash.get(NetworkName[countnet-3])%></td>
-                                                      <td size="50%" ><%=count4%></td>
-                                                </tr>           
-
                                                   
                                                 
                                           
