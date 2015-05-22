@@ -229,9 +229,6 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	}
 	
 	
-	
-	
-	
 	public boolean updateStatus(String uuid, String statusuuid) {
 		 boolean success = true;
 

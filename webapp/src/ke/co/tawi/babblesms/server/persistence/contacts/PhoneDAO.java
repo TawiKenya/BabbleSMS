@@ -93,7 +93,7 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	   try(
 				Connection conn = dbCredentials.getConnection();
 				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM phone WHERE "
-						+ "uuid = ?;");
+						+ "phonenumber = ?;");
 				) {
 		   
 			psmt.setString(1, uuid);
@@ -112,6 +112,34 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	   return phone;
    }
 
+   
+   
+   public Phone getPhone1(String phonenumber){
+	   Phone phone = null;
+	   
+	   try(
+				Connection conn = dbCredentials.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM phone WHERE "
+						+ "phonenumber = ?;");
+				) {
+		   
+			psmt.setString(1, phonenumber);
+			
+			try(ResultSet rset = psmt.executeQuery();) {
+				if(rset.next()){
+					 phone = beanProcessor.toBean(rset, Phone.class);	
+				}
+			}
+			
+	   } catch (SQLException e) {
+		   		logger.error("SQLException when getting phone with phonenumber: " + phonenumber);
+	            logger.error(ExceptionUtils.getStackTrace(e));
+       }
+	   
+	   return phone;
+   }
+   
+   
    
    /** 
 	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabblePhoneDAO#getPhones(java.lang.String)

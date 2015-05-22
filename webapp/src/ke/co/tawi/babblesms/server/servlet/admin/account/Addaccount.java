@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,14 +28,13 @@ import org.apache.commons.validator.routines.EmailValidator;
  *
  * @author <a href="mailto:josephk@tawi.mobi">Joseph Kimani</a>
  */
-@WebServlet(name = "addaccount",
-        urlPatterns = {"/addaccount", "/editaccount","/deleteaccount"})
+
 public class Addaccount extends HttpServlet {
 
     /**
 	 * 
 	 */
-	//private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	final String ERROR_NO_FIRSTNAME = "Please provide a First Name.";
     final String ERROR_NO_USERNAME = "Please provide a Username.";
     final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
@@ -53,7 +51,6 @@ public class Addaccount extends HttpServlet {
     private EmailValidator emailValidator;
 
     private AccountDAO accountDAO;
-
     private CacheManager cacheManager;
     /**
      *
@@ -81,12 +78,9 @@ public class Addaccount extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String userPath = request.getServletPath();
+        //String userPath = request.getServletPath();
         HttpSession session = request.getSession(false);
-
-        // if add account is calledz
-        if (userPath.equals("/addaccount")) {
-            setClassParameters(request);
+        setClassParameters(request);
 
             initParamHash();
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_PARAMETERS, paramHash);
@@ -110,77 +104,24 @@ public class Addaccount extends HttpServlet {
                 // The website login passwords provided do not match
             } else if (!StringUtils.equals(loginPasswd, loginPasswd2)) {
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_LOGIN_PASSWD_MISMATCH);
-
-                // The username already exists in the system    
-            } else if (existsUniqueName(username)) {
-                session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_UNIQUENAME_EXISTS);
-
-            } else {
-                // If we get this far then all parameter checks are ok.         
+               
+               
+            }else{
+            	// If we get this far then all parameter checks are ok.         
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_SUCCESS_KEY, "s");
-
                 // Reduce our session data
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_PARAMETERS, null);
                 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, null);
-
-                addAccount();
-                session.setAttribute(SessionConstants.ADMIN_ADD_SUCCESS, "Account created successfully.");
+            	
+            	 addAccount();
+                 session.setAttribute(SessionConstants.ADMIN_ADD_SUCCESS, "Account created successfully.");
+              
+        
             }
 
             response.sendRedirect("admin/accounts.jsp");
-        } // if edit account is called
-       
-        else if (userPath.equals("/editaccount")) {
-        	
-        	 
-        	
-            String accountuuid = request.getParameter("accountuuid");
-            String username = request.getParameter("username");
-            String password = request.getParameter("loginPasswd");
-            String name = request.getParameter("name");
-            String mobile = request.getParameter("mobile");
-            String email = request.getParameter("email");
-          
-
-            Account account = new Account();
-            account.setUuid(accountuuid);
-            account.setUsername(username);
-            account.setLogpassword(password);
-            account.setName(name);
-            account.setMobile(mobile);
-            account.setEmail(email);
-            
-            updateAccountCache(account);
-          
-            if(accountDAO.updateAccount(accountuuid, account)){
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Account updated successfully.");
-            } else {
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Account update failed."); 
-              
-                
-              
-            }
-            
-
-            response.sendRedirect("admin/accounts.jsp");
-
-        } 
-        else if(userPath.equals("/deleteaccount")){
-        	String accounuuid = request.getParameter("accounuuid");
-        	String statusuuid = "19CAAC90-0D72-59D4-1DC1-2C86808459F9";
-        	
-        	Account a = new Account();
-        	a.setUuid(accounuuid);
-        	a.setStatusuuid(statusuuid);
-        	if(accountDAO.updateStatus(accounuuid,statusuuid)){
-        		 session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "success.");
-        	}else{
-        		
-        	}
-                response.sendRedirect("admin/accounts.jsp");
         }
-    }
-
+    //}
     /**
      *
      */
@@ -239,22 +180,6 @@ public class Addaccount extends HttpServlet {
         paramHash.put("loginPasswd2", loginPasswd2);
         paramHash.put("phone", phone);
     }
-
-    /**
-     *
-     * @param name
-     * @return whether or not the unique name exists in the system
-     */
-    private boolean existsUniqueName(final String username) {
-        boolean exists = false;
-
-        if (accountDAO.getAccountByName(username) != null) {
-            exists = true;
-        }
-
-        return exists;
-    }
-
 
     /**
      *

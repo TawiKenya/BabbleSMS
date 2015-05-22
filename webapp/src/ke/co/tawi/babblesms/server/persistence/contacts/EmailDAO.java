@@ -93,7 +93,7 @@ public class EmailDAO extends GenericDAO implements BabbleEmailDAO {
        
          try (
                          Connection conn = dbCredentials.getConnection();
-                         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Email WHERE Uuid = ?;");         
+                         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Email WHERE uuid = ?;");         
                          )
                          {
              
@@ -112,6 +112,39 @@ public class EmailDAO extends GenericDAO implements BabbleEmailDAO {
          
          return email;         
    }
+
+
+
+
+ 
+   public Email getEmails(String address){
+         Email email = null;
+       
+         try (
+                         Connection conn = dbCredentials.getConnection();
+                         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Email WHERE address = ?;");         
+                         )
+                         {
+             
+                  pstmt.setString(1, address);
+                 
+                  try (ResultSet rset = pstmt.executeQuery();) {
+                          if (rset.next()) {
+                                  email = beanProcessor.toBean(rset, Email.class);
+                          }
+                  }
+                 
+         } catch (SQLException e) {
+             logger.error("SQL Exception when getting email with address: " + address);
+             logger.error(ExceptionUtils.getStackTrace(e));
+         }
+         
+         return email;         
+   }
+
+
+
+
    
    
    /**

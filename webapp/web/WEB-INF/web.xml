@@ -51,10 +51,18 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Logout</servlet-class>
     </servlet>
+
+
+
     <servlet>
-        <servlet-name>addcontact</servlet-name>
+        <servlet-name>AddContacts</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
     </servlet>
+
+
+
+
+
      <servlet>
         <servlet-name>addgroup</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddGroup</servlet-class>
@@ -63,10 +71,18 @@
         <servlet-name>EditGroup</servlet-name> 
        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditGroup</servlet-class>
     </servlet>
+
+
     <servlet>
         <servlet-name>EditContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditContact</servlet-class>
     </servlet>
+
+
+
+
+
+
     <servlet>
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.sms.send.SendSMS</servlet-class>
@@ -118,6 +134,16 @@
     <servlet>
         <servlet-name>Loggin</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>Addaccount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.Addaccount</servlet-class>
+    </servlet>
+
+ <servlet>
+        <servlet-name>Editaccount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.Editaccount</servlet-class>
     </servlet>
 
 
@@ -174,14 +200,40 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>addcontact</servlet-name>
+        <servlet-name>Addaccount</servlet-name>
+        <url-pattern>/addaccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Editaccount</servlet-name>
+        <url-pattern>/editaccount</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+
+
+
+
+    <servlet-mapping>
+        <servlet-name>AddContacts</servlet-name>
         <url-pattern>/account/addcontact</url-pattern>
     </servlet-mapping> 
     
+
+
+
+
+
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
-        <url-pattern>/account/editaccounts</url-pattern>
+        <url-pattern>/account/editaccount</url-pattern>
     </servlet-mapping> 
+
+
      <servlet-mapping>
         <servlet-name>EditPassword</servlet-name>
         <url-pattern>/account/editpassword</url-pattern>
@@ -213,9 +265,14 @@
     
     <servlet-mapping>
         <servlet-name>EditContact</servlet-name>
-        <url-pattern>/account/editContact</url-pattern>
+        <url-pattern>/account/editcontact</url-pattern>
     </servlet-mapping>    
     
+
+
+
+
+
     <servlet-mapping>
         <servlet-name>FontImageGenerator</servlet-name>
         <url-pattern>/fontImageGenerator</url-pattern>

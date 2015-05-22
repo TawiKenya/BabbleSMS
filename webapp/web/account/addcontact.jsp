@@ -54,7 +54,6 @@
     
     CacheManager mgr = CacheManager.getInstance();
     Cache statusCache = mgr.getCache(CacheVariables.CACHE_STATUS_BY_UUID);
-    //Cache groupCache = mgr.getCache(CacheVariables.CACHE_GROUP_BY_UUID);
     Cache networkCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
 
@@ -82,16 +81,6 @@
 	GroupDAO gDAO=new GroupDAO();
          contactsgrpList = gDAO.getGroups(account);
 
- /*  keys = groupCache.getKeys();
-    for (Object key : keys) {
-
-        element = groupCache.get(key);
-        cgroup = (Group) element.getObjectValue();
-        if (accountuuid.equals(cgroup.getAccountsuuid())) {
-            contactsgrpList.add(cgroup);
-        }
-    }
-*/
     keys = statusCache.getKeys();
     for (Object sta : keys) {
         element = statusCache.get(sta);
@@ -126,74 +115,32 @@
 
 <div class="row-fluid sortable">
     <div class="box span12">
-       <!-- <div class="box-header well" data-original-title>
-            <h2><i class="icon-edit"></i> Add Contacts</h2>
-            
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>
-        </div>-->
+      
         <div class="box-content">
             <%                
                 String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
               
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.ADD_SUCCESS);
-                
-                String deleteErrStr = (String) session.getAttribute(SessionConstants.DELETE_ERROR);
-                String deleteSuccessStr = (String) session.getAttribute(SessionConstants.DELETE_SUCCESS);
-                
-                String updateErrStr = (String) session.getAttribute(SessionConstants.UPDATE_ERROR);
-                String updateSuccessStr = (String) session.getAttribute(SessionConstants.UPDATE_SUCCESS);
-                
+              
                 if (StringUtils.isNotEmpty(addErrStr)) {
                     out.println("<p style='color:red;'>");
                     out.println("Form error: " + addErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_ERROR, null);
-                }
-
-                if(StringUtils.isNotEmpty(addSuccessStr)) {
+                } if(StringUtils.isNotEmpty(addSuccessStr)) {
                     out.println("<p style='color:green;'>");
                     out.println(addSuccessStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
-                
-                if (StringUtils.isNotEmpty(deleteErrStr)) {
-                    out.println("<p style='color:red;'>");
-                    out.println("Form error: " + deleteErrStr);
-                    out.println("</p>");
-                    session.setAttribute(SessionConstants.DELETE_ERROR, null);
-                }
 
-                if (StringUtils.isNotEmpty(deleteSuccessStr)) {
-                    out.println("<p style='color:green;'>");
-                    out.println(deleteSuccessStr);
-                    out.println("</p>");
-                    session.setAttribute(SessionConstants.DELETE_SUCCESS, null);
-                }
-                
-                if (StringUtils.isNotEmpty(updateErrStr)) {
-                    out.println("<p style='color:red;'>");
-                    out.println("Form error: " + updateErrStr);
-                    out.println("</p>");
-                    session.setAttribute(SessionConstants.UPDATE_ERROR, null);
-                }
-
-                if (StringUtils.isNotEmpty(updateSuccessStr)) {
-                    out.println("<p style='color:green;'>");
-                    out.println(updateSuccessStr);
-                    out.println("</p>");
-                    session.setAttribute(SessionConstants.UPDATE_SUCCESS, null);
-                }
+               
 
             %>
             <form class="form-horizontal" method="POST" action="addcontact">
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="name">Name</label>
+                        <label class="control-label" for="name">Name</label >
                         <div class="controls">
                             <input class="input-xlarge focused"  id="name" id="contname" type="text" name="contname">
                         </div>
@@ -202,7 +149,7 @@
                     <div class="control-group" id="phone">
                         <label class="control-label" for="phone">Phone Number</label>
                         <div class="controls" id="addphones1">
-                            <input class="input-xlarge focused"  id="number" name="phonenum[]" type="text">
+                            <input class="input-xlarge focused"  id="number" name="phonenum[]" type="text" onkeypress='return validateQty(event);' >
                             <button id='addphns'>+</button>
                             <select name="network[]" class="network" id="addphones">
 
@@ -224,7 +171,7 @@
                     <div class="control-group" id="mail">
                         <label class="control-label" for="email">Email</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="email" name="email1[]" type="text" value="">
+                            <input class="input-xlarge focused" id="email" name="email1[]" type="text" >
                             <button id="addemail">+</button>
                         </div>
                     </div>
@@ -392,3 +339,19 @@
     });
 
 </script>    
+
+<script type="text/javascript">
+    
+    function validateQty(event) {
+    var key = window.event ? event.keyCode : event.which;
+
+if (event.keyCode == 8 || event.keyCode == 46
+ || event.keyCode == 37 || event.keyCode == 39) {
+    return true;
+}
+else if ( key < 48 || key > 57 ) {
+    return false;
+}
+else return true;
+};
+</script>

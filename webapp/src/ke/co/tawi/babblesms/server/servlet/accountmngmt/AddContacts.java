@@ -17,11 +17,9 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
-//import ke.co.tawi.babblesms.server.beans.contact.ContactGroup;
 import ke.co.tawi.babblesms.server.beans.contact.Email;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.EmailDAO;
@@ -33,16 +31,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -57,19 +50,33 @@ import org.apache.log4j.Logger;
  */
 
 public class AddContacts extends HttpServlet {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Logger logger=Logger.getLogger(this.getClass());
-	private final EmailDAO emailDAO = EmailDAO.getInstance();
-	private final PhoneDAO phoneDAO = PhoneDAO.getInstance();
-	private final ContactDAO ctDAO = ContactDAO.getInstance();
-	private final  GroupDAO gDAO = GroupDAO.getInstance();
-	private final ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-	private final EmailValidator emailValidator = EmailValidator.getInstance();
-	private final String ERROR_NO_NAME = "You have to input a value.";
+	
+	
+	
+	
+	
+	//private final String ERROR_NO_NAME = "You have to input a value.";
 	private final String ERROR_EMAIL_EXISTS = "The email provided already exists in the system.";
-	private final String ADD_SUCCESS = "created successfully.";
+	private final String ERROR_PHONE_EXISTS = "The phone provided already exists in the system.";
+	private final String ADD_SUCCESS = "contcat added successfully.";
 	private final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
 	private final String ERROR_DUPLICATE_EMAIL = "You have supplied duplicate email addresses.";
 	private final String ERROR_PUBLICATE_PHONE = "You have supplied duplicate phone numbers.";
+
+	
+	private  EmailDAO emailDAO = EmailDAO.getInstance();
+	private  PhoneDAO phoneDAO = PhoneDAO.getInstance();
+	private  ContactDAO contactDAO = ContactDAO.getInstance();
+	private  GroupDAO gDAO = GroupDAO.getInstance();
+	private  ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
+	private EmailValidator emailValidator = EmailValidator.getInstance();
+	
 	Contact ct;
 	Email mail;
 	Phone phn;
@@ -85,40 +92,62 @@ public class AddContacts extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//String userPath = request.getServletPath();
+		
 		HttpSession session = request.getSession(false);
-
-		// if add contacts is called
-		// if (userPath.equals("/account/addcontact")) {
-
+		
+		
 		String[] emailArray = request.getParameterValues("email1[]");
 		String[] phonenumArray = request.getParameterValues("phonenum[]");
 		String[] networkArray = request.getParameterValues("network[]");
-		String contactname = request.getParameter("contname");
+		String contactname = request.getParameter("contname").trim();
+		
 		String[] groupArray = request.getParameterValues("groupsadded[]");
+		
 		String description = request.getParameter("dept");
 		String statusuuid = request.getParameter("statusuuid");
 		String accountuuid = request.getParameter("accountuuid");
+		
+		logger.info(phonenumArray[0].equals(""));
+		logger.info(emailArray[0].equals(""));
+		logger.info(contactname);
+		//System.out.println(phonenumArray[0]);
+		
 		Set<String> mySet = new HashSet<String>(Arrays.asList(emailArray));
 		Set<String> mySet2 = new HashSet<String>(Arrays.asList(phonenumArray));
 		Set<String> myGroupSet = new HashSet<String>(Arrays.asList(groupArray));
+		
 		int duplicateemail = emailArray.length - mySet.size();
 		int duplicatephone = phonenumArray.length - mySet2.size();
-
+		
+	
+		
 		// No First Name provided
-		if ((StringUtils.isBlank(contactname)) || (phonenumArray.length == 1) || (networkArray.length == 0)) {
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
+		if (StringUtils.isBlank(contactname) )
+		{
+			session.setAttribute(SessionConstants.ADD_ERROR, "contact name cant be empty");
 		} 
-		if(emailArray.length >1){
-			logger.info("ddddddddd"+emailArray.length);
-		if (!validemails(emailArray)) {
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
+		else if(phonenumArray[0].equals("")){
+				session.setAttribute(SessionConstants.ADD_ERROR, "phone number cant be empty");
+			
+		}else if(networkArray[0].equals("")){
+			session.setAttribute(SessionConstants.ADD_ERROR, "u must select a network");
 		}
+		else if(emailArray[0].equals("")){
+				session.setAttribute(SessionConstants.ADD_ERROR,"email field cant be empty");
+				
+		   logger.info("d"+emailArray.length);
+			
+			if (!validemails(emailArray)) {
+		session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
+	}
+			
 		}
 		else if (existsEmail(emailArray)) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_EMAIL_EXISTS);
-
-		} else if (duplicateemail >= 1) {
+		}
+		else if(existPhone(phonenumArray)){
+			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_PHONE_EXISTS);
+		}else if (duplicateemail >= 1) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_DUPLICATE_EMAIL);
 
 		} else if (duplicatephone >= 1) {
@@ -132,16 +161,16 @@ public class AddContacts extends HttpServlet {
 			ct.setStatusUuid(statusuuid);
 			ct.setAccountUuid(accountuuid);
 
-			if(ctDAO.putContact(ct)){
+			if(contactDAO.putContact(ct)){
 				session.setAttribute(SessionConstants.ADD_SUCCESS, ADD_SUCCESS);
 			}
 			else{
-				session.setAttribute(SessionConstants.ADD_ERROR, "Contact  creation Failed.");  
+				session.setAttribute(SessionConstants.ADD_ERROR, "Contact add Failed.");  
 			}
 			//get contact bean to update cache
 			String uuid = ct.getUuid();
 
-			ct = ctDAO.getContact(uuid);
+			ct = contactDAO.getContact(uuid);
 
 			for (String group1 : myGroupSet) {
 
@@ -189,30 +218,38 @@ public class AddContacts extends HttpServlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
+	
 
+
+	private boolean existPhone(final String[] phonenumArray) {
+			boolean exists = false; 
+		for(String phone: phonenumArray){
+		if(phoneDAO.getPhone1(phone) !=null){
+		exists= true;
+		}
+		}
+			return exists;
 	}
-
-	/**
+    /**
 	 * Checks if the email supplied already exists in email database
 	 *
 	 * @param email
 	 * @return
 	 */
-	private boolean existsEmail(final String[] emailArray) {
+	//emailArray
+	private boolean existsEmail(final String[]emailArray) {
 		boolean exists = false;
 
 		for (String email : emailArray) {
-			if (emailDAO.getEmail(email) != null) {
+			if (emailDAO.getEmails(email) != null) {
 				exists = true;
 			}
 		}
 
 		return exists;
 	}
+	
+	
 
 	/**
 	 * Checks if the phone supplied already exists in phone database
@@ -231,80 +268,20 @@ public class AddContacts extends HttpServlet {
 
 		return valid;
 	}
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
+
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
