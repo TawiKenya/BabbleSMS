@@ -4,6 +4,8 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 
     <!-- Servlet definition start -->
+    
+    <!-- Start - Startup servlets -->
     <servlet>
         <servlet-name>Log4jInit</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.init.Log4jInit</servlet-class>
@@ -39,9 +41,10 @@
         </init-param>
         <load-on-startup>4</load-on-startup>
     </servlet>
+    <!-- End - Startup servlets -->
     
     
-    <!-- Start Account Holder servlets -->
+    <!-- Start - Account Holder servlets -->
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Login</servlet-class>
@@ -59,10 +62,6 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
     </servlet>
 
-
-
-
-
      <servlet>
         <servlet-name>addgroup</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddGroup</servlet-class>
@@ -77,11 +76,6 @@
         <servlet-name>EditContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditContact</servlet-class>
     </servlet>
-
-
-
-
-
 
     <servlet>
         <servlet-name>SendSMS</servlet-name>
@@ -125,34 +119,25 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.pie.OutgoingPie</servlet-class>
     </servlet>
     
-    <!-- End Account Holder servlets -->
+    <!-- End - Account Holder servlets -->
     
+    
+    <!-- Start - Administrator servlets -->
     <servlet>
         <servlet-name>AdminLogin</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
     </servlet>
+    
     <servlet>
-        <servlet-name>Loggin</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
+        <servlet-name>AdminLogout</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Logout</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>AdminAddAccount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AddAccount</servlet-class>
     </servlet>
 
-     <servlet>
-        <servlet-name>Addaccount</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.Addaccount</servlet-class>
-    </servlet>
-
- <servlet>
-        <servlet-name>Editaccount</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.Editaccount</servlet-class>
-    </servlet>
-
-
-
-
-    <!--<servlet>
-        <servlet-name>addnetwork</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.network.Addnetwork2</servlet-class>
-    </servlet>-->
     <servlet>
         <servlet-name>addshortcode</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.source.Addshortcode</servlet-class>
@@ -166,6 +151,10 @@
         <servlet-name>addcredit</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.sms.Addcredit</servlet-class>
     </servlet>
+    
+    <!-- End - Administrator servlets -->
+    
+    
     <servlet>
         <servlet-name>callback</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.sms.callback.Callback</servlet-class>
@@ -185,10 +174,10 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.FileUploadServlet</servlet-class>
     </servlet>
     
+    
+    
     <!-- Servlet mapping start -->
     
-
-
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -199,45 +188,23 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>Addaccount</servlet-name>
-        <url-pattern>/addaccount</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>Editaccount</servlet-name>
-        <url-pattern>/editaccount</url-pattern>
-    </servlet-mapping>
-
-
-
-
-
-
-
-
-
+    
 
     <servlet-mapping>
         <servlet-name>AddContacts</servlet-name>
         <url-pattern>/account/addcontact</url-pattern>
     </servlet-mapping> 
     
-
-
-
-
-
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
         <url-pattern>/account/editaccount</url-pattern>
     </servlet-mapping> 
 
-
      <servlet-mapping>
         <servlet-name>EditPassword</servlet-name>
         <url-pattern>/account/editpassword</url-pattern>
     </servlet-mapping> 
+    
     <servlet-mapping>
         <servlet-name>addgroup</servlet-name>
         <url-pattern>/account/addgroup</url-pattern>
@@ -268,23 +235,21 @@
         <url-pattern>/account/editcontact</url-pattern>
     </servlet-mapping>    
     
-
-
-
-
-
     <servlet-mapping>
         <servlet-name>FontImageGenerator</servlet-name>
         <url-pattern>/fontImageGenerator</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>IncomingBarDay</servlet-name>
         <url-pattern>/account/incomingBarDay</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>OutgoingBarDay</servlet-name>
         <url-pattern>/account/outgoingBarDay</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>IncomingPie</servlet-name>
         <url-pattern>/account/incomingPie</url-pattern>
@@ -293,10 +258,9 @@
         <servlet-name>OutgoingPie</servlet-name>
         <url-pattern>/account/outgoingPie</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Loggin</servlet-name>
-        <url-pattern>/Loggin</url-pattern>
-    </servlet-mapping>
+    
+    
+    
     <!--<servlet-mapping>
         <servlet-name>addnetwork</servlet-name>
         <url-pattern>/addnetwork</url-pattern>
@@ -324,11 +288,29 @@
         <url-pattern>/account/exportExcel</url-pattern>
     </servlet-mapping>
 
- <!-- file upload mapping -->
+    <!-- file upload mapping -->
     <servlet-mapping>
         <servlet-name>Upload</servlet-name>
         <url-pattern>/account/uploadFile</url-pattern>
     </servlet-mapping>
+    
+    
+    <!-- Start - Administrator servlet mapping -->
+    <servlet-mapping>
+        <servlet-name>AdminLogin</servlet-name>
+        <url-pattern>/admin/adminLogin</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>AdminLogout</servlet-name>
+        <url-pattern>/admin/adminLogout</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>AdminAddAccount</servlet-name>
+        <url-pattern>/admin/addAccount</url-pattern>
+    </servlet-mapping>
+    <!-- End - Administrator servlet mapping -->
     
     <!-- Servlet mapping end -->
     

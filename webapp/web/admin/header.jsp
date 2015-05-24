@@ -1,5 +1,25 @@
+<!DOCTYPE html>
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
+
+    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
+
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
+
 <%
     // The following is for session management.    
     if (session == null) {
@@ -15,18 +35,10 @@
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../Logout");
 
 %>                       
-<!DOCTYPE html>
+
 <html lang="en">
     <head>
-        <!--
-                eugene 1.0.0
-
-                Copyright 2012 eugene
-                Licensed under the Apache License v2.0
-                http://www.apache.org/licenses/LICENSE-2.0
-
-                
-        -->
+        
         <meta charset="utf-8">
         <title>Babble SMS :: Home</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,13 +73,7 @@
         <link href='../css/opa-icons.css' rel='stylesheet'>
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
-
-
-
-          <link href='../css/checkpass.css' rel='stylesheet'>
-
-
-
+        <link href='../css/checkpass.css' rel='stylesheet'>
 
         <script type="text/javascript" src="../js/passwdcheck.js"></script>
 
@@ -82,10 +88,6 @@
         
 
        <script language="javascript" type="text/javascript" src="../js/phoneno.js"></script>
-
-
-
-
 
 
 

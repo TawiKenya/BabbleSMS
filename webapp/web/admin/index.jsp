@@ -1,10 +1,31 @@
+<!DOCTYPE html>
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
+
+    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
+<%@page import="ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
-<%@page import="java.net.URLEncoder"%>
 <%@page import="org.apache.commons.lang3.RandomStringUtils"%>
-<%@page import="ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig"%>
+
+<%@page import="java.net.URLEncoder"%>
+
 <%@page import="org.jasypt.util.text.BasicTextEncryptor"%>
+
 <%
     String username = (String) session.getAttribute("username");
     if (username != null) {
@@ -20,7 +41,7 @@
     String captchaStr = RandomStringUtils.randomAlphabetic(CAPTCHA_LENGTH);
     String encryptedCaptchaStr = textEncryptor.encrypt(captchaStr);
 %>
-<!DOCTYPE html>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -78,7 +99,8 @@
                     %>
 
                 </div>
-                <form class="form-horizontal" action="../Loggin" method="POST">
+                    
+                <form class="form-horizontal" action="adminLogin" method="POST">
                     <fieldset>
                         <div class="input-prepend" title="Username" data-rel="tooltip">
                             <span class="add-on"><i class="icon-user"></i></span><input autofocus class="input-large span10" name="username" id="username" type="text" value="" />
@@ -105,9 +127,6 @@
                         </div>
 
 
-
-
-
                         <div class="input-prepend">
                             <label class="remember" for="remember"><input type="checkbox" id="remember" />Remember me</label>
                         </div>
@@ -129,7 +148,7 @@
         <footer>
             <div class="container clearfix">
                 <p class="pull-left">
-                    Copyright &copy; Tawi Commercial Services 2014
+                    Copyright &copy; Tawi Commercial Services 2015
                 </p>
                 <p class="pull-right"align="left" >
                     <!--<a href="#">designed by @chimitahugetech</a>-->

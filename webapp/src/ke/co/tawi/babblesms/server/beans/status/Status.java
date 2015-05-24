@@ -28,6 +28,14 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Status extends StorableBean {
 
+	/*
+	 * These match what is in the SQL table "status"
+	 */
+	public final static String ACTIVE = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
+	public final static String SUSPENDED = "19CAAC90-0D72-59D4-1DC1-2C86808459F9";
+	public final static String PENDING  = "5A13538F-AC41-FDE2-4CD6-B939FA03123B";
+	public final static String UNKNOWN = "8E1DEF0F-4DCC-E13B-F89D-35181AD4003D";
+	
     private String description;
 
     
@@ -36,6 +44,7 @@ public class Status extends StorableBean {
      */
     public Status() {
         super();
+        
         description = "";
     }
     

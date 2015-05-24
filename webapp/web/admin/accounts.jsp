@@ -1,17 +1,38 @@
-<%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.ehcache.Cache"%>
-<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
-<%@page import="net.sf.ehcache.CacheManager"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
 
+    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
 
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
-<%@page import="java.util.List"%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
+<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
     // The following is for session management.    
@@ -25,7 +46,7 @@
     }
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
-    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../Logout");
+    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=adminLogout");
 
     //String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
@@ -152,7 +173,8 @@
                     </tr>
                 </thead>   
                 <tbody>
-                    <%                                                          int count = 1;
+                    <%                                                          
+                        int count = 1;
                         for (Account code : userList) {
                     %>
                     <tr>

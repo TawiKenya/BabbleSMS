@@ -1,14 +1,36 @@
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
+
+    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
+
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page import="java.util.List"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
-<%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.ehcache.Cache"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
@@ -25,7 +47,7 @@
     }
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
-    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../Logout");
+    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=adminLogout");
 
     CacheManager mgr = CacheManager.getInstance();
     Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
@@ -100,12 +122,9 @@
 
 
 
-
-
-
         <div class="box-header well" data-original-title>
 
-            <h2><i class="icon-edit"></i> add account</h2>            
+            <h2><i class="icon-edit"></i>Add Account</h2>            
             <div class="box-icon">
                 <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                 <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
@@ -113,10 +132,10 @@
             </div>
         </div>
         <div class="box-content">
-            <form  class="form-horizontal"   action="../addaccount" method="POST" >
+            <form  class="form-horizontal"   action="addAccount" method="POST" >
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="name">Names*</label>
+                        <label class="control-label" for="name">Name*</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="name" value="" required="true">
 
@@ -127,8 +146,8 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Username*</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="username" value="" required="true">
-
+                            <input class="input-xlarge focused" id="receiver" type="text" name="username" required="true"
+                                   value="<%= StringUtils.trimToEmpty(paramHash.get("name")) %>" >                                    
                         </div>
 
                     </div> 
@@ -155,7 +174,7 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Phone Number</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="mobile" type="text" name="mobile" value="" >
+                            <input class="input-xlarge focused" id="mobile" type="text" name="phone" value="" >
 
                         </div>
 

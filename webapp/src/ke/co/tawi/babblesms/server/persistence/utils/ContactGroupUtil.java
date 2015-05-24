@@ -15,20 +15,20 @@
  */
 package ke.co.tawi.babblesms.server.persistence.utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -38,55 +38,55 @@ import org.apache.log4j.Logger;
  * <p>
  * 
  * @author <a href="mailto:eugene.g99@gmail.com">Eugene Wang'ombe</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 
 public class ContactGroupUtil extends GenericDAO {
 
 	private final Logger logger;
 
-	private static String dbName = "babblesmsdb";
-	private static String dbHost = "localhost";
-	private static String dbUsername = "babblesms";
-	private static String dbPassword = "Hymfatsh8";
-	private static int dbPort = 5432;
+	final String DB_NAME = "babblesmsdb";
+	final String DB_HOST = "localhost";
+	final String DB_USERNAME = "babblesms";
+	final String DB_PASSWORD = "Hymfatsh8";
+	final int DB_PORT = 5432;
 
-	private static ContactDAO contactDAO;
-	private static GroupDAO groupDAO;
+	private ContactDAO contactDAO;
+	private GroupDAO groupDAO;
 
-	Account account;
+	private Account account;
 
+	
 	/**
 	 * @param accountUUID
 	 */
-
 	public ContactGroupUtil(String accountUUID) {
-		contactDAO = new ContactDAO(dbName, dbHost, dbUsername, dbPassword,
-				dbPort);
-		groupDAO = new GroupDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
+		contactDAO = new ContactDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD,
+				DB_PORT);
+		groupDAO = new GroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT);
 
 		account = new Account();
 		account.setUuid(accountUUID);
 
 		logger = Logger.getLogger(this.getClass());
-
 	}
 
+	
 	/**
 	 * Assigns groups to contacts
 	 * 
-	 * @return void
 	 */
-	public void putContactsIntoGroups(String accountUUID) {
+	public void putContactsIntoGroups() {
 
-		List<Contact> contactList = new ArrayList<Contact>();
-		List<Group> groupList = new ArrayList<Group>();
+		List<Contact> contactList = new LinkedList<>();
+		List<Group> groupList = new LinkedList<>();
+		
 		// get all the accounts
 		// get all contactgroup uuids for this account
-		List<String> uuids = new ArrayList<>();
+		List<String> uuids = new LinkedList<>();
 
 		try (Connection conn = dbCredentials.getConnection();
-				PreparedStatement pstmt = conn
-						.prepareStatement("SELECT uuid FROM contactgroup;");) {
+				PreparedStatement pstmt = conn.prepareStatement("SELECT uuid FROM contactgroup;");) {
 
 			ResultSet rset = pstmt.executeQuery();
 			while (rset.next()) {
@@ -97,15 +97,21 @@ public class ContactGroupUtil extends GenericDAO {
 			logger.error("SQLException when getting uuids of contactcontactgroup.");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
+		
+		
 		// insert new associations in contactgroup table
-		try (Connection conn = dbCredentials.getConnection();
-				PreparedStatement pstmt = conn
-						.prepareStatement("INSERT INTO contactgroup (uuid, contactuuid, groupuuid, accountuuid) VALUES (?,?,?,?);");) {
+		try (
+				Connection conn = dbCredentials.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO contactgroup "
+						+ "(uuid, contactuuid, groupuuid, accountuuid) VALUES (?,?,?,?);");) {
 
 			groupList = groupDAO.getGroups(account);
 			contactList = contactDAO.getContacts(account);
+			
+			
 			// distribute contacts into groups in the ratio 7:2:1
 			int contactListSize = contactList.size();
+			
 			// first portion of the ratio
 			int firstPortion = (int) Math.floor(contactListSize * 0.7);// 7/10
 			for (int i = 0; i < firstPortion; i++) {
@@ -113,10 +119,11 @@ public class ContactGroupUtil extends GenericDAO {
 				pstmt.setString(1, UUID.randomUUID().toString());
 				pstmt.setString(2, contactList.get(i).getUuid());
 				pstmt.setString(3, groupList.get(3).getUuid());
-				pstmt.setString(4, accountUUID);
+				pstmt.setString(4, account.getUuid());
 				pstmt.executeUpdate();
-
 			}
+			
+			
 			// second portion of the ratio
 			int secondPortion = firstPortion
 					+ (int) Math.floor(contactListSize * 0.2);// 2/10
@@ -125,53 +132,62 @@ public class ContactGroupUtil extends GenericDAO {
 				pstmt.setString(1, UUID.randomUUID().toString());
 				pstmt.setString(2, contactList.get(i).getUuid());
 				pstmt.setString(3, groupList.get(2).getUuid());
-				pstmt.setString(4, accountUUID);
+				pstmt.setString(4, account.getUuid());
 				pstmt.executeUpdate();
 
 			}
+			
+			
 			// third portion of the ratio
 			for (int i = secondPortion; i < contactListSize; i++) {
 
 				pstmt.setString(1, UUID.randomUUID().toString());
 				pstmt.setString(2, contactList.get(i).getUuid());
 				pstmt.setString(3, groupList.get(0).getUuid());
-				pstmt.setString(4, accountUUID);
+				pstmt.setString(4, account.getUuid());
 				pstmt.executeUpdate();
 
 			}
+			
+			
 			// put some contacts from one group into another group
 			for (int i = firstPortion; i < secondPortion; i++) {
 
 				pstmt.setString(1, UUID.randomUUID().toString());
 				pstmt.setString(2, contactList.get(i).getUuid());
 				pstmt.setString(3, groupList.get(0).getUuid());
-				pstmt.setString(4, accountUUID);
+				pstmt.setString(4, account.getUuid());
 				pstmt.executeUpdate();
 
 				if (i == (secondPortion - 5))
 					break;
 			}
+			
+			
 			// put from contacts from one group into another group
 			for (int i = secondPortion + 5; i < contactListSize; i++) {
 
 				pstmt.setString(1, UUID.randomUUID().toString());
 				pstmt.setString(2, contactList.get(i).getUuid());
 				pstmt.setString(3, groupList.get(2).getUuid());
-				pstmt.setString(4, accountUUID);
+				pstmt.setString(4, account.getUuid());
 				pstmt.executeUpdate();
 
 				if (i == 20)
 					break;
-
 			}
+			
 
 		} catch (SQLException e) {
 			logger.error("SQLException while inserting new association in contactgroup table");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
-
 	}
 
+	
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		// This is the Account UUID of 'demo'
@@ -180,10 +196,9 @@ public class ContactGroupUtil extends GenericDAO {
 		System.out.println("Creating new contact-group associations...");
 
 		ContactGroupUtil util = new ContactGroupUtil(accountUUID);
-		util.putContactsIntoGroups(accountUUID);
+		util.putContactsIntoGroups();
 
 		System.out.println("Done!");
-
 	}
 
 }

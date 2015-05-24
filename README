@@ -11,3 +11,8 @@ the look-and-feel of an email account.
 
 Underneath it relies on the SMS Gateway as a transport mechanism for SMS to and
 from the network operators.
+
+A sample of the application can be viewed on the following website:
+http://testbabble.tawi.mobi
+Username: 'demo'
+Password: 'demo'

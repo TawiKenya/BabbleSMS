@@ -1,3 +1,18 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
 package ke.co.tawi.babblesms.server.servlet.admin;
 
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
@@ -25,8 +40,10 @@ import org.apache.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 /**
- *
- * @author josephk
+ * Administrator account login servlet. 
+ * <p>
+ * 
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class Login extends HttpServlet {
 
@@ -41,10 +58,9 @@ public class Login extends HttpServlet {
     private Cache accountsCache, statisticsCache, statisticsByUsernameCache,
             purchasesCache, balancesCache;
     
-    //private SmsPurchaseDAO smsPurchaseDAO;
-    //private SmsBalanceDAO smsBalanceDAO;
-        
+          
     private Logger logger;
+    
     
     /**
      *
@@ -58,9 +74,6 @@ public class Login extends HttpServlet {
         textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
 
-        //smsPurchaseDAO = SmsPurchaseDAO.getInstance();
-        //smsBalanceDAO = SmsBalanceDAO.getInstance();
-
         CacheManager mgr = CacheManager.getInstance();
         //accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
         //statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_FOR_ALL_ACCOUNTS);
@@ -73,6 +86,12 @@ public class Login extends HttpServlet {
     }
 
 
+    /**
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
         HttpSession session = request.getSession(true);
@@ -85,30 +104,31 @@ public class Login extends HttpServlet {
 
         if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
             session.setAttribute(SessionConstants.ADMIN_SIGN_IN_ERROR_KEY, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
-            response.sendRedirect("admin/index.jsp");
+            response.sendRedirect("index.jsp");
 
-        } // The username supplied does not match what is in the config file
-        else if (!StringUtils.equals(username, PropertiesConfig.getConfigValue("ADMIN_USERNAME"))) {
+         // The username supplied does not match what is in the config file
+        } else if (!StringUtils.equals(username, PropertiesConfig.getConfigValue("ADMIN_USERNAME"))) {
             session.setAttribute(SessionConstants.ADMIN_SIGN_IN_ERROR_KEY, SessionConstants.ADMIN_SIGN_IN_ERROR_KEY);
-            response.sendRedirect("admin/index.jsp");
+            response.sendRedirect("index.jsp");
 
-            // The password supplied does not match what is in the config file	
+        // The password supplied does not match what is in the config file	
         } else if (!StringUtils.equals(password, PropertiesConfig.getConfigValue("ADMIN_PASSWORD"))) {
             session.setAttribute(SessionConstants.ADMIN_SIGN_IN_ERROR_KEY, SessionConstants.ADMIN_SIGN_IN_ERROR_VALUE);
-            response.sendRedirect("admin/index.jsp");
+            response.sendRedirect("index.jsp");
 
-            // The login is correct	
+            
+        // The login is correct	
         } else {
             session.setAttribute(SessionConstants.ADMIN_SESSION_KEY, "admin");
             session.setAttribute(SessionConstants.ADMIN_LOGIN_TIME_KEY, new Date());
 
             //initCache();
             
-            response.sendRedirect("admin/accounts.jsp");
-        
+            response.sendRedirect("accounts.jsp");
         }
     }
 
+    
     /**
      *
      */
@@ -186,17 +206,6 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    }
-
-    
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
 
 }

@@ -276,6 +276,7 @@
                 <p class="error">${uploadErrStr}</p> 
                 <c:set var="uploadErrStr" value=""/>
             </c:if>-->
+            
             <form class="form-horizontal" method="POST" action="uploadFile" name="uploadFile"
                   enctype="multipart/form-data">
                 <fieldset>
@@ -331,10 +332,6 @@
                 $(".network").append(data);
             });//ajax call ends here
         });
-
-        
-
-
 
     });
 
