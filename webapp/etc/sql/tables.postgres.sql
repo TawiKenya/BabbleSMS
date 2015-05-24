@@ -364,9 +364,9 @@ CREATE TABLE ShortcodeBalance(
           Shortcodeuuid text references Shortcode(uuid),
           count integer NOT NULL CHECK(count>=0)
          );
--- import data from the CSV file for the ShortcodeBalance table
 \COPY ShortcodeBalance (Uuid,accountuuid,Shortcodeuuid,count) FROM '/tmp/ShortcodeBalance.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ShortcodeBalance OWNER TO babblesms;
+
 
 -------------------------
 -- Table MaskPurchase

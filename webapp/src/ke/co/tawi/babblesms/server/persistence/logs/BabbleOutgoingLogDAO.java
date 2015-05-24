@@ -32,7 +32,7 @@ public interface BabbleOutgoingLogDAO {
     /**
      *
      * @param outgoingLog
-     * @return		<code>true</code> if successfully inserted; <code>false</code>
+     * @return	<code>true</code> if successfully inserted; <code>false</code>
      * for otherwise
      */
     public boolean putOutgoingLog(OutgoingLog outgoingLog);
@@ -41,7 +41,7 @@ public interface BabbleOutgoingLogDAO {
     /**
      *
      * @param uuid
-     * @return	a network
+     * @return a {@link OutgoingLog}
      */
     public OutgoingLog getOutgoingLog(String uuid);
     
@@ -50,14 +50,11 @@ public interface BabbleOutgoingLogDAO {
      * 
      * Gets incoming SMS based on account uuid. Results are ordered by time descending.
      * 
-     * @param accountuuid
+     * @param account
      * @param fromIndex
      * @param toIndex
-     * @return 
+     * @return a list of {@link OutgoingLog}
      */
     public List<OutgoingLog> getOutgoingLog(Account account, int fromIndex, int toIndex);
-
-    
-
     
 }

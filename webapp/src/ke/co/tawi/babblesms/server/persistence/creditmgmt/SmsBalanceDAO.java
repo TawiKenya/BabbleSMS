@@ -20,7 +20,15 @@ import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -31,13 +39,33 @@ import java.util.List;
  */
 public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 
+	private static SmsBalanceDAO balanceDAO;
+	
+	private BeanProcessor beanProcessor = new BeanProcessor();
+	
+	private Logger logger = Logger.getLogger(this.getClass());
+	
+	
+	/**
+     * @return the singleton instance of {@link SmsBalanceDAO}
+     */
+	public static SmsBalanceDAO getInstance(){
+		if(balanceDAO == null){
+			balanceDAO = new SmsBalanceDAO();
+		}
+		
+		return balanceDAO;		
+	}
+	
+	
 	/**
 	 * 
 	 */
-	public SmsBalanceDAO() {
-		// TODO Auto-generated constructor stub
+	protected SmsBalanceDAO() {
+		super();
 	}
 
+	
 	/**
 	 * @param dbName
 	 * @param dbHost
@@ -48,17 +76,58 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	public SmsBalanceDAO(String dbName, String dbHost, String dbUsername,
 			String dbPassword, int dbPort) {
 		super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-		// TODO Auto-generated constructor stub
 	}
+	
 
-	/* (non-Javadoc)
-	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#hasBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#hasBalance(Account, SMSSource, int)
 	 */
 	@Override
 	public boolean hasBalance(Account account, SMSSource smsSource, int count) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean hasBalance = false;
+		int smsCount = 0;		
+				
+		try(
+				Connection conn = dbCredentials.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("SELECT count FROM ShortcodeBalance "
+						+ "WHERE accountUuid=? AND Shortcodeuuid=?;");
+				PreparedStatement pstmt2 = conn.prepareStatement("SELECT count FROM MaskBalance "
+						+ "WHERE accountUuid=? AND maskuuid=?;");
+				) {	
+			
+			pstmt.setString(1, account.getUuid());	
+			pstmt.setString(2, smsSource.getUuid());
+			
+			pstmt2.setString(1, account.getUuid());	
+			pstmt2.setString(2, smsSource.getUuid());
+						
+			try(
+					ResultSet rset = pstmt.executeQuery();
+					ResultSet rset2 = pstmt2.executeQuery();
+					) {
+				
+				if(rset.next()) {
+					smsCount = rset.getInt("count");	
+					hasBalance = (smsCount >= count) ? true : false;
+							
+				} else if(rset2.next()) {
+					smsCount = rset2.getInt("count");	
+					hasBalance = (smsCount >= count) ? true : false;
+				}
+				
+			}
+			
+			
+		} catch(SQLException e) {
+			logger.error("SQLException exception while checking whether '" + account +
+					"' has balance of " + count + " for '" + smsSource + "'.");
+			logger.error(ExceptionUtils.getStackTrace(e));
+			
+		} 
+		
+		return hasBalance;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#deductBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)
@@ -69,6 +138,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 		return false;
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#addBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)
 	 */
@@ -78,6 +148,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 		return false;
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#getBalances(ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
@@ -86,6 +157,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#getAllBalances()

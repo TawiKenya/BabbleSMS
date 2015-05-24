@@ -34,11 +34,11 @@ public class Log extends StorableBean {
     private String origin;
     private String message;
     private String destination;
+    private String networkUuid;
     private Date logTime;
 
+    
     /**
-     *
-     * constructor
      *
      */
     public Log() {
@@ -46,6 +46,7 @@ public class Log extends StorableBean {
         origin = "";
         message = "";
         destination = "";
+        networkUuid = "";
         logTime = new Date();
     }
 
@@ -100,18 +101,28 @@ public class Log extends StorableBean {
 	/**
 	 * @return the logTime
 	 */
-	public Date getLogTime() {
-            
-		return new Date(logTime.getTime());
-                
+	public Date getLogTime() {            
+		return new Date(logTime.getTime());                
 	}
 
 	/**
 	 * @param logTime the logTime to set
 	 */
-	public void setLogTime(Date t) {
-            
-		this.logTime = new Date(t.getTime());
-                
+	public void setLogTime(Date t) {            
+		this.logTime = new Date(t.getTime());                
+	}
+
+	/**
+	 * @return the networkUuid
+	 */
+	public String getNetworkUuid() {
+		return networkUuid;
+	}
+
+	/**
+	 * @param networkUuid the networkUuid to set
+	 */
+	public void setNetworkUuid(String networkUuid) {
+		this.networkUuid = networkUuid;
 	}
 }

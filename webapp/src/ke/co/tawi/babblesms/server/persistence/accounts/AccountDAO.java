@@ -48,7 +48,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	
 	
     /**
-     * @return the {@link AccountDAO}
+     * @return the singleton instance of  {@link AccountDAO}
      */
 	public static AccountDAO getInstance(){
 		if(accountDAO == null){

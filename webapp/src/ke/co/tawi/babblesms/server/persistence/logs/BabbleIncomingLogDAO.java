@@ -40,13 +40,15 @@ public interface BabbleIncomingLogDAO {
     
     /**
      * Gets incoming SMS based on destination uuid. Results are ordered by time descending.
+     * <p>
      * 
-     * @param destinationUuids
-     * @param fromIndex, inclusive in results
-     * @param toIndex, inclusive in results
-     * @return a list of {@link IncomingLog}
+     * @param account 
+     * @param fromIndex - inclusive in results
+     * @param toIndex - inclusive in results
+     * 
+     * @return a list of {@link IncomingLog}s
      */
-    public List<IncomingLog> getIncomingLog(Account account , int fromIndex, int toIndex);
+    public List<IncomingLog> getIncomingLog(Account account, int fromIndex, int toIndex);
     
     
     /**

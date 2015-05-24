@@ -105,7 +105,7 @@
     for (Object key : keys) {
         element = networksCache.get(key);
         network = (Network) element.getObjectValue();
-        networkHash.put(network.getUuid(), network.getName());
+        networkHash.put(network.getUuid(), StringUtils.split(network.getName())[0] );
     }
 
     incount = statistics.getAllIncomingUSSDCount();
@@ -177,10 +177,11 @@
         <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left: 9px;">
             <div id="pagination">
                 <form name="pageForm" method="post" action="inbox.jsp">                                
-                    <%                                            if (!inboxPage.isFirstPage()) {
+                    <%                                            
+                        if (!inboxPage.isFirstPage()) {
                     %>
-                    <input class="toolbarBtn" type="submit" name="page" value="First" />
-                    <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                        <input class="toolbarBtn" type="submit" name="page" value="First" />
+                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -191,8 +192,8 @@
                     <%
                         if (!inboxPage.isLastPage()) {
                     %>
-                    <input class="toolbarBtn" type="submit" name="page" value="Next">  
-                    <input class="toolbarBtn" type="submit" name="page" value="Last">
+                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
+                        <input class="toolbarBtn" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
@@ -238,7 +239,7 @@
                         <th>Message</th>
                         <th>Source</th>                        
                         <th>Destination</th>
-                        <!--<th>network</th>-->
+                        <th>Network</th>
                         <th>Time (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
                         <th>Message Id</th>
                     </tr>
@@ -249,29 +250,27 @@
                             for (IncomingLog code : incomingList) {
                     %>
                     <tr width="5%">
-                        <td width="2%"><%=ussdCount%></td>
+                        <td width="2%"><%= ussdCount %></td>
                         
-                        <td class="center"><%=code.getMessage()%></td>
+                        <td class="center"><%= code.getMessage() %></td>
                         <%
-
-                            if (phnDAO.getPhones(code.getOrigin()).size() > 0){
-
+                            List<Phone> phoneList;
+                            if (phnDAO.getPhones(code.getOrigin()).size() > 0) {
                                
-                                List<Phone> phoneList = phnDAO.getPhones(code.getOrigin());
+                                phoneList = phnDAO.getPhones(code.getOrigin());
                                 Phone phone = phoneList.get(0);
-                                String contactuuid = phone.getContactUuid();
-			        Contact contacts = ctssDAO.getContact(contactuuid);
-				String sourcename = contacts.getName();
+			        Contact contacts = ctssDAO.getContact(phone.getContactUuid());				
                         %>
-                       <td class="center"><%=sourcename%></td> 
+                                <td class="center"><%= contacts.getName() %></td> 
+                                
                         <%} else {%>
-                        <td class="center"><%=code.getOrigin()%></td>  
+                                <td class="center"><%= code.getOrigin() %></td>  
                       <%}%>
 
                         <td class="center"><%=code.getDestination()%></td>
-                        <!-- <td class="center"></td>-->
+                        <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td>
                         <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
-                        <td class="center"><%=code.getUuid()%></td>
+                        <td class="center"><%= code.getUuid() %></td>
                     </tr>
 
                     <%

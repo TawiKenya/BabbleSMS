@@ -16,10 +16,8 @@
 package ke.co.tawi.babblesms.server.servlet.admin.source;
 
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.account.Credit;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 
 import java.io.IOException;
@@ -58,8 +56,7 @@ public class Addshortcode extends HttpServlet {
     private HashMap<String, String> paramHash;
     
     
-    private ShortcodeDAO shortcodeDAO;    
-    private CreditDAO creditDAO;    
+    private ShortcodeDAO shortcodeDAO;   
     private CacheManager cacheManager;
     private HttpSession session;
     
@@ -72,10 +69,8 @@ public class Addshortcode extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
         
         shortcodeDAO = ShortcodeDAO.getInstance();
-        creditDAO=CreditDAO.getInstance();
         
         cacheManager = CacheManager.getInstance();
     }
@@ -139,7 +134,7 @@ public class Addshortcode extends HttpServlet {
         s.setNetworkuuid(networkuuid);
         s.setAccountuuid(accountuuid);
         
-        Credit c=new Credit();
+        /*Credit c=new Credit();
         
         int amount=0;        
         c.setAccountuuid(accountuuid);
@@ -151,7 +146,7 @@ public class Addshortcode extends HttpServlet {
 
          if(shortcodeDAO.put(s)){
              creditDAO.putCredit(c);
-           }
+           }*/
         
 
         //s = shortcodeDAO.getShortcodeBycodeNumber(codenumber, networkuuid);	// Ensures the shortcode is populated with the correct ID

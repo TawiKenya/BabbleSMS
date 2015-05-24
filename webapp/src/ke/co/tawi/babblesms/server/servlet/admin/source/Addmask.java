@@ -16,10 +16,8 @@
 package ke.co.tawi.babblesms.server.servlet.admin.source;
 
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.account.Credit;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
 
 import java.io.IOException;
@@ -59,7 +57,6 @@ public class Addmask extends HttpServlet {
     
     
     private MaskDAO maskDAO;    
-    private CreditDAO creditDAO;
     
     private CacheManager cacheManager;
     private HttpSession session;
@@ -76,7 +73,6 @@ public class Addmask extends HttpServlet {
 
         
         maskDAO = MaskDAO.getInstance();
-        creditDAO = CreditDAO.getInstance();
         cacheManager = CacheManager.getInstance();
     }
 
@@ -137,7 +133,7 @@ public class Addmask extends HttpServlet {
         m.setAccountuuid(accountuuid);
         
         int amount=0;
-        Credit c=new Credit();
+        /*Credit c=new Credit();
         c.setAccountuuid(accountuuid);
         c.setSource(maskname);
         c.setCredit(amount);
@@ -145,7 +141,7 @@ public class Addmask extends HttpServlet {
 
         if(maskDAO.put(m)){
            creditDAO.putCredit(c);
-         }
+         }*/
 
         //m = maskDAO.getMaskByName(maskname);	// Ensures the mask is populated with the correct ID
         updateMaskCache(m);

@@ -1,5 +1,8 @@
 package ke.co.tawi.babblesms.server.servlet.admin.sms;
 
+import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -11,10 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.account.Credit;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
@@ -39,8 +38,6 @@ public class Addcredit extends HttpServlet {
     // This is used to store parameter names and values from the form.
     private HashMap<String, String> paramHash;
 
-    private CreditDAO creditDAO;
-
     private CacheManager cacheManager;
     private HttpSession session;
 
@@ -53,10 +50,9 @@ public class Addcredit extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        creditDAO = CreditDAO.getInstance();
-
         cacheManager = CacheManager.getInstance();
     }
+    
 
     /**
      *
@@ -65,7 +61,7 @@ public class Addcredit extends HttpServlet {
      * @throws ServletException, IOException
      */
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         session = request.getSession(true);
 
@@ -108,7 +104,7 @@ public class Addcredit extends HttpServlet {
      *
      */
     private void addCredit() {
-        Credit c = new Credit();
+        /*Credit c = new Credit();
 
         c.setSource(sourceuuid);
         c.setCredit(Integer.parseInt(amount));
@@ -124,27 +120,12 @@ public class Addcredit extends HttpServlet {
         else{
            session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Credit update failed.");
         } 
-       
+       */
 
         //updateCreditCache(c);
     }
 
-    /**
-     * populate purchase history table
-     *
-     *
-     * Private void addpurchaseHistory(){
-     *
-     * }
-     */
-    /**
-     *
-     * @param acc
-     */
-    private void updateCreditCache(Credit cr) {
-        //cacheManager.getCache(CacheVariables.CACHE_MASK_BY_UUID).put(new Element(cr.getUuid(), cr));
-    }
-
+    
     /**
      * Set the class variables that represent form parameters.
      *
