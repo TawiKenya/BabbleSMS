@@ -8,8 +8,17 @@
     height: 210px;
     margin-top: 2%;
     margin-left: 15%;
+    float: left;
     overflow: scroll;
 text-align: left;
+}
+#scrolltable21{
+    width: 200px;
+    height: 210px;
+    margin-top: 2%;
+    overflow: scroll;
+text-align: left;
+float: left;
 }
 #scroll {
     width: 100%;  /* Optional */
@@ -39,7 +48,8 @@ margin: 0 1.5%;
 #groupsform {
 float: left;
  width: 100px;
-margin: 0 1.5%;
+margin-left: 10%;
+margin-right: 10%;
 }
 #add {
 

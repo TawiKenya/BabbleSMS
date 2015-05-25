@@ -295,7 +295,7 @@ more
           
                     <tr>
 
-                       <td width="10%"><%=contactCount%></td>
+                       <td width="5%"><%=contactCount%></td>
                        <td class="center"><a href="#"><%=contact.getName()%></a></td>
          				
                     <% 

@@ -169,7 +169,7 @@
                     %>
                     <tr>
 
-                        <td width="10%"><%=count%></td>
+                        <td width="5%"><%=count%></td>
                         <td class="center"><a href="#"><%=code.getName()%></a></td>
                         <td class="center"><%=code.getDescription()%> </td>
                         <td class="center"><%=cts.getContactInGroup(code.getUuid())%> </td>

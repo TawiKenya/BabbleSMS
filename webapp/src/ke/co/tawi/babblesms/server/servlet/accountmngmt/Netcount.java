@@ -40,32 +40,29 @@ import ke.co.tawi.babblesms.server.persistence.utils.networkcount;
 public class Netcount  extends HttpServlet {
 	
 	
-	
-    // static HashMap<String, String> Hashn;
+     static HashMap<String, String> Hashnet;
 	
      @Override
  	protected void doPost(HttpServletRequest request, HttpServletResponse response)
  			throws ServletException, IOException {
-    	 //doGet(request, response);
- 		//response.setHeader("Cache-Control", "no-cache");		
-		//response.setHeader("Pragma","no-cache");
-		
+    		
 		
 		String uuid = request.getParameter("uuid");
-    		PrintWriter writer = new PrintWriter(uuid);
-            PrintWriter out = response.getWriter();
+    		PrintWriter out=response.getWriter();
+    		out.println("<h1> "+uuid+" </h1>");
 		System.out.println(" On the test by Migwi "+uuid);
+		out.println("<h1> "+uuid+" </h1>");
+		networkcount countnet = new networkcount();
 		
-		//networkcount countnet = new networkcount();
-		
-		/*Hashnet= countnet.network(uuid);
+		Hashnet= countnet.network(uuid);
 		
 		for(@SuppressWarnings("rawtypes")
 		Map.Entry nets:Hashnet.entrySet()){
-			System.out.println("Migwi Testing  "+nets.getKey()+"   "+nets.getValue());*/
+			System.out.println("Migwi Testing  "+nets.getKey()+"   "+nets.getValue());
 		}
   }
-  /*public HashMap<String,String> Networklist(){
-	  return hashnet;
-  }*/
+  public HashMap<String,String> Networklist(){
+	  return Hashnet;
+  }
 
+}

@@ -96,7 +96,13 @@
     <servlet>
         <servlet-name>AddTemplate</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddTemplate</servlet-class>
-    </servlet>
+    </servlet>     
+        
+    <servlet>
+        <servlet-name>NetworkCount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Netcount</servlet-class>
+    </servlet>   
+    
     
     <servlet>
         <servlet-name>FontImageGenerator</servlet-name>
@@ -258,14 +264,18 @@
         <servlet-name>OutgoingPie</servlet-name>
         <url-pattern>/account/outgoingPie</url-pattern>
     </servlet-mapping>
-    
-    
-    
-    <!--<servlet-mapping>
-        <servlet-name>addnetwork</servlet-name>
-        <url-pattern>/addnetwork</url-pattern>
-    </servlet-mapping>-->
+
     <servlet-mapping>
+        <servlet-name>Loggin</servlet-name>
+        <url-pattern>/Loggin</url-pattern>
+    </servlet-mapping>    
+    
+    <servlet-mapping>
+        <servlet-name>NetworkCount</servlet-name>
+        <url-pattern>/js/message.js</url-pattern>
+    </servlet-mapping>
+    
+       <servlet-mapping>
         <servlet-name>addshortcode</servlet-name>
         <url-pattern>/addshortcode</url-pattern>
     </servlet-mapping>

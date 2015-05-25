@@ -186,6 +186,7 @@
                     <br/>
 <!-- Group table here-->
 <div class="tablets">
+<div id="scrolltable">
     <table id="scroll" class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -217,6 +218,7 @@
   
     </tbody>
 </table>
+</div>
 <div id = "groupsform">
 <br/><br/><br/>
 <button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
@@ -225,39 +227,30 @@
 
 <input type="hidden"  class ="groupsadded" name="groupsadded[]"  />
 </div>
+<div id="scrolltable21">
 <table id="scroll1" class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>Contact Groups</th>
+            <th> Selected Group(s)</th>
         </tr>
     </thead>
-    <tbody id = "resulttable">
-    
+    <tbody id = "resulttable">   
 	
   
     </tbody>
 </table>
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 </div>
 <!-- Group table ends here-->
+
+
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <div class="form-actions">
 <input type="hidden" name="accountuuid" value="<%=accountuuid%>">
 <input type="hidden" name="statusuuid" value="<%=Contact.ACTIVE_STATUSUUID%>">
 <div id="savecancelButtons">
-<button type="submit" id="save" class="btn btn-primary">Save changes</button>
+<button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
  </div>
                     </div>

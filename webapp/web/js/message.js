@@ -14,8 +14,9 @@ function getRequestObject() {
              return(null); 
              }
     }
-function sendRequest(inputField,address) {	
+function sendRequest(inputField,address) {
 	var data = "uuid=" + escape(inputField.name);
+    alert(data+"   "+address);
      var request = getRequestObject();
       request.onreadystatechange =function() { handleResponse(request); };
        request.open("POST", address, true);
@@ -25,6 +26,6 @@ function sendRequest(inputField,address) {
 
  function handleResponse(request) {
       if ((request.readyState == 4) && (request.status == 200)) {
-       alert(request.responseText);
+       alert("Migwi testing "+request.responseText);
              }
        }
