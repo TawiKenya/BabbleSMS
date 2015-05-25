@@ -225,6 +225,7 @@ A list of all SMS that have been sent from the system to Groups.
 - Id (primary key)
 - UUID
 - origin
+- Network UUID references Network
 - Destination UUID references Group (UUID)
 - message
 - timestamp

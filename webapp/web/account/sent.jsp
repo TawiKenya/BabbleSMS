@@ -93,6 +93,14 @@
         messageHash.put(msgt.getUuid(), msgt.getDescription());
     }
 
+ keys = networksCache.getKeys();
+
+    for (Object key : keys) {
+        element = networksCache.get(key);
+        network = (Network) element.getObjectValue();
+        networkHash.put(network.getUuid(), StringUtils.split(network.getName())[0] );
+    }
+
     SentPaginator paginator = new SentPaginator(accountuuid);
 
     SessionStatistics statistics = new SessionStatistics();
@@ -240,6 +248,7 @@
                         <th>*</th>                        
                         <th>Message</th>
                         <th>Source</th>
+                         <th>Network</th>
                         <th>Destination</th>                        
                         <th>Message Status</th>              
                         <th>Time (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
@@ -268,6 +277,7 @@
 				Contact contacts = ctDAO.getContact(contactuuid);
 				String contactname = contacts.getName();
                         %>
+                        <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td>
                        <td class="center"><%=contactname%></td> 
                         <%} else {%>
                         <td class="center"><%=code.getDestination()%></td>  

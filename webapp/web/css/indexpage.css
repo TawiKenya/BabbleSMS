@@ -915,8 +915,8 @@ input[type=file]:hover:not(:checked)+._nb-small-dark-button:before,._nb-small-da
 
 .made-in-kenya{
     align-contents: bottom;
-    height:136px;
-    width:250px;    
+    height:82px;
+    width:150px;    
     background: url("../img/made-in-kenya.png");
 }
 

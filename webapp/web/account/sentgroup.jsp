@@ -57,7 +57,8 @@
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
 
     CacheManager mgr = CacheManager.getInstance();
-    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);    
+    Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
 
     OutgoingGroupLogDAO outgoinglogDAO = OutgoingGroupLogDAO.getInstance();
     
@@ -75,6 +76,17 @@
     List<Group> groupList = groupDAO.getGroups(account);
 
     HashMap<String, String> groupHash = new HashMap<String, String>();
+    HashMap<String, String> networkHash = new HashMap<String, String>();
+
+
+    List keys = networksCache.getKeys();
+    Network network;
+
+    for (Object key : keys) {
+        element = networksCache.get(key);
+        network = (Network) element.getObjectValue();
+        networkHash.put(network.getUuid(), StringUtils.split(network.getName())[0] );
+    }
 
     for(Group group : groupList) {
         groupHash.put(group.getUuid(), group.getName());
@@ -116,7 +128,8 @@
                         <th>*</th>  
                         <th>Group</th>
                         <th>Message</th>
-                        <th>Source</th>                        
+                        <th>Source</th> 
+                        <th>Network</th>  
                         <th>Time (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
                         <th>Group Message Id</th>
                     </tr>
@@ -130,10 +143,11 @@
                     %>
                     
                                 <tr>
-                                    <td width="10%"><%=count%></td>
+                                    <td width="5%"><%=count%></td>
                                     <td class="center"><%= groupHash.get(code.getDestination()) %> </td>
                                     <td class="center"><%= code.getMessage() %></td>
-                                    <td class="center"><%= code.getOrigin() %> </td>                        
+                                    <td class="center"><%= code.getOrigin() %> </td> 
+                                    <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td> 
                                     <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
                                     <td class="center"><%= code.getUuid() %> </td>
                                 </tr>
