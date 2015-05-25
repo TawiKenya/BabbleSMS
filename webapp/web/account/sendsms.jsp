@@ -16,9 +16,7 @@
     */
 %>
 
-<%@page import="ke.co.tawi.babblesms.server.beans.account.AccountBalance"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.account.Credit"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Email"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
@@ -33,12 +31,10 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.credit.CreditDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO"%>
 
