@@ -160,13 +160,11 @@ public class IncomingLogDAO extends GenericDAO implements BabbleIncomingLogDAO {
 	 */
 	@Override
 	public boolean putIncomingLog(IncomingLog incomingLog) {
-		boolean success = true;
-
-        
+		boolean success = true;        
 
         try (Connection conn = dbCredentials.getConnection();
-        		 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO IncomingLog (Uuid, origin, destination, message, logtime,networkuuid)"
-                        + " VALUES (?,?,?,?,?,?);");
+        		 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO IncomingLog (Uuid, origin, destination, "
+        		 		+ "message, logtime, networkuuid) VALUES (?,?,?,?,?,?);");
         		){
             
             pstmt.setString(1, incomingLog.getUuid());

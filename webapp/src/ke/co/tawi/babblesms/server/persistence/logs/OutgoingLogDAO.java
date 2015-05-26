@@ -94,7 +94,7 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
         try (
         		Connection conn = dbCredentials.getConnection();
         		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO OutgoingLog "
-        				+ "(Uuid, origin, destination, message,logtime, networkuuid, sender, messagestatusuuid) "
+        				+ "(Uuid, origin, destination, message, logtime, networkuuid, sender, messagestatusuuid) "
         				+ "VALUES (?,?,?,?,?,?,?,?);");
         		) {
         	
