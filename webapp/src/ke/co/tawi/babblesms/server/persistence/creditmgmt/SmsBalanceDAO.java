@@ -17,6 +17,7 @@ package ke.co.tawi.babblesms.server.persistence.creditmgmt;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
+import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
@@ -129,13 +130,59 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	}
 	
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#deductBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)
 	 */
 	@Override
 	public boolean deductBalance(Account account, SMSSource smsSource, int count) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+						
+		if(hasBalance(account, smsSource, count)) {
+		
+			try(
+					Connection conn = dbCredentials.getConnection();	
+					PreparedStatement pstmt = conn.prepareStatement("UPDATE ? " +
+						"SET count = (SELECT count FROM ? WHERE accountUuid=? AND ?=?) " +
+						"- ? " +				
+						"WHERE uuid = (SELECT uuid FROM ? WHERE accountUuid=? "
+						+ "AND ?=?);");	
+					) {
+				
+				if(smsSource instanceof Shortcode) {
+					pstmt.setString(1, "ShortcodeBalance");
+					pstmt.setString(2, "ShortcodeBalance");
+					pstmt.setString(4, "Shortcodeuuid");
+					pstmt.setString(7, "ShortcodeBalance");
+					pstmt.setString(9, "Shortcodeuuid");
+					
+				} else {	// This is a mask
+					pstmt.setString(1, "MaskBalance");
+					pstmt.setString(2, "MaskBalance");
+					pstmt.setString(4, "maskuuid");
+					pstmt.setString(7, "MaskBalance");
+					pstmt.setString(9, "maskuuid");					
+				}				
+			
+				pstmt.setString(3, account.getUuid());					
+				pstmt.setString(5, smsSource.getUuid());				
+				pstmt.setInt(6, count);
+				pstmt.setString(8, account.getUuid());
+				pstmt.setString(10, smsSource.getUuid());
+				
+				pstmt.executeUpdate();
+							
+			} catch(SQLException e) {
+				logger.error("SQLException while deducting the balance of '" + account +
+						"' of amount " + count + " for '" + smsSource + "'.");
+				logger.error(ExceptionUtils.getStackTrace(e));
+				success = false;				
+			} 
+						
+		} else { // end 'if(hasBalance(account, smsSource, count))'
+			success = false;
+		}
+		
+		return success;
 	}
 
 	
