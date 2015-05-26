@@ -231,6 +231,7 @@ A list of all SMS that have been sent from the system to Groups.
 - timestamp
 - Messagestatus UUID references MessageStatus
 - Sender UUID references Account (UUID)
+- Network UUID references Network
 
 
 ---------------------
