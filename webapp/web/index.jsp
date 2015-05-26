@@ -140,6 +140,7 @@
                                                                <div class="b-mail-domik__social js-socials"></div>
                                                           </div>
                             </fieldset>  
+                            <p> <a href="account/forgotpas.jsp" target="_top"> Forgot password!!</a>  </p>
                  </form>
             </div>                        
                  
