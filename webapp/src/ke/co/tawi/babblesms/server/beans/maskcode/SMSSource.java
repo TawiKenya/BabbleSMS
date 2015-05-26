@@ -33,7 +33,7 @@ public class SMSSource extends StorableBean {
 	/**
 	 * 
 	 */
-	protected SMSSource() {
+	public SMSSource() {
 		super();
 		
 		source = "";
