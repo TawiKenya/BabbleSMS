@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,17 +94,18 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
         try (
         		Connection conn = dbCredentials.getConnection();
         		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO OutgoingLog "
-        				+ "(Uuid, origin, destination, message, networkuuid, sender, messagestatusuuid) "
-        				+ "VALUES (?,?,?,?,?,?,?);");
+        				+ "(Uuid, origin, destination, message,logtime, networkuuid, sender, messagestatusuuid) "
+        				+ "VALUES (?,?,?,?,?,?,?,?);");
         		) {
         	
             pstmt.setString(1, outgoingLog.getUuid());
             pstmt.setString(2, outgoingLog.getOrigin());
             pstmt.setString(3, outgoingLog.getDestination());
             pstmt.setString(4, outgoingLog.getMessage());
-            pstmt.setString(5, outgoingLog.getNetworkuuid());
-            pstmt.setString(6, outgoingLog.getSender());
-            pstmt.setString(7, outgoingLog.getMessagestatusuuid());
+            pstmt.setTimestamp(5, new Timestamp(outgoingLog.getLogTime().getTime()));
+            pstmt.setString(6, outgoingLog.getNetworkuuid());
+            pstmt.setString(7, outgoingLog.getSender());
+            pstmt.setString(8, outgoingLog.getMessagestatusuuid());
 
             pstmt.execute();
 

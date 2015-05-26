@@ -92,13 +92,14 @@ public class IncomingLogDAO extends GenericDAO implements BabbleIncomingLogDAO {
    public IncomingLog getIncomingLog(String uuid) {
        IncomingLog incomingLog = null;
 
-       Connection conn = null;
-       PreparedStatement pstmt = null;
+      
        ResultSet rset = null;
       
-       try {
-           conn = dbCredentials.getConnection();
-           pstmt = conn.prepareStatement("SELECT * FROM IncomingLog WHERE Uuid = ?;");
+       try(
+    		   Connection conn = dbCredentials.getConnection();
+    		   PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM IncomingLog WHERE Uuid = ?;");
+    		   ) {
+           
            pstmt.setString(1, uuid);
            rset = pstmt.executeQuery();
 
@@ -110,19 +111,7 @@ public class IncomingLogDAO extends GenericDAO implements BabbleIncomingLogDAO {
            logger.error("SQLException when getting incomingLog with uuid: " + uuid);
            logger.error(ExceptionUtils.getStackTrace(e));
            
-       } finally {
-           if (rset != null) {
-               try { rset.close(); } catch (SQLException e) { }
-           }
-           
-           if (pstmt != null) {
-               try { pstmt.close(); } catch (SQLException e) { }
-           }
-           
-           if (conn != null) {
-               try { conn.close(); } catch (SQLException e) { }
-           }
-       }
+       } 
        
        return incomingLog;
    }
@@ -173,18 +162,19 @@ public class IncomingLogDAO extends GenericDAO implements BabbleIncomingLogDAO {
 	public boolean putIncomingLog(IncomingLog incomingLog) {
 		boolean success = true;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+        
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO IncomingLog (Uuid, origin, destination, message, logtime)"
-                    + " VALUES (?,?,?,?,?);");
+        try (Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO IncomingLog (Uuid, origin, destination, message, logtime,networkuuid)"
+                        + " VALUES (?,?,?,?,?,?);");
+        		){
+            
             pstmt.setString(1, incomingLog.getUuid());
             pstmt.setString(2, incomingLog.getOrigin());
             pstmt.setString(3, incomingLog.getDestination());
             pstmt.setString(4, incomingLog.getMessage());
             pstmt.setTimestamp(5, new Timestamp(incomingLog.getLogTime().getTime()));
+            pstmt.setString(6, incomingLog.getNetworkUuid());
             
             pstmt.execute();
 
@@ -193,15 +183,7 @@ public class IncomingLogDAO extends GenericDAO implements BabbleIncomingLogDAO {
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
             
-        } finally {
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-            
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
+        } 
         
         return success;
 	}
