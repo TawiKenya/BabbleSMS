@@ -61,7 +61,7 @@
 </div>
 
 <footer>
-    <center><p class="pull-left">&copy;Transparency international kenya - 2013</p><center>
+    <center><p class="pull-left">&copy;Tawi Commercial Services Ltd <%= Calendar.getInstance().get(Calendar.YEAR)%>. All rights reserved.</p><center>
     <!--<p class="pull-right">Powered by: <a href="#">Cha</a></p>-->
 </footer>
 
