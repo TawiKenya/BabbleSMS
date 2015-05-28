@@ -133,6 +133,11 @@
         <servlet-name>OutgoingPie</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.pie.OutgoingPie</servlet-class>
     </servlet>
+        
+    <servlet>
+        <servlet-name>ContactUpload</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.ContactUpload</servlet-class>
+    </servlet>
     
     <!-- End - Account Holder servlets -->
     
@@ -179,15 +184,7 @@
         <servlet-name>exportExcel</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.inbox.ExportExcel</servlet-class>
     </servlet>
- <!-- upload servlet -->
-    <!-- <servlet>
-        <servlet-name>uploadFile</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.UploadFile</servlet-class>
-    </servlet>-->
-    <servlet>
-        <servlet-name>Upload</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.FileUploadServlet</servlet-class>
-    </servlet>
+ 
     
     
     
@@ -204,15 +201,11 @@
     </servlet-mapping>
 
 
+    <servlet-mapping>
+        <servlet-name>Password</servlet-name>
+        <url-pattern>/account/reset</url-pattern>
+    </servlet-mapping>
 
-<servlet-mapping>
-<servlet-name>Password</servlet-name>
-<url-pattern>/account/reset</url-pattern>
-</servlet-mapping>
-
-
-
-    
 
     <servlet-mapping>
         <servlet-name>AddContacts</servlet-name>
@@ -283,10 +276,6 @@
         <url-pattern>/account/outgoingPie</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>Loggin</servlet-name>
-        <url-pattern>/Loggin</url-pattern>
-    </servlet-mapping>    
     
     <servlet-mapping>
         <servlet-name>NetworkCount</servlet-name>
@@ -315,13 +304,11 @@
         <servlet-name>exportExcel</servlet-name>
         <url-pattern>/account/exportExcel</url-pattern>
     </servlet-mapping>
-
-    <!-- file upload mapping -->
-    <servlet-mapping>
-        <servlet-name>Upload</servlet-name>
-        <url-pattern>/account/uploadFile</url-pattern>
-    </servlet-mapping>
     
+    <servlet-mapping>
+        <servlet-name>ContactUpload</servlet-name>
+        <url-pattern>/account/uploadContacts</url-pattern>
+    </servlet-mapping>
     
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>

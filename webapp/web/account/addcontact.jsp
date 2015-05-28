@@ -260,7 +260,7 @@
         </div>
 
         <div class="box-content">
-        
+            <h3>${message}</h3>
             <p>Upload CSV file with format <code>name, phone, network</code></p>
             <!--
             <c:set var="uploadErrStr" value="${requestScope[SessionConstants.ADMIN_UPLOAD_FILE_ERROR_KEY]}" />  <%--Access session variables using constants as keys--%>
@@ -270,15 +270,15 @@
                 <c:set var="uploadErrStr" value=""/>
             </c:if>-->
             
-            <form class="form-horizontal" method="POST" action="uploadFile" name="uploadFile" enctype="multipart/form-data">
+            <form class="form-horizontal" method="POST" action="uploadContacts" name="uploadContacts" enctype="multipart/form-data">
                 <fieldset>
                     <div class="control-group">
                         <%
                             if(StringUtils.isNotBlank((String)session.getAttribute( "message" ))) {
-                                out.println(session.getAttribute( "message" ));
+                            //    out.println(session.getAttribute( "message" ));
                             }
-                        %>
-                        <input type="hidden" name="accountuuid" value="<%=accountuuid%>">
+                        %>                        
+                         
                         <label class="control-label" for="upload">Contact CSV</label>
                         <div class="controls">
                             <input class="input-xlarge focused"  id="upload" id="contname" type="file" name="upload">
@@ -293,7 +293,7 @@
             </form>
 
         </div>
-        <h2>${message}</h2>
+       
         
     </div><!--/span-->
 

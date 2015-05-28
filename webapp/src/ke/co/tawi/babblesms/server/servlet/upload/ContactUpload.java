@@ -15,91 +15,136 @@
  */
 package ke.co.tawi.babblesms.server.servlet.upload;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.log4j.Logger;
+
 /**
  * To capture a Contact upon upload.
  * <p>
  *
  * @author <a href="mailto:eugene@tawi.mobi">Eugene Chimita</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class ContactUpload {
-	   private String uuid;
-	   private String name;
-	   private String phone;
-	   private String email;
-	   private String network;
-	   
+public class ContactUpload extends HttpServlet {
+	  
+	private Logger logger;
+	
+	
+	/**
+    *
+    * @param config
+    * @throws ServletException
+    */
+   @Override
+   public void init(ServletConfig config) throws ServletException {
+       super.init(config);
+       
+       // Create a factory for disk-based file items
+       DiskFileItemFactory factory = new DiskFileItemFactory();
 
-	   public ContactUpload() {
-	       // this empty constructor is required
-	   }
-
-	   public ContactUpload(String uuid, String name, String phone, String email,String network) {
-		   this.uuid = uuid;
-	       this.name = name;
-	       this.phone = phone;
-	       this.email= email;
-	       this.network = network;
-	   }
-
-	public String getUuid() {
-		return uuid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getNetwork() {
-		return network;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setNetwork(String network) {
-		this.network = network;
-	}
-
+       File repository = FileUtils.getTempDirectory();
+       factory.setRepository(repository);
+   }
+	
+	
+	/**
+    * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+ 	*/
 	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Contacts [uuid=");
-		builder.append(uuid);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", phone=");
-		builder.append(phone);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", network=");
-		builder.append(network);
-		builder.append("]");
-		return builder.toString();
+   protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		
+		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
+		
+		// Create a factory for disk-based file items
+       DiskFileItemFactory factory = new DiskFileItemFactory();
+
+       // Set up where the files will be stored on disk
+       File repository = new File(System.getProperty("java.io.tmpdir") + File.separator + username);
+       FileUtils.forceMkdir(repository); 
+       factory.setRepository(repository);
+       
+       // Create a new file upload handler
+       ServletFileUpload upload = new ServletFileUpload(factory);
+
+       // Parse the request
+       try {
+		List<FileItem> items = upload.parseRequest(request);
+		Iterator<FileItem> iter = items.iterator();
+		
+		FileItem item;
+		while (iter.hasNext()) {
+		    item = iter.next();
+
+		    if (item.isFormField()) {
+		        processFormField(item);
+		    } else {
+		        processUploadedFile(item);
+		    }
+		}
+		
+	    } catch (FileUploadException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	   }
+	       
+		
+		session.setAttribute("message", "File Upload Failed!! make sure your file extention is .csv and it conforms to this format(uuid,name,phone,email,network)");
+    	System.out.println("Have set session attribute");
+    	
+    	response.sendRedirect("addcontact.jsp");
+	}	
+
+	
+	/**
+	 * @param item
+	 */
+	private void processFormField(FileItem item) {
+		String name = item.getFieldName();
+	    String value = item.getString();
+	    
+	    logger.info("Field name is '" + name + "', value is '" + value + "'.");
 	}
-
 	
-
 	
-
+	/**
+	 * @param item
+	 */
+	private void processUploadedFile(FileItem item) {
+		// A random folder in the system temporary directory and write the file there
+		String folder = System.getProperty("java.io.tmpdir") + File.separator + RandomStringUtils.randomAlphabetic(5);
+		
+        try {
+			FileUtils.forceMkdir(new File(folder));
+			item.write(new File(folder + File.separator + item.getName())); 
+			
+		} catch (IOException e) {
+			logger.error("IOException while processUploadedFile: " + item.getName());
+			logger.error(e);
+			
+		} catch (Exception e) {
+			logger.error("Exception while processUploadedFile: " + item.getName());
+			logger.error(e);
+		} 
+	}
 }
