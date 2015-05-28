@@ -24,6 +24,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import ke.co.tawi.babblesms.server.session.SessionConstants;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -62,6 +65,8 @@ public class FileUploadServlet extends HttpServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		
+		HttpSession session = request.getSession(false);
+		
 		String path = "";
 		
         // Process only if its multipart content
@@ -91,6 +96,8 @@ public class FileUploadServlet extends HttpServlet {
             } catch (Exception ex) {
                //request.setAttribute("message", "File Upload Failed due to " + ex);
             	request.setAttribute("message", "File Upload Failed!! make sure your file extention is .csv and it conforms to this format(uuid,name,phone,email,network)" + ex);
+            	session.setAttribute("message", "File Upload Failed!! make sure your file extention is .csv and it conforms to this format(uuid,name,phone,email,network)" + ex);
+            	System.out.println("Have set session attribute");
             }          
          
         } else {
