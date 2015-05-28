@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <%
     /**
     Copyright 2015 Tawi Commercial Services Ltd
@@ -16,6 +16,48 @@
     under the License.
     */
 %>
+
+
+ <%
+     boolean success = false;
+     if(request.getAttribute("success") != null){
+      success = (Boolean) request.getAttribute("success");
+     }
+     if (success){
+    %>
+      <font color="green">
+       <b>
+        Thank you! You will receive an email  with new passowrd soon.</b>
+        
+           &nbsp;
+      </font>
+    <% 
+     }
+     else {
+      if(request.getAttribute("success") != null){
+    %>
+      
+      <font color="red">
+       <b>Error! You request was not sent.</b>
+        
+              &nbsp;
+      </font>
+    <% 
+      }
+     }
+    %>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <html>
 <head>
@@ -70,7 +112,23 @@ label{
 
 </style>
 
-
+<script type="text/javascript">
+ function Verify() {
+  var emailpattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  var emailObj = document.getElementById("email");
+  if (emailObj.value == null || emailObj.value == "") {
+   alert("Enter email Id");
+   emailObj.focus();
+   return false;
+  } else if (!emailpattern.test(emailObj.value)) {
+   alert("please enter valid e-mail address")
+   emailObj.focus();
+   return false;
+  } else {
+   return true;
+  }
+ }
+</script>
 
 </head>
 <body>
@@ -87,10 +145,10 @@ label{
 </li>
 <li>
 <label class="control-label" for="email">Email</label>
-<input class="input-xlarge focused" type="text" name="email">   
+<input class="input-xlarge focused" type="text" name="email" id="email">   
 </li>
 <li>
-<input type="submit" name="submit" value="Continue">
+<input type="submit" name="submit" value="Continue" onclick="javascript: return Verify()">
 </li>
 </ul>
 </div>
@@ -101,3 +159,11 @@ label{
 
 </body>
 </html>
+
+
+
+
+
+
+
+
