@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -85,8 +86,21 @@ public class Password  extends HttpServlet{
 				   request.setAttribute("success",false);
 				   e.printStackTrace();
 				  }
-			 
+			
 	
+			
+			
+			
+			
+			
+			
+			
+			RequestDispatcher requestDispatcher = request
+		            .getRequestDispatcher("/account/success.jsp");
+		    requestDispatcher.forward(request, response);
+			
+			
+			
 		}
 		
 	public static boolean isValidEmailAddress(String email) {
@@ -99,6 +113,8 @@ public class Password  extends HttpServlet{
 		   }
 		   return result;
 		}
+	
+	
 	
 	
 	
