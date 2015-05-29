@@ -279,7 +279,7 @@
     
     <servlet-mapping>
         <servlet-name>NetworkCount</servlet-name>
-        <url-pattern>/js/message.js</url-pattern>
+        <url-pattern>/account/NetCount</url-pattern>
     </servlet-mapping>
     
        <servlet-mapping>

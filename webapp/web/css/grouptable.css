@@ -155,7 +155,12 @@ margin: 0  33%;
 
 
 }
-
+.par{
+    text-align: center;
+}
+#loadimg{
+    margin-left:40%;
+}
 /*
 
 
@@ -176,7 +181,8 @@ tbody td, thead th {
 .modal-dialog{
   height: 80%;
   width: 100%;
-  overflow: auto;   
+  overflow: auto; 
+  align-content:center;  
 }
 
 .modal-content1{

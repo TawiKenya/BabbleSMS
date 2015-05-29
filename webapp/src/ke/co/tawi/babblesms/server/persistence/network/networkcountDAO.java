@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.persistence.utils;
+
+package ke.co.tawi.babblesms.server.persistence.network;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
+import ke.co.tawi.babblesms.server.beans.contact.GroupContacts;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
@@ -40,7 +42,7 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>
  */
 
-public class networkcount extends GenericDAO{
+public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO{
 	
 	 private Logger logger = Logger.getLogger(this.getClass());	 
 	 
@@ -53,7 +55,7 @@ public class networkcount extends GenericDAO{
 	    /**
 	     *
 	     */
-	    public networkcount() {
+	    public networkcountDAO() {
 	        super(); 
 	    }
 
@@ -67,7 +69,7 @@ public class networkcount extends GenericDAO{
 	     * @param dbPassword
 	     * @param dbPort
 	     */
-	  public networkcount(String dbName, String dbHost, String dbUsername,
+	  public networkcountDAO(String dbName, String dbHost, String dbUsername,
 	            String dbPassword, int dbPort) {
 	        super(dbName, dbHost, dbUsername, dbPassword, dbPort);
 	    }
@@ -80,12 +82,12 @@ public class networkcount extends GenericDAO{
 	      *method that gets the network names and 
 	      *and returns a hashmap with a count per network.
 	      */
-	  
+	 @Override 
 	public  HashMap<String, String> network(String uuid){
 		
 		 
 		 List<Phone> phoneLists;
-		 List<Contact> contactList;	
+		 List<GroupContacts> contactList;	
 		 HashMap<String,String> totalCount= new HashMap<String,String>();
 		 
 		 /**	
@@ -101,50 +103,41 @@ public class networkcount extends GenericDAO{
 	*/ 	 
 	
     contactList =collectContacts(uuid);   
-    
-    
-    
-    
-    /**
-	* linked to the PhoneDAO
-	* returns a list phones associated with a given contact from a given group
-	*/    
-    PhoneDAO phoneDAO = PhoneDAO.getInstance();	
-	 
-    
+   
     
      int countnet= (NetworkName.size())-1;
      
-      int count1=0, count2=0, count3=0, count4=0, count6=0;
+      int count1=0, count2=0, count3=0, count4=0, count6=0;     
       
-     for(Contact contact1 : contactList) { 
-            phoneLists = phoneDAO.getPhones(contact1);
-
+      
+     for(GroupContacts contact1 : contactList) { 
+            phoneLists = getAllPhones(contact1);
+            
             for(Phone fone : phoneLists) {                                                  
-
+            	
             count6++; 
              if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet))){
-           count1++;
+           count1++;          
          }
 
          else if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet-1))){
-           count2++;
+           count2++;           
          }
 
          else if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet-2))){
-           count3++;
+           count3++;           
          } 
 
          else if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet-3))){
-           count4++;
+           count4++;           ;
          }
-             
+         
          }
        }
      totalCount.put(getNetwork.get((String)NetworkName.get(countnet)), count1+" contact(s)");
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet)), count2+" contact(s)");
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet)), count3+" contact(s)");
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet)), count4+" contact(s)");
+     totalCount.put(getNetwork.get((String)NetworkName.get(countnet-1)), count2+" contact(s)");
+     totalCount.put(getNetwork.get((String)NetworkName.get(countnet-2)), count3+" contact(s)");
+     totalCount.put(getNetwork.get((String)NetworkName.get(countnet-3)), count4+" contact(s)");
      totalCount.put("Total contacts", count6+" contact(s)");
      
      
@@ -158,7 +151,7 @@ public class networkcount extends GenericDAO{
       *method that gets the network names from the database and thier respective uuuids
       *and returns a hashmap with both.
       */
-
+	 @Override 
      public HashMap<String, String> allnetworks() {
     	 
     	 HashMap<String, String > networkHash=new HashMap<String, String>(); 
@@ -188,8 +181,9 @@ public class networkcount extends GenericDAO{
       *method that gets the contact uuids from the database for a given group
       *and returns a list with both.
       */
-     public List<Contact> collectContacts(String uuid) {		
- 		List<Contact> list = new ArrayList<>();
+	 @Override 
+     public List<GroupContacts> collectContacts(String uuid) {		
+ 		List<GroupContacts> list = new ArrayList<>();
 
          try (
       		   Connection conn = dbCredentials.getConnection();
@@ -198,17 +192,45 @@ public class networkcount extends GenericDAO{
           	   pstmt.setString(1, uuid);   
       	       ResultSet rset = pstmt.executeQuery();
       	       
-      	       list = beanProcessor.toBeanList(rset, Contact.class);
+      	       list = beanProcessor.toBeanList(rset, GroupContacts.class);
       	       
          } catch (SQLException e) {
              logger.error("SQLException when getting contacts of " + uuid);
              logger.error(ExceptionUtils.getStackTrace(e));
          }
            
-         Collections.sort(list);
+         //Collections.sort(List<GroupCantacts>list);
          return list;
  	}
  	
-     
+
+     /**
+      *method that gets all phones for a given contact
+      *
+      */     
+	 
+	 @Override
+		public List<Phone> getAllPhones(GroupContacts contact) {
+			List<Phone> phoneList = new ArrayList<>();
+			
+			try(
+					Connection conn = dbCredentials.getConnection();
+					PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM phone WHERE contactuuid = ?;");
+					){
+				
+				pstmt.setString(1, contact.getContactUuid());
+				
+				try(ResultSet rset = pstmt.executeQuery();) {
+					phoneList = beanProcessor.toBeanList(rset, Phone.class);
+				}
+			}
+			
+			 catch (SQLException e) {
+		           logger.error("SQL Exception when getting phones that belong to: " + contact);
+		           logger.error(ExceptionUtils.getStackTrace(e));
+		       } 		
+			
+	        return phoneList;	
+		}    
 
 }

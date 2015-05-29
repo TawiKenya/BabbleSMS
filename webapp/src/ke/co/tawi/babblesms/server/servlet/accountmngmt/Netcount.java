@@ -26,7 +26,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ke.co.tawi.babblesms.server.persistence.utils.networkcount;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
+import ke.co.tawi.babblesms.server.persistence.utils.networkcountUtil;
 
 
 /**
@@ -40,29 +42,31 @@ import ke.co.tawi.babblesms.server.persistence.utils.networkcount;
 public class Netcount  extends HttpServlet {
 	
 	
-     static HashMap<String, String> Hashnet;
+     static String Hashnet;
 	
      @Override
  	protected void doPost(HttpServletRequest request, HttpServletResponse response)
  			throws ServletException, IOException {
     		
+    
+	    String accountuuid = request.getParameter("uuid");	    
+	    AccountDAO AccDAO = AccountDAO.getInstance();
+	    Account account = AccDAO.getAccount(accountuuid);
+    	
+	       	
+		networkcountUtil countnet = new networkcountUtil();		
+		Hashnet= countnet.networkcount(account);		
 		
-		String uuid = request.getParameter("uuid");
-    		PrintWriter out=response.getWriter();
-    		out.println("<h1> "+uuid+" </h1>");
-		System.out.println(" On the test by Migwi "+uuid);
-		out.println("<h1> "+uuid+" </h1>");
-		networkcount countnet = new networkcount();
-		
-		Hashnet= countnet.network(uuid);
-		
-		for(@SuppressWarnings("rawtypes")
-		Map.Entry nets:Hashnet.entrySet()){
-			System.out.println("Migwi Testing  "+nets.getKey()+"   "+nets.getValue());
-		}
+			//System.out.println(Hashnet);
+		try(	
+	   PrintWriter display = response.getWriter();){
+			display.println(Hashnet);
+			}
+		catch(Exception e){System.out.println("Error caught on NetCount servlet::: "+e);}
+	    	 
   }
-  public HashMap<String,String> Networklist(){
+  /*public String Networklist(){
 	  return Hashnet;
-  }
+  }*/
 
 }

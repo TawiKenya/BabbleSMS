@@ -27,6 +27,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
+<%@page import="ke.co.tawi.babblesms.server.servlet.accountmngmt.Netcount"%>
 
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
@@ -56,6 +57,7 @@
 .tokenize-sample { width: 300px ;}
 </style>
 
+<script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/message.js"></script>
 <script type='text/javascript' src='../js/credittablejavascript.js'></script>
 <script type="text/javascript" src="../js/jquery.tokenize.js"></script>
@@ -264,9 +266,12 @@ int credit_Consumed = 0;
                                                     <tr>
                                                         <td class="center" >
                                                         <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
-                                                        <a href="#"  data-toggle="modal" data-target="#groupcheck" data-id="<%=code.getUuid()%>" name="<%=code.getUuid()%>" onclick='sendRequest(this,"NetworkCount")'><%=code.getName()%></a>
+
+                                                        <a class ="alink" href="#"  data-toggle="modal" data-target="#groupcheck" title="click to view details"
+                                                         name="<%=account.getUuid()%>" address="NetCount" ><%=code.getName()%></a>
                                                         </td>
                                                     </tr>
+                                                    
                                                 <%   
 
 
@@ -346,7 +351,7 @@ int credit_Consumed = 0;
                                 </div>                                
                             </div>
 
-                            <script type="text/javascript">
+                           <!-- <script type="text/javascript">
                                 $('select#tokenize_simple').tokenize({
                                 onAddToken: function(){
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
@@ -357,7 +362,7 @@ int credit_Consumed = 0;
                                 }
                                 });
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
-                            </script>
+                            </script>-->
 
                    </div>  
 
@@ -460,23 +465,13 @@ int credit_Consumed = 0;
  <div class="modal fade" id="groupcheck" tabindex="-1" role="dialog" arialabelled="exampleModalLabeled" aria-hidden="true">
  
                                             <div class="modal-content1">
-                                            <a>Management  </a>   Total Contacts<br>
-                                           <br>                                       
-                                          <table id="scroll21">  <tr>
-                                                       <td size="50%"> Network provider</td>
-                                                      <td size="50%">Number of contacts</td>
-                                                </tr>
+                                            <a id="modal-display1">Please Wait .....</a>                                     
+                                          <table id="scroll21">
+                                          <tr ><td size="50%" > Network provider</td><td size="50%">Number of contacts</td></tr> 
                                                 </table>
-
-                                            </div>
+                                             </div>
                                      <div class="modal-dialog">
-                                       <table id="displaycontacts" class="table table-striped table-bordered">
-                                       
-                                            
-                                                  
-                                                
-                                          
-                                        </table>                                
+                                                                       
                                       </div>
                                    
                                 </div>
