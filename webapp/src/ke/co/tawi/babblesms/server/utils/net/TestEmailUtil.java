@@ -15,8 +15,7 @@
  */
 package ke.co.tawi.babblesms.server.utils.net;
 
-import static org.junit.Assert.*;
-import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,29 +28,40 @@ import org.junit.Test;
  */
 public class TestEmailUtil {
 	
-
-	final String DB_NAME = "babblesmsdb";
-	final String DB_HOST = "localhost";
-	final String DB_USERNAME = "babblesms";
-	final String DB_PASSWD = "Hymfatsh8";
-	final int DB_PORT = 5432;
+	
+	
+	
+	final String[] EMAILS = {"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
+	final String[] EMAILS2 = {"mwendapeter72gmail.com","mwendapeter72gmail.com"};
+	final String[] EMAILS3 = {"hfgsghjfgsghfgghjfg","hgfsfghjufgdfghjk"};
+	final String EMAIL ="mwendapeter72@gmail.com";
+	final String EMAIL2 ="mwendapeter72gmail.com";
+	final String EMAIL3 ="hhggggujjjiiuugyghghghj";
+	final String FROM ="mwendapeter72@gmail.com";
+	final String[] TO ={"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
+	final String TO2 ="mwendapeter72@gmail.com";
+	final String[] CC ={"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
+	final String CC2 ="mwendapeter72@gmail.com";
+	final String[] BCC = {"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
+	final String BCC2 = "mwendapeter72@gmail.com";
+	final String SUBJECT ="UnitTest";
+	final String BODY ="hello...!";
+	final String OUT_E_SERVER ="smtp.gmail.com";
+	final int OUT_E_PORT =587;
 	
 	
 	
 	
 	
 	
-	private SmsBalanceDAO storage;
 
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.utils.net.EmailUtil#sendEmail(java.lang.String, java.lang.String[], java.lang.String[], java.lang.String[], java.lang.String, java.lang.String, java.lang.String, int)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testSendEmailStringStringArrayStringArrayStringArrayStringStringStringInt() {
-		
-		
-		
+		EmailUtil.sendEmail(FROM, TO, CC, BCC, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
 		
 	}
 
@@ -61,7 +71,8 @@ public class TestEmailUtil {
 	@Ignore
 	@Test
 	public void testSendEmailStringStringStringStringStringInt() {
-		fail("Not yet implemented");
+		EmailUtil.sendEmail(FROM, TO2, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		
 	}
 
 	/**
@@ -70,7 +81,11 @@ public class TestEmailUtil {
 	@Ignore
 	@Test
 	public void testValidateEmail() {
-		fail("Not yet implemented");
+		//EmailUtil.validateEmail(EMAIL);
+		//EmailUtil.validateEmail(EMAIL2);
+		EmailUtil.validateEmail(EMAIL3);
+		assertTrue(EmailUtil.validateEmail(EMAIL3));
+		
 	}
 
 	/**
@@ -79,7 +94,11 @@ public class TestEmailUtil {
 	@Ignore
 	@Test
 	public void testValidateEmails() {
-		fail("Not yet implemented");
+		//EmailUtil.validateEmails(EMAILS);
+		//EmailUtil.validateEmails(EMAILS2);
+		EmailUtil.validateEmails(EMAILS3);
+		assertTrue(EmailUtil.validateEmails(EMAILS2));
+		
 	}
 
 }
