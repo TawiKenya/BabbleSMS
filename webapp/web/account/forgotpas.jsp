@@ -16,42 +16,9 @@
     under the License.
     */
 %>
-
-
- <%
-     boolean success = false;
-     if(request.getAttribute("success") != null){
-      success = (Boolean) request.getAttribute("success");
-     }
-     if (success){
-    %>
-      <font color="green">
-       <b>
-        Thank you! You will receive an email  with new passowrd soon.</b>
-        
-           &nbsp;
-      </font>
-    <% 
-     }
-     else {
-      if(request.getAttribute("success") != null){
-    %>
-      
-      <font color="red">
-       <b>Error! You request was not sent.</b>
-        
-              &nbsp;
-      </font>
-    <% 
-      }
-     }
-    %>
-
-
-
-
-
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 
 
 
@@ -112,26 +79,28 @@ label{
 
 </style>
 
-<script type="text/javascript">
- function Verify() {
-  var emailpattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  var emailObj = document.getElementById("email");
-  if (emailObj.value == null || emailObj.value == "") {
-   alert("Enter email Id");
-   emailObj.focus();
-   return false;
-  } else if (!emailpattern.test(emailObj.value)) {
-   alert("please enter valid e-mail address")
-   emailObj.focus();
-   return false;
-  } else {
-   return true;
-  }
- }
-</script>
+
 
 </head>
 <body>
+<%
+String sendEmailerr = (String) session.getAttribute(SessionConstants.EMAIL_SEND_ERROR);
+String sendEmail = (String) session.getAttribute(SessionConstants.EMAIL_SEND_SUCCESS);
+
+if (StringUtils.isNotEmpty(sendEmailerr)) {
+    out.println("<p style = \"color:red;\">");
+    out.println("Form error: " + sendEmailerr);
+    out.println("</p>");
+    session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, null);
+}
+
+if(StringUtils.isNotEmpty(sendEmail)) {
+    out.println("<p style='color:green;'>");
+    out.println(sendEmail);
+    out.println("</p>");
+    session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
+}
+%>
 
 
 <div class="container"> 
@@ -145,10 +114,10 @@ label{
 </li>
 <li>
 <label class="control-label" for="email">Email</label>
-<input class="input-xlarge focused" type="text" name="email" id="email">   
+<input class="input-xlarge focused" type="text" name="email" id="email">  
 </li>
 <li>
-<input type="submit" name="submit" value="Continue" onclick="javascript: return Verify()">
+<input type="submit" name="submit" value="Continue">
 </li>
 </ul>
 </div>

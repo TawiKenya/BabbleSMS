@@ -34,20 +34,32 @@ public class TestEmailUtil {
 	final String[] EMAILS = {"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
 	final String[] EMAILS2 = {"mwendapeter72gmail.com","mwendapeter72gmail.com"};
 	final String[] EMAILS3 = {"hfgsghjfgsghfgghjfg","hgfsfghjufgdfghjk"};
+	
 	final String EMAIL ="mwendapeter72@gmail.com";
 	final String EMAIL2 ="mwendapeter72gmail.com";
 	final String EMAIL3 ="hhggggujjjiiuugyghghghj";
-	final String FROM ="mwendapeter72@gmail.com";
-	final String[] TO ={"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
-	final String TO2 ="mwendapeter72@gmail.com";
-	final String[] CC ={"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
-	final String CC2 ="mwendapeter72@gmail.com";
-	final String[] BCC = {"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
-	final String BCC2 = "mwendapeter72@gmail.com";
-	final String SUBJECT ="UnitTest";
-	final String BODY ="hello...!";
-	final String OUT_E_SERVER ="smtp.gmail.com";
-	final int OUT_E_PORT =587;
+	
+	
+	
+	final String FROM ="mwenda@tawi.mobi";
+	
+	final String[] TO ={"mwenda@tawi.mobi","migwi@tawi.mobi","petermwenda83@yahoo.com"};
+	
+	final String TO2 ="mwenda@tawi.mobi";
+	
+	final String[] CC ={"mwenda@tawi.mobi","migwi@tawi.mobi"};
+	
+	final String CC2 ="mwenda@tawi.mobi";
+	
+	final String[] BCC = {"mwenda@tawi.mobi","migwi@tawi.mobi"};
+	
+	final String BCC2 = "mwenda@tawi.mobi";
+	
+	final String SUBJECT ="TAWI!!BABBLE..UnitTest";
+	final String BODY ="hello...! this is tawi";
+	
+	final String OUT_E_SERVER ="mail.tawi.mobi";
+	final int OUT_E_PORT =25;
 	
 	
 	

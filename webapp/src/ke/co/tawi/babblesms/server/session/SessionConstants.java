@@ -105,6 +105,11 @@ public class SessionConstants {
     final public static String CLIENT_EDIT_ACCOUNT_SUCCESS_KEY = "Client Edit Account Success";
     final public static String CLIENT_EDIT_ACCOUNT_PARAMETERS = "Client Edit Account Parameters";
     
+    //forgot password
+    final public static String EMAIL_SEND_ERROR = "error sening the email";
+    final public static String EMAIL_SEND_SUCCESS = "email sent successfully";
+    
+    
     /**
      * A key holding a value that indicates whether a registered user file has been uploaded
      * successfully or not.
@@ -116,6 +121,5 @@ public class SessionConstants {
      */
     final public static String ADMIN_UPLOAD_FILE_ERROR_KEY = "AdminUploadFileErrorKey";
     public static String ADMIN_ADD_FORM_PARAMETERS="AdminAddFormParameters";
-    
-
+   
 }

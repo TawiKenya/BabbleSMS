@@ -17,21 +17,21 @@ package ke.co.tawi.babblesms.server.servlet.account.settings;
 
 import java.io.IOException;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.utils.net.EmailUtil;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Tests our persistence implementation for shortcode and mask balances.
+ * 
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
@@ -40,6 +40,10 @@ public class Password  extends HttpServlet{
 	public Password(){
 		super();
 	}
+	
+	private final String ERROR_NO_USERN_PASS = "You have to input a value.";
+	private final String ERROR_NO_USER_EMAIL = "username or email not found.";
+	private final String SUCCESS = "We have sent a new password in your email.";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  doPost(request, response);
@@ -57,7 +61,7 @@ public class Password  extends HttpServlet{
 	
 	protected void doPost(HttpServletRequest request,HttpServletResponse response )throws
 	ServletException, IOException{
-		
+		 HttpSession session = request.getSession(false);
 		
 		
 		String username = request.getParameter("username").trim();
@@ -65,66 +69,86 @@ public class Password  extends HttpServlet{
 		
 		logger.info(username);
 		logger.info(email);
-	
-			try{
-				PassGen passGen = new PassGen();
-				
-			 Email emails = new SimpleEmail();
-			 emails.setHostName("smtp.gmail.com");
-			 emails.setSmtpPort(587);
-			 emails.setDebug(true);
-			 emails.setAuthentication("mwendapeter72@gmail.com", "peter*#mwenda");
-			 emails.setStartTLSEnabled(true);
-			 emails.setFrom("mwendapeter72@gmail.com");
-			 emails.setSubject("Reset password");
-			 emails.setMsg("Your passowrd is:"+ passGen.RadPass(password));
-			 emails.addTo(email);
-			 emails.send();
-			 request.setAttribute("success",true);
-			 
-			}catch (EmailException e) {
-				   request.setAttribute("success",false);
-				   e.printStackTrace();
-				  }
-			
-	
-			
-			
-			
-			
-			
-			
-			
-			RequestDispatcher requestDispatcher = request
-		            .getRequestDispatcher("/account/success.jsp");
-		    requestDispatcher.forward(request, response);
-			
-			
-			
-		}
 		
-	public static boolean isValidEmailAddress(String email) {
-		   boolean result = true;
-		   try {
-		      InternetAddress emailAddr = new InternetAddress(email);
-		      emailAddr.validate();
-		   } catch (AddressException ex) {
-		      result = false;
-		   }
-		   return result;
+		Account acco = new Account();
+		String us = acco.getUsername();
+		String em =acco.getEmail();
+		String lp =acco.getLogpassword();
+		System.out.println(us);
+		System.out.println(em);
+		System.out.println(lp);
+		logger.info(us);
+		logger.info(em);
+		logger.info(lp);
+		
+		
+	if(username.equalsIgnoreCase("") || email.equalsIgnoreCase("")){
+		//message
+		session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_NO_USERN_PASS);
+		response.sendRedirect("forgotpas.jsp");
+	}else if(existUser(username) || existEmail(email)){
+		//message
+		session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_NO_USER_EMAIL);
+		response.sendRedirect("forgotpas.jsp");
+	}
+	
+	else{
+			password = RandomStringUtils.randomAlphabetic(10);
+			
+			putPassword();
+			
+			if(putPassword()){
+			
+			String from="mwenda@tawi.mobi";
+			String to=email;
+			String subject=" BalbbleSMS password reset";
+			String body="hello  "+username+"  your new password is....."+  password;
+			String outServ="mail.tawi.mobi";
+			int outPort = 25;
+			EmailUtil.sendEmail(from, to, subject, body, outServ, outPort);
+			
+			session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, SUCCESS);
+			response.sendRedirect("success.jsp");
+			}
+			//message
+			
+			response.sendRedirect("success.jsp");
+			 
+	}//end else
+	
+		}//end doPost
+
+	private boolean existEmail(String email) {
+		boolean eml = true;
+		Account acc = new Account();
+		String e = acc.getUsername();
+		logger.info(e);
+		
+		if(acc.getEmail().equalsIgnoreCase(email)){
+			eml = false;
 		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		return eml;
+	}
 	
 
-}
+	private boolean existUser(String username) {
+		boolean user = true;
+		Account acc = new Account();
+		String u = acc.getUsername();
+		logger.info(u);
+		
+		if(acc.getUsername().equalsIgnoreCase(username)){
+			
+			user = false;
+		}
+		return user;
+	}
+
+	private boolean putPassword() {
+		Account account = new Account();
+		account.setLogpassword(password);
+		return true;
+		
+	}
+	
+}//end class
