@@ -15,6 +15,8 @@
  */
 package ke.co.tawi.babblesms.server.servlet.upload;
 
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -26,8 +28,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import ke.co.tawi.babblesms.server.session.SessionConstants;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -45,8 +45,13 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class ContactUpload extends HttpServlet {
-	  
+	  	
+	public final static String UPLOAD_FEEDBACK = "UploadFeedback";
+	public final static String UPLOAD_SUCCESS = "You have successfully uploaded your contacts.";
+	
 	private Logger logger;
+	
+	private UploadUtil uploadUtil;
 	
 	
 	/**
@@ -63,6 +68,8 @@ public class ContactUpload extends HttpServlet {
 
        File repository = FileUtils.getTempDirectory();
        factory.setRepository(repository);
+       
+       uploadUtil = new UploadUtil();
    }
 	
 	
@@ -72,6 +79,8 @@ public class ContactUpload extends HttpServlet {
 	@Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+		File uploadedFile = null;
+		
 		HttpSession session = request.getSession(false);
 		
 		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
@@ -87,32 +96,34 @@ public class ContactUpload extends HttpServlet {
        // Create a new file upload handler
        ServletFileUpload upload = new ServletFileUpload(factory);
 
-       // Parse the request
+       // Parse the request              
        try {
 		List<FileItem> items = upload.parseRequest(request);
 		Iterator<FileItem> iter = items.iterator();
 		
 		FileItem item;
+		
 		while (iter.hasNext()) {
 		    item = iter.next();
 
 		    if (item.isFormField()) {
 		        processFormField(item);
+		        
 		    } else {
-		        processUploadedFile(item);
+		    	uploadedFile = processUploadedFile(item);
 		    }
-		}
-		
+		}// end 'while (iter.hasNext())'
+				
 	    } catch (FileUploadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	    	logger.error("FileUploadException while getting File Items.");
+			logger.error(e);
 	   }
 	       
-		
-		session.setAttribute("message", "File Upload Failed!! make sure your file extention is .csv and it conforms to this format(uuid,name,phone,email,network)");
-    	System.out.println("Have set session attribute");
-    	
-    	response.sendRedirect("addcontact.jsp");
+       // Here we assume that only one file was uploaded
+       // First we inspect if it is ok
+	   session.setAttribute(UPLOAD_FEEDBACK, uploadUtil.inspectContactFile(uploadedFile));
+    	    	
+       response.sendRedirect("addcontact.jsp");
 	}	
 
 	
@@ -129,14 +140,17 @@ public class ContactUpload extends HttpServlet {
 	
 	/**
 	 * @param item
+	 * @return the file handle
 	 */
-	private void processUploadedFile(FileItem item) {
+	private File processUploadedFile(FileItem item) {
 		// A random folder in the system temporary directory and write the file there
 		String folder = System.getProperty("java.io.tmpdir") + File.separator + RandomStringUtils.randomAlphabetic(5);
+		File file = null;
 		
         try {
 			FileUtils.forceMkdir(new File(folder));
-			item.write(new File(folder + File.separator + item.getName())); 
+			file = new File(folder + File.separator + item.getName());
+			item.write(file); 
 			
 		} catch (IOException e) {
 			logger.error("IOException while processUploadedFile: " + item.getName());
@@ -146,5 +160,7 @@ public class ContactUpload extends HttpServlet {
 			logger.error("Exception while processUploadedFile: " + item.getName());
 			logger.error(e);
 		} 
+        
+        return file;
 	}
 }

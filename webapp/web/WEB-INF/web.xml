@@ -139,6 +139,13 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.ContactUpload</servlet-class>
     </servlet>
     
+    <!-- Ajax servlets start -->
+    <servlet>
+        <servlet-name>GetGroups</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroups</servlet-class>
+    </servlet>
+    <!-- Ajax servlets end -->
+    
     <!-- End - Account Holder servlets -->
     
     
@@ -309,6 +316,13 @@
         <servlet-name>ContactUpload</servlet-name>
         <url-pattern>/account/uploadContacts</url-pattern>
     </servlet-mapping>
+    
+    <!-- Client Ajax servlet mapping start -->
+    <servlet-mapping>
+        <servlet-name>GetGroups</servlet-name>
+        <url-pattern>/account/getGroups</url-pattern>
+    </servlet-mapping>
+    <!-- Client Ajax servlet mapping end -->
     
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>

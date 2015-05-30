@@ -27,6 +27,7 @@
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.servlet.upload.ContactUpload"%>
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -260,7 +261,14 @@
         </div>
 
         <div class="box-content">
-            <h3>${message}</h3>
+            <h3>
+                <%
+                    if(StringUtils.isNotBlank((String)session.getAttribute( ContactUpload.UPLOAD_FEEDBACK ))) {
+                        out.println(session.getAttribute( ContactUpload.UPLOAD_FEEDBACK ));
+                        session.setAttribute(ContactUpload.UPLOAD_FEEDBACK, null);
+                    }
+                %>  
+            </h3>
             <p>Upload CSV file with format <code>name, phone, network</code></p>
             <!--
             <c:set var="uploadErrStr" value="${requestScope[SessionConstants.ADMIN_UPLOAD_FILE_ERROR_KEY]}" />  <%--Access session variables using constants as keys--%>
@@ -273,11 +281,7 @@
             <form class="form-horizontal" method="POST" action="uploadContacts" name="uploadContacts" enctype="multipart/form-data">
                 <fieldset>
                     <div class="control-group">
-                        <%
-                            if(StringUtils.isNotBlank((String)session.getAttribute( "message" ))) {
-                            //    out.println(session.getAttribute( "message" ));
-                            }
-                        %>                        
+                                              
                          
                         <label class="control-label" for="upload">Contact CSV</label>
                         <div class="controls">
