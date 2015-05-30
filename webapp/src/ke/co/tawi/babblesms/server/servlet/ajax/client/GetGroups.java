@@ -63,7 +63,7 @@ public class GetGroups extends HttpServlet {
        super.init(config);
        
        CacheManager mgr = CacheManager.getInstance();
-       accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+       accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
        
        groupDAO = GroupDAO.getInstance();
    }
@@ -77,10 +77,10 @@ public class GetGroups extends HttpServlet {
             throws ServletException, IOException {
 		Account account = new Account();
 		
-		String username = request.getParameter("username");
+		String accountUuid = request.getParameter("accountuuid");
 		
 		Element element;
-        if ((element = accountsCache.get(username)) != null) {
+        if ((element = accountsCache.get(accountUuid)) != null) {
             account = (Account) element.getObjectValue();
         }
         

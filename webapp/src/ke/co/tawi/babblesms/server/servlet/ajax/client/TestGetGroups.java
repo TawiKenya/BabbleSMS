@@ -40,20 +40,20 @@ public class TestGetGroups {
 
 	final String CGI_URL = "http://localhost:8080/BabbleSMS/account/getGroups";
 	
+	final String ACCOUNTUUID_DEMO = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
 	
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroups#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
 	 */
 	@Test
 	public void testDoPostHttpServletRequestHttpServletResponse() {
-		String username = "demo";
 		
 		 try {
-        	System.out.println("JSON response for '" + username + "':\n" + 
-            		getResponse(CGI_URL + "?" +	"username=" + URLEncoder.encode(username, "UTF-8")));
+        	System.out.println("JSON response for account uuid '" + ACCOUNTUUID_DEMO + "':\n" + 
+            		getResponse(CGI_URL + "?" +	"accountuuid=" + URLEncoder.encode(ACCOUNTUUID_DEMO, "UTF-8")));
         	
         } catch(UnsupportedEncodingException e) {
-        	fail("Test to get Groups for: " + username);
+        	fail("Test to get Groups for account uuid " + ACCOUNTUUID_DEMO);
         	e.printStackTrace();
         }
 	}
