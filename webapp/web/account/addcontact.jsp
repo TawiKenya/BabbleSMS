@@ -314,7 +314,7 @@
                                                     <tr>
                                                         <td class="center" >
                                                         <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
-                                                        <a name="<%=account.getUuid()%>" ><%=code.getName()%></a>
+                                                        <a groupuuid="<%=account.getUuid()%>" ><%=code.getName()%></a>
                                                         </td>
                                                     </tr>
                                                     
