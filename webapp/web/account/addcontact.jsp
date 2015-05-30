@@ -282,7 +282,54 @@
                         <label class="control-label" for="upload">Contact CSV</label>
                         <div class="controls">
                             <input class="input-xlarge focused"  id="upload" id="contname" type="file" name="upload">
+
+
+
+                            <div id="clink">
+                        <div class="imgload">
+                      <a class="load" href="../files/Contacts.csv" title="Download a sample csv file" download>
+                      Download<br> a sample<br> CSV file
+                      <img src="../img/csv.png"  alter="CSV file"></a>
+                      </div>
+
+                      <div class="imgload">
+                      <a  href="../files/Contacts.xlsx" title="Download a sample excelsheet file">
+                      Download<br> a sample<br> Excel-Sheet file
+                      <img src="../img/excel.png"  alter="Excel Sheet File"></a>
+                      </div>
                         </div>
+
+
+
+                        </div>
+                        <label class="control-label" for="upload">Add To a group ( Optional )</label>
+                        <div class="controls">
+                        <div id="tableselect">
+                                 <table id="groupsel" class="table table-striped table-bordered">
+                         <%
+                                                if (contactsgrpList != null) {
+                                                    for (Group code : contactsgrpList) {
+                                            %>
+
+                                                    <tr>
+                                                        <td class="center" >
+                                                        <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
+                                                        <a name="<%=account.getUuid()%>" ><%=code.getName()%></a>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                <%   
+
+
+                                                    }// end 'for (Group code : contactsgrpList)'
+                                                }// end 'if (contactsgrpList != null)' 
+                                            %>
+                                        </table>
+                                </div>
+                           <!-- <input class="input-xlarge focused"  id="upload" id="contname" type="" name="upload">-->
+                        </div>
+
+                        
                     </div>
 
                     <div class="form-actions">                        

@@ -1229,6 +1229,27 @@ select:focus:required:invalid:focus {
 .control-group {
   margin-bottom: 9px;
 }
+#tableselect{
+  height: 100px;
+  width: 200px;
+  border-width:1px; 
+  overflow-x:auto;
+}
+#groupsel{
+  height: 100%;
+  width:100%;  
+}
+#clink{
+  float: right;
+  height: 60px;
+  width: 300px;
+}
+.imgload{
+  float: right;
+   content-align:center;
+}
+
+
 legend + .control-group {
   margin-top: 18px;
   -webkit-margin-top-collapse: separate;

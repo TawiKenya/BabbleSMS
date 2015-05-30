@@ -99,7 +99,11 @@ margin-bottom:30%;
     float:left;	
      margin: 0 1.5%;
      }
-
+#groupedit{
+  height: 400px;
+  width: 300px;
+  overflow:auto;
+}
 
 
 

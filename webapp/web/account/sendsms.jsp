@@ -278,7 +278,7 @@ int credit_Consumed = 0;
                                                     }// end 'for (Group code : contactsgrpList)'
                                                 }// end 'if (contactsgrpList != null)' 
                                             %>
-                                                                                         </tbody>                                             
+                                        </tbody>                                             
                                     </table>
                                 </div>                               
                                                                    
@@ -340,7 +340,7 @@ int credit_Consumed = 0;
                                     </select>
 
                                     
-                                   <!-- <div class="tokenize-samples Tokenizer">
+                                   <!--<div class="tokenize-samples Tokenizer">
                                         <ul class="TokensContainer">
                                             <li class="TokenSearch">
                                             <input size="5" >
@@ -351,7 +351,7 @@ int credit_Consumed = 0;
                                 </div>                                
                             </div>
 
-                           <!-- <script type="text/javascript">
+                           <script type="text/javascript">
                                 $('select#tokenize_simple').tokenize({
                                 onAddToken: function(){
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
@@ -362,7 +362,7 @@ int credit_Consumed = 0;
                                 }
                                 });
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
-                            </script>-->
+                            </script>
 
                    </div>  
 

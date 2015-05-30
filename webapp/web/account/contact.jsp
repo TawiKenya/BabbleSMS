@@ -180,6 +180,7 @@
     
 %> 
 <jsp:include page="contactheader.jsp" />
+<link rel="stylesheet" type="text/css" href="../js/grouptable.css">
 
 
 <div>
@@ -296,7 +297,7 @@ more
                     <tr>
 
                        <td width="5%"><%=contactCount%></td>
-                       <td class="center"><a href="#"><%=contact.getName()%></a></td>
+                       <td class="center"><a href="#" title="click to edit details"><%=contact.getName()%></a></td>
          				
                     <% 
                         // Print Phone Numbers
@@ -470,7 +471,7 @@ more
 
         <tr>
 	   
-            <td class="center" id ="td2"><a href="#"><%=group.getName()%></a></td>
+            <td class="center" id ="td2"><a href="#" data-toggle="modal" data-target="#groupedit" tooltip="click to edit this contact"><%=group.getName()%></a></td>
 	    <td class="center" id="hideANDseek"><%=group.getUuid()%></td>
 			
 		
@@ -521,6 +522,13 @@ more
 <br/>
 
 </form>
+</div>
+<div class="modal fade" id="groupedit" tabindex="-1" role="dialog" arialabelled="exampleModalLabeled" aria-hidden="true">
+<div class="modal-dialog" >
+    <p class="blink">Edit Contacts details</p><br>
+    <p class="fromgrp">Remove from group</p>
+    <p class="togrp">Add to group</p>
+</div>
 </div>
 
 
