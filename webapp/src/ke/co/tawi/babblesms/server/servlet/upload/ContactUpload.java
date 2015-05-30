@@ -134,7 +134,7 @@ public class ContactUpload extends HttpServlet {
 		String name = item.getFieldName();
 	    String value = item.getString();
 	    
-	    logger.info("Field name is '" + name + "', value is '" + value + "'.");
+	    System.out.println("Field name is '" + name + "', value is '" + value + "'.");
 	}
 	
 	
