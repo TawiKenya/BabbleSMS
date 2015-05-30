@@ -12,7 +12,7 @@ var testrepeatedphones = 0;
 var testrepeatedemails = 0;
     
 
-   $(".tblTest td:nth-child(2)").click(function(event){  
+   $(".tblTest a").click(function(event){  
 	//Prevent the hyperlink to perform default behavior  
 event.preventDefault();  
 

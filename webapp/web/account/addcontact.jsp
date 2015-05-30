@@ -260,7 +260,7 @@
 
         </div>
 
-        <div class="box-content">
+        <div class="box-content1">
             <h3>
                 <%
                     if(StringUtils.isNotBlank((String)session.getAttribute( ContactUpload.UPLOAD_FEEDBACK ))) {

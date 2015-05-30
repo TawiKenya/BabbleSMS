@@ -1230,10 +1230,13 @@ select:focus:required:invalid:focus {
   margin-bottom: 9px;
 }
 #tableselect{
-  height: 100px;
+  height: 150px;
   width: 200px;
   border-width:1px; 
   overflow-x:auto;
+  margin-top: 1%;
+  border: 2px solid black;
+  border-radius: 4px;
 }
 #groupsel{
   height: 100%;

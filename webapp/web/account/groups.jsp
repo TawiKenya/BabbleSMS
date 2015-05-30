@@ -208,7 +208,7 @@
 <!-- Group Form  for the pop up starts-->
 <div id="contactdiv">
 <form class="form" onsubmit="return formValidator()" action = "editGroup" method = "POST" id="contact" >
-
+<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:15px;" id ="close">x</p>
 <b>Groups Details</b>
 <label>Name: <span></span></label>
 <input type="text" id="name" name = "name" />

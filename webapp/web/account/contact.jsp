@@ -401,7 +401,7 @@ more
 <form class="form"  action = "editContact" method = "POST" id="contact" >
 <!--onsubmit="return formValidator()"-->
 <b>Contact Details</b>
-<img src ="../img/close.png" style ="margin-top: 1px;margin-right: 2px;position:absolute;top:0;right:0;" id ="close">
+<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:15px;" id ="close">x</p>
 
 
 <div class="control-group">
@@ -454,7 +454,8 @@ more
 </div>
 
 <!-- Group table here-->
-<div class="tablets">
+<div class="table-save">
+<div id="scrolledit">
     <table id="scroll" class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -467,15 +468,16 @@ more
 	
 	if (contactsgrpList != null) {
          for (Group group : contactsgrpList) {
-	%>
+	%>     
+    <tr>
+               <td class="center" >
+               <input type="checkbox" id="remember" value="<%=group.getUuid()%>" name="groupselected"/>
 
-        <tr>
-	   
-            <td class="center" id ="td2"><a href="#" data-toggle="modal" data-target="#groupedit" tooltip="click to edit this contact"><%=group.getName()%></a></td>
-	    <td class="center" id="hideANDseek"><%=group.getUuid()%></td>
-			
-		
-        </tr>
+               <a class ="alink" href="#" tooltip="click to edit this contact"><%=group.getName()%></a>
+                  </td>
+       </tr>
+
+        
         <%   
 	
 	
@@ -486,15 +488,15 @@ more
   
     </tbody>
 </table>
-<div id = "groupsform">
+<!--<div id = "groupsform">
 <br/><br/><br/>
 <button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
 <button type="submit"  id = "remove2" > << Remove </button>
 
 <input type="hidden"  class ="groupsadded" name="groupsadded[]"  />
 <input type="hidden"  class ="groupsdeleted" name="groupsdeleted[]"  />
-</div>
-<table id="scroll1" class="table table-striped table-bordered">
+</div>-->
+<!--<table id="scroll1" class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>Contact Groups</th>
@@ -505,7 +507,7 @@ more
 	
   
     </tbody>
-</table>
+</table>-->
 
 </div>
 <!-- Group table ends here-->
@@ -514,23 +516,15 @@ more
 <input type="hidden" name="statusuuid" value="<%=Contact.ACTIVE_STATUSUUID%>">
 <br/><br/>
 <div id="savecancelButtons2">
-<button type="submit" id="save" class="btn btn-primary">Save</button>
+<button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
  </div>
-
+</div>
 
 <br/>
 
 </form>
 </div>
-<div class="modal fade" id="groupedit" tabindex="-1" role="dialog" arialabelled="exampleModalLabeled" aria-hidden="true">
-<div class="modal-dialog" >
-    <p class="blink">Edit Contacts details</p><br>
-    <p class="fromgrp">Remove from group</p>
-    <p class="togrp">Add to group</p>
-</div>
-</div>
-
 
 <!-- Contact Form  for the pop up ends-->
 

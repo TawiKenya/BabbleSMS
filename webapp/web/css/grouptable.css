@@ -5,18 +5,18 @@
 */
 #scrolltable{
     width: 200px;
-    height: 210px;
+    height: 150px;    
     margin-top: 2%;
     margin-left: 15%;
     float: left;
-    overflow: scroll;
+    overflow-y: scroll;
 text-align: left;
 }
 #scrolltable21{
     width: 200px;
-    height: 210px;
+    height: 150px;    
     margin-top: 2%;
-    overflow: scroll;
+    overflow-y: scroll;
 text-align: left;
 float: left;
 }
@@ -27,6 +27,14 @@ float: left;
     border: 2px solid black;
 	float:left;          
     
+}
+#scrolledit {
+    width: 200px;
+    height: 150px;    
+    margin-top: 2%;
+    margin-left: 15%;
+    overflow-y: scroll;
+text-align: left;
 }
 #scroll21 {
     width: 100%;  /* Optional */
@@ -180,7 +188,8 @@ tbody td, thead th {
     border-right: none;
 }*/
 #groupcheck{
-  box-shadow: 0px 15px 15px rgba(6, 156, 6, 0.86);
+  border-color: #5A9EB5;
+  border-width: 5px;
 }
 .modal-dialog{
   height: 80%;

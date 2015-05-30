@@ -3,7 +3,7 @@
     width:960px;
     margin:20px auto;
     padding-top:20px;
-    font-family: 'Fauna One', serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     display:block;
 }
 h2{
@@ -82,7 +82,7 @@ b{
     width:50%;
     margin:0px;
     background-color:white;
-    font-family: 'Fauna One', serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     position: relative;
     border: 5px solid rgb(90, 158, 181);
 }
