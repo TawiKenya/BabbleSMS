@@ -431,7 +431,6 @@
     *Here, we draw the outgoingSMS bar chart
     *
     */
-    //$('#outgoingform').submit(function(e){
         var jsonURL = 'outgoingBarDay?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>';
         //outgoing data for each network for 7days
         var _safaricom = [];
@@ -498,9 +497,7 @@
             //draw the chart
             $.jqplot('outgoingSMSBarChart', dataArrayOutgoing, outgoingOptions);
         });
-        //e.preventDefault();
-        //return false;
-    //});
+
     /*
     *
     *Here, we draw the outgoingSMS bar chart
@@ -575,14 +572,8 @@
             };
             // draw the chart
             $.jqplot('incomingSMSBarChart', dataArrayIncoming, incomingOptions);
-            //prevent default refreshing of the page once the form is submitted
-           //  e.preventDefault();
-            //return false;
         });
-   // });
-        
-        
-    //}
+
 </script>
 
 

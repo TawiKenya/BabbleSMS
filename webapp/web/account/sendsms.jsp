@@ -45,6 +45,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
+<%@page import="java.net.URLEncoder"%>
 
 <%@page import="net.sf.ehcache.CacheManager"%>
 <%@page import="net.sf.ehcache.Element"%>
@@ -52,6 +53,8 @@
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
+
+
 
 <style type= "text/css">
 .tokenize-sample { width: 300px ;}
@@ -155,6 +158,8 @@
 
 int credit_Balance = 0;
 int credit_Consumed = 0;
+//the current accountUuid
+String accountuuid = account.getUuid();
 
 %>
 <jsp:include page="messageheader.jsp" />
@@ -486,7 +491,21 @@ int credit_Consumed = 0;
     
     </div><!--/row-->
 
+   <script type="text/javascript">
+       /*var jsonURL = 'getGroups?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>';
+       $.ajax({
+            type: 'GET',
+            url: jsonURL
+       }).done(function(data){
+            console.log(data);
+            for(var i = 0; i < data.groups.length; i++){
+                
+            }
 
 
+       }).fail(function(){
+
+       });*/ 
+   </script> 
 
 <jsp:include page="footer.jsp" />
