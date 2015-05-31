@@ -91,7 +91,7 @@ public class StringUtil {
 	
 	
 	/**
-	 * Converts a {@link Map} int a String, for example for logging purposes
+	 * Converts a String {@link Map} into a String, for example for logging purposes
 	 * 
 	 * @param map
 	 * @return a String representation of a Map.
@@ -112,6 +112,29 @@ public class StringUtil {
 		  
 		   return stringBuilder.toString();  
 	}  
-		
+	
+	
+	/**
+	 * Converts a {@link Map} int a String, for example for logging purposes
+	 * 
+	 * @param map
+	 * @return a String representation of a Map.
+	 */
+	public static String objMapToString(Map map) {  
+		   StringBuilder stringBuilder = new StringBuilder();  
+		  
+		   for (Object key : map.keySet()) {  
+			    if (stringBuilder.length() > 0) {  
+			    	stringBuilder.append("&");  
+			    }  
+			    String value = map.get(key).toString();  
+			    
+			    stringBuilder.append(key.toString());  
+			    stringBuilder.append("=");  
+			    stringBuilder.append(value.toString());
+		   }  
+		  
+		   return stringBuilder.toString();  
+	}  
 }
 

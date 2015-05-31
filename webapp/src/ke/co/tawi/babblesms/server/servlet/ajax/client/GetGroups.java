@@ -88,9 +88,8 @@ public class GetGroups extends HttpServlet {
 
 		response.setContentType("application/json;charset=UTF-8");
 		
-		// instantiate the JSon
-		//Note
-		//The = sign is encoded to \u003d. Hence you need to use disableHtmlEscaping().
+		// Instantiate the JSon
+		// The '=' sign is encoded to \u003d. Hence you need to use disableHtmlEscaping().
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
 		out.write( gson.toJson(getGroupMaps(account)).getBytes() );
@@ -117,11 +116,13 @@ public class GetGroups extends HttpServlet {
 			groupHash = new HashMap<>();
 			groupHash.put("name", group.getName());
 			groupHash.put("uuid", group.getUuid());
+			groupHash.put("safaricom_contacts", "22");
+			groupHash.put("airtel_contacts", "10");
+			groupHash.put("orange_contacts", "5");
 			
 			groupMaps.add(groupHash);
 		}
-		
-		
+				
 		return groupMaps;
 	}
 	

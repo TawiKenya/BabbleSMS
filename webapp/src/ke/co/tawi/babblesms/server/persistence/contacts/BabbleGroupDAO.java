@@ -19,6 +19,7 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Persistence description for a {@link Group}.
@@ -39,13 +40,11 @@ public interface BabbleGroupDAO {
    
    
    /**
- * @param group
- * @return  a group
- */
-public Group getGroupByName(Account account , String group);
-   
-   
-   
+	 * @param group
+	 * @return  a group
+	 */
+	public Group getGroupByName(Account account , String group);
+      
    
    /**
    *
@@ -54,7 +53,15 @@ public Group getGroupByName(Account account , String group);
    */
    public List<Group> getGroups(Account account);
     
-  
+     
+   /**
+   *
+   * @param account
+   * @return a list of all {@link Group}s
+   */
+   public List<Group> getAllGroups();
+   
+   
     /**
      *
      * @param group
@@ -74,4 +81,15 @@ public Group getGroupByName(Account account , String group);
     public boolean updateGroup(String uuid, Group group);
 
 
+    /**
+     * Return a mapping of the count of Contacts in a Group for all the Groups
+     * of this particular account holder.
+     * <p>
+     * The key of the returned {@link Map} is the UUID of the {@link Group}, 
+     * and the value is the count. 
+     * 
+     * @param account
+     * @return
+     */
+    public Map<String,Integer> getGroupCount(Account account);
 }

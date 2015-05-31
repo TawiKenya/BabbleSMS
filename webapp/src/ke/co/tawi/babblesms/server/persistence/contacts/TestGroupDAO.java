@@ -15,16 +15,17 @@
  */
 package ke.co.tawi.babblesms.server.persistence.contacts;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
+import ke.co.tawi.babblesms.server.utils.StringUtil;
+
 import java.util.Date;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
 import java.util.List;
-
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
-
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,8 +55,8 @@ public class TestGroupDAO {
             DESCR_UPDATE = "all members of Ksanto group";
 
     final String ACCUUID = "C937CE62-C4A9-131F-C96E-2DB8A9E886AB",
-            ACCUUID_NEW = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
-
+            ACCUUID_DEMO = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
+                           
     final String STATUSUUID = "5A13538F-AC41-FDE2-4CD6-B939FA03123B",
             STATUSUUID_NEW = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
     
@@ -66,10 +67,10 @@ public class TestGroupDAO {
     final Date CREATION_DATE = new Date(new Long("1413536189000") );  // 2014-10-04 03:08:06 (yyyy-MM-dd HH:mm:ss)
 
     
-    
     private GroupDAO storage;
-    private AccountDAO storagee;
+    
 
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.Group#getGroup(java.lang.String)}.
@@ -93,11 +94,12 @@ public class TestGroupDAO {
     /**
      * method to test getting group belonging to a given account
      */
+    @Ignore
     @Test
     public void testGetGroupAccount(){
-    	storagee = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+    	AccountDAO accountDAO = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
-    	Account account = storagee.getAccount(ACCUUID);
+    	Account account = accountDAO.getAccount(ACCUUID);
     	
     	storage = new GroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
@@ -111,10 +113,7 @@ public class TestGroupDAO {
     
     /**
      * Test method for testing putting a group to the group table
-     * {@link ke.co.tawi.babblesms.server.persistence.items.contact.Group#PutGroup(ke.co.tawi.babblesgroup.server.beans.contact.Group)}.
-     *
-     *
-     *
+     * {@link ke.co.tawi.babblesms.server.persistence.items.contact.Group#PutGroup(ke.co.tawi.babblesgroup.server.beans.contact.Group)}.  
      */
     @Ignore
     @Test
@@ -125,7 +124,7 @@ public class TestGroupDAO {
         group.setUuid(GROUP_UUID_NEW);
         group.setName(NAME_NEW);
         group.setDescription(DESCR_NEW);
-        group.setAccountsuuid(ACCUUID_NEW);
+        group.setAccountsuuid(ACCUUID_DEMO);
         group.setStatusuuid(STATUSUUID_NEW);
        
 
@@ -136,7 +135,7 @@ public class TestGroupDAO {
         assertEquals(group.getName(), NAME_NEW);
         assertEquals(group.getDescription(), DESCR_NEW);
         //assertEquals(group.getCreationdate(), CREATION_DATE);
-        assertEquals(group.getAccountsuuid(), ACCUUID_NEW);
+        assertEquals(group.getAccountsuuid(), ACCUUID_DEMO);
         assertEquals(group.getStatusuuid(), STATUSUUID_NEW);
 
     }
@@ -145,6 +144,7 @@ public class TestGroupDAO {
     /**
      * method for testing updating the group table given a uuid and group object as parameters 
      */
+    @Ignore
     @Test
     public void  testUpdateGroup(){
     	storage = new GroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -169,5 +169,20 @@ public class TestGroupDAO {
 
     }
     
+    
+    /**
+     * 
+     */
+    @Test
+    public void  testGetGroupCount() {
+    	storage = new GroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+    	
+    	Account account = new Account();
+    	account.setUuid(ACCUUID_DEMO);
+    	
+    	Map<String,Integer> groupMap =  storage.getGroupCount(account);
+    	
+    	System.out.println("groupMap is: " + StringUtil.objMapToString(groupMap));
     }
+}
 

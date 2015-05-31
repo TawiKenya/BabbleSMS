@@ -20,6 +20,7 @@
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 
 <%@page import="java.net.URLEncoder"%>
+<%@page import="java.util.Calendar" %>
 
 <%@page import="org.apache.commons.lang3.RandomStringUtils"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
@@ -32,10 +33,8 @@
         response.sendRedirect("index.jsp");
     }
 
-    BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-    // String ENCRYPT_PASSWORD = "Vuwachip2";
-    textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
-    //textEncryptor.setPassword(ENCRYPT_PASSWORD);
+    BasicTextEncryptor textEncryptor = new BasicTextEncryptor();    
+    textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));    
 
     final int CAPTCHA_LENGTH = 4;
     String captchaStr = RandomStringUtils.randomAlphabetic(CAPTCHA_LENGTH);
@@ -88,7 +87,8 @@
                             out.println("Login error: " + loginErrStr);
                             out.println("</p>");
                             session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_ERROR_KEY, null);
-                          } else {%>          <% }                  %>
+                          } 
+                    %>
 
 
                 </div>
@@ -140,7 +140,7 @@
                                                                <div class="b-mail-domik__social js-socials"></div>
                                                           </div>
                             </fieldset>  
-                            <p> <a href="account/forgotpas.jsp" target="_top"> Forgot password!!</a>  </p>
+                            <p> <a href="account/forgotpas.jsp" target="_top"> Forgot Password</a>  </p>
                  </form>
             </div>                        
                  
@@ -170,7 +170,7 @@
   
         
     <div class="new-footer">    
-   Copyright &copy; <a class="new-link"><font-color="grey"> Tawi Commercial Services</font></a> 2015   
+   Copyright &copy; <a class="new-link"><font-color="grey">Tawi Commercial Services</font></a> <%= Calendar.getInstance().get(Calendar.YEAR)%>   
     
     </div>
     

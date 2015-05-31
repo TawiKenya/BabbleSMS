@@ -15,22 +15,25 @@
  */
 package ke.co.tawi.babblesms.server.persistence.contacts;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.beans.contact.Phone;
-import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 /**
  * Persistence implementation for {@link Group}
@@ -44,8 +47,12 @@ public class GroupDAO extends GenericDAO implements BabbleGroupDAO {
 
     private final Logger logger;
     
-    BeanProcessor b = new BeanProcessor();
+    private BeanProcessor beanProcessor = new BeanProcessor();
 
+    
+    /**
+     * @return the singleton instance of {@link GroupDAO}
+     */
     public static GroupDAO getInstance() {
         if (GroupDAO == null) {
             GroupDAO = new GroupDAO();
@@ -53,6 +60,7 @@ public class GroupDAO extends GenericDAO implements BabbleGroupDAO {
         return GroupDAO;
     }
 	
+    
     /**
      *
      */
@@ -61,6 +69,7 @@ public class GroupDAO extends GenericDAO implements BabbleGroupDAO {
         logger = Logger.getLogger(this.getClass());
     }
 
+    
     /**
      * Used for testing purposes only.
      *
@@ -78,80 +87,76 @@ public class GroupDAO extends GenericDAO implements BabbleGroupDAO {
     
 
   
-/**
- * This method is used for fetching a group given the group UUID
- * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroup(java.lang.String)
- * @param uuid -the uuid given to every group and can explicitly identify each group object.
- * @return Group - return a group object, the one specified by the uuid passed.
- */
-@Override
+
+    /**
+     * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroup(java.lang.String)
+     */
+    @Override
    public Group getGroup(String uuid) {
        Group group = null;
-
-       ResultSet rset = null;
         
        try(
     		   Connection conn = dbCredentials.getConnection();
     		   PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM groups WHERE Uuid = ?;");
     	  ){
+    	   
     	   pstmt.setString(1, uuid);
-           rset = pstmt.executeQuery();
-
-           if (rset.next()) {
-               group = b.toBean(rset, Group.class);
-           }
+    	   
+    	   try(ResultSet rset = pstmt.executeQuery()) {
+    		   if (rset.next()) {
+                   group = beanProcessor.toBean(rset, Group.class);
+               }
+    	   }           
        }
 
        catch (SQLException e) {
            logger.error("SQL Exception when getting Group with uuid: " + uuid);
            logger.error(ExceptionUtils.getStackTrace(e));
        } 
+       
        return group;
    }
 
-/**
- * This method is used for fetching a group given the group name
- * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getAGroup(java.lang.String)
- * @param name -the name given to every group and can explicitly identify each group object.
- * @return Group - return a group object, the one specified by the name passed.
- */
-
-@Override
-public Group getGroupByName(Account account , String groupname){
-	Group group1 = null;
-    ResultSet rset = null;
     
-    try(
-    		Connection conn = dbCredentials.getConnection();
-    		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM groups WHERE name = ? and accountuuid = ?;");
-       ){
-    	pstmt.setString(1, groupname);
-    	pstmt.setString(2, account.getUuid());
-        rset = pstmt.executeQuery();
-
-        if (rset.next()) {
-            group1 = b.toBean(rset, Group.class);
-        }
-    }
-
-    catch (SQLException e) {
-        logger.error("SQL Exception when getting Group with name: " + groupname);
-        logger.error(ExceptionUtils.getStackTrace(e));
-    } 
-	return group1;
-}
-
+	
 	/**
-	 * method to get a list of groups belonging to a given account
-	 * 
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroupByName(ke.co.tawi.babblesms.server.beans.account.Account, java.lang.String)
+	 */
+	@Override
+	public Group getGroupByName(Account account , String groupname){
+		Group group1 = null;
+	    
+	    
+	    try(
+	    		Connection conn = dbCredentials.getConnection();
+	    		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM groups WHERE name = ? and accountuuid = ?;");
+	       ){
+	    	
+	    	pstmt.setString(1, groupname);
+	    	pstmt.setString(2, account.getUuid());
+	        
+	        try(ResultSet rset = pstmt.executeQuery()) {
+	        	if (rset.next()) {
+		            group1 = beanProcessor.toBean(rset, Group.class);
+		        }
+	        }
+	        
+	    } catch (SQLException e) {
+	        logger.error("SQL Exception when getting Group with name: " + groupname + " for " + account);
+	        logger.error(ExceptionUtils.getStackTrace(e));
+	    } 
+	    
+	    return group1;
+	}
+	
+
+	
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroups(ke.co.tawi.babblesms.server.beans.account.Account)
-	 * 
-	 * @return a list of groups belonging to the specified account
 	 */
 	@Override
 	public List<Group> getGroups(Account account) {
-		List<Group> groupList = new ArrayList<Group>();
-		ResultSet rset = null;
+		List<Group> groupList = new ArrayList<>();
 		
 		try(
 			Connection conn = dbCredentials.getConnection();
@@ -159,59 +164,75 @@ public Group getGroupByName(Account account , String groupname){
 		   ){
 			pstmt.setString(1, account.getUuid());
 			
-			rset = pstmt.executeQuery();
-			
-			 groupList = b.toBeanList(rset, Group.class);
-		}
-		catch (SQLException e) {
-	           logger.error("SQL Exception when getting groups that belong to: " + account);
-	           logger.error(ExceptionUtils.getStackTrace(e));
-	       }
+			try(ResultSet rset = pstmt.executeQuery();) {
+				groupList = beanProcessor.toBeanList(rset, Group.class);
+			}			
+			 
+		} catch (SQLException e) {
+           logger.error("SQL Exception when getting groups that belong to: " + account);
+           logger.error(ExceptionUtils.getStackTrace(e));
+       }
 		
-     return groupList;
+		return groupList;
 	}
 
+	
 	/**
-	 * method to update group tables given the group uuid and a group object
-	 * 
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getAllGroups()
+	 */
+	@Override
+	public List<Group> getAllGroups() {
+		List<Group> groupList = new ArrayList<>();
+		
+		try(
+			Connection conn = dbCredentials.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM groups;");	
+			ResultSet rset = pstmt.executeQuery();
+		   ){			
+				groupList = beanProcessor.toBeanList(rset, Group.class);						
+			 
+		} catch (SQLException e) {
+           logger.error("SQL Exception when getting all groups.");
+           logger.error(ExceptionUtils.getStackTrace(e));
+       }
+		
+		return groupList;
+	}
+	
+	
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#updateGroup(java.lang.String, ke.co.tawi.babblesms.server.beans.contact.Group)
-	 * 
-	 *@return true if the group updates successfully otherwise false 
 	 */
 	@Override
 	public boolean updateGroup(String uuid, Group group) {
-		// TODO Auto-generated method stub
 		boolean success = true;
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE groups SET name =? , description =? WHERE uuid =?;");	
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE groups SET name=?, description=?, "
+						+ "statusuuid=? WHERE uuid=?;");	
 		   ){
+			
 			pstmt.setString(1, group.getName());
 			pstmt.setString(2, group.getDescription());
-			//pstmt.setString(3, group.getStatusuuid());
-			pstmt.setString(3, uuid);
+			pstmt.setString(3, group.getStatusuuid());
+			pstmt.setString(4, uuid);
 			
-			 pstmt.executeUpdate();
+			pstmt.executeUpdate();
 				
-			}
-		catch (SQLException e) {
-            logger.error("SQL Exception when trying to update: " + group + "on groups table on row with uuid:" + uuid);
+		} catch (SQLException e) {
+            logger.error("SQL Exception when trying to update " + group + "on groups table with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         }
 		
         return success;
-	}
-		
+	}		
 
     
+    
     /**
-     * method to put a new group into the group table
-     * 
      * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#putGroup(ke.co.tawi.babblesms.server.beans.contact.Group)
-     * 
-     * @return true if the group object is successfully inserted else returns false
      */
     @Override
     public boolean putGroup(Group group) {
@@ -219,28 +240,75 @@ public Group getGroupByName(Account account , String groupname){
 
         try(
         		Connection conn = dbCredentials.getConnection();
-        		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO groups (Uuid,name,description,creationdate,accountuuid,statusuuid) VALUES (?,?,?,?,?,?);");	
+        		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO groups (Uuid, name, description,"
+        				+ "creationdate, accountuuid, statusuuid) VALUES (?,?,?,?,?,?);");	
         	   ){
+        	
         	 pstmt.setString(1, group.getUuid());
              pstmt.setString(2, group.getName());
-             pstmt.setString(3, group.getDescription());
-             
-             //convert java.util.Date to java.sql.Date
-             Date sqlDate = new java.sql.Date(group.getCreationdate().getTime());
-             pstmt.setDate(4, sqlDate);
+             pstmt.setString(3, group.getDescription());             
+             pstmt.setDate(4, new Date(group.getCreationdate().getTime()));
              pstmt.setString(5, group.getAccountsuuid());
              pstmt.setString(6, group.getStatusuuid());
 
              pstmt.execute();
 	
-        	}
-        catch (SQLException e) {
+    	} catch (SQLException e) {
             logger.error("SQL Exception when trying to put: " + group);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         } 
+        
         return success;
     }
+
+    
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroupCount(ke.co.tawi.babblesms.server.beans.account.Account)
+	 */
+	@Override
+	public Map<String, Integer> getGroupCount(Account account) {
+		Map<String, Integer> groupMap = new HashMap<>();
+		
+		List<String> groupUuids = new LinkedList<>();
+		
+		try(
+			Connection conn = dbCredentials.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM groups WHERE accountuuid = ? ORDER BY NAME ASC;");
+			PreparedStatement pstmt2 = conn.prepareStatement("select count(*) from contactgroup where groupuuid=?;");
+		   ){
+			
+			// First get a list of all Group UUIDs belonging to this account
+			pstmt.setString(1, account.getUuid());
+			
+			try(ResultSet rset = pstmt.executeQuery();) {
+				while(rset.next()) {
+					groupUuids.add(rset.getString("uuid"));
+				}
+			}		
+			
+			
+			// Then get a count of Contacts per Group
+			for(String uuid : groupUuids) {
+				pstmt2.setString(1, uuid);
+				
+				try(ResultSet rset = pstmt2.executeQuery();) {
+					rset.next();
+					groupMap.put(uuid, new Integer(rset.getInt(1)));					
+				}	
+			}
+			 
+		} catch (SQLException e) {
+           logger.error("SQL Exception when getting a count of groups that belong to: " + account);
+           logger.error(ExceptionUtils.getStackTrace(e));
+       }
+				
+		
+		return groupMap;
+	}
+
+
+	
     
 }
 

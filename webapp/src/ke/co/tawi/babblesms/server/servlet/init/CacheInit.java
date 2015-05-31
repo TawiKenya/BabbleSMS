@@ -19,7 +19,6 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
 import ke.co.tawi.babblesms.server.beans.network.Country;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
@@ -145,6 +144,8 @@ public class CacheInit extends HttpServlet {
         objList = maskDAO.getAllMasks();
         initCacheByUuid(CacheVariables.CACHE_MASK_BY_UUID, objList);
         
+        objList = groupDAO.getAllGroups();
+        initCacheByUuid(CacheVariables.CACHE_GROUP_BY_UUID, objList);
         
         objList = countryDAO.getAllCountries();
         initCacheByUuid(CacheVariables.CACHE_COUNTRY_BY_UUID, objList);
@@ -162,9 +163,9 @@ public class CacheInit extends HttpServlet {
         initCountryCache(CacheVariables.CACHE_COUNTRY_BY_UUID);
 
         initGenericCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
-        initGenericCache(CacheVariables.CACHE_ALL_ACCOUNTS_STATISTICS);
-        
+        initGenericCache(CacheVariables.CACHE_ALL_ACCOUNTS_STATISTICS);        
     }
+    
 
     /**
      *
