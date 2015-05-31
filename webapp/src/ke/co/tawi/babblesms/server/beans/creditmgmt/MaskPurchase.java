@@ -15,8 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.beans.creditmgmt;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
-
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -59,7 +57,7 @@ public class MaskPurchase extends SMSPurchase {
        builder.append(", count=");
        builder.append(getCount());
        builder.append(", accountuuid=");
-       builder.append(getAccountuuid());
+       builder.append(getAccountUuid());
        builder.append(", networkuuid=");
        builder.append(maskuuid);
        builder.append(", purchasedate=");

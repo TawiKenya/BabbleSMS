@@ -19,51 +19,75 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
+
 /**
- *  MaskPurchases
+ * A short code or mask purchase.
  * <p>
  *  
  * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class SMSPurchase extends StorableBean {
 
-    private String count;
-    private String accountuuid;
-    private String purchasedate;
+    private int count;
+    private String accountUuid;
+    private Date purchaseDate;
 
+    /*CREATE TABLE ShortcodePurchase(
+            
+            shortcodeuuid text references Shortcode(uuid),
+            count integer NOT NULL CHECK (count>=0),
+            
+            
+            CREATE TABLE MaskPurchase(
+                   
+                    maskuuid text references Mask(uuid),
+                    count integer NOT NULL CHECK (count>=0),
+                    );*/
+            
+    
+    /**
+     * 
+     */
     public SMSPurchase() {
         super();
-        count = "";
-        accountuuid = "";
-        purchasedate = "";
+        count = 0;
+        accountUuid = "";
+        purchaseDate = new Date();
     }
  
-    public String getAccountuuid() {
-        System.out.println(accountuuid);
-       return accountuuid;
+    public String getAccountUuid() {
+       return accountUuid;
    }
 
-   public void setAccountuuid(String accountuuid) {
-       //System.out.println(accountuuid);
-       this.accountuuid = StringUtils.trimToEmpty(accountuuid);
+   public void setAccountUuid(String accountuuid) {
+       this.accountUuid = StringUtils.trimToEmpty(accountuuid);
    }
    
-   public String getCount() {
+   public int getCount() {
        return count;
    }
 
-   public void setCount(String maskname) {
-       this.count = StringUtils.trimToEmpty(maskname);
+   public void setCount(int count) {
+       this.count = count;
    }
     
    
 
-   public void setPurchasedate(String purchasedate) {
-       this.purchasedate = StringUtils.trimToEmpty(purchasedate);
+   /**
+	 * @param purchasedate
+	 */
+	public void setPurchaseDate(Date purchasedate) {
+       this.purchaseDate = new Date(purchasedate.getTime());
    }
+	
     
-   public String getPurchasedate() {
-       return purchasedate;
+   /**
+	 * @return the purchase date
+	 */
+   public Date getPurchasedate() {
+       return new Date(purchaseDate.getTime());
    }
 
    
@@ -79,9 +103,9 @@ public class SMSPurchase extends StorableBean {
        builder.append(", maskname=");
        builder.append(count);
        builder.append(", accountuuid=");
-       builder.append(accountuuid);
+       builder.append(accountUuid);
        builder.append(", purchasedate=");
-       builder.append(purchasedate);
+       builder.append(purchaseDate);
        builder.append("]");
        return builder.toString();
    }

@@ -58,7 +58,7 @@ public class ShortcodePurchase extends SMSPurchase{
        builder.append(", count=");
        builder.append(getCount());
        builder.append(", accountuuid=");
-       builder.append(getAccountuuid());
+       builder.append(getAccountUuid());
        builder.append(", networkuuid=");
        builder.append(shortcodeuuid);
        builder.append(", purchasedate=");
