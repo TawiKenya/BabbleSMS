@@ -306,7 +306,7 @@
 
 
                         </div>
-                        <label class="control-label" for="upload">Add To a group ( Optional )</label>
+                        <label class="control-label" for="upload">Add Contacts To a Group (Optional)</label>
                         <div class="controls">
                         <div id="tableselect">
                                  <table id="groupsel" class="table table-striped table-bordered">
@@ -330,7 +330,7 @@
                                             %>
                                         </table>
                                 </div>
-                           <!-- <input class="input-xlarge focused"  id="upload" id="contname" type="" name="upload">-->
+                           
                         </div>
 
                         

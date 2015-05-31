@@ -15,12 +15,18 @@
  */
 package ke.co.tawi.babblesms.server.servlet.upload;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -29,12 +35,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import org.apache.commons.io.FileUtils;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -48,6 +62,11 @@ public class ContactUpload extends HttpServlet {
 	  	
 	public final static String UPLOAD_FEEDBACK = "UploadFeedback";
 	public final static String UPLOAD_SUCCESS = "You have successfully uploaded your contacts.";
+	
+	private ContactDAO contactDAO;
+	private PhoneDAO phoneDAO;
+	private ContactGroupDAO contactGroupDAO;
+	private Cache accountsCache;
 	
 	private Logger logger;
 	
@@ -70,6 +89,13 @@ public class ContactUpload extends HttpServlet {
        factory.setRepository(repository);
        
        uploadUtil = new UploadUtil();
+       
+       contactDAO = ContactDAO.getInstance();
+       phoneDAO = PhoneDAO.getInstance();
+       contactGroupDAO = ContactGroupDAO.getInstance(); 
+       
+       CacheManager mgr = CacheManager.getInstance();
+       accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
    }
 	
 	
@@ -81,10 +107,18 @@ public class ContactUpload extends HttpServlet {
             throws ServletException, IOException {
 		File uploadedFile = null;
 		
+		List<String> groupUuids = new LinkedList<>();
+		Account account = new Account();
+		
 		HttpSession session = request.getSession(false);
 		
 		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
 		
+		Element element;
+        if ((element = accountsCache.get(username)) != null) {
+            account = (Account) element.getObjectValue();
+        }
+        
 		// Create a factory for disk-based file items
        DiskFileItemFactory factory = new DiskFileItemFactory();
 
@@ -107,7 +141,8 @@ public class ContactUpload extends HttpServlet {
 		    item = iter.next();
 
 		    if (item.isFormField()) {
-		        processFormField(item);
+		    	// Here we assume only a Group UUID has been submitted as a text field
+		    	groupUuids.add(item.getString());
 		        
 		    } else {
 		    	uploadedFile = processUploadedFile(item);
@@ -121,22 +156,19 @@ public class ContactUpload extends HttpServlet {
 	       
        // Here we assume that only one file was uploaded
        // First we inspect if it is ok
-	   session.setAttribute(UPLOAD_FEEDBACK, uploadUtil.inspectContactFile(uploadedFile));
+       String feedback = uploadUtil.inspectContactFile(uploadedFile);
+	   session.setAttribute(UPLOAD_FEEDBACK, feedback);
     	    	
        response.sendRedirect("addcontact.jsp");
+       
+       
+       // Process the file into the database if it is ok
+       if(StringUtils.equals(feedback, UPLOAD_SUCCESS)) {
+    	   uploadUtil.saveContacts(uploadedFile, account, contactDAO, phoneDAO, groupUuids, contactGroupDAO);
+       }
 	}	
 
-	
-	/**
-	 * @param item
-	 */
-	private void processFormField(FileItem item) {
-		String name = item.getFieldName();
-	    String value = item.getString();
-	    
-	    System.out.println("Field name is '" + name + "', value is '" + value + "'.");
-	}
-	
+		
 	
 	/**
 	 * @param item
