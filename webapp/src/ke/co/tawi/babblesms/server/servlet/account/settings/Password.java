@@ -17,6 +17,7 @@ package ke.co.tawi.babblesms.server.servlet.account.settings;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.session.SessionStatistics;
+import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
 import ke.co.tawi.babblesms.server.utils.net.EmailUtil;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -37,22 +44,46 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class Password  extends HttpServlet{
-	public Password(){
-		super();
-	}
+	
+	//private Cache accountsCache;
 	
 	private final String ERROR_NO_USERN_PASS = "You have to input a value.";
 	private final String ERROR_NO_USER_EMAIL = "username or email not found.";
-	private final String SUCCESS = "We have sent a new password in your email.";
+	//private final String SUCCESS = "We have sent a new password in your email.";
+	
+	
+  
+	
+  
+	static String password ="";
+	private Cache accountsCache, statisticsCache;
+	private Logger logger=Logger.getLogger(this.getClass());
+	
+	
+	
+	/**
+    *
+    * @param config
+    * @throws ServletException
+    */
+   @Override
+   public void init(ServletConfig config) throws ServletException {
+       super.init(config);
+
+      
+       CacheManager mgr = CacheManager.getInstance();
+       accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+       statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
+
+   }
+
+	
+	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  doPost(request, response);
 		 }
 	
-  
-	static String password ="";
-
-	private Logger logger=Logger.getLogger(this.getClass());
 	
 	/**
 	 * 
@@ -61,43 +92,45 @@ public class Password  extends HttpServlet{
 	
 	protected void doPost(HttpServletRequest request,HttpServletResponse response )throws
 	ServletException, IOException{
+		
 		 HttpSession session = request.getSession(false);
-		
-		
+		 if (session != null) {
+	            session.invalidate();  
+	        }
+	        session = request.getSession(true);
+	    Account account = new Account();   
+	    
 		String username = request.getParameter("username").trim();
 		String email = request.getParameter("email").trim();
+	   
+		Element element;
+        if ((element = accountsCache.get(username)) != null) {
+            account = (Account) element.getObjectValue();
+        }
 		
 		logger.info(username);
 		logger.info(email);
 		
-		Account acco = new Account();
-		String us = acco.getUsername();
-		String em =acco.getEmail();
-		String lp =acco.getLogpassword();
-		System.out.println(us);
-		System.out.println(em);
-		System.out.println(lp);
-		logger.info(us);
-		logger.info(em);
-		logger.info(lp);
-		
-		
+	    		
 	if(username.equalsIgnoreCase("") || email.equalsIgnoreCase("")){
 		//message
 		session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_NO_USERN_PASS);
 		response.sendRedirect("forgotpas.jsp");
-	}else if(existUser(username) || existEmail(email)){
+	}else if(!username.equalsIgnoreCase(account.getUsername()) || !email.equalsIgnoreCase(account.getEmail())){
 		//message
 		session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_NO_USER_EMAIL);
 		response.sendRedirect("forgotpas.jsp");
 	}
 	
 	else{
+		
+		String x = account.getLogpassword();
+	    String z = account.getMobile();
+		logger.info(x);
+		logger.info(z);
+		
 			password = RandomStringUtils.randomAlphabetic(10);
-			
-			putPassword();
-			
-			if(putPassword()){
+			account.setLogpassword(password);
 			
 			String from="mwenda@tawi.mobi";
 			String to=email;
@@ -107,48 +140,34 @@ public class Password  extends HttpServlet{
 			int outPort = 25;
 			EmailUtil.sendEmail(from, to, subject, body, outServ, outPort);
 			
-			session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, SUCCESS);
-			response.sendRedirect("success.jsp");
+			logger.info(password);
+			updateCache(account.getUuid());
 			}
-			//message
 			
+			//message
+			session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS,null);
 			response.sendRedirect("success.jsp");
-			 
-	}//end else
+	
+	
+	
+	String x = account.getLogpassword();
+	String y = account.getEmail();
+	String z = account.getMobile();
+	logger.info(x);
+	logger.info(y);
+	logger.info(z);
+	
+	
+	
+	
 	
 		}//end doPost
 
-	private boolean existEmail(String email) {
-		boolean eml = true;
-		Account acc = new Account();
-		String e = acc.getUsername();
-		logger.info(e);
-		
-		if(acc.getEmail().equalsIgnoreCase(email)){
-			eml = false;
-		}
-		return eml;
-	}
+	private void updateCache(String accountuuid) {
+        SessionStatistics statistics = SessionStatisticsFactory.getSessionStatistics(accountuuid);
+
+        statisticsCache.put(new Element(accountuuid, statistics));
+    }
 	
-
-	private boolean existUser(String username) {
-		boolean user = true;
-		Account acc = new Account();
-		String u = acc.getUsername();
-		logger.info(u);
-		
-		if(acc.getUsername().equalsIgnoreCase(username)){
-			
-			user = false;
-		}
-		return user;
-	}
-
-	private boolean putPassword() {
-		Account account = new Account();
-		account.setLogpassword(password);
-		return true;
-		
-	}
 	
 }//end class

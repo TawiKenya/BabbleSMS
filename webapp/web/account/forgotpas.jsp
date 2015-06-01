@@ -40,7 +40,8 @@ body{
 }
 
  .container{
-    background-color: gray;
+ 	border-radius: 50px;
+    background-color: green;
     color: ;
     position: absolute;
     width: 40%;
@@ -48,13 +49,13 @@ body{
     margin: auto;
     top: 25%;
     left: 30%;
+    text-align: center;
 
  }
 
  .babble{
-    background-color: white;
-    padding: 0px,0px,0px,1px;
-
+    background-color: #fff;
+      border-radius: 10px;
  }
  
 li{
@@ -77,12 +78,34 @@ label{
     padding-bottom: 8px;
 }
 
+h1{
+	font-size: 50px;
+	font-family: monospace;
+	letter-spacing: -1px;
+	color: black;
+	text-shadow: 5px -1px 0px blue,
+				6px -2px 0px white;
+}
+.uname{
+
+}
+.email{
+
+}
+.err{
+width: 400px;
+margin: auto;
+text-align: center;
+font-size: 30px;
+}
+
 </style>
 
 
 
 </head>
 <body>
+<div class="err">
 <%
 String sendEmailerr = (String) session.getAttribute(SessionConstants.EMAIL_SEND_ERROR);
 String sendEmail = (String) session.getAttribute(SessionConstants.EMAIL_SEND_SUCCESS);
@@ -101,25 +124,37 @@ if(StringUtils.isNotEmpty(sendEmail)) {
     session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
 }
 %>
+</div>
 
 
 <div class="container"> 
-<div class="babble"> BabbleSMS</div>
+
+<div class="babble"><h1> BabbleSMS <h1></div>
 
 <form class="form-horizontal" action="reset" method="POST">
 <ul>
 <li>
+
+<div class="uname">
 <label class="control-label" for="username">Username:</label>
-<input class="input-xlarge focused" type="text" name="username">
+<input class="input-xlarge focused" type="text" name="username" size="15">
+</div>
+
 </li>
 <li>
+
+<div class="email">
 <label class="control-label" for="email">Email</label>
-<input class="input-xlarge focused" type="text" name="email" id="email">  
+<input class="input-xlarge focused" type="text" name="email" id="email" size="30">  
+</div>
+
 </li>
 <li>
 <input type="submit" name="submit" value="Continue">
 </li>
 </ul>
+
+
 </div>
 
 </form>
