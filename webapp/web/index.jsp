@@ -153,9 +153,9 @@
               <div class="new-content new-content_promo js-promo">
                    <div class="container">
                          <div class="left-panel">
-                         <h2 class="promo-title"><a href="?">Babble SMS</a></h2>
+                         <h2 class="promo-title"><a href="#">Babble SMS</a></h2>
                          <h1 class="promo-title">Your Convenient SMS Messenger</h1>
-                         <p class="promo-text promo-text_main">Allows for you to send SMS from the convenience of your web browser.</p>
+                         <p class="promo-text promo-text_main">Allows you to send SMS from the convenience of your web browser.</p>
                          <div class="promo-form-background">
                              <div class="promo-form">
                              </div>

@@ -33,48 +33,59 @@ public class SMSPurchase extends StorableBean {
     private int count;
     private String accountUuid;
     private Date purchaseDate;
-
-    /*CREATE TABLE ShortcodePurchase(
-            
-            shortcodeuuid text references Shortcode(uuid),
-            count integer NOT NULL CHECK (count>=0),
-            
-            
-            CREATE TABLE MaskPurchase(
-                   
-                    maskuuid text references Mask(uuid),
-                    count integer NOT NULL CHECK (count>=0),
-                    );*/
-            
+    private String sourceUuid;	// A shortcode or mask uuid
+              
     
     /**
      * 
      */
-    public SMSPurchase() {
+    protected SMSPurchase() {
         super();
+        
         count = 0;
         accountUuid = "";
         purchaseDate = new Date();
     }
  
+    /**
+     * @return an Account UUID
+     */
     public String getAccountUuid() {
        return accountUuid;
    }
 
-   public void setAccountUuid(String accountuuid) {
+   /**
+    * @param accountuuid
+ 	*/
+    public void setAccountUuid(String accountuuid) {
        this.accountUuid = StringUtils.trimToEmpty(accountuuid);
    }
    
-   public int getCount() {
+    
+   /**
+    * @return the count
+ 	*/
+    public int getCount() {
        return count;
    }
 
-   public void setCount(int count) {
+    
+   /**
+    * @param count
+    */
+    public void setCount(int count) {
        this.count = count;
    }
     
-   
-
+    
+    /**
+     * @return the purchaseDate
+     */
+    public Date getPurchaseDate() {
+    	return new Date(purchaseDate.getTime());
+    }
+    
+    
    /**
 	 * @param purchasedate
 	 */
@@ -82,33 +93,20 @@ public class SMSPurchase extends StorableBean {
        this.purchaseDate = new Date(purchasedate.getTime());
    }
 	
-    
-   /**
-	 * @return the purchase date
+
+	/**
+	 * @return the sourceUuid
 	 */
-   public Date getPurchasedate() {
-       return new Date(purchaseDate.getTime());
-   }
-
-   
-   
-   @Override
-   public String toString() {
-       StringBuilder builder = new StringBuilder();
-       builder.append("ShortcodePurchases");
-       builder.append("[id=");
-       builder.append(getId());
-       builder.append(", uuid=");
-       builder.append(getUuid());
-       builder.append(", maskname=");
-       builder.append(count);
-       builder.append(", accountuuid=");
-       builder.append(accountUuid);
-       builder.append(", purchasedate=");
-       builder.append(purchaseDate);
-       builder.append("]");
-       return builder.toString();
-   }
-
-    
+	public String getSourceUuid() {
+		return sourceUuid;
+	}
+	
+	
+	/**
+	 * @param sourceUuid the sourceUuid to set
+	 */
+	public void setSourceUuid(String sourceUuid) {
+		this.sourceUuid = sourceUuid;
+	}
+	
 }

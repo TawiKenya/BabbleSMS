@@ -98,6 +98,13 @@ public class UploadUtil {
 			    	 return ("Invalid format on line " + count + ": " + line);
 			     }
 			     
+			     // Check that the phone numbers contain only numbers or spaces
+			     for(String phone : phoneTokens) {
+			    	 if(!StringUtils.isNumericSpace(phone)) {
+			    		 return ("Invalid number on line " + count + ": " + line);
+			    	 }
+			     }
+			     
 			     // Check to see that only valid networks have been provided
 			     for(String s : networkTokens) {
 			    	 network = StringUtils.lowerCase( StringUtils.trimToEmpty(s) );
@@ -164,6 +171,7 @@ public class UploadUtil {
 			     for(int j=0; j<phoneTokens.length; j++ ) {
 			    	 phone = new Phone();
 			    	 phone.setPhonenumber(StringUtils.trimToEmpty(phoneTokens[j]));
+			    	 phone.setPhonenumber(StringUtils.remove(phone.getPhonenumber(), ' '));
 			    	 phone.setContactUuid(contact.getUuid());
 			    	 phone.setStatusuuid(Status.ACTIVE);
 			    	 

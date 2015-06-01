@@ -64,7 +64,7 @@ public interface BabbleSmsBalanceDAO {
 	 * @param amount
 	 * @return whether it was successful when attempting to add the balance 
 	 */
-	public boolean addBalance(Account account, SMSSource smsCode, int amount);
+	public boolean addBalance(Account account, SMSSource smsSource, int amount);
 			
 	
 	/**

@@ -2,17 +2,14 @@
 <%
     /**
     Copyright 2015 Tawi Commercial Services Ltd
-
-    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
-    not use this file except in compliance with the License. You may obtain a copy 
+    Licensed under the Open Software License, Version 3.0 (the "License"); you may
+    not use this file except in compliance with the License. You may obtain a copy
     of the License at:
     http://opensource.org/licenses/OSL-3.0
-
-    Unless required by applicable law or agreed to in writing, software distributed 
-    under the License is distributed on an ?AS IS? BASIS, WITHOUT WARRANTIES OR
+    Unless required by applicable law or agreed to in writing, software distributed
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
     CONDITIONS OF ANY KIND, either express or implied.
-
-    See the License for the specific language governing permissions and limitations 
+    See the License for the specific language governing permissions and limitations
     under the License.
     */
 %>
@@ -48,9 +45,6 @@
         <meta name="description" content=".">
         <meta name="author" content="eugene" >
    
-      
- 
-
         
         <!--some internal css -->
         <style type="text/css">
@@ -287,11 +281,10 @@ function hello(val){
                 </div>
                 <!-- top menu -->                        
                 <div class="topmenu">                     
-                   <!--  <a href="inbox.jsp">MESSAGES</a>-->
 		    <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
-                   <!-- <a href="portfolio.jsp">REPORT</a>-->
-		     <a href="portfolio.jsp">REPORT</a>
+                    <!-- <a href="portfolio.jsp">REPORT</a>-->
+		    <a href="#">REPORT</a>
                 </div>    
             </div>
 
@@ -331,10 +324,10 @@ function hello(val){
                 <!-- left menu ends -->
 
                 <noscript>
-                <div class="alert alert-block span10">
-                    <h4 class="alert-heading">Warning!</h4>
-                    <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
-                </div>
+                    <div class="alert alert-block span10">
+                        <h4 class="alert-heading">Warning!</h4>
+                        <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+                    </div>
                 </noscript>
 
                 <div id="content" class="span10">

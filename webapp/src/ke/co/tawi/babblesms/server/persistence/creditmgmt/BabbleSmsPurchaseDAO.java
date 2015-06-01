@@ -15,6 +15,13 @@
  */
 package ke.co.tawi.babblesms.server.persistence.creditmgmt;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
+
+import java.util.List;
+
 /**
  * Persistence description for shortcode and mask purchases.
  * <p>
@@ -23,4 +30,31 @@ package ke.co.tawi.babblesms.server.persistence.creditmgmt;
  */
 public interface BabbleSmsPurchaseDAO {
 
+	
+	/**
+	 * To be called when a client purchases SMS credits on a Short Code or Mask.
+	 * 
+	 * @param purchase
+	 * @return whether or not the purchase action was successful
+	 */
+	public boolean put(SMSPurchase purchase);
+	
+	
+	/**
+	 * Returns a list of both {@link ShortcodePurchase}s and 
+	 * {@link MaskPurchase}s.
+	 * 
+	 * @param account
+	 * @return a list of purchases done by this client account.
+	 */
+	public List<SMSPurchase> getPurchases(Account account);
+	
+	
+	/**
+	 * Returns a list of both {@link ShortcodePurchase}s and 
+	 * {@link MaskPurchase}s. 
+	 * 
+	 * @return a list of purchases done by all client accounts.
+	 */
+	public List<SMSPurchase> getAllPurchases();
 }

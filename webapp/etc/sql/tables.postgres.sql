@@ -216,7 +216,7 @@ CREATE TABLE mask (
     creationdate timestamp with time zone DEFAULT now()
 );
 
-\COPY mask(uuid,maskname,accountuuid,networkuuid) FROM '/tmp/mask.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY mask(uuid,maskname,accountuuid,networkuuid) FROM '/tmp/Masks.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE mask OWNER TO babblesms;
 
 -- -------------------
@@ -301,9 +301,9 @@ CREATE TABLE messagetemplate (
     contents text,
     accountuuid text REFERENCES account(uuid)
 );
-
 \COPY messagetemplate(uuid,title,contents,accountuuid) FROM '/tmp/MessageTemplate.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE messagetemplate OWNER TO babblesms;
+
 
 -- -------------------
 -- Table Notification
@@ -327,30 +327,27 @@ ALTER TABLE Notification OWNER TO babblesms;
 -- Table NotificationStatus
 -- ---------------------------
 CREATE TABLE NotificationStatus (
-	Id serial PRIMARY KEY,
-	Uuid text UNIQUE NOT NULL ,
-	NotificationUuid text NOT NULL REFERENCES Notification(Uuid),
-	ReadFlag text DEFAULT 'N',
-	ReadDate timestamp with time zone 
+    Id serial PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL ,
+    NotificationUuid text NOT NULL REFERENCES Notification(Uuid),
+    ReadFlag text DEFAULT 'N',
+    ReadDate timestamp with time zone 
 );
-
--- import data from the CSV file for the NotificationStatus table
 \COPY NotificationStatus (uuid,NotificationUuid) FROM '/tmp/NotificationStatus.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE NotificationStatus OWNER TO babblesms;
+
 
 -- ----------------------
 -- Table ShortcodePurchase
 -- ----------------------
 CREATE TABLE ShortcodePurchase(
-          Id SERIAL PRIMARY KEY,
-          Uuid text UNIQUE NOT NULL,
-          accountuuid text references account(uuid),
-          shortcodeuuid text references Shortcode(uuid),
-          count integer NOT NULL CHECK (count>=0),
-          purchasedate timestamp with time zone   
-          );  
-
--- import data from the CSV file for the ShortcodePurchase table
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    accountuuid text references account(uuid),
+    shortcodeuuid text references Shortcode(uuid),
+    count integer NOT NULL CHECK (count>=0),
+    purchasedate timestamp with time zone   
+);  
 \COPY ShortcodePurchase (Uuid,accountuuid,Shortcodeuuid,count,purchasedate) FROM '/tmp/ShortcodePurchase.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ShortcodePurchase OWNER TO babblesms;
 
@@ -380,9 +377,9 @@ CREATE TABLE MaskPurchase(
              count integer NOT NULL CHECK (count>=0),
              purchasedate timestamp with time zone 
              );
--- import data from the CSV file for the MaskPurchase table
 \COPY MaskPurchase (Uuid,accountuuid,maskuuid,count,purchasedate) FROM '/tmp/MaskPurchase.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE MaskPurchase OWNER TO babblesms;
+
 
 -- --------------------
 -- Table MaskBalance
@@ -394,7 +391,6 @@ CREATE TABLE MaskBalance(
              maskuuid text references Mask(uuid),
              count integer NOT NULL CHECK (count>=0)  
              );
--- import data from the CSV file for the MaskPurchase table
 \COPY MaskBalance (Uuid,accountuuid,Maskuuid,count) FROM '/tmp/MaskBalance.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE MaskBalance OWNER TO babblesms;
 

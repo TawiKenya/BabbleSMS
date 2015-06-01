@@ -1,6 +1,22 @@
 <!DOCTYPE html>
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
+    Licensed under the Open Software License, Version 3.0 (the "License"); you may
+    not use this file except in compliance with the License. You may obtain a copy
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+    Unless required by applicable law or agreed to in writing, software distributed
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and limitations
+    under the License.
+    */
+%>
+
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
+
 <%
     // The following is for session management.    
     if (session == null) {
@@ -21,15 +37,7 @@
 
 <html lang="en">
     <head>
-        <!--
-                eugene 1.0.0
-
-                Copyright 2012 eugene
-                Licensed under the Apache License v2.0
-                http://www.apache.org/licenses/LICENSE-2.0
-
-                
-        -->
+        
         <meta charset="utf-8">
         <title>Babble SMS :: Home</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,10 +55,11 @@
                 padding: 9px 0;
             }
         </style>
-        <!-- jQuery -->
-	
+        
+        <!-- jQuery -->	
 	<script src="../js/editcontact.js"></script>
         <script src="../js/jquery-1.7.2.min.js"></script>
+        
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
         <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
@@ -167,7 +176,8 @@
                 <div class="topmenu">                     
                     <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
-                    <a href="portfolio.jsp">REPORT</a>
+                    <!-- <a href="portfolio.jsp">REPORT</a>-->
+		    <a href="#">REPORT</a>
                 </div>    
             </div>
 
@@ -197,10 +207,10 @@
                 <!-- left menu ends -->
 
                 <noscript>
-                <div class="alert alert-block span10">
-                    <h4 class="alert-heading">Warning!</h4>
-                    <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
-                </div>
+                    <div class="alert alert-block span10">
+                        <h4 class="alert-heading">Warning!</h4>
+                        <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+                    </div>
                 </noscript>
 
                 <div id="content" class="span10">

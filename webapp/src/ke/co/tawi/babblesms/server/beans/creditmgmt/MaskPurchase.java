@@ -15,56 +15,58 @@
  */
 package ke.co.tawi.babblesms.server.beans.creditmgmt;
 
-import org.apache.commons.lang3.StringUtils;
 
 /**
- *  MaskPurchases
+ * A Mask credit purchases
  * <p>
  *  
  * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class MaskPurchase extends SMSPurchase {
 
-    private String maskuuid;
-     
+    /**
+     * 
+     */
     public MaskPurchase() {
         super();
-        maskuuid = "";
     }
  
     
     
-   public String getMaskuuid() {
-       return maskuuid;
+   /**
+	 * @return the mask UUID
+	 */
+	public String getMaskuuid() {
+	   return getSourceUuid();
    }
+	
    
-   public void setMaskuuid(String maskuuid) {
-       this.maskuuid = StringUtils.trimToEmpty(maskuuid);
-   }
-
-  
-
-   
-   
-   @Override
-   public String toString() {
-       StringBuilder builder = new StringBuilder();
-       builder.append("ShortcodePurchases");
-       builder.append("[id=");
-       builder.append(getId());
-       builder.append(", uuid=");
-       builder.append(getUuid());
-       builder.append(", count=");
-       builder.append(getCount());
-       builder.append(", accountuuid=");
-       builder.append(getAccountUuid());
-       builder.append(", networkuuid=");
-       builder.append(maskuuid);
-       builder.append(", purchasedate=");
-       builder.append(getPurchasedate());
-       builder.append("]");
-       return builder.toString();
+   /**
+	 * @param maskuuid
+	 */
+	public void setMaskuuid(String maskuuid) {
+	   setSourceUuid(maskuuid);
    }
 
-    
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("MaskPurchase [getUuid()=");
+		builder.append(getUuid());
+		builder.append(", getAccountUuid()=");
+		builder.append(getAccountUuid());
+		builder.append(", getCount()=");
+		builder.append(getCount());
+		builder.append(", getPurchaseDate()=");
+		builder.append(getPurchaseDate());
+		builder.append(", getMaskuuid()=");
+		builder.append(getMaskuuid());
+		builder.append("]");
+		return builder.toString();
+	}
 }

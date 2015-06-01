@@ -2,7 +2,7 @@
     /**
     Copyright 2015 Tawi Commercial Services Ltd
 
-    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
+    Licensed under the Open Software License, Version 3.0 (the "License"); you may 
     not use this file except in compliance with the License. You may obtain a copy 
     of the License at:
     http://opensource.org/licenses/OSL-3.0
@@ -142,24 +142,20 @@
    masklist = maskDAO.getMasks(account);
    shortcodelist = shortcodeDAO.getShortcodes(account);
    msgTemplatelist = msgtemplDAO.getTemplates(account);
-    
-    
-   
+       
     Contact contacts;
     
     MessageTemplate messageTemplate;
     List<Phone> list2 = new ArrayList();
     Group cgroup = new Group();
-
-    
     
 
-/** Declare and initialize variables to be used for crediting**/
+    /** Declare and initialize variables to be used for crediting**/
 
-int credit_Balance = 0;
-int credit_Consumed = 0;
-//the current accountUuid
-String accountuuid = account.getUuid();
+    int credit_Balance = 0;
+    int credit_Consumed = 0;
+    //the current accountUuid
+    String accountuuid = account.getUuid();
 
 %>
 <jsp:include page="messageheader.jsp" />
@@ -171,7 +167,7 @@ String accountuuid = account.getUuid();
             <a href="#">Home</a> <span class="divider">/</span>
         </li>
         <li>
-           new sms
+           New SMS
         </li>
     </ul>
 </div>
@@ -481,8 +477,6 @@ String accountuuid = account.getUuid();
                                    
                                 </div>
 
-                           
-                       
 
         </div>
                             

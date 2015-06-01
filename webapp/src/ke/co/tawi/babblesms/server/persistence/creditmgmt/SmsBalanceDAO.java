@@ -16,7 +16,10 @@
 package ke.co.tawi.babblesms.server.persistence.creditmgmt;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
@@ -25,6 +28,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -140,37 +145,42 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 		if(hasBalance(account, smsSource, count)) {
 		
 			try(
-					Connection conn = dbCredentials.getConnection();	
-					PreparedStatement pstmt = conn.prepareStatement("UPDATE ? " +
-						"SET count = (SELECT count FROM ? WHERE accountUuid=? AND ?=?) " +
-						"- ? " +				
-						"WHERE uuid = (SELECT uuid FROM ? WHERE accountUuid=? "
-						+ "AND ?=?);");	
+					Connection conn = dbCredentials.getConnection();
+					
+					PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
+							"SET count = (SELECT count FROM ShortcodeBalance WHERE accountUuid=? "
+							+ "AND Shortcodeuuid=?) - ? " +				
+							"WHERE uuid = (SELECT uuid FROM ShortcodeBalance WHERE accountUuid=? "
+							+ "AND Shortcodeuuid=?);");	
+					
+					PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
+							"SET count = (SELECT count FROM MaskBalance WHERE accountUuid=? "
+							+ "AND maskuuid=?) - ? " +				
+							"WHERE uuid = (SELECT uuid FROM MaskBalance WHERE accountUuid=? "
+							+ "AND maskuuid=?);");						
 					) {
 				
+				
+				
 				if(smsSource instanceof Shortcode) {
-					pstmt.setString(1, "ShortcodeBalance");
-					pstmt.setString(2, "ShortcodeBalance");
-					pstmt.setString(4, "Shortcodeuuid");
-					pstmt.setString(7, "ShortcodeBalance");
-					pstmt.setString(9, "Shortcodeuuid");
+					pstmt.setString(1, account.getUuid());					
+					pstmt.setString(2, smsSource.getUuid());				
+					pstmt.setInt(3, count);
+					pstmt.setString(4, account.getUuid());
+					pstmt.setString(5, smsSource.getUuid());
+					
+					pstmt.executeUpdate();
 					
 				} else {	// This is a mask
-					pstmt.setString(1, "MaskBalance");
-					pstmt.setString(2, "MaskBalance");
-					pstmt.setString(4, "maskuuid");
-					pstmt.setString(7, "MaskBalance");
-					pstmt.setString(9, "maskuuid");					
+					pstmt2.setString(1, account.getUuid());					
+					pstmt2.setString(2, smsSource.getUuid());				
+					pstmt2.setInt(3, count);
+					pstmt2.setString(4, account.getUuid());
+					pstmt2.setString(5, smsSource.getUuid());
+					
+					pstmt2.executeUpdate();				
 				}				
-			
-				pstmt.setString(3, account.getUuid());					
-				pstmt.setString(5, smsSource.getUuid());				
-				pstmt.setInt(6, count);
-				pstmt.setString(8, account.getUuid());
-				pstmt.setString(10, smsSource.getUuid());
-				
-				pstmt.executeUpdate();
-							
+										
 			} catch(SQLException e) {
 				logger.error("SQLException while deducting the balance of '" + account +
 						"' of amount " + count + " for '" + smsSource + "'.");
@@ -186,33 +196,117 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	}
 
 	
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#addBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)
 	 */
 	@Override
-	public boolean addBalance(Account account, SMSSource smsCode, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addBalance(Account account, SMSSource smsSource, int count) {
+		boolean success = true;
+				
+		try(
+				Connection conn = dbCredentials.getConnection();
+				
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
+						"SET count = (SELECT count FROM ShortcodeBalance WHERE accountUuid=? "
+						+ "AND Shortcodeuuid=?) + ? " +				
+						"WHERE uuid = (SELECT uuid FROM ShortcodeBalance WHERE accountUuid=? "
+						+ "AND Shortcodeuuid=?);");	
+				
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
+						"SET count = (SELECT count FROM MaskBalance WHERE accountUuid=? "
+						+ "AND maskuuid=?) + ? " +				
+						"WHERE uuid = (SELECT uuid FROM MaskBalance WHERE accountUuid=? "
+						+ "AND maskuuid=?);");						
+				) {
+			
+			if(smsSource instanceof Shortcode) {
+				pstmt.setString(1, account.getUuid());					
+				pstmt.setString(2, smsSource.getUuid());				
+				pstmt.setInt(3, count);
+				pstmt.setString(4, account.getUuid());
+				pstmt.setString(5, smsSource.getUuid());
+				
+				pstmt.executeUpdate();
+				
+			} else {	// This is a mask
+				pstmt2.setString(1, account.getUuid());					
+				pstmt2.setString(2, smsSource.getUuid());				
+				pstmt2.setInt(3, count);
+				pstmt2.setString(4, account.getUuid());
+				pstmt2.setString(5, smsSource.getUuid());
+				
+				pstmt2.executeUpdate();				
+			}				
+									
+		} catch(SQLException e) {
+			logger.error("SQLException while adding the balance of '" + account +
+					"' of amount " + count + " for '" + smsSource + "'.");
+			logger.error(ExceptionUtils.getStackTrace(e));
+			success = false;				
+		} 				
+		
+		return success;
 	}
 
 	
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#getBalances(ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
 	@Override
 	public List<SMSBalance> getBalances(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SMSBalance> list = new LinkedList<>();
+				
+        try (
+     		   Connection conn = dbCredentials.getConnection();
+     	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ShortcodeBalance WHERE "
+     	       		+ "accountuuid = ?;");    
+        		PreparedStatement pstmt2 = conn.prepareStatement("SELECT * FROM MaskBalance WHERE "
+         	       		+ "accountuuid = ?;");  
+     	   ) {
+         	   pstmt.setString(1, account.getUuid());
+         	   pstmt2.setString(1, account.getUuid()); 
+         	  
+     	       ResultSet rset = pstmt.executeQuery();
+     	       
+     	       list.addAll(beanProcessor.toBeanList(rset, ShortcodeBalance.class));
+     	       
+     	       rset = pstmt2.executeQuery();
+    	       
+    	       list.addAll(beanProcessor.toBeanList(rset, MaskBalance.class));
+     	       
+        } catch (SQLException e) {
+            logger.error("SQLException when getting sms balances of " + account);
+            logger.error(ExceptionUtils.getStackTrace(e));
+        }
+                  
+        return list;
 	}
 	
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#getAllBalances()
 	 */
 	@Override
 	public List<SMSBalance> getAllBalances() {
-		// TODO Auto-generated method stub
-		return null;
+		List<SMSBalance> list = new LinkedList<>();
+		
+        try (
+     		   Connection conn = dbCredentials.getConnection();
+     	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ShortcodeBalance;");    
+        		PreparedStatement pstmt2 = conn.prepareStatement("SELECT * FROM MaskBalance;");  
+        		ResultSet rset = pstmt.executeQuery();
+        		ResultSet rset2 = pstmt.executeQuery();
+     	   ) {
+         	        	       
+     	       list.addAll(beanProcessor.toBeanList(rset, ShortcodeBalance.class));
+    	       list.addAll(beanProcessor.toBeanList(rset2, MaskBalance.class));
+     	       
+        } catch (SQLException e) {
+            logger.error("SQLException when getting all sms balances.");
+            logger.error(ExceptionUtils.getStackTrace(e));
+        }
+                  
+        return list;
 	}
 
 }

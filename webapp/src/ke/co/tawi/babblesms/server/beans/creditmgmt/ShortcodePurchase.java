@@ -15,57 +15,57 @@
  */
 package ke.co.tawi.babblesms.server.beans.creditmgmt;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
- * A ShortcodePurchases
+ * A Shortcode credit purchase 
  * <p>
  *  
  * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class ShortcodePurchase extends SMSPurchase{
-
     
-    private String shortcodeuuid;
-    
+    /**
+     * 
+     */
     public ShortcodePurchase() {
         super();
-        shortcodeuuid = "";
+    } 
+    
+    
+   /**
+	* @return the shortcode UUID
+	*/
+	public String getShortcodeuuid() {
+       return getSourceUuid();
     }
- 
-    
-    
-   public String getShortcodeuuid() {
-       return shortcodeuuid;
-   }
    
-   public void setShortcodeuuid(String shortcodeuuid) {
-       this.shortcodeuuid = StringUtils.trimToEmpty(shortcodeuuid);
+	
+   /**
+	 * @param shortcodeuuid
+	 */
+	public void setShortcodeuuid(String shortcodeuuid) {
+	   setSourceUuid(shortcodeuuid);
    }
 
-   
-   
-   @Override
-   public String toString() {
-       StringBuilder builder = new StringBuilder();
-       builder.append("ShortcodePurchases");
-       builder.append("[id=");
-       builder.append(getId());
-       builder.append(", uuid=");
-       builder.append(getUuid());
-       builder.append(", count=");
-       builder.append(getCount());
-       builder.append(", accountuuid=");
-       builder.append(getAccountUuid());
-       builder.append(", networkuuid=");
-       builder.append(shortcodeuuid);
-       builder.append(", purchasedate=");
-       builder.append(getPurchasedate());
-       builder.append("]");
-       return builder.toString();
-   }
 
-    
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ShortcodePurchase [getUuid()=");
+		builder.append(getUuid());
+		builder.append(", getAccountUuid()=");
+		builder.append(getAccountUuid());
+		builder.append(", getCount()=");
+		builder.append(getCount());
+		builder.append(", getPurchaseDate()=");
+		builder.append(getPurchaseDate());
+		builder.append(", getShortcodeuuid()=");
+		builder.append(getShortcodeuuid());
+		builder.append("]");
+		return builder.toString();
+	}
 }
