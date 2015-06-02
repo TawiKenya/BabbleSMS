@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Password  extends HttpServlet{
+public class Password  extends HttpServlet {
 	
 	//private Cache accountsCache;
 	
@@ -129,8 +129,8 @@ public class Password  extends HttpServlet{
 		logger.info(x);
 		logger.info(z);
 		
-			password = RandomStringUtils.randomAlphabetic(10);
-			account.setLogpassword(password);
+			password = RandomStringUtils.randomAlphabetic(5);
+			//account.setLogpassword(password);
 			
 			String from="mwenda@tawi.mobi";
 			String to=email;
@@ -141,7 +141,7 @@ public class Password  extends HttpServlet{
 			EmailUtil.sendEmail(from, to, subject, body, outServ, outPort);
 			
 			logger.info(password);
-			updateCache(account.getUuid());
+			//updateCache(account.getUuid());
 			}
 			
 			//message

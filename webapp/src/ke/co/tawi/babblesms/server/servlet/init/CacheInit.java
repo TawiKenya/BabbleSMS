@@ -115,8 +115,8 @@ public class CacheInit extends HttpServlet {
     protected void initCache() {
         DiskStoreConfiguration diskConfig = new DiskStoreConfiguration();
         diskConfig.setPath(System.getProperty("java.io.tmpdir") + File.separator +
-        		"ehcache" + File.separator + "BabbleSMS");
-
+        		"ehcache" + File.separator + PropertiesConfig.getConfigValue("CACHE_FILE"));        
+        
         Configuration config = (new Configuration()).diskStore(diskConfig);
         config.setMaxBytesLocalHeap(Long.parseLong(PropertiesConfig.getConfigValue("MAX_BYTES_LOCAL_HEAP")));
         config.setMaxBytesLocalDisk(Long.parseLong(PropertiesConfig.getConfigValue("MAX_BYTES_LOCAL_DISK")));
@@ -191,6 +191,7 @@ public class CacheInit extends HttpServlet {
             }
         }
     }
+    
 
     /**
      *
@@ -221,6 +222,7 @@ public class CacheInit extends HttpServlet {
         }
     }
 
+    
     /**
      *
      * @param cacheName
@@ -282,6 +284,7 @@ public class CacheInit extends HttpServlet {
         }
     }
 
+    
     /**
      *
      * @param cacheName
@@ -311,6 +314,7 @@ public class CacheInit extends HttpServlet {
             }
         }
     }
+    
 
     /**
      *
@@ -330,10 +334,10 @@ public class CacheInit extends HttpServlet {
             if (msgTemplateCache.getStatus() == Status.STATUS_UNINITIALISED) {
                 msgTemplateCache.initialise();
             }
-
             
         }
     }
+    
     
     /**
      *
