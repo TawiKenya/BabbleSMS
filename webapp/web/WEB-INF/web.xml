@@ -164,6 +164,10 @@
         <servlet-name>AdminAddAccount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AddAccount</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>EditAccount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.EditAccount</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>addshortcode</servlet-name>
@@ -338,6 +342,11 @@
     <servlet-mapping>
         <servlet-name>AdminAddAccount</servlet-name>
         <url-pattern>/admin/addAccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EditAccount</servlet-name>
+        <url-pattern>/editAccount</url-pattern>
     </servlet-mapping>
     <!-- End - Administrator servlet mapping -->
     

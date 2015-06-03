@@ -74,7 +74,7 @@
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
         <link href='../css/checkpass.css' rel='stylesheet'>
-
+        <link href='../css/styles.css' rel='stylesheet'>
         <script type="text/javascript" src="../js/passwdcheck.js"></script>
 
 
@@ -105,7 +105,47 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="index.html">  <span>Babble</span></a>
+                   
+
+
+                 <div id='cssmenu'>
+                  <ul>
+                  <li class='has-sub' ><a href='#'><span>Account Management</span></a>
+                  <ul>
+                <li><a href="addaccount.jsp" ><span>Add Account</span></a></li>
+                <li><a href="#" ><span>Edit Account</span></a></li>
+             <li class='last'><a href='#'><span>View Accounts</span></a></li>
+                </ul>
+
+
+        </li>
+            <li class='has-sub'><a href='#'><span>SMS Management</span></a>
+      
+             </li>
+        <li class='has-sub'><a href='#'><span>SMS Trafic</span></a></li>
+            <li class='has-sub'><a href='#'><span>Nitifications&Feeback</span></a></li>
+            <li class='has-sub'><a href='#'><span>Reports</span></a></li>
+            <li class='has-sub'><a href='#'><span>Admin settings</span></a></li>
+
+            </ul>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     <!-- theme selector starts -->
                     <div class="btn-group pull-right theme-container" >

@@ -5890,6 +5890,7 @@ html,body{
 	color:#000;
 	background-position:right top;
 	background-image: url(../img/background.jpg);
+	
 	display:-webkit-box;
 	display:-webkit-flex;
 	display:-ms-flexbox;
