@@ -135,8 +135,6 @@ public class IncomingBarDay extends HttpServlet {
 
 		response.setContentType("text/plain;charset=UTF-8");
 		
-		System.out.println(getJsonIncoming(accountUuid));
-
 		out.write(getJsonIncoming(accountUuid).getBytes());
 		out.flush();
 		out.close();

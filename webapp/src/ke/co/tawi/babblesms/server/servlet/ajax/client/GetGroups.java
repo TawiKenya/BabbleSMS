@@ -51,6 +51,11 @@ import net.sf.ehcache.Element;
  */
 public class GetGroups extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2839939167530680340L;
+
 	private Cache accountsCache;
 
 	private GroupDAO groupDAO;
@@ -96,7 +101,7 @@ public class GetGroups extends HttpServlet {
 		Gson gson = new GsonBuilder().disableHtmlEscaping()
 				.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
 				.setPrettyPrinting().serializeNulls().create();
-		System.out.println(gson.toJson(getGroupMaps(account)));
+		
 		out.write(gson.toJson(getGroupMaps(account)).getBytes());
 		out.flush();
 		out.close();

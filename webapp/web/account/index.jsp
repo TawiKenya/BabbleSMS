@@ -330,20 +330,17 @@
 </div>
 
 
-<script src="../js/jquery.min.js"></script>
-<script src="../js/jquery.jqplot.min.js"></script>
-<script src="../js/jqplot.pieRenderer.min.js"></script>
-<script src="../js/jqplot.barRenderer.min.js"></script>
-<script src="../js/jqplot.categoryAxisRenderer.min.js"></script>
-<script src="../js/jqplot.highlighter.min.js"></script>
-<script src="../js/jqplot.cursor.min.js"></script>
-<link href="../js/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>  
-    
-
+<script src="../js/jquery/jquery.min.js"></script>
+<script src="../js/jqplot/jquery.jqplot.min.js"></script>
+<script src="../js/jqplot/jqplot.pieRenderer.min.js"></script>
+<script src="../js/jqplot/jqplot.barRenderer.min.js"></script>
+<script src="../js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>
+<script src="../js/jqplot/jquery.highlighter.min.js"></script>
+<script src="../js/jqplot/jquery.cursor.min.js"></script>
+<link href="../css/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>
 
 <script type="text/javascript">
- 
-    /*
+/*
     * Here we draw the Incoming SMS Pie Chart
     * 
     */
@@ -573,9 +570,6 @@
             // draw the chart
             $.jqplot('incomingSMSBarChart', dataArrayIncoming, incomingOptions);
         });
-
 </script>
-
-
 
 <jsp:include page="footer.jsp" />

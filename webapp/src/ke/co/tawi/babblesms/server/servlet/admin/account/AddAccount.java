@@ -87,9 +87,6 @@ public class AddAccount extends HttpServlet {
      * @param response
      * @throws ServletException, IOException
      */
-    /**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

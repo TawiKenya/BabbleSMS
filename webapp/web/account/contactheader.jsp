@@ -62,13 +62,13 @@
         
 
         <!-- jQuery/javascript -->
-        <script src="../js/jquery-1.7.2.min.js"></script>
-	<script src="../js/jquery_popup.js"></script>
+        <script src="../js/jquery/jquery-1.7.2.min.js"></script>
+	<script src="../js/jquery/jquery_popup.js"></script>
        	<!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
-	<script src="../js/editcontact.js"></script>
-	<script src="../js/editcontact_popup.js"></script>
-	<script src="../js/bootstrap-dropdown.js"></script>
-	<script src="../js/charisma.js"></script>
+	<script src="../js/tawi/editcontact.js"></script>
+	<script src="../js/tawi/editcontact_popup.js"></script>
+	<script src="../js/bootstrap/bootstrap-dropdown.js"></script>
+	<script src="../js/tawi/charisma.js"></script>
         
 	<!-- CSS -->
 	<link href="../css/bootstrap-responsive.css" rel="stylesheet">

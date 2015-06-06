@@ -57,8 +57,8 @@
         </style>
         
         <!-- jQuery -->	
-	<script src="../js/editcontact.js"></script>
-        <script src="../js/jquery-1.7.2.min.js"></script>
+	<script src="../js/tawi/editcontact.js"></script>
+        <script src="../js/tawi/jquery-1.7.2.min.js"></script>
         
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">

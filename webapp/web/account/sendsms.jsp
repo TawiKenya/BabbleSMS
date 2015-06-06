@@ -60,10 +60,10 @@
 .tokenize-sample { width: 300px ;}
 </style>
 
-<script type="text/javascript" src="../js/jquery.min.js"></script>
-<script type="text/javascript" src="../js/message.js"></script>
-<script type='text/javascript' src='../js/credittablejavascript.js'></script>
-<script type="text/javascript" src="../js/jquery.tokenize.js"></script>
+<script type="text/javascript" src="../js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/tawi/message.js"></script>
+<script type='text/javascript' src='../js/tawi/credittablejavascript.js'></script>
+<script type="text/javascript" src="../js/jquery/jquery.tokenize.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
 
 
@@ -484,22 +484,5 @@
     </div><!--/span-->
     
     </div><!--/row-->
-
-   <script type="text/javascript">
-       /*var jsonURL = 'getGroups?accountuuid=' + '<%= URLEncoder.encode(accountuuid, "UTF-8") %>';
-       $.ajax({
-            type: 'GET',
-            url: jsonURL
-       }).done(function(data){
-            console.log(data);
-            for(var i = 0; i < data.groups.length; i++){
-                
-            }
-
-
-       }).fail(function(){
-
-       });*/ 
-   </script> 
 
 <jsp:include page="footer.jsp" />
