@@ -24,6 +24,8 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
+import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
+import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -69,12 +71,19 @@ public class TestSmsPurchaseDAO {
 		
 		SMSPurchase purchase = new SMSPurchase();
 		
+		Shortcode s = new Shortcode();
+		s.setUuid(SHORTCODE_UUID);
+		
+		Mask m = new Mask();
+		m.setUuid(MASK_UUID);
+		
 		purchase.setAccountUuid(ACCOUNT_UUID);
-		purchase.setSourceUuid(SHORTCODE_UUID);
-		purchase.setSourceUuid(MASK_UUID);
+		//purchase.setSourceUuid(SHORTCODE_UUID);
+		//purchase.setSourceUuid(MASK_UUID);
 		purchase.setCount(COUNT);
 		purchase.setPurchaseDate(PURCHASE_DATE);
-		assertTrue(storage.put(purchase));
+		assertTrue(storage.put(purchase,s));
+		assertTrue(storage.put(purchase,m));
 		
 		
 		

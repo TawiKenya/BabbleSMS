@@ -19,6 +19,7 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
+import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface BabbleSmsPurchaseDAO {
 	 * @param purchase
 	 * @return whether or not the purchase action was successful
 	 */
-	public boolean put(SMSPurchase purchase);
+	public boolean put(SMSPurchase purchase, SMSSource smsSource);
 	
 	
 	/**

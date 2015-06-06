@@ -23,8 +23,6 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.transform.Source;
-
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -33,7 +31,6 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
-import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
@@ -80,12 +77,12 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#put(ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase)
 	 */
 	@Override
-	public boolean put(SMSPurchase purchase) {
+	public boolean put(SMSPurchase purchase, SMSSource smsSource) {
 		boolean success = true;
 		ShortcodePurchase sp = new ShortcodePurchase();
 		MaskPurchase mp = new MaskPurchase();
 		//Mask mask = new Mask();
-		//Shortcode scode = new Shortcode();
+		//Shortcode shortcode = new Shortcode();
 		
 
 		try(
@@ -101,11 +98,11 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 				){
 
 			
-			if( purchase instanceof ShortcodePurchase) {
+			if( smsSource instanceof Shortcode) {
 				
 				pst.setString(1, sp.getUuid());
 				pst.setString(2, purchase.getAccountUuid());
-				pst.setString(3, purchase.getSourceUuid());
+				pst.setString(3, smsSource.getUuid());
 				pst.setInt(4, purchase.getCount());
 				pst.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));	
 				
@@ -114,9 +111,10 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 				
 				
 			}else{  
+				
 				pst2.setString(1, mp.getUuid());
 				pst2.setString(2, purchase.getAccountUuid());
-				pst2.setString(3, purchase.getSourceUuid());
+				pst2.setString(3, smsSource.getUuid());
 				pst2.setInt(4, purchase.getCount());
 				pst2.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));
 				
