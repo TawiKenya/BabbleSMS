@@ -102,16 +102,3 @@ public class PdfUtil extends PdfPageEventHelper {
     }
         
 }
-
-/*
-** Local Variables:
-**   mode: java
-**   c-basic-offset: 2
-**   tab-width: 2
-**   indent-tabs-mode: nil
-** End:
-**
-** ex: set softtabstop=2 tabstop=2 expandtab:
-**
-*/
-

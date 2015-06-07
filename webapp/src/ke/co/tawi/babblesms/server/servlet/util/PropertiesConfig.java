@@ -60,6 +60,7 @@ public class PropertiesConfig extends HttpServlet {
 		initConfigHash();
 		
 	}
+        
 
 	/**
       * @param request 
@@ -81,6 +82,7 @@ public class PropertiesConfig extends HttpServlet {
 	public static String getConfigValue(String configAttribute) {
 		return configHash.get(configAttribute);
 	}
+	
 	
 	/**
 	 * Populate the internal HashMap which will hold configuration keys and values

@@ -39,7 +39,7 @@ public class TestDBCredentials {
 		
 		System.out.println("connection test");        
 		
-dbCredentials = new DBCredentials("babblesmsdb", "localhost", "babblesms", "Hymfatsh8", 5432);
+		dbCredentials = new DBCredentials("babblesmsdb", "localhost", "babblesms", "Hymfatsh8", 5432);
 		
 		Connection conn; 
 		

@@ -69,7 +69,7 @@ public class TestSmsPurchaseDAO {
 		
 		storage = new SmsPurchaseDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
-		SMSPurchase purchase = new SMSPurchase();
+		/*SMSPurchase purchase = new SMSPurchase();
 		
 		Shortcode s = new Shortcode();
 		s.setUuid(SHORTCODE_UUID);
@@ -83,7 +83,7 @@ public class TestSmsPurchaseDAO {
 		purchase.setCount(COUNT);
 		purchase.setPurchaseDate(PURCHASE_DATE);
 		assertTrue(storage.put(purchase,s));
-		assertTrue(storage.put(purchase,m));
+		assertTrue(storage.put(purchase,m));*/
 		
 		
 		

@@ -202,48 +202,95 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	@Override
 	public boolean addBalance(Account account, SMSSource smsSource, int count) {
 		boolean success = true;
-				
-		try(
-				Connection conn = dbCredentials.getConnection();
-				
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
-						"SET count = (SELECT count FROM ShortcodeBalance WHERE accountUuid=? "
-						+ "AND Shortcodeuuid=?) + ? " +				
-						"WHERE uuid = (SELECT uuid FROM ShortcodeBalance WHERE accountUuid=? "
-						+ "AND Shortcodeuuid=?);");	
-				
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
-						"SET count = (SELECT count FROM MaskBalance WHERE accountUuid=? "
-						+ "AND maskuuid=?) + ? " +				
-						"WHERE uuid = (SELECT uuid FROM MaskBalance WHERE accountUuid=? "
-						+ "AND maskuuid=?);");						
-				) {
 			
-			if(smsSource instanceof Shortcode) {
-				pstmt.setString(1, account.getUuid());					
-				pstmt.setString(2, smsSource.getUuid());				
-				pstmt.setInt(3, count);
-				pstmt.setString(4, account.getUuid());
-				pstmt.setString(5, smsSource.getUuid());
+		if(hasBalance(account, smsSource, count)) {
+			try(				
+					Connection conn = dbCredentials.getConnection();
+					
+					PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
+							"SET count = (SELECT count FROM ShortcodeBalance WHERE accountUuid=? "
+							+ "AND Shortcodeuuid=?) + ? " +				
+							"WHERE uuid = (SELECT uuid FROM ShortcodeBalance WHERE accountUuid=? "
+							+ "AND Shortcodeuuid=?);");	
+					
+					PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
+							"SET count = (SELECT count FROM MaskBalance WHERE accountUuid=? "
+							+ "AND maskuuid=?) + ? " +				
+							"WHERE uuid = (SELECT uuid FROM MaskBalance WHERE accountUuid=? "
+							+ "AND maskuuid=?);");						
+					) {
 				
-				pstmt.executeUpdate();
+				if(smsSource instanceof Shortcode) {
+					pstmt.setString(1, account.getUuid());					
+					pstmt.setString(2, smsSource.getUuid());				
+					pstmt.setInt(3, count);
+					pstmt.setString(4, account.getUuid());
+					pstmt.setString(5, smsSource.getUuid());
+					
+					pstmt.executeUpdate();
+					
+				} else {	// This is a mask
+					pstmt2.setString(1, account.getUuid());					
+					pstmt2.setString(2, smsSource.getUuid());				
+					pstmt2.setInt(3, count);
+					pstmt2.setString(4, account.getUuid());
+					pstmt2.setString(5, smsSource.getUuid());
+					
+					pstmt2.executeUpdate();				
+				}				
+										
+			} catch(SQLException e) {
+				logger.error("SQLException while adding by updating the balance of '" + account +
+						"' of amount " + count + " for '" + smsSource + "'.");
+				logger.error(ExceptionUtils.getStackTrace(e));
+				success = false;				
+			} 
+			
+			
+		} else { // This is the first time that we are adding balance to this short code or mask
+			try(				
+					Connection conn = dbCredentials.getConnection();
+					
+					PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
+							"SET count = (SELECT count FROM ShortcodeBalance WHERE accountUuid=? "
+							+ "AND Shortcodeuuid=?) + ? " +				
+							"WHERE uuid = (SELECT uuid FROM ShortcodeBalance WHERE accountUuid=? "
+							+ "AND Shortcodeuuid=?);");	
+					
+					PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
+							"SET count = (SELECT count FROM MaskBalance WHERE accountUuid=? "
+							+ "AND maskuuid=?) + ? " +				
+							"WHERE uuid = (SELECT uuid FROM MaskBalance WHERE accountUuid=? "
+							+ "AND maskuuid=?);");						
+					) {
 				
-			} else {	// This is a mask
-				pstmt2.setString(1, account.getUuid());					
-				pstmt2.setString(2, smsSource.getUuid());				
-				pstmt2.setInt(3, count);
-				pstmt2.setString(4, account.getUuid());
-				pstmt2.setString(5, smsSource.getUuid());
-				
-				pstmt2.executeUpdate();				
-			}				
-									
-		} catch(SQLException e) {
-			logger.error("SQLException while adding the balance of '" + account +
-					"' of amount " + count + " for '" + smsSource + "'.");
-			logger.error(ExceptionUtils.getStackTrace(e));
-			success = false;				
-		} 				
+				if(smsSource instanceof Shortcode) {
+					pstmt.setString(1, account.getUuid());					
+					pstmt.setString(2, smsSource.getUuid());				
+					pstmt.setInt(3, count);
+					pstmt.setString(4, account.getUuid());
+					pstmt.setString(5, smsSource.getUuid());
+					
+					pstmt.executeUpdate();
+					
+				} else {	// This is a mask
+					pstmt2.setString(1, account.getUuid());					
+					pstmt2.setString(2, smsSource.getUuid());				
+					pstmt2.setInt(3, count);
+					pstmt2.setString(4, account.getUuid());
+					pstmt2.setString(5, smsSource.getUuid());
+					
+					pstmt2.executeUpdate();				
+				}				
+										
+			} catch(SQLException e) {
+				logger.error("SQLException while adding by creating the balance of '" + account +
+						"' of amount " + count + " for '" + smsSource + "'.");
+				logger.error(ExceptionUtils.getStackTrace(e));
+				success = false;				
+			} 
+		}
+						
 		
 		return success;
 	}
