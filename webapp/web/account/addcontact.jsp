@@ -246,7 +246,7 @@
 <!-- Group table ends here-->
 
 
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><!--<br/><br/><br/><br/><br/><br/>-->
 <div class="form-actions">
 <input type="hidden" name="accountuuid" value="<%=accountuuid%>">
 <input type="hidden" name="statusuuid" value="<%=Contact.ACTIVE_STATUSUUID%>">

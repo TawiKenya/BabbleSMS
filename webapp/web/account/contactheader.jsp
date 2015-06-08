@@ -62,8 +62,9 @@
         
 
         <!-- jQuery/javascript -->
-        <script src="../js/jquery/jquery-1.7.2.min.js"></script>
-	<script src="../js/jquery/jquery_popup.js"></script>
+
+	<!--<script src="../js/jquery_popup.js"></script>-->
+   <script src="../js/jquery/jquery-1.7.2.min.js"></script>	
        	<!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 	<script src="../js/tawi/editcontact.js"></script>
 	<script src="../js/tawi/editcontact_popup.js"></script>
@@ -71,14 +72,14 @@
 	<script src="../js/tawi/charisma.js"></script>
         
 	<!-- CSS -->
-	<link href="../css/bootstrap-responsive.css" rel="stylesheet">
+	    <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
-	<link href="../css/poup.css" rel="stylesheet">
+	    <link href="../css/poup.css" rel="stylesheet">
         <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
         <link href='../css/fullcalendar.css' rel='stylesheet'>
         <link href='../css/fullcalendar.print.css' rel='stylesheet'  media='print'>
         <link href='../css/chosen.css' rel='stylesheet'>
-	<link href='../css/grouptable.css' rel='stylesheet'>
+	    <link href='../css/grouptable.css' rel='stylesheet'>
         <link href='../css/uniform.default.css' rel='stylesheet'>
         <link href='../css/colorbox.css' rel='stylesheet'>
         <link href='../css/jquery.cleditor.css' rel='stylesheet'>
@@ -90,7 +91,7 @@
         <link href='../css/opa-icons.css' rel='stylesheet'>
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
-	<link href="../css/bootstrap-cerulean.css" rel="stylesheet">
+	    <link href="../css/bootstrap-cerulean.css" rel="stylesheet">
 
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -100,6 +101,7 @@
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
         <script>
+
         $(document).ready(function() {
 	
 		$("[href]").each(function() {
@@ -111,7 +113,7 @@
             $(".input_fields_wrap").on("click",".remove_field", function(e){ //user click on remove text
                 e.preventDefault(); $(this).parent('div').remove();
             })
-	<!-- pagination button disabling on need-->
+	<!-- /*pagination button disabling on need*/-->
         
         $("#SECOND").click(function(){
         	$("#PREVIOUS").removeAttr("disabled");
@@ -121,11 +123,7 @@
         });
         
         
-        document.getElementById("abcd").click(function(e){
-            e.preventDefault();
-            alert('am clicked');
-        })
-
+        
         });
 
 	</script>
@@ -134,33 +132,29 @@
 <!-- ++++++++++++++++++
 ++++++++++++++++++++script for an ajax call to access server side dynamically -->
 <script>
-function showuser(str)
-{ 
-var xreq;
-if(str=="")
-{
-document.getElementById("showtext").innerHTML="";
-return;
-}
-if(window.XMLHttpRequest)
-{
-xreq=new XMLHttpRequest();
-}
-else
-{
-xreq=new ActiveXObject("Microsoft.XMLHTTP");
-}
-xreq.onreadystatechange=function ()
-{
-if((xreq.readyState==4) && (xreq.status==200))
-{
-document.getElementById("showtext").innerHTML 
-                                   =xreq.responseText;
-}
-}
-xreq.open("get","search.jsp?q="+str,"true");
-xreq.send();
-}
+          function showuser(str){ 
+               var xreq;
+               /*if(str==""){
+                       document.getElementById("showtext").innerHTML="";
+                       return;
+                         }*/
+               if(window.XMLHttpRequest){
+                        xreq=new XMLHttpRequest();
+                }
+               else{
+               xreq=new ActiveXObject("Microsoft.XMLHTTP");
+                 }
+              xreq.onreadystatechange=function (){
+
+              if((xreq.readyState==4) && (xreq.status==200)){
+                $('#showtext').remove(); 
+           $('#search-head').after(xreq.responseText);                                          
+                       }
+                   }                       
+                
+               xreq.open("get","search.jsp?q="+str,"true");
+               xreq.send();
+                }
 
 function hello(val){
     $(document).ready(function() {
@@ -175,16 +169,14 @@ function hello(val){
         $("#contactdiv").css("display", "block");
 
         
-    });
+           });
 
-    }
+         }
         var tbl = document.getElementById("dd");
         if (tbl != null) {
 
             for (var i = 0; i < tbl.rows.length; i++) {
-                if(cells.length>0){
-                    
-                }
+                if(cells.length>0){}
 
                 for (var j = 0; j < tbl.rows[i].cells.length; j++)
 
@@ -205,7 +197,7 @@ function hello(val){
     });
 }
     
-    
+  
 </script>
 
 <!-- +++++++++++++++++++++++++++++++ client-server ajax communication script ends here -->
@@ -316,7 +308,8 @@ function hello(val){
                   <li><a class="ajax-link" href="groups.jsp"><i class="icon-globe"></i><span class="hidden-tablet">All groups</span></a></li>
 		  <!--   <li><a class="ajax-link" href="#"><i class="icon-globe"></i><span class="hidden-tablet">View group</span></a></li>-->
                   <li><a class="ajax-link" href="addgroup.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li>
-	          <!--<li><a class="ajax-link" href="#"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li>-->	     
+	          <!--<li><a class="ajax-link" href="#"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li>-->	 
+	          <li><a class="ajax-link" href="contactspergroup.jsp"><i class="icon-folder-open"></i><span class="hidden-tablet">Group Contacts</span></a></li>    
                         </ul>
                         <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
                     </div><!--/.well -->

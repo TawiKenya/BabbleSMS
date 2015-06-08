@@ -3,154 +3,153 @@
   Licensed under the OSL-3.0 License:
   http://opensource.org/licenses/OSL-3.0
 */
+/*for use by the second showtext table*/
 
+
+function ContactEdit(val){
+   //Prevent the hyperlink to perform default behavior 
+	$("a").click(function(event){ event.preventDefault() });
+	   var $element=$(val);       
+      populatePopup($element);
+    }
+
+
+
+/**for use by the first showtext table*/
 $(document).ready(function() {
-var phonenumCols = 0 ;
-var emailnumCols = 0 ;
-var groupnumCols = 0 ;
-var testrepeatedphones = 0;
-var testrepeatedemails = 0;
-    
-
-   $(".tblTest a").click(function(event){  
 	//Prevent the hyperlink to perform default behavior  
-event.preventDefault();  
-
-
-var $td= $(this).closest('tr').children('td'); 
-        var rows = $(this).closest('tr');
-	var getrows = $(this).closest('tr').find("#hiddenphones").length;
-           
-	var getrows2 = $(this).closest('tr').find("#hiddenemails").length;
-	  
-	rows.find("#hiddenphones").each(function() {
-	phonenumCols++;
-	
-   	var phone1 = $(this).text();
-	$(".phonee").each(function() {
-	var testa = $(this).val();
-	
-	if (testa == phone1){
-	testrepeatedphones++;
-	
-	} 
-	}); 
-	if(testrepeatedphones == 0){
-	var phones = $("#addphones1").clone();
-	phones.find("#phone2").val(phone1);
-	phones.find("#phone2").attr("class" , "phonee");
-	phones.find("#addphns").remove();
-	phones.appendTo("#phone");
-	}
-	
-	
-	}); 
-
-	rows.find("#hiddenemails").each(function() {
-	emailnumCols++;
-	
-   	var email1 = $(this).text();
-	$(".emailee").each(function() {
-	var testa2 = $(this).val();
-	
-	if (testa2 == email1){
-	testrepeatedemails++;
-	
-	} 
-	}); 
-	if(testrepeatedemails == 0){
-	var emails = $("#addemails1").clone();
-	emails.find("#email").val(email1);
-	emails.find("#email").attr("class" , "emailee");
-	emails.find("#addemails").remove();
-	emails.appendTo("#mail");
-	}
-	
-	
-	}); 
-
-  	rows.find("#hiddengroups").each(function() {
-	var groupvalue = $(this).text();
-	
-	groupnumCols++; 
-	
-	APP.ajax_post(groupvalue);
-	window.APP = {
-   
-	rowTemplate: $('<tr> <td id="td1"><a href="#"></a></td>  </tr>'),
-        ajax_post: function (groupvalue) {
-        
-        var table1 = $("#resulttable");
-      
-        var row = APP.rowTemplate.clone();
-        
-        row.find('td :eq(0)').text(groupvalue);
-        
-        
-        
-        row.appendTo(table1);
-        }}
-	 
-	
-	});
-		
-
-
-	
-        var account =$td.eq(0).text();
-	
-	var name= $td.eq(1).text();  
-  
-	var phone= $td.eq(2).text();  
-  
-	var email= $td.eq(4 + phonenumCols).text();  
-	
-	var group= $td.eq( phonenumCols + 6 + emailnumCols ).text();
-	
-	var description= $td.eq( phonenumCols + 8 + emailnumCols + groupnumCols ).text();
-	
-  	var uuid= $td.eq(phonenumCols + 9 + emailnumCols+groupnumCols).text();
-
-	$("#paragraph_1").val(name);
-	$("#phone2").val(phone);
-	$("#email").val(email);
-	$("#uuid").val(uuid);
-	$("#group").val(group);
-	$("#textarea").val(description);
-	$(".tblTest").hide();
-        $("#contactdiv").css("display", "block");
-        
-
-        
-    });
-
-   
-	$("#cancel1").click(function(event){
-         event.preventDefault();
-
-         window.location="../account/contact.jsp";
-
-
+   $(".Zlink").click(function(event){	
+     event.preventDefault();
+     var $element=$(this);      		
+      populatePopup($element);  
         });
+    });
+/*end of click function*/
    
-
+   /*used by search tbltest table after search
+   *a copy of this function exist in editcontact.js
+   *but function differently*/
+	$("#cancel1").click(function(event){
+             event.preventDefault();             
+             window.location="../accounts/contact.jsp";             
+             });
+   
+     /*used by search tbltest table after search
+     *a copy of this function exist in editcontact.js
+    *but function differently*/
 	$("#close").click(function(event) {
-	event.preventDefault();
-	event.preventDefault();
+	         event.preventDefault();
+	         $('.checkphones').remove();
+	         $('.checkemails').remove();
+	         $('.body-insert').remove();
+	         $(this).parent().parent().hide();
+	         $(".groupstablee").show();
+	         $(".templatestable").show();
+	         $(".tblTest").show();
+	          });
 
-         window.location="../account/contact.jsp";
-	});
         
     $("#cancel").click(function(event) {
-	event.preventDefault();
-        $(this).parent().parent().hide();
-	$(".groupstablee").show();
-    });
-    $("#close").click(function(event) {
-	event.preventDefault();
-        $(this).parent().parent().hide();
-	$(".groupstablee").show();
-    });
+	         event.preventDefault();	         
+             $(this).parent().parent().hide();
+	         $(".groupstablee").show();
+	         $(".templatestable").show();
+	         $(".tblTest").show();	         
+             });
+
+       
+        
+    function checkgroups(str){   	
+        	    $.ajax({
+                   method: "GET",
+                   url: "selectedgroups.jsp?g="+str                      
+                    })
+                    .done( function (data) {
+                  $('.head-insert').after(data);
+                });
+           }
+
+             //appends extra phones found      
+        function checkphones(str){
+        	var $clone;
+        	var $parent=$("<div class='checkphones'></div");
+        	var $item=$('#addphones1');
+        	var text,text2;
+        	var lists = [];
+
+        	for(var i=0;i<str.length;i++){
+        		if(str[i]===">"){ lists.push(i+1);}
+        	              }
+        	      var str2=str;
+        	          
+          $('#phone2').val(str2.substring(1, str2.indexOf("(")));
+          $('#phone2').attr('title',str2.substring(str2.indexOf("(")+1, str2.indexOf(")")));           
+       while(lists.length>1){       	        
+        	 	str2=str2.slice(str2.indexOf(">")+1);        	 	
+        	 	text= str2.substring(1,str2.indexOf("(")); 
+        	 	text2= str2.substring(str2.indexOf("(")+1, str2.indexOf(")"));      	 	     	 	 
+        	 	$clone = $item.clone();        	 	
+        	 	$clone.find('#phone2').val(text); 
+        	 	$clone.find('#phone2').attr('title',text2);      
+        	 	$parent.append($clone);
+        	 	$parent.find('#addphns').remove();
+        	 	lists.length=lists.length-1;
+        	 }        	 
+        	 $('#phone').append($parent);
+        	}   	
+        
+
+
+             //appends extra emails found
+        function checkemails(str){
+
+        	var $clone;
+        	var $parent=$("<div class='checkemails'></div");
+        	var $item =$("#addemails1");
+        	var text="";
+        	var lists = [];
+
+        	for(var i=0;i<str.length;i++){
+        		if(str[i]===">"){ lists.push(i+1);}
+        	            }
+        	      var str2=str;
+                      
+            $item.find('#email').val(str2.substring(1,str2.indexOf("<")));    
+       while(lists.length>1){
+       	        str2 = str2.slice(str2.indexOf(">")+1);
+        	 	text= str2.substring(1,str2.indexOf("<"));        	 	
+        	 	$clone = $item.clone();
+        	 	$clone.find('#email').val(text);
+        	 	$parent.append($clone);
+        	 	$parent.find('#addemail').remove();
+        	 	lists.length=lists.length-1;
+        	  }        	  
+        	  $item.append($parent);
+        	}      	
+    
+
+
+        //gets the values of the clicked contact and populates the popup
+    function populatePopup($element){
+       var $td = $element.closest('tr').children('td');
+             var account =$td.eq(0).text();
+	         var name= $td.eq(1).text(); 
+	         var phone= $td.eq(2).html();
+	         var email= $td.eq(3).html();	
+	         var group= $td.eq(4).text(); 	
+	         var description= $td.eq(5).text();	
+  	         var uuid= $td.eq(6).text();
+  	           	
+	         $("#paragraph_1").val(name);
+	         checkphones(phone);
+	         checkemails(email);
+	          $("#uuid").val(uuid);
+	          checkgroups(group);
+	         //$("#group").val(group);
+	         $("#textarea").val(description);
+	         $(".tblTest").hide();
+             $("#contactdiv").css("display", "block"); 
+         } 
 
 
  
@@ -158,8 +157,8 @@ var $td= $(this).closest('tr').children('td');
 	function formValidator() {
         var name = $("#paragraph_1").val();
         var email = $("#email").val();
-        var contact = $("#phone").val();
-        var description = $("#dept").val();
+        var contact = $("#phone2").val();
+        var description = $("#textarea").val();
         if (name == "" || email == "" || contact == "" || description == "")
         {
             alert("Please Fill All Fields");
@@ -187,6 +186,13 @@ var $td= $(this).closest('tr').children('td');
             }
         }
     }
+
+
+$(document).ready(function() {
+    setTimeout(popup, 3000);
+    function popup() { $("#logindiv").css("display", "block");  }
+    $("#login #cancel").click(function() {  $(this).parent().parent().hide();  });
+
 //add more phone click
   $("#addphns").click(function(e){ 
                 e.preventDefault();
@@ -197,9 +203,6 @@ var $td= $(this).closest('tr').children('td');
 		$("#phone").append(control);
               
            });
-
-
-
 
 //login form popup login-button click event
     $("#loginbtn").click(function() {
@@ -214,6 +217,8 @@ var $td= $(this).closest('tr').children('td');
             $("#logindiv").css("display", "none");
         }
     });
+});
+
 
 /**+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -246,18 +251,9 @@ var $tdd= $(this).closest('tr').children('td');
 	$("#guuid").val(groupuuid);
         $(".groupstablee").hide();
         $("#contactdiv").css("display", "block");
-    });
+    });   
 
-    $("#cancel").click(function(event) {
-	event.preventDefault();
-        $(this).parent().parent().hide();
-	$(".groupstablee").show();
-    });
-    $("#close").click(function(event) {
-	event.preventDefault();
-        $(this).parent().parent().hide();
-	$(".groupstablee").show();
-    });
+
 
 //for editing message template
 $(".templatestable td:nth-child(2)").click(function(event){  
@@ -277,20 +273,5 @@ var $tddd= $(this).closest('tr').children('td');
         $("#templateuuid").val(templates_uuid);
         $(".templatestable").hide();
         $("#contactdiv").css("display", "block");
-	});
-
-    $("#cancel").click(function(event) {
-	event.preventDefault();
-        $(this).parent().parent().hide();
-	$(".templatestable").show();
-    });
-    $("#close").click(function(event) {
-	event.preventDefault();
-        $(this).parent().parent().hide();
-	$(".templatestable").show();
-    });
-
-
-});
-
- 
+	});    
+    

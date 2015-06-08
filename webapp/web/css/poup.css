@@ -92,8 +92,11 @@ b{
     margin-right: -37px;
 }
 #contact{
+    width:700px;
+    height:500px;
+    overflow: auto;
     left: 40%;
-    top: 50%;
+    top: 40%;
     margin-left:-210px;
     margin-top:-255px;
 }

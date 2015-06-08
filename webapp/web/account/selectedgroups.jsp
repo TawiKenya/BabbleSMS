@@ -116,125 +116,43 @@
         network = (Network) element.getObjectValue();
         networkHash.put(network.getUuid(), network.getName());
     }
-	List keys2;
+    List keys2;
      keys2 = networksCache.getKeys();
      for (Object key : keys) {
         element = networksCache.get(key);
         network = (Network) element.getObjectValue();
         networkList.add(network);
-    }
-
-    
-           String name=request.getParameter("q"); 
-           if(name==null){
-           response.sendRedirect("../account/contact.jsp");
-           contactPageList=null;
-       }else{
-           contactPageList = cdao.getContactListMatch(account , name);
-       }
-
-
-
- 
+    }    
+           String name=request.getParameter("g");                       
     // end else
 %>
+<tbody id ="tablet" class="body-insert" >   
+<%    
+    if (contactsgrpList != null) {
+         for (Group group : contactsgrpList) {
 
-  <div id="showtext">  
-<table class="table table-striped table-bordered " id="table_id">
+         int jcheck= name.indexOf(group.getName());
+             if(jcheck!=-1){ %>
+              <tr>
+               <td >
+               <input type="checkbox" id="remember" value="<%=group.getUuid()%>" name="groupselected[]"checked/>
+               <a class ="alink"><%=group.getName()%></a>
+                  </td>
+       </tr>
 
-                <thead>
-                        <tr><th>*</th>
-                        <th><a href="#">Name</a></th>
-                        <th><a href="#">Phone</a></th>
-                        <th><a href="#">Email</a></th>
-                        <th><a href="#">Group</a></th>
-                    </tr>
-                </thead>   
-       
-		<tbody class="tblTest">
-        
-            <%
-                if (contactPageList != null) {
-                    /*int count1 =1;*/
+        <% } 
+         else { %>
+             <tr>
+               <td >
+               <input type="checkbox" id="remember" value="<%=group.getUuid()%>" name="groupselected[]"/>
+               <a class ="alink"><%=group.getName()%></a>
+                  </td>
+       </tr>
 
-                 for (Contact code:contactPageList) {
-                
-                    
-                    emailList = emailDAO.getEmails(code);
-                    contactGroupList = cgDAO.getGroups(code,account);
-                    phoneList = phoneDAO.getPhones(code);
-                  
-                    // if (phoneList != null) {
-                        // for (Phone code2 :phoneList) {
-         %>
-         <tr>
-             
-             <td width="5%"> <%=contactCount%> </td>
-
-        <td class="center"> <a href="#" class="Zlink" id="ZZlink" title="click to edit details" onclick="ContactEdit(this)"> <%=code.getName()%> </a> </td>
-
-         
-		<% if (phoneList != null) {
-                         //for (Phone code2 :phoneList) {
-			int i=phoneList.size();
-		%>
-                <td class="center" >   <% for(int k=0;k<i;k++){ %> <%=phoneList.get(k).getPhonenumber()%>
-                  (<%=networkHash.get(phoneList.get(k).getNetworkuuid())%>)<br>   <% } %>
-             </td>
-               
-			<%      			
-		        }
-                else { %>
-                <td class="center" ><font color="red">No Phone Number(s)</font></td>
-
-                <%}
-		%>
-
-
-		
-	     <% if ( emailList != null) {                         
-			int e = emailList.size();
-		%>
-             <td class = "center">  <% for(int k=0;k<e;k++){ %>   <%= emailList.get(k).getAddress()%><br>  <% } %>   </td>
-	    
-			<%
-		    }
-		else {		%>
-		<td class = "center"><font color="red"> No Email(s)</font></td>
-	        <%
-             }
-		%>	
-            
-        <% 
-             if(contactGroupList!=null){
-             int c = contactGroupList.size();
-        %>
-             <td class="center">  <% for(int k=0;k<c;k++){ %> <%=contactGroupList.get(k).getName()%> <br> <%} %></td>
-              
-            <% 
-              } 
-              else {
-             %>
-            <td class = "center"></td>
-            <% } %>
-  
-  	<td style="display:none"><%=code.getDescription()%></td>
-	<td style="display:none"><%=code.getUuid()%></td>
-
-
-         </tr>
-
-         <%     
-                      
-                     contactCount++;
-                 }
-             }			
-        %>
-        </tbody>
-        </table> 
-
-        </div>       
-       
-
-
-      
+         <%}                                 
+    
+        }
+    } 
+    
+    %>
+   </tbody>

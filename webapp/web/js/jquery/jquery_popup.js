@@ -1,4 +1,4 @@
-$(document).ready(function() {
+/*$(document).ready(function() {
     setTimeout(popup, 3000);
 
     function popup() {
@@ -7,9 +7,9 @@ $(document).ready(function() {
 
     $("#login #cancel").click(function() {
         $(this).parent().parent().hide();
-    });
+    });*/
 
-   $(".tblTest td:nth-child(2)").click(function(event){  
+   /*$(".tblTest td:nth-child(2)").click(function(event){  
 	//Prevent the hyperlink to perform default behavior  
 event.preventDefault();  
 //alert($(event.target).text())  
@@ -23,26 +23,26 @@ var $td= $(this).closest('tr').children('td');
   
 	var phone= $td.eq(2).text();  
   
-	var email= $td.eq(4).text();  
+	var email= $td.eq(3).text();  
 	
-	var group= $td.eq(5).text();
+	var group= $td.eq(4).text();
 
-  	var uuid= $td.eq(6).text();
+  	var uuid= $td.eq(5).text();
 	
-	var description= $td.eq(7).text();
+	var description= $td.eq(6).text();
 
 	$("#paragraph_1").val(name);
 	$("#phone2").val(phone);
 	$("#email").val(email);
 	$("#uuid").val(uuid);
 	$("#group").val(group);
-        $("#guuid").val(guuid);
+       $("#guuid").val(guuid);
 	$("#textarea").val(description);
 	$(".tblTest").hide();
         $("#contactdiv").css("display", "block");
-    });
+    });*/
 
-    $("#cancel").click(function(event) {
+    /*$("#cancel").click(function(event) {
 	event.preventDefault();
         $(this).parent().parent().hide();
 	$(".tblTest").show();
@@ -52,12 +52,12 @@ var $td= $(this).closest('tr').children('td');
 	event.preventDefault();
         $(this).parent().parent().hide();
 	$(".tblTest").show();
-    });
+    });*/
 
 //contact form popup send-button click event
    // $("#send").click(function() 
 
-	function formValidator(){
+	/*function formValidator(){
         var name = $("#paragraph_1").val();
         var email = $("#email").val();
         var contact = $("#phone").val();
@@ -88,7 +88,7 @@ var $td= $(this).closest('tr').children('td');
                 }
             }
         }
-    }
+    }*/
 
 
 
@@ -97,7 +97,7 @@ var $td= $(this).closest('tr').children('td');
 
 
 
-//login form popup login-button click event
+/*//login form popup login-button click event
     $("#loginbtn").click(function() {
         var name = $("#username").val();
         var password = $("#password").val();
@@ -111,6 +111,6 @@ var $td= $(this).closest('tr').children('td');
         }
     });
 
-});
+});*/
 
  

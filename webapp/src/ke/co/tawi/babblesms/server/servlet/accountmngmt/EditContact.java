@@ -79,6 +79,7 @@ public class EditContact extends HttpServlet {
 	 * @param response
 	 * @throws ServletException, IOException
 	 */
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -99,14 +100,17 @@ public class EditContact extends HttpServlet {
 		String contactname = request.getParameter("name");
 		String contactstatusuuid = request.getParameter("statusuuid");
 		String description =request.getParameter("description");
-		String [] groupArray =request.getParameterValues("groupsadded[]");
-		String [] groupsArray =request.getParameterValues("groupsdeleted[]");
+		String [] groupArray =request.getParameterValues("groupselected[]");		
+		
+		System.out.println("JSP sent ::::"+groupArray.toString());	
+		
+		//String [] groupsArray =request.getParameterValues("groupsdeleted[]");
 		String cuuid = request.getParameter("uuid");
 		String [] phonenumArray = request.getParameterValues("phone1[]"); 
 		String [] emailArray = request.getParameterValues("email[]");
 		String[] networkArray = request.getParameterValues("network[]");
 		Set<String> myGroupSet = new HashSet<String>(Arrays.asList(groupArray));
-		Set<String> groupSet = new HashSet<String>(Arrays.asList(groupsArray));
+		//Set<String> groupSet = new HashSet<String>(Arrays.asList(groupsArray));
 		if(contactname.equals("") || phonenumArray.equals("")){
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
 		}
@@ -133,8 +137,8 @@ public class EditContact extends HttpServlet {
 			}
 			
 			if(phonenumArray.length > plist.size()){
-			int plistSize = plist.size();
-			int arrayLength = phonenumArray.length;
+			//int plistSize = plist.size();
+			//int arrayLength = phonenumArray.length;
 			for(int count = plist.size();count < phonenumArray.length;count ++){
 			Phone newPhone =new Phone();
 			String phonenums = phonenumArray[count];
@@ -187,7 +191,7 @@ public class EditContact extends HttpServlet {
 
 			}
 			
-			for (String group2 : groupSet) {
+			/*for (String group2 : groupSet) {
 
 			if(!(group2.equals(""))){
 			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
@@ -197,7 +201,7 @@ public class EditContact extends HttpServlet {
 
 				}
 
-			}
+			}*/
 			                
 			
 		}

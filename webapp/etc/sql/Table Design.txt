@@ -112,6 +112,7 @@ This table stores phone numbers associated with the Contact
 - Phone Number
 - Contact UUID references Contact
 - Status uuid references Status
+- networkuuid text references network(uuid)
 
 
 ------

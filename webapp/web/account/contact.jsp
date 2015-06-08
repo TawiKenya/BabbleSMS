@@ -19,7 +19,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Email"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
@@ -180,7 +179,7 @@
     
 %> 
 <jsp:include page="contactheader.jsp" />
-<link rel="stylesheet" type="text/css" href="../js/grouptable.css">
+<!--<link rel="stylesheet" type="text/css" href="../css/grouptable.css">-->
 
 
 <div>
@@ -194,12 +193,15 @@
     </ul>
 </div>
 
-<div class="row-fluid sortable" id ="hello">		
+<div class="row-fluid sortable">		
     <div class="box span12">
         <div class="box-header well" data-original-title>
-		
-           
-            <a class="btn" href="#"  onclick="del()" title="Export contacts" type="submit" data-rel="tooltip">Export</a> 
+		 <h2><i class="icon-align-left"></i> All Contacts Listings</h2>           
+            
+        </div>
+        <div class="box-content">
+
+        <a class="btn" href="#"  onclick="del()" title="Export contacts" type="submit" data-rel="tooltip">Export</a> 
      
   <button class="btn btn-default dropdown-toggle dropdown" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 more
@@ -210,9 +212,7 @@ more
      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sortby</a></li>  
 </ul>
 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="search" onkeyup="showuser(this.value)"  placeholder = "type then click enter to search" autofocus>
-        </div>
-        <div class="box-content">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search:&nbsp;<input type="text" name="search" onkeyup="showuser(this.value)"  placeholder = "type then click enter to search" autofocus="autofocus">
             
             <%                      
                 String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
@@ -268,6 +268,7 @@ more
                 } 
 
             %>
+            <div id="search-head"></div>
            <div id="showtext">
              <table class="table table-striped table-bordered " id="table_id">
 
@@ -281,7 +282,7 @@ more
                     </tr>
                 </thead>   
        
-		<tbody class="tblTest">
+		<tbody class="tblTest" >
                     
             <%
                 if (contactPageList != null) {
@@ -297,7 +298,7 @@ more
                     <tr>
 
                        <td width="5%"><%=contactCount%></td>
-                       <td class="center"><a href="#" title="click to edit details"><%=contact.getName()%></a></td>
+                       <td class="center"><a class="Zlink" href="#" title="click to edit details"><%=contact.getName()%></a></td>
          				
                     <% 
                         // Print Phone Numbers
@@ -337,9 +338,8 @@ more
 
                         } else { // end 'if ( contactGroupList != null)'
                             out.println("<td>&nbsp;</td>");
-                        }  
-                     
-
+                        }
+                        
                      contactCount++;
                      out.println("</tr>");
 
@@ -351,7 +351,9 @@ more
 
                 </tbody>
             </table> 
-           </div>         
+           </div>  
+
+
         </div>
     </div><!--/span-->
 
@@ -395,13 +397,14 @@ more
 </form>
 </div> 
 
- 
+
+
 <!-- Contact Form  for the pop up starts-->
 <div id="contactdiv"style="display:none;">
-<form class="form"  action = "editContact" method = "POST" id="contact" >
+<form class="form"  onsubmit="return formValidator()" action = "editcontact" method = "POST" id="contact" >
 <!--onsubmit="return formValidator()"-->
-<b>Contact Details</b>
-<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:15px;" id ="close">x</p>
+<b> Edit Contact Details</b>
+<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:20px;" id ="close">x</p>
 
 
 <div class="control-group">
@@ -432,11 +435,6 @@ more
           </select>
           </div>
 </div>
-
-<div class = "input_fields_wrap">
-<button class = "add_field_button">+ </button>
-</div>
-
 <div class="control-group" id="mail">
 <label class="control-label" for="email">Email</label>
 <div class="controls" id = "addemails1">
@@ -450,65 +448,20 @@ more
 <label class="control-label">Description</label>
 <div class="controls">
 <textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" ></textarea>
-</div>	
+</div>  
 </div>
 
 <!-- Group table here-->
 <div class="table-save">
 <div id="scrolledit">
     <table id="scroll" class="table table-striped table-bordered">
-    <thead>
+    <thead class="head-insert">
         <tr>
-            <th>All Groups</th>
+            <th> Choose A Group</th>
         </tr>
     </thead>
-    <tbody id ="tablet">
-
-	<%
-	
-	if (contactsgrpList != null) {
-         for (Group group : contactsgrpList) {
-	%>     
-    <tr>
-               <td class="center" >
-               <input type="checkbox" id="remember" value="<%=group.getUuid()%>" name="groupselected"/>
-
-               <a class ="alink" href="#" tooltip="click to edit this contact"><%=group.getName()%></a>
-                  </td>
-       </tr>
-
-        
-        <%   
-	
-	
-    }
-    } 
-	
-	%>
-  
-    </tbody>
+    <!--table body is inserted here-->
 </table>
-<!--<div id = "groupsform">
-<br/><br/><br/>
-<button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-<button type="submit"  id = "remove2" > << Remove </button>
-
-<input type="hidden"  class ="groupsadded" name="groupsadded[]"  />
-<input type="hidden"  class ="groupsdeleted" name="groupsdeleted[]"  />
-</div>-->
-<!--<table id="scroll1" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Contact Groups</th>
-        </tr>
-    </thead>
-    <tbody id = "resulttable">
-    
-	
-  
-    </tbody>
-</table>-->
-
 </div>
 <!-- Group table ends here-->
 
@@ -527,5 +480,6 @@ more
 </div>
 
 <!-- Contact Form  for the pop up ends-->
+
 
 <jsp:include page="footer.jsp" />
