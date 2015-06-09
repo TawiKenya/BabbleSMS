@@ -21,12 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
-import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
-import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
-import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -34,10 +29,12 @@ import org.junit.Test;
  *@author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  *
  */
-public class TestSmsPurchaseDAO {
+public class TestSmsPurchaseDAO extends SMSPurchase {
 	
-	
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final String DB_NAME = "babblesmsdb";
 	final String DB_HOST = "localhost";
 	final String DB_USERNAME = "babblesms";
@@ -46,12 +43,9 @@ public class TestSmsPurchaseDAO {
 	
 	
 	final String ACCOUNT_UUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
-			     
-		   
-	final String SHORTCODE_UUID = "6C8275C2-8FE7-E3AD-6873-8384C41D395F";	
-		   
 	
-	final String MASK_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E";				    
+	final String MASK_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E";				      
+	final String SHORTCODE_UUID = "6C8275C2-8FE7-E3AD-6873-8384C41D395F";	
 	
 	final Date PURCHASE_DATE = new Date(new Long("1420070075009") ); 
 	
@@ -60,30 +54,29 @@ public class TestSmsPurchaseDAO {
 	private SmsPurchaseDAO storage;
 	
 	
+	
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsPurchaseDAO#put(ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase)}.
 	 */
+	
 	@Test
 	//@Ignore
 	public void testPut() {
 		
 		storage = new SmsPurchaseDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
-		/*SMSPurchase purchase = new SMSPurchase();
-		
-		Shortcode s = new Shortcode();
-		s.setUuid(SHORTCODE_UUID);
-		
-		Mask m = new Mask();
-		m.setUuid(MASK_UUID);
+		SMSPurchase purchase = new SMSPurchase();
 		
 		purchase.setAccountUuid(ACCOUNT_UUID);
+		purchase.setSourceUuid(MASK_UUID);
 		//purchase.setSourceUuid(SHORTCODE_UUID);
-		//purchase.setSourceUuid(MASK_UUID);
 		purchase.setCount(COUNT);
 		purchase.setPurchaseDate(PURCHASE_DATE);
-		assertTrue(storage.put(purchase,s));
-		assertTrue(storage.put(purchase,m));*/
+	   
+		assertTrue(storage.put(purchase));
+		
+		
+		
 		
 		
 		

@@ -23,18 +23,15 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.dbutils.BeanProcessor;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
-
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
-import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
-import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
+import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Persistence implementation for shortcode and mask purchace history.
@@ -77,44 +74,45 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#put(ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase)
 	 */
 	@Override
-	public boolean put(SMSPurchase purchase, SMSSource smsSource) {
+	public boolean put(SMSPurchase purchase) {
 		boolean success = true;
 		ShortcodePurchase sp = new ShortcodePurchase();
 		MaskPurchase mp = new MaskPurchase();
-		//Mask mask = new Mask();
-		//Shortcode shortcode = new Shortcode();
 		
-
 		try(
 			Connection con = dbCredentials.getConnection();	
-			PreparedStatement pst = con.prepareStatement("INSERT INTO shortcodepurchase(uuid,accountuuid,"
-					+ "shortcodeuuid,count,purchasedate) "
-					+ "VALUES(?,?,?,?,?);");
-					
-			PreparedStatement pst2 = con.prepareStatement("INSERT INTO maskpurchase(uuid,accountuuid,"
-					+ "maskuuid,count,purchasedate) "
-					+ "VALUES(?,?,?,?,?);");			
-					
-				){
-
 			
-			if( smsSource instanceof Shortcode) {
-				
+			
+				PreparedStatement pst = con.prepareStatement("INSERT INTO shortcodepurchase(uuid,accountuuid,"
+						+ "shortcodeuuid,count,purchasedate) "
+						+ "VALUES(?,?,?,?,?);");
+						
+
+				PreparedStatement pst2 = con.prepareStatement("INSERT INTO maskpurchase(uuid,accountuuid,"
+						+ "maskuuid,count,purchasedate) "
+						+ "VALUES(?,?,?,?,?);");	
+					
+					    
+				){
+			if( purchase instanceof ShortcodePurchase) {
+				/*  when i run the test, only else statement executes,
+				 * and then , i have to comment the source 'shortcode' for the test to work
+				 * also the constractor smspurchase is protected, so if had to make it public 
+				 * so that i can use it in the testcase
+				 */
 				pst.setString(1, sp.getUuid());
 				pst.setString(2, purchase.getAccountUuid());
-				pst.setString(3, smsSource.getUuid());
+				pst.setString(3,purchase.getSourceUuid());
 				pst.setInt(4, purchase.getCount());
 				pst.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));	
 				
 				pst.executeUpdate();
-				
-				
-				
+	
 			}else{  
 				
 				pst2.setString(1, mp.getUuid());
 				pst2.setString(2, purchase.getAccountUuid());
-				pst2.setString(3, smsSource.getUuid());
+				pst2.setString(3, purchase.getSourceUuid());
 				pst2.setInt(4, purchase.getCount());
 				pst2.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));
 				
@@ -122,9 +120,9 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 				
 			}
 			
-			success = true;
+			//success = true;
 		}catch(SQLException e){
-			logger.error("SQLException while trying to put "+purchase);
+			logger.error("SQLException while trying to put "+ purchase);
 			logger.error(ExceptionUtils.getStackTrace(e));
 			success= false;
 		}

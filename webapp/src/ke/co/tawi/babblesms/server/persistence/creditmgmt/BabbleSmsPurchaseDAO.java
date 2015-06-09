@@ -38,7 +38,7 @@ public interface BabbleSmsPurchaseDAO {
 	 * @param purchase
 	 * @return whether or not the purchase action was successful
 	 */
-	public boolean put(SMSPurchase purchase, SMSSource smsSource);
+	public boolean put(SMSPurchase purchase);
 	
 	
 	/**
