@@ -15,17 +15,16 @@
     under the License.
     */
 %>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.account.PurchaseHistory"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.purchaseHistory.PurchaseHistoryDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+
 
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
@@ -63,31 +62,40 @@
     Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
     Cache maskCache = mgr.getCache(CacheVariables.CACHE_MASK_BY_UUID);
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+    
+    
+    ContactDAO contactDAO = ContactDAO.getInstance();
+    PhoneDAO phoneDAO = PhoneDAO.getInstance();
+    NetworkDAO networkDAO = NetworkDAO.getInstance();
+    
 
-    // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
+ 
     HashMap<String, String> networkHash = new HashMap<String, String>();
+    
+    Account account = new Account();
     Element element;
-
+	if ((element = accountsCache.get(username)) != null) {
+        account = (Account) element.getObjectValue();
+    }
+     
     Network network;
     Shortcode shortcode;
     Mask mask;
-    Account account = new Account();
+    
+    List <Network> networkList = new ArrayList<Network>();
+    List <Shortcode> shortcodeList = new ArrayList<Shortcode>();
+    List<Mask> maskList = new ArrayList<Mask>();
+    
+    
 
-    List<Shortcode> list = new ArrayList();
-    List<Mask> masklist = new ArrayList();
+    
     List keys;
-
-    if ((element = accountsCache.get(sessionUsername)) != null) {
-        account = (Account) element.getObjectValue();
-    }
-
     keys = shortcodesCache.getKeys();
     for (Object key : keys) {
         element = shortcodesCache.get(key);
         shortcode = (Shortcode) element.getObjectValue();
         if (account.getUuid().equals(shortcode.getAccountuuid())) {
-
-            list.add(shortcode);
+            shortcodeList.add(shortcode);
         }
     }
 
@@ -102,10 +110,8 @@
     for (Object key : keys) {
         element = maskCache.get(key);
         mask = (Mask) element.getObjectValue();
-
         if (account.getUuid().equals(mask.getAccountuuid())) {
-
-            masklist.add(mask);
+            maskList.add(mask);
         }
     }
 
@@ -153,8 +159,8 @@
                 <tbody>
                     <%                        
                         int count = 1;
-                        if (masklist != null) {
-                            for (Mask msk : masklist) {
+                        if (maskList != null) {
+                            for (Mask msk : maskList) {
 
                     %>
                     <tr>
@@ -197,8 +203,8 @@
                 <tbody>
                     <%
                         count = 1;
-                        if (list != null) {
-                            for (Shortcode code : list) {
+                        if (shortcodeList != null) {
+                            for (Shortcode code : shortcodeList) {
                     %>
                                 <tr>
                                     <td width="10%"><%=count%></td>

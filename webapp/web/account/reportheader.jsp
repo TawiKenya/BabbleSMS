@@ -176,8 +176,8 @@
                 <div class="topmenu">                     
                     <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
-                    <!-- <a href="portfolio.jsp">REPORT</a>-->
-		    <a href="#">REPORT</a>
+                    <a href="portfolio.jsp">REPORT</a>
+	
                 </div>    
             </div>
 
