@@ -21,6 +21,7 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
@@ -76,9 +77,9 @@ public class TestSmsBalanceDAO {
 		Mask m = new Mask();
 		m.setUuid(MASK_UUID);
 		
-		assertTrue(storage.hasBalance(account, s, COUNT));
-		assertFalse(storage.hasBalance(account, s, COUNT2));
-		assertTrue(storage.hasBalance(account, m, COUNT));		
+		//assertTrue(storage.hasBalance(account, s, COUNT));
+		//assertFalse(storage.hasBalance(account, s, COUNT2));
+		assertTrue(storage.hasBalance(account, m, 1));		
 	}
 	
 
@@ -101,8 +102,8 @@ public class TestSmsBalanceDAO {
 		mask.setUuid(MASK_UUID);
 		
 		
-		assertTrue(storage.deductBalance(acc, shortcode, 50));
-		assertTrue(storage.deductBalance(acc, mask, 50));		
+		assertTrue(storage.deductBalance(acc, shortcode, 10));
+		assertTrue(storage.deductBalance(acc, mask, 10));		
 	}
 	
 
@@ -113,13 +114,27 @@ public class TestSmsBalanceDAO {
 	@Test
 	public void testAddBalance() {
 		storage = new SmsBalanceDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		Account a = new Account();
+		a.setUuid(ACCOUNT_UUID_DEMO);
+		Mask mask = new Mask();
+		mask.setUuid(MASK_UUID);
+		Shortcode s = new Shortcode();
+		s.setUuid(SHORTCODE_UUID);
+		assertTrue(storage.addBalance(a, s, 10));
+		assertTrue(storage.addBalance(a, mask, 10));
+		
+		
+		
+		
+		
+		
 	}
 	
 
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO#getBalances(ke.co.tawi.babblesms.server.beans.account.Account)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetBalances() {
 		storage = new SmsBalanceDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -128,16 +143,28 @@ public class TestSmsBalanceDAO {
 		account.setUuid(ACCOUNT_UUID_DEMO);
 		
 		List<SMSBalance> list = storage.getBalances(account);
+		System.out.println(list);
+		for(int j=0; j<2; j++) {
+		System.out.println(list.get(j));
+		}
 	}
 	
 
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO#getAllBalances()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllBalances() {
-		
+	storage = new SmsBalanceDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+	List<SMSBalance> list = storage.getAllBalances();
+	
+	assertEquals(list.size(), 0);
+	System.out.println(list);
+	for (SMSBalance sm : list) {
+		System.out.println(sm);
+	
+	}
 	}
 
 }

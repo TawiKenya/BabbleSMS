@@ -16,10 +16,11 @@
 package ke.co.tawi.babblesms.server.persistence.creditmgmt;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.contact.Contact;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
@@ -29,7 +30,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -202,8 +202,10 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	@Override
 	public boolean addBalance(Account account, SMSSource smsSource, int count) {
 		boolean success = true;
+		ShortcodePurchase sp = new ShortcodePurchase();
+		MaskPurchase mp = new MaskPurchase();
 			
-		if(hasBalance(account, smsSource, count)) {
+		if(hasBalance(account, smsSource, 0)) {
 			try(				
 					Connection conn = dbCredentials.getConnection();
 					
@@ -248,38 +250,32 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 			
 			
 		} else { // This is the first time that we are adding balance to this short code or mask
-			try(				
+			try(			
+					
+					
+					
 					Connection conn = dbCredentials.getConnection();
 					
-					PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
-							"SET count = (SELECT count FROM ShortcodeBalance WHERE accountUuid=? "
-							+ "AND Shortcodeuuid=?) + ? " +				
-							"WHERE uuid = (SELECT uuid FROM ShortcodeBalance WHERE accountUuid=? "
-							+ "AND Shortcodeuuid=?);");	
+					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ShortcodeBalance(uuid,"
+							+ "accountuuid,shortcodeuuid,count)" +
+							"VALUES(?,?,?,?);");	
 					
-					PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
-							"SET count = (SELECT count FROM MaskBalance WHERE accountUuid=? "
-							+ "AND maskuuid=?) + ? " +				
-							"WHERE uuid = (SELECT uuid FROM MaskBalance WHERE accountUuid=? "
-							+ "AND maskuuid=?);");						
+					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO MaskBalance " +
+							"(uuid,accountuuid,maskuuid,count) VALUES (?,?,?,?);");						
 					) {
 				
 				if(smsSource instanceof Shortcode) {
-					pstmt.setString(1, account.getUuid());					
-					pstmt.setString(2, smsSource.getUuid());				
-					pstmt.setInt(3, count);
-					pstmt.setString(4, account.getUuid());
-					pstmt.setString(5, smsSource.getUuid());
-					
+					pstmt.setString(1, sp.getUuid());
+					pstmt.setString(2, account.getUuid());					
+					pstmt.setString(3, smsSource.getUuid());				
+					pstmt.setInt(4, count);
 					pstmt.executeUpdate();
 					
 				} else {	// This is a mask
-					pstmt2.setString(1, account.getUuid());					
-					pstmt2.setString(2, smsSource.getUuid());				
-					pstmt2.setInt(3, count);
-					pstmt2.setString(4, account.getUuid());
-					pstmt2.setString(5, smsSource.getUuid());
-					
+					pstmt2.setString(1, mp.getUuid());
+					pstmt2.setString(2, account.getUuid());					
+					pstmt2.setString(3, smsSource.getUuid());				
+					pstmt2.setInt(4, count);
 					pstmt2.executeUpdate();				
 				}				
 										
@@ -339,8 +335,8 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 		
         try (
      		   Connection conn = dbCredentials.getConnection();
-     	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ShortcodeBalance;");    
-        		PreparedStatement pstmt2 = conn.prepareStatement("SELECT * FROM MaskBalance;");  
+     	        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ShortcodeBalance");    
+        		PreparedStatement pstmt2 = conn.prepareStatement("SELECT * FROM MaskBalance");  
         		ResultSet rset = pstmt.executeQuery();
         		ResultSet rset2 = pstmt.executeQuery();
      	   ) {

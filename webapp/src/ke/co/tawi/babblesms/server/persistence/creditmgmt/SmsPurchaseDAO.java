@@ -27,7 +27,10 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
+import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
+import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -40,14 +43,19 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
-
+        
 	
+	private static SmsBalanceDAO smsbalanceDAO;
 	private static SmsPurchaseDAO  smspurchaseDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
-	
-	
+	public static SmsBalanceDAO SmsBalanceDAO(){
+		if(smsbalanceDAO==null){
+			smsbalanceDAO = new	SmsBalanceDAO();
+		}
+		return smsbalanceDAO;
+	}
 	
 	public static SmsPurchaseDAO getInstance() {
 		if( smspurchaseDAO == null){
@@ -55,26 +63,42 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 		}
 		return smspurchaseDAO;
 	}
-	
-	
-	
-	protected SmsPurchaseDAO(){
-		super();
-	}
+
 	/**
 	 * 
+	 */
+	protected SmsPurchaseDAO(){
+		super();
+		smsbalanceDAO = SmsBalanceDAO.getInstance();
+	}
+		
+	
+	/**
+	 * @param dbName
+	 * @param dbHost
+	 * @param dbUsername
+	 * @param dbPassword
+	 * @param dbPort
 	 */
 	public SmsPurchaseDAO(String dbName, String dbHost, String dbUsername,
 			String dbPassword, int dbPort) {
 		super(dbName, dbHost, dbUsername, dbPassword, dbPort); 
 		
+		smsbalanceDAO = new SmsBalanceDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
 	}
 
-	/* (non-Javadoc)
+	
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#put(ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase)
 	 */
 	@Override
 	public boolean put(SMSPurchase purchase) {
+		
+		Account account = new Account();
+		Mask mask = new Mask();
+		Shortcode shotcode = new Shortcode();
+		int count;
+		
 		boolean success = true;
 		ShortcodePurchase sp = new ShortcodePurchase();
 		MaskPurchase mp = new MaskPurchase();
@@ -95,42 +119,51 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 					    
 				){
 			if( purchase instanceof ShortcodePurchase) {
-				/*  when i run the test, only else statement executes,
-				 * and then , i have to comment the source 'shortcode' for the test to work
-				 * also the constractor smspurchase is protected, so if had to make it public 
-				 * so that i can use it in the testcase
-				 */
+			
 				pst.setString(1, sp.getUuid());
 				pst.setString(2, purchase.getAccountUuid());
 				pst.setString(3,purchase.getSourceUuid());
 				pst.setInt(4, purchase.getCount());
 				pst.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));	
-				
 				pst.executeUpdate();
-	
-			}else{  
+				
+				count= purchase.getCount();
+				account.setUuid(purchase.getAccountUuid());
+				shotcode.setUuid(purchase.getSourceUuid());
+				smsbalanceDAO.addBalance(account, shotcode, count);
+					
+		
+			
+			}else{  //  for mask
 				
 				pst2.setString(1, mp.getUuid());
 				pst2.setString(2, purchase.getAccountUuid());
 				pst2.setString(3, purchase.getSourceUuid());
 				pst2.setInt(4, purchase.getCount());
 				pst2.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));
-				
 				pst2.executeUpdate();
-				
-			}
 			
-			//success = true;
+				count = purchase.getCount();
+				account.setUuid(purchase.getAccountUuid());
+				mask.setUuid(purchase.getSourceUuid());
+				smsbalanceDAO.addBalance(account, mask, count);
+				
+				
+				
+			}//end if
+		
+			
 		}catch(SQLException e){
 			logger.error("SQLException while trying to put "+ purchase);
 			logger.error(ExceptionUtils.getStackTrace(e));
 			success= false;
 		}
 	
-		return success;
-	}
+		return success;		
+	}//end put
+	
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#getPurchases(ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
 	@Override
@@ -159,9 +192,9 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 		
 		
 		return list;
-	}
+	}//end getPurchase
 
-	/* (non-Javadoc)
+	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#getAllPurchases()
 	 */
 	@Override
@@ -187,6 +220,6 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
         }
        
 		return list;
-	}
+	}//end get allpurchases
 
-}
+}//class end

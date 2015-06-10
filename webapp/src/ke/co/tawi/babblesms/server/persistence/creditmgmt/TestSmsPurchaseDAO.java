@@ -22,6 +22,8 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -42,10 +44,10 @@ public class TestSmsPurchaseDAO extends SMSPurchase {
 	final int DB_PORT = 5432;
 	
 	
-	final String ACCOUNT_UUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
+	final String ACCOUNT_UUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";//demo 
 	
-	final String MASK_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E";				      
-	final String SHORTCODE_UUID = "6C8275C2-8FE7-E3AD-6873-8384C41D395F";	
+	final String MASK_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E";	//'tawi' mask on Safaricom		      
+	final String SHORTCODE_UUID = "6C8275C2-8FE7-E3AD-6873-8384C41D395F";	//Short code 21146 on Safaricom
 	
 	final Date PURCHASE_DATE = new Date(new Long("1420070075009") ); 
 	
@@ -65,18 +67,21 @@ public class TestSmsPurchaseDAO extends SMSPurchase {
 		
 		storage = new SmsPurchaseDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
-		SMSPurchase purchase = new SMSPurchase();
+		ShortcodePurchase sp = new ShortcodePurchase();
+		MaskPurchase mp = new MaskPurchase();
 		
-		purchase.setAccountUuid(ACCOUNT_UUID);
-		purchase.setSourceUuid(MASK_UUID);
-		//purchase.setSourceUuid(SHORTCODE_UUID);
-		purchase.setCount(COUNT);
-		purchase.setPurchaseDate(PURCHASE_DATE);
-	   
-		assertTrue(storage.put(purchase));
+		mp.setAccountUuid(ACCOUNT_UUID);
+		mp.setSourceUuid(MASK_UUID);
+	    mp.setCount(COUNT);
+		mp.setPurchaseDate(PURCHASE_DATE);
 		
-		
-		
+		sp.setAccountUuid(ACCOUNT_UUID);
+		sp.setSourceUuid(SHORTCODE_UUID);
+		sp.setPurchaseDate(PURCHASE_DATE);
+		sp.setCount(COUNT);
+	  
+		assertTrue(storage.put(sp));
+		assertTrue(storage.put(mp));
 		
 		
 		
