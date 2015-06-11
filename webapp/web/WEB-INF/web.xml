@@ -55,17 +55,11 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Logout</servlet-class>
     </servlet>
 
-
-<servlet>
-<servlet-name>Password</servlet-name>
-<servlet-class>ke.co.tawi.babblesms.server.servlet.account.settings.Password</servlet-class>
-</servlet>
-
-
-
-
-
-
+    <servlet>
+      <servlet-name>ResetPassword</servlet-name>
+      <servlet-class>ke.co.tawi.babblesms.server.servlet.account.settings.ResetPassword</servlet-class>
+    </servlet>
+    
     <servlet>
         <servlet-name>AddContacts</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
@@ -213,8 +207,8 @@
 
 
     <servlet-mapping>
-        <servlet-name>Password</servlet-name>
-        <url-pattern>/account/reset</url-pattern>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/account/resetPassword</url-pattern>
     </servlet-mapping>
 
 

@@ -15,9 +15,10 @@
  */
 package ke.co.tawi.babblesms.server.utils.net;
 
+import java.util.Arrays;
+
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.EmailException;
-
 import org.apache.commons.validator.routines.EmailValidator;
 
 import org.apache.log4j.Logger;
@@ -29,28 +30,108 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * 
  */
-public class EmailUtil {
+public class EmailUtil extends Thread {
     
     
     private static EmailValidator emailValidator = EmailValidator.getInstance();   
 
     private static Logger logger = Logger.getLogger(EmailUtil.class);
 	
+    private String from;
+    private String[] to, cc, bcc; 
+	private String subject, body, outgoingEmailServer;
+	private int outgoingEmailPort;
     
-	/**
-	 *  
-	 * @param from
-	 * @param to
-	 * @param cc
-	 * @param bcc
-	 * @param subject
-	 * @param body
-	 * @param outgoingEmailServer
-	 * @param outgoingEmailPort Outgoing SMTP port
-	 */
-	public static void sendEmail(String from, String[] to, String[] cc, String[] bcc, 
+	
+    /**
+     * Disable the default constructor
+     */
+    private EmailUtil() {}
+    
+    
+    /**
+     * @param from
+     * @param to
+     * @param cc
+     * @param bcc
+     * @param subject
+     * @param body
+     * @param outgoingEmailServer
+     * @param outgoingEmailPort
+     */
+    public EmailUtil(String from, String[] to, String[] cc, String[] bcc, 
 			String subject, String body, String outgoingEmailServer, int outgoingEmailPort) {
-		
+    	
+    	this.from = from;
+    	this.to = to;
+    	this.cc = cc;
+    	this.bcc = bcc;
+    	this.subject = subject;
+    	this.body = body;
+    	this.outgoingEmailServer = outgoingEmailServer;
+    	this.outgoingEmailPort = outgoingEmailPort;
+    }
+    
+    
+    /**
+     * @param from
+     * @param to
+     * @param subject
+     * @param body
+     * @param outgoingEmailServer
+     * @param outgoingEmailPort
+     */
+    public EmailUtil(String from, String to, String subject, String body, 
+    		String outgoingEmailServer, int outgoingEmailPort) {
+    	
+    	this.from = from;
+    	this.to = new String[] {to};
+    	this.cc = new String[] {};
+    	this.bcc = new String[] {};
+    	this.subject = subject;
+    	this.body = body;
+    	this.outgoingEmailServer = outgoingEmailServer;
+    	this.outgoingEmailPort = outgoingEmailPort;
+    }
+	
+     
+    /**
+     * Validates an email address
+     * 
+     * @param email 
+     * @return boolean indicating the validity of the email
+     */      
+    public boolean validateEmail(String email) {
+       
+		return  emailValidator.isValid(email);		
+ 
+	}
+    
+    
+    /**
+     * Validates multiple emails at once
+     * 
+     * @param emailsToValidate 
+     * @return boolean indicating whether or not all the emails are valid
+     */
+    public boolean validateEmails(String[] emailsToValidate) {
+        
+         for(String email : emailsToValidate) {
+           if(!validateEmail(email)){
+               return false;
+           }
+         }
+ 
+		 return true;	
+	}
+
+
+
+	/**
+	 * @see java.lang.Thread#run()
+	 */
+	@Override
+	public void run() {
 		SimpleEmail email;
 		
 		try {
@@ -65,79 +146,46 @@ public class EmailUtil {
 			email.setMsg(body);
 			email.setHostName(outgoingEmailServer);
 			email.setSmtpPort(outgoingEmailPort); 
-			email.send();
 			
-		} catch(EmailException e) {
-			logger.error("EmailException when trying to send out a SimpleEmail.");
-			logger.error(e);
-		}		 
-	}
-	
-    
-    
-    /**
-     * Send a simple email message
-     * 
-     * @param body
-     * @param from
-     * @param to
-     * @param subject
-     * @param outgoingEmailServer
-     * @param outgoingEmailPort
-     */
-    public static void sendEmail(String from, String to,String subject, String body, 
-    		String outgoingEmailServer, int outgoingEmailPort)  {
-                
-        SimpleEmail email;
-		
-		try {
-			email = new SimpleEmail();
+			if(validateEmails(to)) {
+				email.send();
+				
+			} else {
+				logger.error("Invalid destinations in " + toString());
+			}
 			
-			email.setFrom(from);						
-			email.addTo(to);
-			
-			email.setSubject(subject);
-			email.setMsg(body);
-			email.setHostName(outgoingEmailServer);
-			email.setSmtpPort(outgoingEmailPort); 
-			email.send();
 			
 		} catch(EmailException e) {
 			logger.error("EmailException when trying to send out a SimpleEmail.");
 			logger.error(e);
 		}	
-    }
-    
-     
-    /**
-     * Validates an email address
-     * 
-     * @param email 
-     * @return boolean indicating the validity of the email
-     */
-      
-    public static boolean validateEmail(String email) {
-       
-		return  emailValidator.isValid(email);		
- 
 	}
-    
-    
-    /**
-     * Validates multiple emails at once
-     * 
-     * @param emailsToValidate 
-     * @return boolean indicating whether or not all the emails are valid
-     */
-    public static boolean validateEmails(String[] emailsToValidate) {
-        
-         for(String email : emailsToValidate){
-           if(!validateEmail(email)){
-               return false;
-           }
-         }
- 
-		 return true;	
+
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("EmailUtil [from=");
+		builder.append(from);
+		builder.append(", to=");
+		builder.append(Arrays.toString(to));
+		builder.append(", cc=");
+		builder.append(Arrays.toString(cc));
+		builder.append(", bcc=");
+		builder.append(Arrays.toString(bcc));
+		builder.append(", subject=");
+		builder.append(subject);
+		builder.append(", body=");
+		builder.append(body);
+		builder.append(", outgoingEmailServer=");
+		builder.append(outgoingEmailServer);
+		builder.append(", outgoingEmailPort=");
+		builder.append(outgoingEmailPort);
+		builder.append("]");
+		return builder.toString();
 	}
     
 }

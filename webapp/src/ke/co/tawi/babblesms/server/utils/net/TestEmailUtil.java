@@ -21,16 +21,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Tests our persistence implementation for shortcode and mask balances.
+ * Tests our email utility.
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class TestEmailUtil {
-	
-	
-	
-	
+		
 	final String[] EMAILS = {"mwendapeter72@gmail.com","mwendapeter72@gmail.com"};
 	final String[] EMAILS2 = {"mwendapeter72gmail.com","mwendapeter72gmail.com"};
 	final String[] EMAILS3 = {"hfgsghjfgsghfgghjfg","hgfsfghjufgdfghjk"};
@@ -60,12 +57,7 @@ public class TestEmailUtil {
 	
 	final String OUT_E_SERVER ="mail.tawi.mobi";
 	final int OUT_E_PORT =25;
-	
-	
-	
-	
-	
-	
+		
 
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.utils.net.EmailUtil#sendEmail(java.lang.String, java.lang.String[], java.lang.String[], java.lang.String[], java.lang.String, java.lang.String, java.lang.String, int)}.
@@ -73,44 +65,21 @@ public class TestEmailUtil {
 	//@Ignore
 	@Test
 	public void testSendEmailStringStringArrayStringArrayStringArrayStringStringStringInt() {
-		EmailUtil.sendEmail(FROM, TO, CC, BCC, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		EmailUtil util = new EmailUtil(FROM, TO, CC, BCC, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		util.run();
 		
 	}
 
+	
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.utils.net.EmailUtil#sendEmail(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)}.
 	 */
 	@Ignore
 	@Test
 	public void testSendEmailStringStringStringStringStringInt() {
-		EmailUtil.sendEmail(FROM, TO2, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		EmailUtil util = new EmailUtil(FROM, TO2, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		util.run();
 		
-	}
-
-	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.utils.net.EmailUtil#validateEmail(java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testValidateEmail() {
-		//EmailUtil.validateEmail(EMAIL);
-		//EmailUtil.validateEmail(EMAIL2);
-		EmailUtil.validateEmail(EMAIL3);
-		assertTrue(EmailUtil.validateEmail(EMAIL3));
-		
-	}
-
-	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.utils.net.EmailUtil#validateEmails(java.lang.String[])}.
-	 */
-	@Ignore
-	@Test
-	public void testValidateEmails() {
-		//EmailUtil.validateEmails(EMAILS);
-		//EmailUtil.validateEmails(EMAILS2);
-		EmailUtil.validateEmails(EMAILS3);
-		assertTrue(EmailUtil.validateEmails(EMAILS2));
-		
-	}
+	}	
 
 }

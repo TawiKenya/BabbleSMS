@@ -31,7 +31,7 @@ public class Contact extends StorableBean implements Comparable<Contact> {
     private String description;
     private String accountUuid;
     private String statusUuid;
-    public static final String ACTIVE_STATUSUUID = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
+
     /**
      * 
      */
@@ -108,6 +108,17 @@ public class Contact extends StorableBean implements Comparable<Contact> {
 	}
 
 
+	
+
+	/**
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Contact c) {
+		return name.compareTo(((Contact) c).getName());
+	}
+
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -126,15 +137,6 @@ public class Contact extends StorableBean implements Comparable<Contact> {
 		builder.append(statusUuid);
 		builder.append("]");
 		return builder.toString();
-	}
-
-
-	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(Contact c) {
-		return name.compareTo(((Contact) c).getName());
 	}
 	
 }
