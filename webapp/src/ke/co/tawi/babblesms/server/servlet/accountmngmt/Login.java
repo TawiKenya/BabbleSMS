@@ -17,7 +17,7 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
+import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.session.SessionStatistics;
 import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
@@ -75,7 +75,7 @@ public class Login extends HttpServlet {
         super.init(config);
 
         textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
+        textEncryptor.setPassword(FontImageGenerator.SECRET_KEY);
 
         CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);

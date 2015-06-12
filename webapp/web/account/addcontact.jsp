@@ -22,6 +22,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
@@ -181,7 +182,7 @@
 		 <label class="control-label">Description</label>
 		<div class="controls">
 		<textarea rows="3" cols="5" class="textarea" name="dept" placeholder="Add description here..."></textarea>
-		<input class="input-xlarge focused" id="status" name="statusuuid" type="hidden" value="<%= Contact.ACTIVE_STATUSUUID %>">
+		<input class="input-xlarge focused" id="status" name="statusuuid" type="hidden" value="<%= Status.ACTIVE %>">
 		</div>	
 		</div>
                     <br/>
@@ -248,8 +249,8 @@
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><!--<br/><br/><br/><br/><br/><br/>-->
 <div class="form-actions">
-<input type="hidden" name="accountuuid" value="<%=accountuuid%>">
-<input type="hidden" name="statusuuid" value="<%=Contact.ACTIVE_STATUSUUID%>">
+<input type="hidden" name="accountuuid" value="<%= accountuuid %>">
+<input type="hidden" name="statusuuid" value="<%= Status.ACTIVE %>">
 <div id="savecancelButtons">
 <button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>

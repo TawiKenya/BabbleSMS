@@ -16,7 +16,7 @@
     under the License.
     */
 %>
-<%@page import="ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig"%>
+<%@page import="ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 
 <%@page import="java.net.URLEncoder"%>
@@ -34,11 +34,11 @@
     }
 
     BasicTextEncryptor textEncryptor = new BasicTextEncryptor();    
-    textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));    
+    textEncryptor.setPassword(FontImageGenerator.SECRET_KEY);    
 
     final int CAPTCHA_LENGTH = 4;
     String captchaStr = RandomStringUtils.randomAlphabetic(CAPTCHA_LENGTH);
-    String encryptedCaptchaStr = textEncryptor.encrypt(captchaStr);
+    String encryptedCaptchaStr = textEncryptor.encrypt(captchaStr.toLowerCase());
 %>
 
 <html lang="en">

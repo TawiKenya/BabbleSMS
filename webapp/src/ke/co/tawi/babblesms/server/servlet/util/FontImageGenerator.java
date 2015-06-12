@@ -47,8 +47,7 @@ import org.jasypt.util.text.BasicTextEncryptor;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class FontImageGenerator extends HttpServlet {
-   
-    private final Logger logger = Logger.getLogger(this.getClass());		
+     		
 	
 	// The following are settings for the Captcha mechanism
 	final int CAPTCHA_IMAGE_FONT_SIZE = 25;
@@ -58,9 +57,11 @@ public class FontImageGenerator extends HttpServlet {
 	final String CAPTCHA_IMAGE_BACKGROUND_RGB = "233-233-233";
 
 	// This variable is to be used especially with the Jasypt library.
-	final String ENCRYPT_PASSWORD = "Vuwachip2";
+	public final static String SECRET_KEY = "Vuwachip2";
 	
 	private BasicTextEncryptor textEncryptor;
+	
+	private Logger logger;
 	
 	/**
 	 * 
@@ -72,7 +73,9 @@ public class FontImageGenerator extends HttpServlet {
 		super.init(config);
 		
 		textEncryptor = new BasicTextEncryptor();
-		textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
+		textEncryptor.setPassword(SECRET_KEY);
+		
+		logger = Logger.getLogger(this.getClass());
     }
 
     
@@ -84,7 +87,7 @@ public class FontImageGenerator extends HttpServlet {
       * @throws IOException  
 	 */	
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("image/png");
 		
@@ -121,7 +124,7 @@ public class FontImageGenerator extends HttpServlet {
       * @throws IOException  
 	 */	
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		doPost(request, response);
 	}
@@ -166,9 +169,11 @@ public class FontImageGenerator extends HttpServlet {
 		} catch(IndexOutOfBoundsException e) { 
 			logger.error("IndexOutOfBoundsException e");
 			logger.error(e);
+			
 		} catch(IllegalStateException e) { 
 			logger.error("IllegalStateException e");
 			logger.error(e);
+			
 		} catch(IllegalArgumentException e) { 			
 			logger.error("IllegalArgumentException e");
 			logger.error(e);

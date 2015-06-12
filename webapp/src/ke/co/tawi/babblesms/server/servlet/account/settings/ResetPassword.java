@@ -47,18 +47,14 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ResetPassword  extends HttpServlet {
 	
-	//private Cache accountsCache;
 	
 	final String ERROR_EMPTY_PARAMETERS = "You have to input a value.";
 	final String ERROR_INVALID_PARAMETERS = "The username and email do not match.";
-	//private final String SUCCESS = "We have sent a new password in your email.";
-	
+		
 	static final long serialVersionUID = 1L;
-  
+    
 	
-  
-	
-	private Cache accountsCache, statisticsCache;
+	private Cache accountsUsernameCache, accountsUuidCache;
 	
 	
 	
@@ -73,8 +69,8 @@ public class ResetPassword  extends HttpServlet {
 
       
        CacheManager mgr = CacheManager.getInstance();
-       accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-       statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
+       accountsUsernameCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+       accountsUuidCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
 
    }
 	
@@ -85,66 +81,67 @@ public class ResetPassword  extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		 HttpSession session = request.getSession(false);
-		
-	     Account account = new Account();   
+			HttpSession session = request.getSession(false);
+			
+		    Account account = new Account();   
 	    
-		String username = request.getParameter("username").trim();
-		String email = request.getParameter("email").trim();
+			String username = request.getParameter("username").trim();
+			String email = request.getParameter("email").trim();
 	   
-		Element element;
-        if ((element = accountsCache.get(username)) != null) {
-            account = (Account) element.getObjectValue();
-        }
+			Element element;
+	        if ((element = accountsUsernameCache.get(username)) != null) {
+	            account = (Account) element.getObjectValue();
+	        }
+			
+		    		
+			if(StringUtils.isBlank(username) || StringUtils.isBlank(email)) {
+				
+				session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_EMPTY_PARAMETERS);
+				response.sendRedirect("resetPassword.jsp");
 		
-	    		
-		if(StringUtils.isBlank(username) || StringUtils.isBlank(email)) {
-			
-			session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_EMPTY_PARAMETERS);
-			response.sendRedirect("resetPassword.jsp");
+			// Check to see whether the username and email match
+			} else if(!username.equalsIgnoreCase(account.getUsername()) 
+					|| !email.equalsIgnoreCase(account.getEmail())) {
+				
+				session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_INVALID_PARAMETERS);
+				response.sendRedirect("resetPassword.jsp");
+				
+				
+			// The username and email match	
+			} else {
+				
+					String password = RandomStringUtils.randomAlphabetic(5);
+					account.setLogpassword(password);
+					
+					String body = "Hello " + username + ", your new password is: " + password;
+					
+					
+					EmailUtil util = new EmailUtil(
+							PropertiesConfig.getConfigValue("EMAIL_DEFAULT_EMAIL_FROM"), // from
+							email, // to 
+							"BabbleSMS Password Reset", // subject, 
+							body, 
+							PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP"), // outgoing SMTP 
+						 	Integer.parseInt(PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP_PORT")) // outgoing SMTP port
+							);
+					util.start();
+					
+					updateCache(account);
+					
+					session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
+					response.sendRedirect("successResetPasswd.jsp");	
+			}
+					
 	
-		// Check to see whether the username and email match
-		} else if(!username.equalsIgnoreCase(account.getUsername()) 
-				|| !email.equalsIgnoreCase(account.getEmail())) {
-			
-			session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, ERROR_INVALID_PARAMETERS);
-			response.sendRedirect("resetPassword.jsp");
-			
-			
-		// The username and email match	
-		} else {
-			
-				String password = RandomStringUtils.randomAlphabetic(5);
-				//account.setLogpassword(password);
-				
-				String body = "Hello " + username + ", your new password is: " + password;
-				
-				
-				EmailUtil util = new EmailUtil(
-						PropertiesConfig.getConfigValue("EMAIL_DEFAULT_EMAIL_FROM"), // from
-						email, // to 
-						"BabbleSMS Password Reset", // subject, 
-						body, 
-						PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP"), // outgoing SMTP 
-					 	Integer.parseInt(PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP_PORT")) // outgoing SMTP port
-						);
-				util.start();
-				
-				//updateCache(account.getUuid());
-				}
-				
-				//message
-				session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
-				response.sendRedirect("success.jsp");	
-	
-		}//end doPost
+	}//end doPost
 
 	
-	private void updateCache(String accountuuid) {
-        SessionStatistics statistics = SessionStatisticsFactory.getSessionStatistics(accountuuid);
-
-        statisticsCache.put(new Element(accountuuid, statistics));
-    }
-	
+	/**
+	 * @param account
+	 */
+	private void updateCache(Account account) {
+		accountsUsernameCache.put(new Element(account.getUsername(), account));
+		accountsUuidCache.put(new Element(account.getUuid(), account));		
+    }	
 	
 }

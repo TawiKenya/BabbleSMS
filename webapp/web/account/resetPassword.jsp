@@ -25,139 +25,137 @@
 
 
 <html>
-<head>
-    <title>Forgot Password</title>
+    <head>
+        <title>Forgot Password</title>
 
-<style type="text/css">
+    <style type="text/css">
 
-body{
-  background-image:url("../img/background.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+        body{
+          background-image:url("../img/background.jpg");
+          background-repeat: no-repeat;
+          background-size: cover;
 
-}
+        }
 
- .container{
- 	border-radius: 50px;
-    background-color: green;
-    color: ;
-    position: absolute;
-    width: 40%;
-    height: 40%;
-    margin: auto;
-    top: 25%;
-    left: 30%;
-    text-align: center;
+         .container{
+                border-radius: 50px;
+            background-color: green;
+            color: ;
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            margin: auto;
+            top: 25%;
+            left: 30%;
+            text-align: center;
 
- }
+         }
 
- .babble{
-    background-color: #fff;
-      border-radius: 10px;
- }
- 
-li{
-    display: inline;
-    padding-right: 10px;
-}
-ul{
-    text-decoration: none;
-    color: #666;
-}
-form ul{
-    list-style: none;
-    margin-bottom: 20px;
-    padding-left: 0px;
-}
-label{
-    display: block;
-    color: #292929;
-    font-family: sans-serif;
-    padding-bottom: 8px;
-}
+         .babble{
+            background-color: #fff;
+              border-radius: 10px;
+         }
 
-h1{
-	font-size: 50px;
-	font-family: monospace;
-	letter-spacing: -1px;
-	color: black;
-	text-shadow: 5px -1px 0px blue,
-				6px -2px 0px white;
-}
-.uname{
+        li{
+            display: inline;
+            padding-right: 10px;
+        }
+        ul{
+            text-decoration: none;
+            color: #666;
+        }
+        form ul{
+            list-style: none;
+            margin-bottom: 20px;
+            padding-left: 0px;
+        }
+        label{
+            display: block;
+            color: #292929;
+            font-family: sans-serif;
+            padding-bottom: 8px;
+        }
 
-}
-.email{
+        h1{
+                font-size: 50px;
+                font-family: monospace;
+                letter-spacing: -1px;
+                color: black;
+                text-shadow: 5px -1px 0px blue,
+                                        6px -2px 0px white;
+        }
+        .uname{
 
-}
-.err{
-width: 400px;
-margin: auto;
-text-align: center;
-font-size: 30px;
-}
+        }
+        .email{
 
-</style>
+        }
+        .err{
+        width: 400px;
+        margin: auto;
+        text-align: center;
+        font-size: 30px;
+        }
 
+    </style>
 
+    </head>
+    
+    
+    <body>      
+        <div class="err">
+        <%
+        String sendEmailerr = (String) session.getAttribute(SessionConstants.EMAIL_SEND_ERROR);
+        String sendEmail = (String) session.getAttribute(SessionConstants.EMAIL_SEND_SUCCESS);
 
-</head>
-<body>
-<div class="err">
-<%
-String sendEmailerr = (String) session.getAttribute(SessionConstants.EMAIL_SEND_ERROR);
-String sendEmail = (String) session.getAttribute(SessionConstants.EMAIL_SEND_SUCCESS);
+        if (StringUtils.isNotEmpty(sendEmailerr)) {
+            out.println("<p style = \"color:red;\">");
+            out.println("Form error: " + sendEmailerr);
+            out.println("</p>");
+            session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, null);
+        }
 
-if (StringUtils.isNotEmpty(sendEmailerr)) {
-    out.println("<p style = \"color:red;\">");
-    out.println("Form error: " + sendEmailerr);
-    out.println("</p>");
-    session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, null);
-}
-
-if(StringUtils.isNotEmpty(sendEmail)) {
-    out.println("<p style='color:green;'>");
-    out.println(sendEmail);
-    out.println("</p>");
-    session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
-}
-%>
-</div>
-
-
-<div class="container"> 
-
-<div class="babble"><h1> BabbleSMS <h1></div>
-
-<form class="form-horizontal" action="resetPassword" method="POST">
-<ul>
-<li>
-
-<div class="uname">
-<label class="control-label" for="username">Username:</label>
-<input class="input-xlarge focused" type="text" name="username" size="15">
-</div>
-
-</li>
-<li>
-
-<div class="email">
-<label class="control-label" for="email">Email</label>
-<input class="input-xlarge focused" type="text" name="email" id="email" size="30">  
-</div>
-
-</li>
-<li>
-<input type="submit" name="submit" value="Continue">
-</li>
-</ul>
+        if(StringUtils.isNotEmpty(sendEmail)) {
+            out.println("<p style='color:green;'>");
+            out.println(sendEmail);
+            out.println("</p>");
+            session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
+        }
+        %>
+        </div>
 
 
-</div>
+        <div class="container"> 
 
-</form>
+        <div class="babble"><h1> BabbleSMS <h1></div>
+
+        <form class="form-horizontal" action="resetPassword" method="POST">
+        <ul>
+        <li>
+
+        <div class="uname">
+        <label class="control-label" for="username">Username:</label>
+        <input class="input-xlarge focused" type="text" name="username" size="15">
+        </div>
+
+        </li>
+        <li>
+
+        <div class="email">
+        <label class="control-label" for="email">Email</label>
+        <input class="input-xlarge focused" type="text" name="email" id="email" size="30">  
+        </div>
+
+        </li>
+        <li>
+        <input type="submit" name="submit" value="Continue">
+        </li>
+        </ul>
 
 
+        </div>
 
-</body>
+        </form>
+
+    </body>
 </html>

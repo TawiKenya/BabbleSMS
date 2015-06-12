@@ -18,7 +18,6 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 
 import java.io.IOException;
 
@@ -35,8 +34,6 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
-import org.jasypt.util.text.BasicTextEncryptor;
-
 
 /**
  * Receives a request by an account holder to log out. 
@@ -45,8 +42,6 @@ import org.jasypt.util.text.BasicTextEncryptor;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class Logout extends HttpServlet {
-
-    private BasicTextEncryptor textEncryptor;
 
     private Cache accountsCache, statisticsCache;
 
@@ -59,9 +54,6 @@ public class Logout extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
-        textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
 
         CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);

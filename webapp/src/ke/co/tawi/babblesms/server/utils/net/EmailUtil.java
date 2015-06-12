@@ -30,12 +30,11 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * 
  */
-public class EmailUtil extends Thread {
+public class EmailUtil extends Thread {    
     
-    
-    private static EmailValidator emailValidator = EmailValidator.getInstance();   
+    private EmailValidator emailValidator = EmailValidator.getInstance();   
 
-    private static Logger logger = Logger.getLogger(EmailUtil.class);
+    private Logger logger = Logger.getLogger(this.getClass());
 	
     private String from;
     private String[] to, cc, bcc; 
