@@ -19,6 +19,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Email"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
@@ -471,7 +472,7 @@ more
 <!-- Group table ends here-->
 
 <input type="hidden" id="uuid" name = "uuid" class="edit_area" />
-<input type="hidden" name="statusuuid" value="<%=Contact.ACTIVE_STATUSUUID%>">
+<input type="hidden" name="statusuuid" value="<%=Status.ACTIVE%>">
 <br/><br/>
 <div id="savecancelButtons2">
 <button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
