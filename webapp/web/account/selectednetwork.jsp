@@ -32,6 +32,7 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.network.networkcountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.contact.ContactPaginator"%>
@@ -53,7 +54,7 @@
     final int PAGESIZE = 15;  
     int contactCount =1; 
 
-    // The following is for session management.    
+    /** The following is for session management.    
     if (session == null) {
         response.sendRedirect("../index.jsp");
     }
@@ -65,25 +66,27 @@
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
-    
+    **/
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
     Cache contactsCache = mgr.getCache(CacheVariables.CACHE_CONTACTS_BY_UUID);
     Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
-    Cache emailCache = mgr.getCache(CacheVariables.CACHE_EMAIL_BY_UUID);
+   // Cache emailCache = mgr.getCache(CacheVariables.CACHE_EMAIL_BY_UUID);
     
-    PhoneDAO phoneDAO = PhoneDAO.getInstance();
-    EmailDAO emailDAO = EmailDAO.getInstance();
-    ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-    GroupDAO gDAO = GroupDAO.getInstance();
-    ContactDAO cdao = ContactDAO.getInstance();
+    //PhoneDAO phoneDAO = PhoneDAO.getInstance();
+    //EmailDAO emailDAO = EmailDAO.getInstance();
+    //ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
+    //GroupDAO gDAO = GroupDAO.getInstance();
+    //ContactDAO cdao = ContactDAO.getInstance();
+
+    networkcountDAO ncDAO= new networkcountDAO();
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
-    HashMap<String, Phone> phoneHash = new HashMap<String, Phone>();
-    HashMap<String, Email> emailHash = new HashMap<String, Email>();
+    HashMap<String, String> contactHash = new HashMap<String, String>();
+   //HashMap<String, Email> emailHash = new HashMap<String, Email>();
 
-    
+    String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
     Account account = new Account();
 
     Element element;
@@ -93,20 +96,20 @@
     
 
     Network network;
-    
-    Phone phone;
+    Contact contact;
+    //Phone phone;
     Email email;
 
     List<Phone> phoneList = new ArrayList<Phone>();
     List<Network> networkList = new ArrayList<Network>();
-    List<Contact> newcontlist = new ArrayList<Contact>(); 
-    List<Email> emailList = new ArrayList<Email>();
-    List<Group> contactGroupList = new ArrayList<Group>();
-    List<Group> contactsgrpList = new ArrayList<Group>();
-    List<Contact> contactPageList = new ArrayList<Contact>();  
+    //List<Contact> newcontlist = new ArrayList<Contact>(); 
+    //List<Email> emailList = new ArrayList<>();
+    //List<Group> contactGroupList = new ArrayList<Group>();
+    //List<Group> contactsgrpList = new ArrayList<Group>();
+    //List<Contact> contactPageList = new ArrayList<Contact>();  
      
      //GroupDAO gDAO=new GroupDAO();
-     contactsgrpList = gDAO.getGroups(account); 
+     ///contactsgrpList = gDAO.getGroups(account); 
 
     List keys;
      
@@ -115,114 +118,75 @@
         element = networksCache.get(key);
         network = (Network) element.getObjectValue();
         networkHash.put(network.getUuid(), network.getName());
-    }
-  List keys2;
-     keys2 = networksCache.getKeys();
-     for (Object key : keys) {
-        element = networksCache.get(key);
-        network = (Network) element.getObjectValue();
         networkList.add(network);
     }
 
+    List key2;
+    key2=contactsCache.getKeys();
+    for(Object key:key2){
+      element=contactsCache.get(key);
+      contact =(Contact)element.getObjectValue();
+      contactHash.put(contact.getUuid(),contact.getName());
+    } 
+
     
-           String name=request.getParameter("q"); 
-           if(name==null){
+           String grpuuid=request.getParameter("grp"); 
+           String nwkuuid=request.getParameter("nwk");
+
+      if((grpuuid==null)||(nwkuuid==null)){
            response.sendRedirect("../account/contact.jsp");
-           contactPageList=null;
+            phoneList=null;
        }else{
-           contactPageList = cdao.getContactListMatch(account , name);
+           phoneList=ncDAO.contactspernetwork("9bef62f6-e682-4efd-98e9-ca41fa4ef993","B936DA83-8A45-E9F0-2EAE-D75F5C232E78");
+           out.println(phoneList);
        }
 
-
-
+        
+         
  
     // end else
 %>
-
-  <div id="showtext">  
-<table class="table table-striped table-bordered " id="table_id">
+ 
+<table class="table table-striped table-bordered" id="contactgrp"> 
 
                 <thead>
-                        <tr><th>*</th>
+                        <tr>
+                        <th>*</th>
                         <th><a href="#">Name</a></th>
-                        <th><a href="#">Phone</a></th>
-                        <th><a href="#">Email</a></th>
-                        <th><a href="#">Group</a></th>
+                        <th><a href="#">Phone</a></th>                                               
                     </tr>
                 </thead>   
        
-    <tbody class="tblTest">
-        
-            <%
-                if (contactPageList != null) {
-                    /*int count1 =1;*/
+    <tbody>   
+                 <%
+                  if(phoneList!=null){
 
-                 for (Contact code:contactPageList) {
-                
-                    
-                    emailList = emailDAO.getEmails(code);
-                    contactGroupList = cgDAO.getGroups(code,account);
-                    phoneList = phoneDAO.getPhones(code);
-                  
-                    // if (phoneList != null) {
-                        // for (Phone code2 :phoneList) {
+                 for (Phone phone:PhoneList) {                
          %>
          <tr>
              
              <td width="5%"> <%=contactCount%> </td>
 
-        <td class="center"> <a href="#" class="Zlink" id="ZZlink" title="click to edit details" onclick="ContactEdit(this)"> <%=code.getName()%> </a> </td>
+            <td class="center"> <a href="#"><%=contactHash.get(phone.getContactUuid())%></a></td> 
 
-         
-    <% if (phoneList != null) {
-                         //for (Phone code2 :phoneList) {
-      int i=phoneList.size();   %>
-
-                <td class="center" >   <% for(int k=0;k<i;k++){ %> <%=phoneList.get(k).getPhonenumber()%>
-                  (<%=networkHash.get(phoneList.get(k).getNetworkuuid())%>)<br>   <% } %> </td>
-               
-      <%  }else { %>
-                <td class="center" ><font color="red">No Phone Number(s)</font></td>
-
-                <%}   %>
-
-
-    
-       <% if ( emailList != null) {                         
-      int e = emailList.size();   %>
-             <td class = "center">  <% for(int k=0;k<e;k++){ %>   <%= emailList.get(k).getAddress()%><br>  <% } %>   </td>
-      
-      <%  } else {    %>
-    <td class = "center"><font color="red"> No Email(s)</font></td>
-          <%  }  %>  
-            
-        <% 
-             if(contactGroupList!=null){
-             int c = contactGroupList.size();
-        %>
-             <td class="center">  <% for(int k=0;k<c;k++){ %> <%=contactGroupList.get(k).getName()%> <br> <% } %>  </td>
-              
-            <% } else {
-             %>
-            <td class = "center"></td>
-            <% } %>
+            <td class="center"><%=phone.getPhonenumber()%><%=networkHash.get(phone.getNetworkuuid())%></td>  
   
-    <td style="display:none"><%=code.getDescription()%></td>
-  <td style="display:none"><%=code.getUuid()%></td>
+            <td style="display:none"><%=phone.getStatusuuid()%></td>
+
+            <td style="display:none"><%=phone.getUuid()%></td>
 
 
          </tr>
 
-         <%     
-                      
+         <%         
                      contactCount++;
                  }
-             }      
+             }       
         %>
         </tbody>
         </table> 
 
-        </div>       
+              
        
 
 

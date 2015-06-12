@@ -29,6 +29,7 @@ import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.GroupContacts;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -46,11 +47,20 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	
 	 private Logger logger = Logger.getLogger(this.getClass());	 
 	 
-	  private static ArrayList<String> NetworkName= new ArrayList<String>();  
+	  private static List<String> NetworkName= new ArrayList<>();  
 	  
 	  private BeanProcessor beanProcessor = new BeanProcessor();
 	  
+	  private static networkcountDAO netcountDAO; 
 	  
+	  public static networkcountDAO getInstance() {
+	        if (netcountDAO == null) {
+	        	netcountDAO = new networkcountDAO();
+	        }
+	        return netcountDAO;
+	    }
+	  
+	 
 
 	    /**
 	     *
@@ -72,9 +82,7 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	  public networkcountDAO(String dbName, String dbHost, String dbUsername,
 	            String dbPassword, int dbPort) {
 	        super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-	    }
-	
-	  
+	    } 
 	  
 	  
 
@@ -84,66 +92,90 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	      */
 	 @Override 
 	public  HashMap<String, String> network(String uuid){
-		
 		 
-		 List<Phone> phoneLists;
-		 List<GroupContacts> contactList;	
-		 HashMap<String,String> totalCount= new HashMap<String,String>();
+		 HashMap<String,String> totalCount= new HashMap<>();
 		 
-		 /**	
-			* returns a list of network names and uuids
-			*/ 	 
+		 /**returns a list of network names and uuids*/ 	 
 		 
-		 HashMap<String,String> getNetwork=allnetworks();
-		 
-		 
-		 
-  /**	
-	* returns a list  contacts from a given group
-	*/ 	 
-	
-    contactList =collectContacts(uuid);   
-   
+		 HashMap<String,String> getNetwork=allnetworks();    
     
      int countnet= (NetworkName.size())-1;
      
-      int count1=0, count2=0, count3=0, count4=0, count6=0;     
+      int count1=0, count2=0, count3=0, count4=0, count5=0;   
+      count1=contactspernetwork(uuid, NetworkName.get(countnet)).size();
+      count2=contactspernetwork(uuid, NetworkName.get(countnet-1)).size();
+      count3=contactspernetwork(uuid, NetworkName.get(countnet-2)).size();
+      count4=contactspernetwork(uuid, NetworkName.get(countnet-3)).size();
+      count5=contactspernetwork(uuid, NetworkName.get(countnet-4)).size();     
       
+      int count6=count1+count2+count3+count4+count5;
       
-     for(GroupContacts contact1 : contactList) { 
-            phoneLists = getAllPhones(contact1);
-            
-            for(Phone fone : phoneLists) {                                                  
-            	
-            count6++; 
-             if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet))){
-           count1++;          
-         }
-
-         else if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet-1))){
-           count2++;           
-         }
-
-         else if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet-2))){
-           count3++;           
-         } 
-
-         else if((fone.getNetworkuuid()).equalsIgnoreCase((String)NetworkName.get(countnet-3))){
-           count4++;           ;
-         }
-         
-         }
-       }
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet)), count1+" contact(s)");
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet-1)), count2+" contact(s)");
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet-2)), count3+" contact(s)");
-     totalCount.put(getNetwork.get((String)NetworkName.get(countnet-3)), count4+" contact(s)");
-     totalCount.put("Total contacts", count6+" contact(s)");
+     totalCount.put(getNetwork.get(NetworkName.get(countnet)), count1+" contact(s)");
+     totalCount.put(getNetwork.get(NetworkName.get(countnet-1)), count2+" contact(s)");
+     totalCount.put(getNetwork.get(NetworkName.get(countnet-2)), count3+" contact(s)");
+     totalCount.put(getNetwork.get(NetworkName.get(countnet-3)), count4+" contact(s)");
+     totalCount.put(getNetwork.get(NetworkName.get(countnet-4)), count5+" contact(s)");
+     totalCount.put("Total contacts", count6+" contact(s)"); 
      
      
      return totalCount;
 	}
      
+	 
+	 /**method returns a list of contacts per network */
+	 @Override 
+		public List<Phone> contactspernetwork(String grpuuid,String nwkuuid){
+			
+			 List<Phone>phoneSelected= new ArrayList<Phone>();
+			 List<Phone> phoneLists;
+			 List<GroupContacts> contactList;			 
+			 Phone createphone= new Phone();		
+	/**returns a list  contacts from a given group
+	*/		
+	contactList =collectContacts(grpuuid);    
+	      
+	     for(GroupContacts contact1 : contactList) { 
+	            phoneLists = getAllPhones(contact1);
+	            
+	            for(Phone fone : phoneLists) {    	
+	             
+	             if((fone.getNetworkuuid()).equalsIgnoreCase(nwkuuid)){
+	            createphone.setContactUuid(fone.getContactUuid());
+	            createphone.setPhonenumber(fone.getPhonenumber());
+	            createphone.setNetworkuuid(fone.getNetworkuuid()); 
+	            createphone.setStatusuuid(fone.getStatusuuid());
+	            createphone.setUuid(fone.getUuid());
+	            phoneSelected.add(createphone);
+	         }     
+	      }	     
+		}
+	     return phoneSelected;
+	     
+	 }
+	 
+	 
+	@Override	 
+	 public List<Phone>allgrpcontacts(String grpuuid){
+       /**returns a list of network names and uuids*/ 	 
+		 
+		 HashMap<String,String> getNetwork =allnetworks(); 
+		 
+		 List<Phone> PhoneList=new ArrayList<Phone>();
+		 List<Phone> pList=new ArrayList<Phone>(); 
+		 
+		 int countnet= (NetworkName.size())-1;
+		 for(int i=0; i<getNetwork.size();i++){
+			 pList=contactspernetwork(grpuuid, NetworkName.get(countnet-i));
+			 PhoneList.addAll(pList);
+		 }
+		 for(Phone phone:PhoneList){
+			 System.out.println(phone.getContactUuid());
+		 }
+		 return PhoneList;
+	     
+	 }
+	 
+	 
      
      
 
@@ -154,8 +186,7 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	 @Override 
      public HashMap<String, String> allnetworks() {
     	 
-    	 HashMap<String, String > networkHash=new HashMap<String, String>(); 
-    	 
+    	 HashMap<String, String > networkHash=new HashMap<>();    	 
     	     	 
          try(
              Connection conn = dbCredentials.getConnection();
@@ -199,7 +230,7 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
              logger.error(ExceptionUtils.getStackTrace(e));
          }
            
-         //Collections.sort(List<GroupCantacts>list);
+         //Collections.sort((List<GroupContacts>)list);
          return list;
  	}
  	
@@ -211,7 +242,7 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	 
 	 @Override
 		public List<Phone> getAllPhones(GroupContacts contact) {
-			List<Phone> phoneList = new ArrayList<>();
+			List<Phone> phoneList = new ArrayList<Phone>();
 			
 			try(
 					Connection conn = dbCredentials.getConnection();

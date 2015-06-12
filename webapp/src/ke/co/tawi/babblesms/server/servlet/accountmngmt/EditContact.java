@@ -57,7 +57,8 @@ public class EditContact extends HttpServlet {
 
 	final String ERROR_NO_NAME = "Some fields are empty please fill in all the fields.";
 	
-	private Cache accountCache;	
+	private Cache accountCache;
+	private static Contact contact;
 
 	
 	/**
@@ -100,16 +101,21 @@ public class EditContact extends HttpServlet {
 		String contactname = request.getParameter("name");
 		String contactstatusuuid = request.getParameter("statusuuid");
 		String description =request.getParameter("description");
-		String [] groupArray =request.getParameterValues("groupselected[]");		
+		String [] groupArray =request.getParameterValues("groupselected[]");
+		String cuuid = request.getParameter("uuid");
 		
-		System.out.println("JSP sent ::::"+groupArray.toString());	
+		for(int i=0;i<groupArray.length;i++){
+		System.out.println("JSP sent ::::"+groupArray[i]+" contactname:"+contactname+
+				" statusuuid:"+contactstatusuuid+ " description:"+description+" "
+						+ " cuuid:"+cuuid);	
+		}
 		
 		//String [] groupsArray =request.getParameterValues("groupsdeleted[]");
-		String cuuid = request.getParameter("uuid");
+		
 		String [] phonenumArray = request.getParameterValues("phone1[]"); 
 		String [] emailArray = request.getParameterValues("email[]");
 		String[] networkArray = request.getParameterValues("network[]");
-		Set<String> myGroupSet = new HashSet<String>(Arrays.asList(groupArray));
+		//Set<String> myGroupSet = new HashSet<String>(Arrays.asList(groupArray));
 		//Set<String> groupSet = new HashSet<String>(Arrays.asList(groupsArray));
 		if(contactname.equals("") || phonenumArray.equals("")){
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
@@ -118,11 +124,13 @@ public class EditContact extends HttpServlet {
 		else{
 			//The update method  
 			//Contact contact = new Contact();
-			Contact contact = ContactDAO.getInstance().getContact(cuuid);
-			contact.setName(contactname);
-			contact.setDescription(description);	
 			ContactDAO contactsDAO = ContactDAO.getInstance();
+			contact = contactsDAO.getContact(cuuid);
+			contact.setName(contactname);
+			contact.setDescription(description);
+			contact.setAccountUuid(account.getUuid());		
 			contactsDAO.updateContact(cuuid, contact);
+			
 			Phone phone;
 			PhoneDAO phoneDAO=PhoneDAO.getInstance();
 			List<Phone> plist = phoneDAO.getPhones(contact);
@@ -147,13 +155,8 @@ public class EditContact extends HttpServlet {
 			newPhone .setStatusuuid(contactstatusuuid);
 			newPhone.setNetworkuuid(networkArray[count]);
 			phoneDAO.putPhone(newPhone);
-                        }
-
+                }
 			}
-                       
-
-			
-			
 			
 			Email email;
 			EmailDAO emailDAO=EmailDAO.getInstance();
@@ -172,26 +175,22 @@ public class EditContact extends HttpServlet {
 			
 			newEmail.setAddress(emailArray[count2]);
 			newEmail.setContactuuid(cuuid);
-                        newEmail.setStatusuuid(contactstatusuuid);
-                        emailDAO.putEmail(newEmail);
-                        }
-
+            newEmail.setStatusuuid(contactstatusuuid);
+            emailDAO.putEmail(newEmail);
+                   }
 			}
 			
-			
-			for (String group1 : myGroupSet) {
-
-			if(!(group1.equals(""))){
+			if(groupArray.length>0){
+			for (String group1 : groupArray) {
+		    System.out.println(group1);
 			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
 			GroupDAO gDAO = GroupDAO.getInstance();
 			Group group = gDAO.getGroupByName(account , group1);
 			cgDAO.putContact(contact, group);
-
 				}
-
 			}
 			
-			/*for (String group2 : groupSet) {
+			/**for (String group2 : groupSet) {
 
 			if(!(group2.equals(""))){
 			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();

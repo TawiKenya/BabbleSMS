@@ -74,6 +74,10 @@
 
 
 <!-- jQuery UI -->
+ <!-- jQuery/javascript -->
+
+        <!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
+
 <script src="../js/jquery/jquery-ui-1.8.21.custom.min.js"></script>
 <!-- transition / effect library -->
 <script src="../js/bootstrap/bootstrap-transition.js"></script>
@@ -141,7 +145,15 @@
 <!-- application script for Charisma demo -->
 <script src="../js/tawi/charisma.js"></script>
 
-<script>
+<!--affect the popup on contact page-->
+<script src="../js/tawi/editcontact.js"></script>
+<!--affect the popup on contact page-->
+<script src="../js/tawi/editcontact_popup.js"></script>
+<!--manages the table on contactspergroup page-->
+<script src="../js/tawi/contactgrpselected.js"></script>
+
+<script type="text/javascript">
+
     $(function() {
         $("#infrom").datepicker({
             defaultDate: "+0d",

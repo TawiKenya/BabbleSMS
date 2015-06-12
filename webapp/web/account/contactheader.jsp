@@ -58,20 +58,13 @@
             {
                 z-index:999;
             }
-        </style>
-        
-
-        <!-- jQuery/javascript -->
-
-	<!--<script src="../js/jquery_popup.js"></script>-->
-   <script src="../js/jquery/jquery-1.7.2.min.js"></script>	
-       	<!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
-	<script src="../js/tawi/editcontact.js"></script>
-	<script src="../js/tawi/editcontact_popup.js"></script>
-	<script src="../js/bootstrap/bootstrap-dropdown.js"></script>
-	<script src="../js/tawi/charisma.js"></script>
-        
+        </style> 
+   <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+   <script src="../js/jquery/jquery-1.7.2.min.js"></script>
 	<!-- CSS -->
+
+        <link href="../css/bootstrap.min.css">
+        <link href="../css/dataTables.bootstrap.css">
 	    <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
 	    <link href="../css/poup.css" rel="stylesheet">
@@ -100,8 +93,14 @@
 
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
-        <script>
 
+       <script type="text/javascript">
+            $(document).ready(function() {
+                $('#contactgrp').dataTable();
+            } );        
+        </script>
+
+        <script>
         $(document).ready(function() {
 	
 		$("[href]").each(function() {

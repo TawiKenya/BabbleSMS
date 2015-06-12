@@ -51,9 +51,9 @@ public String networkcount(Account Account){
 	
 	 gson = new GsonBuilder().create();	
 	
-	HashMap<String,String> checknet = new HashMap<String,String>();
+	HashMap<String,String> checknet = new HashMap<>();
 	
-	HashMap<String,HashMap<String,String>> checknet2 = new HashMap<String,HashMap<String,String>>();
+	HashMap<String,HashMap<String,String>> checknet2 = new HashMap<>();
 	
 	networkcountDAO netcount= new networkcountDAO();
 	

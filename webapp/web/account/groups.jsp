@@ -170,7 +170,7 @@
                     <tr>
 
                         <td width="5%"><%=count%></td>
-                        <td class="center"><a href="#"><%=code.getName()%></a></td>
+                        <td class="center"><a class="Ylink" href="#"><%=code.getName()%></a></td>
                         <td class="center"><%=code.getDescription()%> </td>
                         <td class="center"><%=cts.getContactInGroup(code.getUuid())%> </td>
                         <td class="center"><%=cts.getCumulativeOutgoingGroup(code.getUuid())%> </td>
@@ -208,7 +208,7 @@
 <!-- Group Form  for the pop up starts-->
 <div id="contactdiv">
 <form class="form" onsubmit="return formValidator()" action = "editGroup" method = "POST" id="contact" >
-<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:15px;" id ="close">x</p>
+<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:20px;" id ="close">x</p>
 <b>Groups Details</b>
 <label>Name: <span></span></label>
 <input type="text" id="name" name = "name" />
@@ -222,8 +222,8 @@
 <input type="hidden" id="guuid" name = "uuid" class="edit_area" />
 
 <br>
-<input type="submit"  value="save changes" />
-<input type="submit" id="cancel" value="Cancel"/>
+<input type="submit" class="btn btn-primary" value="Save" />
+<input type="submit" class="btn btn-primary" id="cancel" value="Cancel"/>
 
 
 <br/>

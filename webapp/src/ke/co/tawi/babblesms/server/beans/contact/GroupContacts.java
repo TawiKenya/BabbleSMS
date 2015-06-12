@@ -61,10 +61,9 @@ public class GroupContacts extends StorableBean {
         builder.append("[uuid=");
         builder.append(getUuid());
         builder.append(", contactuuid=");
-        builder.append(getContactUuid());
+        builder.append(contactuuid);
         builder.append(", accountuuid=");
-        builder.append(getAccountsuuid());
-        builder.append(", name=");        
+        builder.append(accountsuuid);        
         builder.append("]");
         return builder.toString();
     }

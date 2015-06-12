@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
+
+
 /**
  * Persistence implementation
  * <p>
@@ -60,5 +63,19 @@ public interface BabblenetworkcountDAO {
      *and returns a list with both.
      */	
 	public List<Phone> getAllPhones(GroupContacts contact);
+	
+	
+	/**    
+     * returns a list with all contacts per network per group.
+     */
+	
+	public  List<Phone> contactspernetwork(String grpuuid,String nwkuuid);
+	
+	
+	
+	/**    
+     * returns a list with all contacts per group.
+     */
+	public List<Phone>allgrpcontacts(String grpuuid);
 }
 

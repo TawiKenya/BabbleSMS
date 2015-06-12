@@ -341,6 +341,9 @@ more
                         } else { // end 'if ( contactGroupList != null)'
                             out.println("<td>&nbsp;</td>");
                         }
+
+                        out.println("<td style='display:none'>"+contact.getDescription()+"</td>");
+                        out.println("<td style='display:none'>"+contact.getUuid()+"</td>");
                         
                      contactCount++;
                      out.println("</tr>");

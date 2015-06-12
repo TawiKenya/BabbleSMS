@@ -5,7 +5,6 @@
 */
 /*for use by the second showtext table*/
 
-
 function ContactEdit(val){
    //Prevent the hyperlink to perform default behavior 
 	$("a").click(function(event){ event.preventDefault() });
@@ -59,15 +58,37 @@ $(document).ready(function() {
 
        
         
-    function checkgroups(str){   	
-        	    $.ajax({
-                   method: "GET",
-                   url: "selectedgroups.jsp?g="+str                      
-                    })
-                    .done( function (data) {
-                  $('.head-insert').after(data);
-                });
+    function checkgroups(str){         
+           var request = getRequestObject();
+           request.onreadystatechange =
+              function() { handleResponse(request); };
+           request.open("GET", "selectedgroups.jsp?g="+str , true);
+           request.send(null);
+        }
+        
+    function getRequestObject() {
+          if (window.XMLHttpRequest) {
+             return(new XMLHttpRequest());
+             } 
+
+             else if (window.ActiveXObject) {
+               return(new ActiveXObject("Microsoft.XMLHTTP"));
+             } 
+             else if(window.createRequest){             
+              return(window.createRequest());
+             }
+             else {
+             return(null); 
+             }
            }
+     
+
+     function handleResponse(request) {
+           if ((request.readyState == 4)&&(request.status==200)) {            
+            $('.head-insert').append(request.responseText);
+             }
+         }     	    
+    
 
              //appends extra phones found      
         function checkphones(str){
@@ -153,7 +174,7 @@ $(document).ready(function() {
 
 
  
-
+   // valids the popup form in all the allcontacts page
 	function formValidator() {
         var name = $("#paragraph_1").val();
         var email = $("#email").val();
@@ -193,7 +214,62 @@ $(document).ready(function() {
     function popup() { $("#logindiv").css("display", "block");  }
     $("#login #cancel").click(function() {  $(this).parent().parent().hide();  });
 
-//add more phone click
+
+
+      $(".Ylink").click(function(event){  
+        //Prevent the hyperlink to perform default behavior  
+        event.preventDefault();    
+
+         var $td= $(".Ylink").closest('tr').children('td');    
+         var name= $td.eq(1).text();  
+         var description= $td.eq(2).text();  
+         var tcontacts= $td.eq(3).text();  
+         var smssent= $td.eq(4).text();
+         var gpuuid= $td.eq(6).text();  
+         
+         $("#name").val(name);
+         $("#desc").val(description);
+         $("#tcontacts").val(tcontacts);
+         $("#smssent").val(smssent);
+         $("#guuid").val(gpuuid);
+         $(".tblTest").hide();
+         $("#contactdiv").css("display", "block");
+          });  
+
+      //this method validates a popup in the groups.jsp
+        function formValidator(){
+           var name = $("#paragraph_1").val();
+           var email = $("#email").val();
+           var contact = $("#phone").val();
+           var description = $("#dept").val();
+
+           if (name == "" || email == "" || contact == "" || description == ""){
+            alert("Please Fill All Fields");    
+            }
+
+          else{
+            if (validateEmail(email)) {
+                $("#contactdiv").css("display", "none");
+                $(".tblTest").show();
+                    }
+
+                    else {
+                    alert('Invalid Email Address');
+                          }
+            function validateEmail(email) {
+                var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+
+                if (filter.test(email)) {
+                    return true;
+                }
+                else {
+                    return false;
+                    }
+                }
+            }
+        }
+
+     //add more phone click
   $("#addphns").click(function(e){ 
                 e.preventDefault();
 		

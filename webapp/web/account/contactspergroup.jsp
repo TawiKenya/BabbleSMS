@@ -19,6 +19,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
@@ -69,8 +70,12 @@
     String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
     Cache statusCache = mgr.getCache(CacheVariables.CACHE_STATUS_BY_UUID);
+    Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
+
+    HashMap<String, String> networkHash = new HashMap<String, String>();
 
     List<Status> list = new ArrayList<>();
+    List<Network> networkList = new ArrayList<Network>();
 
     Element element;
     List keys;
@@ -81,6 +86,15 @@
         st = (Status) element.getObjectValue();
         list.add(st);
 
+    }
+    List keys1;
+    Network network; 
+    keys1 = networksCache.getKeys();
+    for (Object key : keys1) {
+        element = networksCache.get(key);
+        network = (Network) element.getObjectValue();
+        networkHash.put(network.getUuid(), network.getName());
+        networkList.add(network);
     }
 
 %>
@@ -107,32 +121,54 @@
         </div>
         <div class="box-content">
        
-<div class="controls"> Choose a group:              
-                        <select>
-                         <% if (contactsgrpList != null) {                        
-                            out.println("<td>");
-                            for(Group gr : contactsgrpList) { %>
-                                <option value="<%=gr.getUuid()%>" ><%=gr.getName()%></option>          
-                            <%}                            
-                        } else {%> 
-                        <option >No groups available</option>
-                       <% } %>                          
-                            
-                        </select>
-                        <input type="radio" value="totalgrpcontacts" name="groups" required="true">:All Group Contacts
-                        <input type="radio" value="networkcontacts" name="groups" required="true" checked>:Group Contacts per Network
-                       
-                        <table class="table table-striped table-bordered">
-                        <thead> <tr><td width="10%">*</td><td width="50%"><a>Contact Name/Network</a></td><td width="40%"><a>Total contact count/Phone No.</a></td></tr>
+<div class="controls"> <h4>Choose a group:&nbsp;             
+            <select class="groupselect" onclick="Chromecheck()">
+                 <% if (contactsgrpList != null) {                        
+                    out.println("<td>");
+                    for(Group gr : contactsgrpList) { %>
+                  <option class="grp" value="<%=gr.getUuid()%>" name="<%=gr.getName()%>" ><%=gr.getName()%></option>          
+                          <%}                            
+                 } else {%> 
+                 <option >No groups available</option>
+                 <% } %>                          
+                           
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      Choose a network:&nbsp;
+         <select class="networkselect" onclick="Chromecheck()">
+                <option class="nwk"  value="allnetworks" name="All Networks">All Networks</option>
+                   <%                   
+                      int count2 = 1;
+                   if (networkList != null) {
+                  for (Network netwk : networkList) {
+                     %>
+             <option  class="nwk" value="<%= netwk.getUuid()%>" name="<%= netwk.getName()%>"><%= netwk.getName()%></option>
+                     <%
+                  count2++;
+                       }
+                     }
+               %>
+          </select></h4>
+                        <div id="header-display"></div>
+                        <table class="table table-striped table-bordered" id="contactgrp">                        
+                        <thead > 
+                           <tr>
+                             <td width="10%">*</td>
+                             <td width="50%"><a>Contact Name/Network</a></td>
+                             <td width="40%"><a>Total contact count/Phone No.</a></td>
+                          </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                            <%  int i=0;                           
                              if (grpList != null) {
                              
                             for(Map.Entry fone: grpList.entrySet()){
                               i++;
                               %>
-                          <tr><td width="10%"><%=i%></td><td width="50%"><%=fone.getKey()%></td><td width="40%"><%=fone.getValue()%></td></tr>               
+                          <tr>
+                             <td width="10%"><%=i%></td>
+                             <td width="50%"><%=fone.getKey()%></td>
+                             <td width="40%"><%=fone.getValue()%></td>
+                          </tr>               
                             <%}
                             }                       
 
