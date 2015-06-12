@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
+ * Licensed under the OSL-3.0 License:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * This file is used for ...
+ * 
+ * Author: Name <email>
+ */
 $(document).ready(function() {
 var groupname;
 
