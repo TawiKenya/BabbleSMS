@@ -133,13 +133,12 @@
            String grpuuid=request.getParameter("grp"); 
            String nwkuuid=request.getParameter("nwk");
 
-      if((grpuuid==null)||(nwkuuid==null)){
-           response.sendRedirect("../account/contact.jsp");
-            phoneList=null;
+     /** if((grpuuid==null)||(nwkuuid==null)){
+           response.sendRedirect("../account/contact.jsp");            
        }else{
-           phoneList=ncDAO.contactspernetwork("9bef62f6-e682-4efd-98e9-ca41fa4ef993","B936DA83-8A45-E9F0-2EAE-D75F5C232E78");
-           out.println(phoneList);
-       }
+           //phoneList=ncDAO.contactspernetwork(grpuuid,nwkuuid);*/ 
+           phoneList=ncDAO.contactspernetwork("9bef62f6-e682-4efd-98e9-ca41fa4ef993","B936DA83-8A45-E9F0-2EAE-D75F5C232E78");          
+      /** }*/
 
         
          
@@ -161,7 +160,7 @@
                  <%
                   if(phoneList!=null){
 
-                 for (Phone phone:PhoneList) {                
+                 for (Phone phone:phoneList) {                
          %>
          <tr>
              

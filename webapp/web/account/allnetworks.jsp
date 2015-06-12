@@ -132,14 +132,12 @@
     
            String grpuuid=request.getParameter("grp"); 
            
-      if(grpuuid==null){
+      /**if(grpuuid==null){
            response.sendRedirect("../account/contact.jsp");       
-           phoneList=null;
        }else{
-           //phoneList=ncDAO.allgrpcontacts(grpuuid);
-           phoneList=ncDAO.allgrpcontacts("9bef62f6-e682-4efd-98e9-ca41fa4ef993");
-           out.println(phoneList);
-       }
+         //phoneList=ncDAO.allgrpcontacts(grpuuid);*/
+         phoneList=ncDAO.allgrpcontacts("9bef62f6-e682-4efd-98e9-ca41fa4ef993");    
+      /** }*/
 
         
 
@@ -160,7 +158,7 @@
                  <% 
                  if(phoneList!=null){
 
-                 for (Phone phone:PhoneList) {                
+                 for (Phone phone:phoneList) {                
          %>
          <tr>
              
