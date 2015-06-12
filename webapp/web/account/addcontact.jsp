@@ -65,7 +65,6 @@
   
     Network network;
     List keys;
-    Status st;
     Group cg;
 
     Group cgroup = new Group();
@@ -80,14 +79,13 @@
     String accountuuid = account.getUuid();
     String statusuuid = account.getStatusuuid();
 
-	GroupDAO gDAO=new GroupDAO();
-         contactsgrpList = gDAO.getGroups(account);
+    GroupDAO gDAO = new GroupDAO();
+    contactsgrpList = gDAO.getGroups(account);
 
     keys = statusCache.getKeys();
-    for (Object sta : keys) {
-        element = statusCache.get(sta);
-        st = (Status) element.getObjectValue();
-        list.add(st);
+    for (Object obj : keys) {
+        element = statusCache.get(obj);
+        list.add((Status) element.getObjectValue());
     }
 
     keys = networkCache.getKeys();

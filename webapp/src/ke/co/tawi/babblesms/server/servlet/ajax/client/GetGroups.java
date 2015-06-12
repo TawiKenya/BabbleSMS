@@ -44,17 +44,22 @@ import net.sf.ehcache.Element;
 /**
  * Returns a JSON list of Groups for a given account.
  * <p>
- * 
+ * Sample output is as follows:<br/>
+ * {  "groups": [
+ * {"orange_contacts": "5", "name": "Management", "airtel_contacts": "10", "safaricom_contacts": "22", "uuid": "a118c8ea-f831-4288-986d-35e22c91fc4d"},
+ * {"orange_contacts": "15", "name": "Parents", "airtel_contacts": "50", "safaricom_contacts": "30", "uuid": "094def52-bc18-4a9e-9b84-c34cc6476c75" },
+ * {"orange_contacts": "23", "name": "Staff", "airtel_contacts": "24", "safaricom_contacts": "44", "uuid": "a2688d72-291b-470c-8926-31a903f5ed0c" },
+ * {"orange_contacts": "64", "name": "Students", "airtel_contacts": "15", "safaricom_contacts": "0", "uuid": "9bef62f6-e682-4efd-98e9-ca41fa4ef993"},
+ * {"orange_contacts": "19", "name": "Teachers", "airtel_contacts": "16", "safaricom_contacts": "2", "uuid": "e9570c5d-0cc4-41e5-81df-b0674e9dda1e" }
+ * ] }
+ * <p>
+ *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * @author <a href="mailto:eugene.g99@gmail.com">Eugene Wang'ombe</a>
  * 
  */
 public class GetGroups extends HttpServlet {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2839939167530680340L;
+	
 
 	private Cache accountsCache;
 
@@ -74,14 +79,15 @@ public class GetGroups extends HttpServlet {
 
 		groupDAO = GroupDAO.getInstance();
 	}
+	
 
 	/**
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		Account account = new Account();
 
 		String accountUuid = request.getParameter("accountuuid");
@@ -107,6 +113,7 @@ public class GetGroups extends HttpServlet {
 		out.close();
 	}
 
+	
 	/**
 	 * @param account
 	 * @return a HashMaps containing a list of other HashMaps, each HashMap with
@@ -139,6 +146,7 @@ public class GetGroups extends HttpServlet {
 
 		return parentGroupHash;
 	}
+	
 
 	/**
 	 *
@@ -152,4 +160,7 @@ public class GetGroups extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
+	
+	
+	private static final long serialVersionUID = 2839939167530680340L;
 }

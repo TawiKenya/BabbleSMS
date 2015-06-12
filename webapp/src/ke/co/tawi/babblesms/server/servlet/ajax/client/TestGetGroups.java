@@ -68,7 +68,8 @@ public class TestGetGroups {
         URLConnection conn;
         URL url;
         BufferedReader reader;
-		String response = "";
+		String line;
+		StringBuffer stringBuff = new StringBuffer();
 		
 		try {            
             url = new URL(urlStr);
@@ -76,8 +77,10 @@ public class TestGetGroups {
             conn.setDoInput(true);
             conn.setDoOutput(true); 
             
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));            
-            response = reader.readLine();            
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
+            while( (line = reader.readLine()) != null) {
+            	stringBuff.append(line);
+            }
             
             reader.close();
             
@@ -90,7 +93,7 @@ public class TestGetGroups {
             e.printStackTrace();
         }
         
-		return response;
+		return stringBuff.toString();
 	}
 }
 
