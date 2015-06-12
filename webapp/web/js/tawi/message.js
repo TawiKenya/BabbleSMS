@@ -23,9 +23,7 @@ $(document).ready(function(){
    
     
    $scroll.hide();
-   $('.modal-dialog').append($image);
-
-   //console.log('Account uuid:'+Accuuid+'        address: '+address+'      Element: '+jsson);
+   $('.modal-dialog').append($image);   
 
    //if response has not been cached do this..... 
   if(response===null){ 
@@ -85,8 +83,6 @@ else{
 
 
 function handleResponse(request) {
-//if it succeeds do this....
-//alert('readyState: '+request.readyState);
       if ((request.readyState == 4) && (request.status == 200)) {    
                
                 //gets responseText
@@ -112,7 +108,7 @@ function handleResponse(request) {
 
 
       //if it fails do this....
-          else if((request.readyState==0)||(request.status=404)){              
+          else if((request.readyState==0)&&(request.status=404)){              
                 $image.remove();
                  $('#modal-display1').html('could not load details of '+jsson);
                  $('.modal-dialog').html('<p class="par"><font color="red">An Error has occurred!!</font></p>');          
