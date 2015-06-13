@@ -21,9 +21,7 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
-import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
-import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 
 import org.junit.Ignore;
@@ -121,13 +119,7 @@ public class TestSmsBalanceDAO {
 		Shortcode s = new Shortcode();
 		s.setUuid(SHORTCODE_UUID);
 		assertTrue(storage.addBalance(a, s, 10));
-		assertTrue(storage.addBalance(a, mask, 10));
-		
-		
-		
-		
-		
-		
+		assertTrue(storage.addBalance(a, mask, 10));		
 	}
 	
 
