@@ -96,8 +96,7 @@
         </div>-->
         <div class="box-content">
 
-            <%                
-                String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
+            <%                String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.ADD_SUCCESS);
 
                 if (StringUtils.isNotEmpty(addErrStr)) {

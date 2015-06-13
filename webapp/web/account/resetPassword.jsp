@@ -27,79 +27,8 @@
 <html>
     <head>
         <title>Forgot Password</title>
-
-    <style type="text/css">
-
-        body{
-          background-image:url("../img/background.jpg");
-          background-repeat: no-repeat;
-          background-size: cover;
-
-        }
-
-         .container{
-                border-radius: 50px;
-            background-color: green;
-            color: ;
-            position: absolute;
-            width: 40%;
-            height: 40%;
-            margin: auto;
-            top: 25%;
-            left: 30%;
-            text-align: center;
-
-         }
-
-         .babble{
-            background-color: #fff;
-              border-radius: 10px;
-         }
-
-        li{
-            display: inline;
-            padding-right: 10px;
-        }
-        ul{
-            text-decoration: none;
-            color: #666;
-        }
-        form ul{
-            list-style: none;
-            margin-bottom: 20px;
-            padding-left: 0px;
-        }
-        label{
-            display: block;
-            color: #292929;
-            font-family: sans-serif;
-            padding-bottom: 8px;
-        }
-
-        h1{
-                font-size: 50px;
-                font-family: monospace;
-                letter-spacing: -1px;
-                color: black;
-                text-shadow: 5px -1px 0px blue,
-                                        6px -2px 0px white;
-        }
-        .uname{
-
-        }
-        .email{
-
-        }
-        .err{
-        width: 400px;
-        margin: auto;
-        text-align: center;
-        font-size: 30px;
-        }
-
-    </style>
-
-    </head>
+    <link rel="stylesheet" type="text/css" href="../css/resetPassword.css">    
+       </head>
     
     
     <body>      
@@ -127,28 +56,37 @@
 
         <div class="container"> 
 
-        <div class="babble"><h1> BabbleSMS <h1></div>
+        <div class="babble">
+        <img alt="Tawi Commercials" title="Tawi Commercials" src="../img/tawi-logo-with-slogan.png">                
+                <h1><a href="?">BabbleSMS</a><h1></div>
 
         <form class="form-horizontal" action="resetPassword" method="POST">
         <ul>
         <li>
 
-        <div class="uname">
-        <label class="control-label" for="username">Username:</label>
-        <input class="input-xlarge focused" type="text" name="username" size="15">
+        <div class="input-prepend" title="Enter Username" data-rel="tooltip">
+        <label class="complex-input auth-input" autocapitalize="off" autocorrect="off" data-nb="input">        
+                <input class="input-controller" autocapitalize="off" autocorrect="off" placeholder="Enter Username" type="text" 
+                                name="username" id="username" value="" required size="15">
+                                        
+             
+                </label> 
         </div>
 
         </li>
         <li>
 
-        <div class="email">
-        <label class="control-label" for="email">Email</label>
-        <input class="input-xlarge focused" type="text" name="email" id="email" size="30">  
+        <div class="input-prepend" title=" Enter E-mail" data-rel="tooltip">
+                <label class="complex-input auth-input" autocapitalize="off" autocorrect="off" data-nb="input">            
+                <input class="input-controller" autocapitalize="off" autocorrect="off" placeholder="Enter E-mail" type="text" 
+                                name="email" id="email" value="" size="30" required>                        
+                
+                </label>  
         </div>
 
         </li>
         <li>
-        <input type="submit" name="submit" value="Continue">
+        <button class="button1" type="submit" name="submit">Reset Password</button>
         </li>
         </ul>
 

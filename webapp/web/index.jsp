@@ -71,7 +71,7 @@
                                       <span class="_nb-input-hint-inner">Username</span>
                                 </span>
                                 <input class="_nb-input-controller" autocapitalize="off" autocorrect="off" placeholder="Username" type="text" 
-                                name="username" id="username" value="">
+                                name="username" id="username" value="" required/>
                                        <span class="_nb-input-view"> </span>          
                                               </span>                    
                                                                   
@@ -98,7 +98,7 @@
                                       <span class="_nb-input-hint">
                                          <span class="_nb-input-hint-inner">Password</span>
                                        </span>
-                                    <input class="_nb-input-controller" name="password" id="password" placeholder="Password" type="password" value="" />
+                                    <input class="_nb-input-controller" name="password" id="password" placeholder="Password" type="password" value="" required/>
                                     <span class="_nb-input-view"> </span>
                                 </span>
                                 </label>
@@ -140,7 +140,7 @@
                                                                <div class="b-mail-domik__social js-socials"></div>
                                                           </div>
                             </fieldset>  
-                            <p> <a href="account/forgotpas.jsp" target="_top"> Forgot Password</a>  </p>
+                            <p> <a href="account/resetPassword.jsp" target="_top"> Forgot Password</a>  </p>
                  </form>
             </div>                        
                  

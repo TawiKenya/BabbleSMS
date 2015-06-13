@@ -57,7 +57,7 @@
 
     <servlet>
       <servlet-name>ResetPassword</servlet-name>
-      <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.ResetPassword</servlet-class>
+      <servlet-class>ke.co.tawi.babblesms.server.servlet.account.settings.ResetPassword</servlet-class>
     </servlet>
     
     <servlet>

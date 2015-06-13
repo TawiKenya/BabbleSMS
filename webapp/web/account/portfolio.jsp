@@ -21,14 +21,10 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance"%>
-
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO"%>
+
 
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
@@ -37,7 +33,7 @@
 <%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
 
-<%@page import="java.util.LinkedList"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 
@@ -58,7 +54,8 @@
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
-        
+    
+    
 
     CacheManager mgr = CacheManager.getInstance();
     Cache shortcodesCache = mgr.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID);
@@ -70,7 +67,7 @@
     ContactDAO contactDAO = ContactDAO.getInstance();
     PhoneDAO phoneDAO = PhoneDAO.getInstance();
     NetworkDAO networkDAO = NetworkDAO.getInstance();
-    SmsBalanceDAO smsBalanceDAO = SmsBalanceDAO.getInstance();
+    
 
  
     HashMap<String, String> networkHash = new HashMap<String, String>();
@@ -85,23 +82,13 @@
     Shortcode shortcode;
     Mask mask;
     
-    List <Network> networkList = new LinkedList<Network>();
-    List <Shortcode> shortcodeList = new LinkedList<Shortcode>();
-    List<Mask> maskList = new LinkedList<Mask>();
+    List <Network> networkList = new ArrayList<Network>();
+    List <Shortcode> shortcodeList = new ArrayList<Shortcode>();
+    List<Mask> maskList = new ArrayList<Mask>();
+    
     
 
-    HashMap<String, Integer> maskBalanceHash = new HashMap<String, Integer>();
-    HashMap<String, Integer> shortcodeBalanceHash = new HashMap<String, Integer>();
-    List<SMSBalance> balanceList = smsBalanceDAO.getBalances(account);	
-
-    for(SMSBalance balance : balanceList) {
-        if(balance instanceof ShortcodeBalance) {
-            shortcodeBalanceHash.put( ((ShortcodeBalance) balance ).getShortcodeUuid(), new Integer(balance.getCount()));            
-        } else {
-            maskBalanceHash.put( ((MaskBalance) balance ).getMaskUuid(), new Integer(balance.getCount()));
-        }
-    }// end 'for(SMSBalance balance : balanceList)'
-
+    
     List keys;
     keys = shortcodesCache.getKeys();
     for (Object key : keys) {
@@ -165,7 +152,6 @@
                         <th>*</th>                        
                         <th>Sender Id</th>
                         <th>Network</th>
-                        <th>Balance</th>
                     </tr>                    
                 </thead> 
                 
@@ -176,12 +162,12 @@
                             for (Mask msk : maskList) {
 
                     %>
-                                <tr>
-                                    <td width="10%"><%=count%></td>
-                                    <td class="center"><%=msk.getMaskname()%></td>
-                                    <td class="center"><%=networkHash.get(msk.getNetworkuuid())%></td>
-                                    <td class="center"><%=maskBalanceHash.get(msk.getUuid())%></td>                                    
-                                </tr>
+                    <tr>
+                        <td width="10%"><%=count%></td>
+                        <td class="center"><%=msk.getMaskname()%></td>
+                        <td class="center"><%=networkHash.get(msk.getNetworkuuid())%></td>
+
+                    </tr>
 
                     <%
                                 count++;
@@ -212,7 +198,6 @@
                         <th>*</th>
                         <th>ShortCodes</th>
                         <th>Network</th>
-                        <th>Balance</th>
                     </tr>
                 </thead>   
                 <tbody>
@@ -225,7 +210,7 @@
                                     <td width="10%"><%=count%></td>
                                    <td class="center"><%=code.getCodenumber()%></td>
                                     <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>
-                                    <td class="center"><%=shortcodeBalanceHash.get(code.getUuid())%></td>    
+
                                 </tr>
 
                     <%
