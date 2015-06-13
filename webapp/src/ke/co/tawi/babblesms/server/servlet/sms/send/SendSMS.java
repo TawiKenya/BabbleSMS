@@ -107,8 +107,8 @@ public class SendSMS extends HttpServlet {
 	        account = (Account) element.getObjectValue();
 	    }
 			    
-		String [] groupselected = request.getParameterValues("groupselected");
-		String [] phones = request.getParameterValues("phones");
+		String[] groupselected = request.getParameterValues("groupselected");
+		String[] phones = request.getParameterValues("phones");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
        

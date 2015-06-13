@@ -27,7 +27,7 @@ import ke.co.tawi.babblesms.server.utils.StringUtil;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +73,7 @@ public class TestPostSMS {
 		List<Contact> allContacts = contactDAO.getContacts(a);
 		
 		PhoneDAO phoneDAO = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-		List<Phone> allPhones = new ArrayList<>(); 
+		List<Phone> allPhones = new LinkedList<>(); 
 		
 		for(Contact c : allContacts) {
 			allPhones.addAll(phoneDAO.getPhones(c));
@@ -84,10 +84,10 @@ public class TestPostSMS {
 			System.out.println(p.getNetworkuuid());
 		}*/
 		
-		List<Phone> safaricomPhones = new ArrayList<>();
+		List<Phone> safaricomPhones = new LinkedList<>();
 		safaricomPhones.addAll(CollectionUtils.select(allPhones, 
 				new PhonesByNetworkPredicate(Network.SAFARICOM_KE)));
-		System.out.println("Safaricm phone size: " + safaricomPhones.size());
+		System.out.println("Safaricom phone size: " + safaricomPhones.size());
 		
 		
 		List<List<Phone>> phonePartition = ListPartitioner.partition(safaricomPhones, 10);
