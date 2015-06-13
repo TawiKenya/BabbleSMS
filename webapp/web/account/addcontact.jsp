@@ -284,7 +284,7 @@
                          
                         <label class="control-label" for="upload">Contact CSV</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  id="upload" id="contname" type="file" name="upload">
+                            <input class="input-xlarge focused"  id="upload" id="contname" type="file" name="upload" required>
 
 
 

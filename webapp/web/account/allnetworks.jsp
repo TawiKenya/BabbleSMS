@@ -111,7 +111,7 @@
      //GroupDAO gDAO=new GroupDAO();
      ///contactsgrpList = gDAO.getGroups(account); 
 
-    List keys;
+    /**List keys;
      
     keys = networksCache.getKeys();
     for (Object key : keys) {
@@ -127,16 +127,16 @@
       element=contactsCache.get(key);
       contact =(Contact)element.getObjectValue();
       contactHash.put(contact.getUuid(),contact.getName());
-    } 
+    } */
 
     
            String grpuuid=request.getParameter("grp"); 
            
       /**if(grpuuid==null){
            response.sendRedirect("../account/contact.jsp");       
-       }else{
-         //phoneList=ncDAO.allgrpcontacts(grpuuid);*/
-         phoneList=ncDAO.allgrpcontacts("9bef62f6-e682-4efd-98e9-ca41fa4ef993");    
+       }else{*/
+         phoneList=ncDAO.allgrpcontacts(grpuuid);
+         //phoneList=ncDAO.allgrpcontacts("9bef62f6-e682-4efd-98e9-ca41fa4ef993");    
       /** }*/
 
         
@@ -164,13 +164,13 @@
              
              <td width="5%"> <%=contactCount%> </td>
 
-            <td class="center"> <a href="#"> <%=contactHash.get(phone.getContactUuid())%> </a> </td> 
+            <td class="center"> <a href="#"> <%=phone.getContactUuid()%> </a> </td> 
 
-            <td class="center">  <%=phone.getPhonenumber()%> <%=networkHash.get(phone.getNetworkuuid())%> </td>  
+            <td class="center">  <%=phone.getPhonenumber()%> <%=phone.getNetworkuuid()%> </td>  
   
-            <td style="display:none"><%=phone.getStatusuuid()%></td>
+            <td style="display:none"> <%=phone.getStatusuuid()%> </td>
 
-            <td style="display:none"><%=phone.getUuid()%></td>
+            <td style="display:none"> <%=phone.getUuid()%> </td>
 
 
          </tr>
@@ -178,7 +178,7 @@
          <%         
                      contactCount++;
                  }
-             }       
+            }       
         %>
         </tbody>
         </table> 

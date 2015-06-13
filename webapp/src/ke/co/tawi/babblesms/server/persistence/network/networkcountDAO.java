@@ -96,8 +96,8 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 		 HashMap<String,String> totalCount= new HashMap<>();
 		 
 		 /**returns a list of network names and uuids*/ 	 
-		 
-		 HashMap<String,String> getNetwork=allnetworks();    
+		 HashMap<String,String> getNetwork=new HashMap<>();
+		  getNetwork=allnetworks();    
     
      int countnet= (NetworkName.size())-1;
      
@@ -127,9 +127,9 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 		public List<Phone> contactspernetwork(String grpuuid,String nwkuuid){
 			
 			 List<Phone>phoneSelected= new ArrayList<Phone>();
-			 List<Phone> phoneLists;
-			 List<GroupContacts> contactList;			 
-			 Phone createphone= new Phone();		
+			 List<Phone> phoneLists= new ArrayList<Phone>();
+			 List<GroupContacts> contactList= new ArrayList<GroupContacts>();
+			 		
 	/**returns a list  contacts from a given group
 	*/		
 	contactList =collectContacts(grpuuid);    
@@ -140,6 +140,7 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	            for(Phone fone : phoneLists) {    	
 	             
 	             if((fone.getNetworkuuid()).equalsIgnoreCase(nwkuuid)){
+	            Phone createphone= new Phone();
 	            createphone.setContactUuid(fone.getContactUuid());
 	            createphone.setPhonenumber(fone.getPhonenumber());
 	            createphone.setNetworkuuid(fone.getNetworkuuid()); 
@@ -158,7 +159,8 @@ public class networkcountDAO extends GenericDAO implements BabblenetworkcountDAO
 	 public List<Phone>allgrpcontacts(String grpuuid){
        /**returns a list of network names and uuids*/ 	 
 		 
-		 HashMap<String,String> getNetwork =allnetworks(); 
+		HashMap<String,String> getNetwork=new HashMap<>();
+		  getNetwork=allnetworks(); 
 		 
 		 List<Phone> PhoneList=new ArrayList<Phone>();
 		 List<Phone> pList=new ArrayList<Phone>(); 

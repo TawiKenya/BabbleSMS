@@ -61,9 +61,9 @@ function sendRequest(str){
            }
      
 
-     function handleRespons(request) {
-     	alert(request.responseText);  
+     function handleRespons(request) {     	
            if ((request.readyState == 4)&&(request.status==200)) {
+           	//alert(request.responseText);  
              $('#contactgrp').remove();        	
             $('#header-display').after(request.responseText);
              }
