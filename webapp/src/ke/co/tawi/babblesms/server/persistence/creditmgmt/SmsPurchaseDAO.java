@@ -15,14 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.persistence.creditmgmt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
-
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
@@ -31,6 +23,14 @@ import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -46,17 +46,16 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
         
 	
 	private static SmsBalanceDAO smsbalanceDAO;
+	
 	private static SmsPurchaseDAO  smspurchaseDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
-	public static SmsBalanceDAO SmsBalanceDAO(){
-		if(smsbalanceDAO==null){
-			smsbalanceDAO = new	SmsBalanceDAO();
-		}
-		return smsbalanceDAO;
-	}
 	
+	
+	/**
+	 * @return the singleton instance of {@link SmsBalanceDAO}
+	 */
 	public static SmsPurchaseDAO getInstance() {
 		if( smspurchaseDAO == null){
 			smspurchaseDAO = new SmsPurchaseDAO();
@@ -64,6 +63,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 		return smspurchaseDAO;
 	}
 
+	
 	/**
 	 * 
 	 */
@@ -88,6 +88,17 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	}
 
 	
+	
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#getPurchase(java.lang.String)
+	 */
+	@Override
+	public SMSPurchase getPurchase(String uuid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#put(ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase)
 	 */
@@ -95,72 +106,61 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	public boolean put(SMSPurchase purchase) {
 		
 		Account account = new Account();
-		Mask mask = new Mask();
-		Shortcode shotcode = new Shortcode();
-		int count;
+		account.setUuid(purchase.getAccountUuid());
+		
+		int count = purchase.getCount();
 		
 		boolean success = true;
-		ShortcodePurchase sp = new ShortcodePurchase();
-		MaskPurchase mp = new MaskPurchase();
 		
 		try(
-			Connection con = dbCredentials.getConnection();	
+			Connection con = dbCredentials.getConnection();				
 			
-			
-				PreparedStatement pst = con.prepareStatement("INSERT INTO shortcodepurchase(uuid,accountuuid,"
-						+ "shortcodeuuid,count,purchasedate) "
-						+ "VALUES(?,?,?,?,?);");
-						
+			PreparedStatement pst = con.prepareStatement("INSERT INTO shortcodepurchase(uuid, accountuuid,"
+				+ "shortcodeuuid, count, purchasedate) VALUES(?,?,?,?,?);");						
 
-				PreparedStatement pst2 = con.prepareStatement("INSERT INTO maskpurchase(uuid,accountuuid,"
-						+ "maskuuid,count,purchasedate) "
-						+ "VALUES(?,?,?,?,?);");	
-					
-					    
-				){
-			if( purchase instanceof ShortcodePurchase) {
+			PreparedStatement pst2 = con.prepareStatement("INSERT INTO maskpurchase(uuid, accountuuid,"
+				+ "maskuuid, count, purchasedate) VALUES(?,?,?,?,?);");					    
+			){
 			
-				pst.setString(1, sp.getUuid());
+			if(purchase instanceof ShortcodePurchase) {
+			
+				pst.setString(1, purchase.getUuid());
 				pst.setString(2, purchase.getAccountUuid());
 				pst.setString(3,purchase.getSourceUuid());
 				pst.setInt(4, purchase.getCount());
 				pst.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));	
 				pst.executeUpdate();
 				
-				count= purchase.getCount();
-				account.setUuid(purchase.getAccountUuid());
-				shotcode.setUuid(purchase.getSourceUuid());
-				smsbalanceDAO.addBalance(account, shotcode, count);
+				Shortcode shortcode = new Shortcode();
+				shortcode.setUuid(purchase.getSourceUuid());
+				smsbalanceDAO.addBalance(account, shortcode, count);
 					
-		
 			
-			}else{  //  for mask
+			} else {  //  for mask
 				
-				pst2.setString(1, mp.getUuid());
+				pst2.setString(1, purchase.getUuid());
 				pst2.setString(2, purchase.getAccountUuid());
 				pst2.setString(3, purchase.getSourceUuid());
 				pst2.setInt(4, purchase.getCount());
 				pst2.setTimestamp(5, new Timestamp(purchase.getPurchaseDate().getTime()));
 				pst2.executeUpdate();
 			
-				count = purchase.getCount();
-				account.setUuid(purchase.getAccountUuid());
+				Mask mask = new Mask();
 				mask.setUuid(purchase.getSourceUuid());
-				smsbalanceDAO.addBalance(account, mask, count);
-				
-				
+				smsbalanceDAO.addBalance(account, mask, count);				
 				
 			}//end if
 		
 			
-		}catch(SQLException e){
-			logger.error("SQLException while trying to put "+ purchase);
+		} catch(SQLException e) {
+			logger.error("SQLException while trying to put " + purchase);
 			logger.error(ExceptionUtils.getStackTrace(e));
 			success= false;
 		}
 	
 		return success;		
 	}//end put
+	
 	
 
 	/**
@@ -169,37 +169,37 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	@Override
 	public List<SMSPurchase> getPurchases(Account account) {
 		List<SMSPurchase> list = new LinkedList<>();
+		
 		try(
 			Connection con = dbCredentials.getConnection();
 				PreparedStatement stm = con.prepareStatement("SELECT * FROM shortcodepurchase WHERE accountuuid = ?");
-				PreparedStatement stm2 = con.prepareStatement("SELECT * FROM maskpurchase WHERE accountuuid = ?");
-				
+				PreparedStatement stm2 = con.prepareStatement("SELECT * FROM maskpurchase WHERE accountuuid = ?");				
 				){
+			
 			 stm.setString(1, account.getUuid());
 			 stm2.setString(1, account.getUuid());
 			 
 			 ResultSet rs = stm.executeQuery();
 			 list.addAll(beanProcessor.toBeanList(rs, ShortcodePurchase.class));
 	 	      
-			 ResultSet rs2 = stm2.executeQuery();
-			 list.addAll(beanProcessor.toBeanList(rs2, MaskPurchase.class));
-			 
+			 rs = stm2.executeQuery();
+			 list.addAll(beanProcessor.toBeanList(rs, MaskPurchase.class));			 
 			 
         } catch (SQLException e) {
             logger.error("SQLException when getting Purchase of " + account);
             logger.error(ExceptionUtils.getStackTrace(e));
-        }
-		
+        }		
 		
 		return list;
 	}//end getPurchase
 
+	
 	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsPurchaseDAO#getAllPurchases()
 	 */
 	@Override
 	public List<SMSPurchase> getAllPurchases() {
-		List<SMSPurchase> list =  new LinkedList<>();
+		List<SMSPurchase> list = new LinkedList<>();
 
         try(   
         		Connection con = dbCredentials.getConnection();
@@ -209,10 +209,10 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
     		) {
         	
         	ResultSet rs = ps.executeQuery();
-        	 list.addAll(beanProcessor.toBeanList(rs, ShortcodePurchase.class));
+        	list.addAll(beanProcessor.toBeanList(rs, ShortcodePurchase.class));
         	 
-    		ResultSet rs2 = ps.executeQuery();
- 	        list.addAll(beanProcessor.toBeanList(rs2, MaskPurchase.class));
+    		rs = ps2.executeQuery();
+ 	        list.addAll(beanProcessor.toBeanList(rs, MaskPurchase.class));
 
         } catch(SQLException e){
         	logger.error("SQL Exception when getting all SMSPurchases");
@@ -222,4 +222,5 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 		return list;
 	}//end get allpurchases
 
+	
 }//class end

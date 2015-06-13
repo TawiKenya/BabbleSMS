@@ -138,10 +138,10 @@
 
 
             <div class="content_title"> 
-                <h3>Masks</h3>
+                <h3>Sender Ids</h3>
 
-                <p>Below is the summary of the Masks managed by your account:
-                    A Mask can only send SMS to mobile users</p>
+                <p>Below is the summary of the Sender Ids managed by your account:
+                    A Sender Id can only send SMS to mobile users</p>
             </div>
 
 
@@ -149,13 +149,12 @@
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
-                        <th>*</th>
-
-                        
-                        <th>Mask</th>
+                        <th>*</th>                        
+                        <th>Sender Id</th>
                         <th>Network</th>
-                    </tr>
-                </thead>   
+                    </tr>                    
+                </thead> 
+                
                 <tbody>
                     <%                        
                         int count = 1;
@@ -180,7 +179,8 @@
                 </tbody>
             </table>  
 
-
+            <p>&nbsp;&nbsp;&nbsp;</p>
+                        
 
             <div class="content_title"> 
                 <h3>Shortcode</h3>
@@ -196,7 +196,7 @@
                 <thead>
                     <tr>
                         <th>*</th>
-                        <th>ShortCode</th>
+                        <th>ShortCodes</th>
                         <th>Network</th>
                     </tr>
                 </thead>   

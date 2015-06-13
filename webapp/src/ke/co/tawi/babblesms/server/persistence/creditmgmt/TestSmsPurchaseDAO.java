@@ -28,15 +28,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- *@author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
- *
+ * Tests the persistence implementation for shortcode and mask purchases.
+ * <p>
+ *  
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class TestSmsPurchaseDAO extends SMSPurchase {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	final String DB_NAME = "babblesmsdb";
 	final String DB_HOST = "localhost";
 	final String DB_USERNAME = "babblesms";
@@ -67,13 +65,9 @@ public class TestSmsPurchaseDAO extends SMSPurchase {
 		
 		storage = new SmsPurchaseDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
+		// Test against a Shortcode Purchase
 		ShortcodePurchase sp = new ShortcodePurchase();
-		MaskPurchase mp = new MaskPurchase();
-		
-		mp.setAccountUuid(ACCOUNT_UUID);
-		mp.setSourceUuid(MASK_UUID);
-	    mp.setCount(COUNT);
-		mp.setPurchaseDate(PURCHASE_DATE);
+		String spUuid = sp.getUuid();
 		
 		sp.setAccountUuid(ACCOUNT_UUID);
 		sp.setSourceUuid(SHORTCODE_UUID);
@@ -81,10 +75,32 @@ public class TestSmsPurchaseDAO extends SMSPurchase {
 		sp.setCount(COUNT);
 	  
 		assertTrue(storage.put(sp));
-		assertTrue(storage.put(mp));
+		
+		sp = (ShortcodePurchase)storage.getPurchase(spUuid);
+		assertEquals(sp.getUuid(), spUuid);
+		assertEquals(sp.getAccountUuid(), ACCOUNT_UUID);
+		assertEquals(sp.getSourceUuid(), SHORTCODE_UUID);
+		assertEquals(sp.getPurchaseDate().getTime(), PURCHASE_DATE);
+		assertEquals(sp.getCount(), COUNT);
 		
 		
+		// Test against a Mask Purchase
+		MaskPurchase mp = new MaskPurchase();
+		spUuid = mp.getUuid();
 		
+		mp.setAccountUuid(ACCOUNT_UUID);
+		mp.setSourceUuid(MASK_UUID);
+	    mp.setCount(COUNT);
+		mp.setPurchaseDate(PURCHASE_DATE);
+		
+		assertTrue(storage.put(mp));	
+		
+		mp = (MaskPurchase)storage.getPurchase(spUuid);
+		assertEquals(mp.getUuid(), spUuid);
+		assertEquals(mp.getAccountUuid(), ACCOUNT_UUID);
+		assertEquals(mp.getSourceUuid(), MASK_UUID);
+		assertEquals(mp.getPurchaseDate().getTime(), PURCHASE_DATE);
+		assertEquals(mp.getCount(), COUNT);
 	}
 	
 	
@@ -108,6 +124,7 @@ public class TestSmsPurchaseDAO extends SMSPurchase {
 		}
 	}
 
+	
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsPurchaseDAO#getAllPurchases()}.
 	 */
@@ -125,6 +142,6 @@ public class TestSmsPurchaseDAO extends SMSPurchase {
 			System.out.println(sm);
 		
 		}
-		}
+	}
 
 }

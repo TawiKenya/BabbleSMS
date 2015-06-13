@@ -74,6 +74,7 @@ public class EditContact extends HttpServlet {
 		accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
 	}
 
+	
 	/**
 	 *
 	 * @param request

@@ -161,7 +161,6 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 					) {
 				
 				
-				
 				if(smsSource instanceof Shortcode) {
 					pstmt.setString(1, account.getUuid());					
 					pstmt.setString(2, smsSource.getUuid());				
@@ -250,15 +249,11 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 			
 			
 		} else { // This is the first time that we are adding balance to this short code or mask
-			try(			
-					
-					
-					
+			try(	
 					Connection conn = dbCredentials.getConnection();
 					
 					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ShortcodeBalance(uuid,"
-							+ "accountuuid,shortcodeuuid,count)" +
-							"VALUES(?,?,?,?);");	
+							+ "accountuuid,shortcodeuuid,count) VALUES(?,?,?,?);");	
 					
 					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO MaskBalance " +
 							"(uuid,accountuuid,maskuuid,count) VALUES (?,?,?,?);");						

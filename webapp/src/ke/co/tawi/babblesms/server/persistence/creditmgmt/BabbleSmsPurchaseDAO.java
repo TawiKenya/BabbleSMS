@@ -19,7 +19,6 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase;
-import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 
 import java.util.List;
 
@@ -31,6 +30,13 @@ import java.util.List;
  */
 public interface BabbleSmsPurchaseDAO {
 
+	
+	/**
+	 * @param uuid
+	 * @return the {@link SMSPurchase} with a matching uuid, or null if none is found. 
+	 */
+	public SMSPurchase getPurchase(String uuid);
+	
 	
 	/**
 	 * To be called when a client purchases SMS credits on a Short Code or Mask.
