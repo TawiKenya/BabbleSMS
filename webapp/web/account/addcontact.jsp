@@ -77,8 +77,7 @@
     }
     
     String accountuuid = account.getUuid();
-    String statusuuid = account.getStatusuuid();
-
+    
     GroupDAO gDAO = new GroupDAO();
     contactsgrpList = gDAO.getGroups(account);
 
@@ -180,7 +179,6 @@
 		 <label class="control-label">Description</label>
 		<div class="controls">
 		<textarea rows="3" cols="5" class="textarea" name="dept" placeholder="Add description here..."></textarea>
-		<input class="input-xlarge focused" id="status" name="statusuuid" type="hidden" value="<%= Status.ACTIVE %>">
 		</div>	
 		</div>
                     <br/>
@@ -247,8 +245,7 @@
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><!--<br/><br/><br/><br/><br/><br/>-->
 <div class="form-actions">
-<input type="hidden" name="accountuuid" value="<%= accountuuid %>">
-<input type="hidden" name="statusuuid" value="<%= Status.ACTIVE %>">
+
 <div id="savecancelButtons">
 <button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>

@@ -18,6 +18,7 @@ package ke.co.tawi.babblesms.server.utils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.Date;
 import java.util.Arrays;
@@ -36,6 +37,8 @@ public class StringUtil {
 
 	final static int RANDOM_STRING_SIZE = 5;
 	
+	private static EmailValidator emailValidator = EmailValidator.getInstance();
+
 	
 	/**
 	 * This method should return a string random enough such that there is no
@@ -136,5 +139,23 @@ public class StringUtil {
 		  
 		   return stringBuilder.toString();  
 	}  
+	
+	
+	/**
+	 * Validate a list of emails.
+	 *
+	 * @param phone
+	 * @return
+	 */
+	public static boolean validateEmails(final String[] emailArray) {
+		
+		for (String email : emailArray) {
+			if (!emailValidator.isValid(email)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
 

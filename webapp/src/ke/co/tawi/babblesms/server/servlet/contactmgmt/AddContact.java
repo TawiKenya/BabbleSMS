@@ -20,26 +20,35 @@ import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Email;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.beans.status.Status;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.EmailDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.utils.StringUtil;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
+
 
 /**
  * Receives form values from addcontact.jsp section and adds a new
@@ -48,40 +57,51 @@ import org.apache.log4j.Logger;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-
 public class AddContact extends HttpServlet {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Logger logger=Logger.getLogger(this.getClass());
-	
-	
-	
 	
 	
 	//private final String ERROR_NO_NAME = "You have to input a value.";
-	private final String ERROR_EMAIL_EXISTS = "The email provided already exists in the system.";
-	private final String ERROR_PHONE_EXISTS = "The phone provided already exists in the system.";
-	private final String ADD_SUCCESS = "contcat added successfully.";
-	private final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
-	private final String ERROR_DUPLICATE_EMAIL = "You have supplied duplicate email addresses.";
-	private final String ERROR_PUBLICATE_PHONE = "You have supplied duplicate phone numbers.";
+	final String ERROR_PHONE_EXISTS = "The phone provided already exists in the system.";
+	final String ADD_SUCCESS = "contcat added successfully.";
+	final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
+	final String ERROR_DUPLICATE_EMAIL = "You have supplied duplicate email addresses.";
+	final String ERROR_PUBLICATE_PHONE = "You have supplied duplicate phone numbers.";
+
+	private Cache accountsCache;
+	
+	private EmailDAO emailDAO;
+	private PhoneDAO phoneDAO;
+	private ContactDAO contactDAO;
+	private GroupDAO groupDAO;
+	private ContactGroupDAO cgDAO;
+		
+	private Logger logger;
 
 	
-	private  EmailDAO emailDAO = EmailDAO.getInstance();
-	private  PhoneDAO phoneDAO = PhoneDAO.getInstance();
-	private  ContactDAO contactDAO = ContactDAO.getInstance();
-	private  GroupDAO gDAO = GroupDAO.getInstance();
-	private  ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-	private EmailValidator emailValidator = EmailValidator.getInstance();
+	/**
+	 * @param config
+	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
+	 * 
+	 * @throws ServletException
+	 */
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		
+		CacheManager mgr = CacheManager.getInstance();
+        accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+        
+		emailDAO = EmailDAO.getInstance();
+		phoneDAO = PhoneDAO.getInstance();
+		contactDAO = ContactDAO.getInstance();
+		groupDAO = GroupDAO.getInstance();
+		cgDAO = ContactGroupDAO.getInstance();
+		
+		
+		logger = Logger.getLogger(this.getClass());
+	}
 	
-	Contact ct;
-	Email mail;
-	Phone phn;
-	Account account = new Account();
-
+	
 	/**
 	 *
 	 * @param request
@@ -95,7 +115,18 @@ public class AddContact extends HttpServlet {
 		
 		HttpSession session = request.getSession(false);
 		
+		Contact contact;
+		Email email;
+		Phone phone;
 		
+		Account account = new Account();
+		
+		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
+		Element element;
+	    if ((element = accountsCache.get(username)) != null) {
+	        account = (Account) element.getObjectValue();
+	    }
+	    
 		String[] emailArray = request.getParameterValues("email1[]");
 		String[] phonenumArray = request.getParameterValues("phonenum[]");
 		String[] networkArray = request.getParameterValues("network[]");
@@ -104,13 +135,8 @@ public class AddContact extends HttpServlet {
 		String[] groupArray = request.getParameterValues("groupsadded[]");
 		
 		String description = request.getParameter("dept");
-		String statusuuid = request.getParameter("statusuuid");
-		String accountuuid = request.getParameter("accountuuid");
 		
-		logger.info(phonenumArray[0].equals(""));
-		logger.info(emailArray[0].equals(""));
-		logger.info(contactname);
-		//System.out.println(phonenumArray[0]);
+			
 		
 		Set<String> mySet = new HashSet<String>(Arrays.asList(emailArray));
 		Set<String> mySet2 = new HashSet<String>(Arrays.asList(phonenumArray));
@@ -137,15 +163,11 @@ public class AddContact extends HttpServlet {
 				
 		   logger.info("d"+emailArray.length);
 			
-			if (!validemails(emailArray)) {
+			if (!StringUtil.validateEmails(emailArray)) {
 		session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
 	}
 			
-		}
-		else if (existsEmail(emailArray)) {
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_EMAIL_EXISTS);
-		}
-		else if(existPhone(phonenumArray)){
+		} else if(existPhone(phonenumArray)){
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_PHONE_EXISTS);
 		}else if (duplicateemail >= 1) {
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_DUPLICATE_EMAIL);
@@ -155,31 +177,31 @@ public class AddContact extends HttpServlet {
 		} 
 		else {
 
-			ct = new Contact();
-			ct.setName(contactname);
-			ct.setDescription(description);
-			ct.setStatusUuid(statusuuid);
-			ct.setAccountUuid(accountuuid);
+			contact = new Contact();
+			contact.setName(contactname);
+			contact.setDescription(description);
+			contact.setStatusUuid(Status.ACTIVE);
+			contact.setAccountUuid(account.getUuid());
 
-			if(contactDAO.putContact(ct)){
+			if(contactDAO.putContact(contact)){
 				session.setAttribute(SessionConstants.ADD_SUCCESS, ADD_SUCCESS);
 			}
 			else{
 				session.setAttribute(SessionConstants.ADD_ERROR, "Contact add Failed.");  
 			}
 			//get contact bean to update cache
-			String uuid = ct.getUuid();
+			String uuid = contact.getUuid();
 
-			ct = contactDAO.getContact(uuid);
+			contact = contactDAO.getContact(uuid);
 
 			for (String group1 : myGroupSet) {
 
 				if(!(group1.equals(""))){
 					
 					//set the accounts uuid to the one posted by the form
-					account.setUuid(accountuuid);
-					Group group = gDAO.getGroupByName(account , group1);
-					cgDAO.putContact(ct, group);
+					account.setUuid(account.getUuid());
+					Group group = groupDAO.getGroupByName(account , group1);
+					cgDAO.putContact(contact, group);
 
 				}
 
@@ -187,23 +209,23 @@ public class AddContact extends HttpServlet {
 
 			//loop emails
 			for (String email2 : emailArray) {
-				mail = new Email();
-				mail.setAddress(email2);
-				mail.setContactuuid(ct.getUuid());
-                mail.setStatusuuid(statusuuid);
-				emailDAO.putEmail(mail);
+				email = new Email();
+				email.setAddress(email2);
+				email.setContactuuid(contact.getUuid());
+                email.setStatusuuid(Status.ACTIVE);
+				emailDAO.putEmail(email);
 
 			}
 			//loop phonenumbers               
 			int count = 0;
 			for (String phonenum : phonenumArray) {
-				phn = new Phone();
-				phn.setPhonenumber(phonenum);
-				phn.setContactUuid(ct.getUuid());
-				phn.setNetworkuuid(networkArray[count]);
-				phn.setStatusuuid(statusuuid);
+				phone = new Phone();
+				phone.setPhonenumber(phonenum);
+				phone.setContactUuid(contact.getUuid());
+				phone.setNetworkuuid(networkArray[count]);
+				phone.setStatusuuid(Status.ACTIVE);
 
-				phoneDAO.putPhone(phn);
+				phoneDAO.putPhone(phone);
 
 
 				count++;
@@ -211,15 +233,8 @@ public class AddContact extends HttpServlet {
 		}
 		response.sendRedirect("addcontact.jsp");   
 	}
-	/**
-	 *
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
 	
-
+	
 
 	private boolean existPhone(final String[] phonenumArray) {
 			boolean exists = false; 
@@ -230,65 +245,9 @@ public class AddContact extends HttpServlet {
 		}
 			return exists;
 	}
-    /**
-	 * Checks if the email supplied already exists in email database
-	 *
-	 * @param email
-	 * @return
-	 */
-	//emailArray
-	private boolean existsEmail(final String[]emailArray) {
-		boolean exists = false;
-
-		for (String email : emailArray) {
-			if (emailDAO.getEmails(email) != null) {
-				exists = true;
-			}
-		}
-
-		return exists;
-	}
 	
+		
 	
-
-	/**
-	 * Checks if the phone supplied already exists in phone database
-	 *
-	 * @param phone
-	 * @return
-	 */
-	private boolean validemails(final String[] emailArray) {
-		boolean valid = true;
-
-		for (String email : emailArray) {
-			if (!emailValidator.isValid(email)) {
-				valid = false;
-			}
-		}
-
-		return valid;
-	}
-	
-	
-	
-	
-	
-	
-	
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
-
-	}
+	private static final long serialVersionUID = 1L;
 }
-
-
-
-
-
-
-
-
-
 

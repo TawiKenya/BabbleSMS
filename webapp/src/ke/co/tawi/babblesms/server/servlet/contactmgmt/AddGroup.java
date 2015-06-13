@@ -109,13 +109,13 @@ public class AddGroup extends HttpServlet {
 			
 		} else if(groupDAO.putGroup(group)) {
 			session.setAttribute(SessionConstants.UPDATE_SUCCESS, "Successfully saved.");
+			response.sendRedirect("groups.jsp");
 			
 		} else {
 			session.setAttribute(SessionConstants.ADD_ERROR, "Failed! Please try again");
 			response.sendRedirect("addgroup.jsp");
 		}
-	
-		response.sendRedirect("groups.jsp");
+		
 	}
 
 }
