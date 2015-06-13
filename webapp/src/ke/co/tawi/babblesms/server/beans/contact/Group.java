@@ -15,10 +15,10 @@
  */
 package ke.co.tawi.babblesms.server.beans.contact;
 
+import ke.co.tawi.babblesms.server.beans.StorableBean;
+
 import java.util.Comparator;
 import java.util.Date;
-
-import ke.co.tawi.babblesms.server.beans.StorableBean;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -93,19 +93,17 @@ public class Group extends StorableBean {
     /**
      * Comparator for sorting a list by Group Name
      */
-    public static  Comparator<Group> GroupNameComparator = new Comparator<Group>() {
-
-    	/**
-    	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-    	 */
-    	@Override
+    public static Comparator<Group> GroupNameComparator = new Comparator<Group>() {
+	
+		/**
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		@Override
 		public int compare(Group s1, Group s2) {
-    	   String groupName1 = s1.getName().toUpperCase();
-    	   String groupName2 = s2.getName().toUpperCase();
-
-    	   //ascending order
-    	   return groupName1.compareTo(groupName2);
-    }};
+			
+		   return s1.getName().compareTo(s2.getName());
+    	}
+	};
     
     
     

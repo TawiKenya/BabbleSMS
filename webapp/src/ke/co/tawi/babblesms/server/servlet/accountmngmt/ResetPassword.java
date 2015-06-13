@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.servlet.account.settings;
+package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
-import ke.co.tawi.babblesms.server.session.SessionStatistics;
-import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
 import ke.co.tawi.babblesms.server.utils.net.EmailUtil;
 
 import java.io.IOException;
@@ -50,13 +48,9 @@ public class ResetPassword  extends HttpServlet {
 	
 	final String ERROR_EMPTY_PARAMETERS = "You have to input a value.";
 	final String ERROR_INVALID_PARAMETERS = "The username and email do not match.";
-		
-	static final long serialVersionUID = 1L;
-    
-	
+			
 	private Cache accountsUsernameCache, accountsUuidCache;
-	
-	
+		
 	
 	/**
     *
@@ -144,4 +138,6 @@ public class ResetPassword  extends HttpServlet {
 		accountsUuidCache.put(new Element(account.getUuid(), account));		
     }	
 	
+	
+	static final long serialVersionUID = 1L;
 }

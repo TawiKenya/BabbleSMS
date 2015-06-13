@@ -92,6 +92,7 @@ public class AddGroup extends HttpServlet {
 			}
 			else{
 				session.setAttribute(SessionConstants.ADD_ERROR, "failed! Please try again");
+				response.sendRedirect("addgroup.jsp");
 			}
 			
 		

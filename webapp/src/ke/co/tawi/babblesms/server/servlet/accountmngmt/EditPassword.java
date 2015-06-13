@@ -15,6 +15,10 @@
  */
 package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -26,12 +30,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-
-import ke.co.tawi.babblesms.server.beans.account.Account;
-
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
-
-import ke.co.tawi.babblesms.server.session.SessionConstants;
 /**
  * Receives a form request toedit a account's details
  * 
@@ -98,7 +96,6 @@ public class EditPassword extends HttpServlet{
 			 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Password  Editing Failed.");  
 
                    }
-		logger.info("yyyyyyyyyyyy+++++++++++"+newpassword);
 		}
 		
 			response.sendRedirect("setting.jsp");	
