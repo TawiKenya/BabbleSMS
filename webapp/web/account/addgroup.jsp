@@ -96,7 +96,8 @@
         </div>-->
         <div class="box-content">
 
-            <%                String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
+            <%                
+                String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.ADD_SUCCESS);
 
                 if (StringUtils.isNotEmpty(addErrStr)) {
@@ -113,7 +114,7 @@
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
             %>
-            <form class="form-horizontal" action="addgroup" method="POST">
+            <form class="form-horizontal" action="addGroup" method="POST">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="gname" autofocus>Name</label>
@@ -125,7 +126,6 @@
                         <label class="control-label" for="desc">Description</label>
                         <div class="controls">
                             <textarea rows ="3" cols ="3" id="groupdesc" name="desc" > </textarea>
-                            <!--<input class="input-xlarge focused"  id="groupdesc" name="gdesc" type="text">-->
                         </div>
                     </div>
 
@@ -133,9 +133,7 @@
                     <button class = "add_field_button">Add contacts</button>
                        </div>-->
                     <div class="form-actions">
-                        <input type="hidden" name="accountuuid" value="<%=account.getUuid()%>">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <!--<button class="btn">Cancel</button>-->
+                        <button type="submit" class="btn btn-primary">Save</button>
                         <input type="submit" id="cancel" value="Cancel"/>
                     </div>
                 </fieldset>

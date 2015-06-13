@@ -113,7 +113,7 @@ public class Group extends StorableBean {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("CGroup ");
+        builder.append("Group ");
         builder.append("[uuid=");
         builder.append(getUuid());
         builder.append(", description=");

@@ -113,7 +113,6 @@ CREATE TABLE contact (
     accountuuid text REFERENCES account(uuid),
     statusuuid text REFERENCES status(uuid)
 );
-
 \COPY contact(uuid,name,description,accountuuid,statusuuid) FROM '/tmp/Contacts.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE contact OWNER TO babblesms;
 
@@ -129,8 +128,6 @@ CREATE TABLE phone (
     statusuuid text references status(uuid),
     networkuuid text references network(uuid)
 );
-
--- import data from the CSV file for the phone table
 \COPY phone(uuid,phonenumber,contactuuid,statusuuid,networkuuid) FROM '/tmp/phone.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE phone OWNER TO babblesms;
 
@@ -145,8 +142,6 @@ CREATE TABLE Email (
     contactuuid text references contact(uuid),
     statusuuid text references status(uuid)
 );
-
--- import data from the CSV file for the Email table
 \COPY Email(uuid,address,contactuuid,statusuuid) FROM '/tmp/Email.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Email OWNER TO babblesms;
 
@@ -159,14 +154,12 @@ ALTER TABLE Email OWNER TO babblesms;
 CREATE TABLE groups (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    name text,
+    name text NOT NULL,
     description text,
     creationdate timestamp with time zone DEFAULT now(),
     accountuuid text references account(uuid),
     statusuuid text references status(uuid)
 );
-
--- import data from the CSV file for the group table
 \COPY groups(uuid,name,description,accountuuid,statusuuid,creationdate) FROM '/tmp/Groups.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE groups OWNER TO babblesms;
 

@@ -57,17 +57,17 @@
 
     <servlet>
       <servlet-name>ResetPassword</servlet-name>
-      <servlet-class>ke.co.tawi.babblesms.server.servlet.account.settings.ResetPassword</servlet-class>
+      <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.ResetPassword</servlet-class>
     </servlet>
     
     <servlet>
-        <servlet-name>AddContacts</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddContacts</servlet-class>
+        <servlet-name>AddContact</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.contactmgmt.AddContact</servlet-class>
     </servlet>
 
      <servlet>
-        <servlet-name>addgroup</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddGroup</servlet-class>
+        <servlet-name>AddGroup</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.contactmgmt.AddGroup</servlet-class>
     </servlet>
    <servlet>
         <servlet-name>EditGroup</servlet-name> 
@@ -213,8 +213,8 @@
 
 
     <servlet-mapping>
-        <servlet-name>AddContacts</servlet-name>
-        <url-pattern>/account/addcontact</url-pattern>
+        <servlet-name>AddContact</servlet-name>
+        <url-pattern>/account/addContact</url-pattern>
     </servlet-mapping> 
     
     <servlet-mapping>
@@ -228,8 +228,8 @@
     </servlet-mapping> 
     
     <servlet-mapping>
-        <servlet-name>addgroup</servlet-name>
-        <url-pattern>/account/addgroup</url-pattern>
+        <servlet-name>AddGroup</servlet-name>
+        <url-pattern>/account/addGroup</url-pattern>
     </servlet-mapping> 
 
      <servlet-mapping>

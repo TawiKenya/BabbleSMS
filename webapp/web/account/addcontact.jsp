@@ -137,7 +137,7 @@
                
 
             %>
-            <form class="form-horizontal" method="POST" action="addcontact">
+            <form class="form-horizontal" method="POST" action="addContact">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="name">Name</label >
