@@ -55,7 +55,7 @@ public String networkcount(Account Account){
 	
 	HashMap<String,HashMap<String,String>> checknet2 = new HashMap<>();
 	
-	networkcountDAO netcount= networkcountDAO.getInstance();
+	networkcountDAO netcount= new networkcountDAO();
 	
 	@SuppressWarnings("rawtypes")
 	List<Group> groupslist = new ArrayList();
@@ -80,7 +80,7 @@ public String networkcount(Account Account){
 	
 	 if (groupslist != null) {
          for (Group code : groupslist) {        	 
-       //get a list of count per network into a hashmap	for all networks 
+       //get a list of count per network into a hashmap	 
        checknet =netcount.network(code.getUuid());
        
          //put a the network count per group  and group name into a hashmp   

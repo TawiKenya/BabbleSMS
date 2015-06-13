@@ -138,9 +138,15 @@ public class EmailUtil extends Thread {
 			
 			email.setFrom(from);						
 			email.addTo(to);
-			email.addCc(cc);
-			email.addBcc(bcc);
 			
+			if(cc.length > 0) {
+				email.addCc(cc);
+			}
+			
+			if(bcc.length > 0) {
+				email.addBcc(bcc);
+			}
+						
 			email.setSubject(subject);
 			email.setMsg(body);
 			email.setHostName(outgoingEmailServer);
