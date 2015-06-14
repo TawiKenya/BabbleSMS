@@ -278,7 +278,7 @@
 				String contactname = contacts.getName();*/
                         %>
                         <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td>
-                       <td class="center"><%=contactname%></td> 
+                        
                         <% // } else {%>
                         <td class="center"><%=code.getDestination()%></td>  
                       <%//}%>
