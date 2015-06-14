@@ -18,14 +18,12 @@ package ke.co.tawi.babblesms.server.servlet.sms.send;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
-import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
+import ke.co.tawi.babblesms.server.beans.account.Account;
 
-import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
-import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
@@ -33,10 +31,9 @@ import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
 
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
-import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.utils.ListPartitioner;
 import ke.co.tawi.babblesms.server.utils.StringUtil;
 import ke.co.tawi.babblesms.server.utils.comparator.PhonesByNetworkPredicate;
 
@@ -51,15 +48,9 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.LinkedList;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.list.SetUniqueList;
@@ -81,9 +72,7 @@ public class SendSMS extends HttpServlet {
 	private ContactGroupDAO ctgrpDAO;
 	private ShortcodeDAO shortcodeDAO;
 	private MaskDAO maskDAO;
-	
-	private Logger logger = Logger.getLogger(this.getClass());
-	
+		
 		
 	
 	/**
@@ -195,25 +184,20 @@ public class SendSMS extends HttpServlet {
 				new PhonesByNetworkPredicate(smsSource.getNetworkuuid())));
 		
 		
+		// Break down the phone list to go out to manageable sizes, each sublist
+		// being sent to the SMS Gateway in one call
+		List<List<Phone>> phonePartition = ListPartitioner.partition(validPhoneList, 10);
 		
 		
-		Map<String,String> params;
+		
+		// Send the lists one by one
 		PostSMS postThread;
 		
-		for(Object phone : phoneList) {
-			params = new HashMap<>();
-		
-			params.put("username", smsGateway.getUsername());		
-			params.put("password", smsGateway.getPasswd());
-			params.put("source", source);
-			params.put("destination", ((Phone)phone).getPhonenumber());
-			params.put("message", message);
-			params.put("network", "safaricom_ke");
-													
-			postThread = new PostSMS(smsGateway.getUrl(), params, false);	
-			//postThread.start(); 				
+		for(List<Phone> list : phonePartition) {	
+			postThread = new PostSMS(smsGateway, list, smsSource, message, account, true);
+					
+			postThread.start(); 				
 		}
-		
 			
 	}
 			

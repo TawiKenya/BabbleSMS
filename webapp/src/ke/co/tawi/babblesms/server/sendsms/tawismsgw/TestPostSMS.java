@@ -112,7 +112,7 @@ public class TestPostSMS {
 			System.out.println("Hash to be POSTED: " + StringUtil.mapToString(params));
 			
 					
-			postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
+			//postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
 			//postThread.run(); 	// Use this when testing. However use 'postThread.start()' when
 								// running in an application server.
 		}

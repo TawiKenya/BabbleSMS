@@ -398,15 +398,14 @@
                                         if (shortcodelist != null) {
                                             for (Shortcode code : shortcodelist) {
                                     %>
-                                       <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getUuid() %>" label="<%= networkHash.get(code.getNetworkuuid()) %>" onclick="networkselect(this)">
+                                                <option class="message_source" id="<%=code.getCodenumber()%>" value="<%= code.getUuid() %>" label="<%= networkHash.get(code.getNetworkuuid()) %>" onclick="networkselect(this)">
 
-                                                <%=code.getCodenumber() + " (" + networkHash.get(code.getNetworkuuid()) + ")"%>
-                                            </option>
+                                                    <%=code.getCodenumber() + " (" + networkHash.get(code.getNetworkuuid()) + ")"%>
+                                                </option>
                                     <%
                                                 count++;
-                                            }
-
-                                        }
+                                            }// end 'for (Shortcode code : shortcodelist)'
+                                        }// end 'if (shortcodelist != null)'
                                     %>
                                 </select>
                         </div>

@@ -15,7 +15,15 @@
  */
 package ke.co.tawi.babblesms.server.sendsms.tawismsgw;
 
+import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
+import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
+import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
+
+import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -26,6 +34,8 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +45,7 @@ import javax.net.ssl.SSLContext;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -49,6 +60,7 @@ import org.apache.http.util.EntityUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import org.apache.commons.validator.routines.UrlValidator;
 
 import org.apache.log4j.Logger;
@@ -78,14 +90,25 @@ public class PostSMS extends Thread {
 		
 	private int retryCount;
 	
-	private String urlStr;
+	private TawiGateway smsGateway;
 		
-	private Map<String,String> params;
+	private List<Phone> phoneList;
+	private SMSSource smsSource;
+	private String message;
+	
+	private Account account;
+	
+	// To map between the number used to send and the phone object
+	private Map<String,Phone> phoneMap;
+	
 	private boolean retry;
+	
+	private OutgoingLogDAO outgoingLogDAO;
 	
 	private UrlValidator urlValidator;
 	
 	private Logger logger;
+	
 	
 	
 	/**
@@ -93,25 +116,34 @@ public class PostSMS extends Thread {
 	 */
 	private PostSMS() {}
 	
-	
+		
 	/**
-	 * The parameter map must contain what is required to send SMS using the 
-	 * Tawi SMS Gateway. 
+	 * Contains what is required to send SMS using the Tawi SMS Gateway. 
 	 * 
-	 * @param urlStr the endpoint on the SMS Gateway that is used for sending SMS 
-	 * @param params
-	 * @param retry	whether or not to keep retrying if the POST fails
+	 * @param smsGateway
+	 * @param phoneList
+	 * @param smsSource
+	 * @param message
+	 * @param retry whether or not to keep retrying if the POST fails
 	 */
-	public PostSMS(String urlStr, Map<String,String> params, boolean retry) {
-		this.urlStr = urlStr;
-		this.params = params;
+	public PostSMS(TawiGateway smsGateway, List<Phone> phoneList, SMSSource smsSource, 
+			String message, Account account, boolean retry) {
+		this.smsGateway = smsGateway;
+		this.phoneList = phoneList;
+		this.smsSource = smsSource;
+		this.message = message;
+		
+		this.account = account;
+		
 		this.retry = retry;
 		
 		retryCount = RETRY_NUMBER;
 		
 		urlValidator = new UrlValidator(UrlValidator.ALLOW_2_SLASHES + UrlValidator.ALLOW_LOCAL_URLS);	
 		
-		logger = Logger.getLogger(this.getClass());
+		outgoingLogDAO = OutgoingLogDAO.getInstance(); 
+		
+		logger = Logger.getLogger(this.getClass());		
 	}
 
 	
@@ -120,23 +152,117 @@ public class PostSMS extends Thread {
 	 */
 	@Override
 	public void run() {
+		HttpEntity responseEntity = null;
+		Map<String,String> params;
 		
-		if(urlValidator.isValid(urlStr)) {		
+		if(urlValidator.isValid(smsGateway.getUrl())) {		
+			
+			// Prepare the parameters to send
+			params = new HashMap<>();
+			
+			params.put("username", smsGateway.getUsername());		
+			params.put("password", smsGateway.getPasswd());
+			params.put("source", smsSource.getSource());
+			params.put("message", message);
+			
+			switch(smsSource.getNetworkuuid()) {
+				case Network.SAFARICOM_KE:
+					params.put("network", "safaricom_ke");
+					break;
+					
+				case Network.AIRTEL_KE:
+					params.put("network", "airtel_ke");
+					break;	
+			}
+			
+			
+			// When setting the destination, numbers beginning with '07' are edited
+			// to begin with '254'
+			phoneMap = new HashMap<>();
+			StringBuffer phoneBuff = new StringBuffer();
+			String phoneNum;
+			
+			for(Phone phone : phoneList) {
+				phoneNum = phone.getPhonenumber();
+				
+				if(StringUtils.startsWith(phoneNum, "07")) {
+					phoneNum = "254" + StringUtils.substring(phoneNum, 1);
+				}
+				
+				phoneMap.put(phoneNum, phone);				
+				phoneBuff.append(phoneNum).append(";");
+			}
+			
+			
+			params.put("destination", StringUtils.removeEnd(phoneBuff.toString(), ";"));
+						
+			
+			
+			// Push to the URL
 			try {		
-				URL url = new URL(urlStr);
+				URL url = new URL(smsGateway.getUrl());
 							
 				if(StringUtils.equalsIgnoreCase(url.getProtocol(), "http")) {
-					doPost(urlStr, params, retry);
-					
+					responseEntity = doPost(smsGateway.getUrl(), params, retry);
+										
 				} else if(StringUtils.equalsIgnoreCase(url.getProtocol(), "https")) {
-					doPostSecure(urlStr, params, retry);
+					doPostSecure(smsGateway.getUrl(), params, retry);
 				}
 							
 			} catch (MalformedURLException e) {
-				logger.error("MalformedURLException for URL: '" + urlStr + "'");
+				logger.error("MalformedURLException for URL: '" + smsGateway.getUrl() + "'");
 				logger.error(ExceptionUtils.getStackTrace(e));
 			}
 		}// end 'if(urlValidator.isValid(urlStr))'
+		
+		
+		// Process the response from the SMS Gateway
+		// Assuming all is ok, it would have the following pattern:
+		// requestStatus=ACCEPTED&messageIds=254726176878:b265ce23;254728932844:367941a36d2e4ef195;254724300863:11fca3c5966d4d
+		if(responseEntity != null) {
+			OutgoingLog outgoingLog;
+			
+			
+            try {
+            	String[] strTokens = StringUtils.split(EntityUtils.toString(responseEntity), '&');
+            	String tmpStr = "";
+            	for(String str : strTokens) {
+            		if(StringUtils.startsWith(str, "messageIds")) {
+            			tmpStr = StringUtils.removeStart(str, "messageIds=");
+            		}
+            	}
+				
+            	strTokens = StringUtils.split(tmpStr, ';');
+            	String phoneStr, uuid;
+            	Phone phone;
+            	
+            	for(String str : strTokens) {
+            		phoneStr = StringUtils.split(str, ':')[0];
+            		uuid = StringUtils.split(str, ':')[1];
+            		phone = phoneMap.get(phoneStr);
+            		
+            		outgoingLog = new OutgoingLog();
+            		outgoingLog.setUuid(uuid);
+            		outgoingLog.setOrigin(smsSource.getSource());
+            		outgoingLog.setMessage(message);
+            		outgoingLog.setDestination(phoneStr);
+            		outgoingLog.setNetworkuuid(phone.getNetworkuuid());
+            		outgoingLog.setLogTime(new Date());
+            		outgoingLog.setMessagestatusuuid(MsgStatus.SENT);
+            		outgoingLog.setSender(account.getUuid());
+            	                	    
+            		outgoingLogDAO.putOutgoingLog(outgoingLog);
+            	}
+				
+			} catch (ParseException e) {
+				logger.error("ParseException when reading responseEntity");
+				logger.error(ExceptionUtils.getStackTrace(e));
+
+			} catch (IOException e) {
+				logger.error("IOException when reading responseEntity");
+				logger.error(ExceptionUtils.getStackTrace(e));
+			}
+		}
 	}
 	
 	
@@ -146,7 +272,7 @@ public class PostSMS extends Thread {
 	 * @param params
 	 * @param retry
 	 */
-	private void doPost(String url, Map<String,String> params, boolean retry) {
+	private HttpEntity doPost(String url, Map<String,String> params, boolean retry) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		UrlEncodedFormEntity entity;
@@ -165,10 +291,8 @@ public class PostSMS extends Thread {
             httppost.setEntity(entity);
             HttpResponse response = httpclient.execute(httppost);
 						
-            HttpEntity responseEntity = response.getEntity();
+            return response.getEntity();            
             
-            //for debugging
-            System.out.println(EntityUtils.toString(responseEntity));
                         
 		} catch (UnsupportedEncodingException e) {
 			logger.error("UnsupportedEncodingException for URL: '" + url + "'");
@@ -207,6 +331,8 @@ public class PostSMS extends Thread {
 				}	
 			}// end 'if(retry)'
 		}
+		
+		return null;
 	}
 	
 	

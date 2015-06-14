@@ -129,9 +129,9 @@ public class AddContact extends HttpServlet {
 		} else if(networkArray.length < 1) {
 			session.setAttribute(SessionConstants.ADD_ERROR, "Please select a network.");
 			
-		} else if(emailArray.length > 0 && !StringUtil.validateEmails(emailArray)) {
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
-			
+		} else if(emailArray.length > 0 && StringUtils.isNotBlank(emailArray[0]) &&
+				!StringUtil.validateEmails(emailArray)) {
+			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);			
 		
 		} else {
 
@@ -179,12 +179,15 @@ public class AddContact extends HttpServlet {
 			
 			// Associate the Contact with the Groups chosen
 			Group group;
-			for (String groupUuud : groupArray) {
+			if(groupArray != null) {
+				for (String groupUuud : groupArray) {
 
-				group = new Group();
-				group.setUuid(groupUuud);
-				cgDAO.putContact(contact, group);
+					group = new Group();
+					group.setUuid(groupUuud);
+					cgDAO.putContact(contact, group);
+				}
 			}
+			
 		}
 		
 		response.sendRedirect("addcontact.jsp");   
