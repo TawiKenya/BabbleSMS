@@ -269,19 +269,19 @@
                         <td class="center"><%=code.getMessage()%></td>
                         <td class="center"><%=code.getOrigin()%> </td>
                         <%
-                            if (phnDAO.getPhones(code.getDestination()) != null) {
+                            /*if (phnDAO.getPhones(code.getDestination()) != null) {
                                
                                 List<Phone> phoneList = phnDAO.getPhones(code.getDestination());
                                 Phone phone = phoneList.get(0);
                                  String contactuuid = phone.getContactUuid();
 				Contact contacts = ctDAO.getContact(contactuuid);
-				String contactname = contacts.getName();
+				String contactname = contacts.getName();*/
                         %>
                         <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td>
                        <td class="center"><%=contactname%></td> 
-                        <%} else {%>
+                        <% // } else {%>
                         <td class="center"><%=code.getDestination()%></td>  
-                      <%}%>
+                      <%//}%>
                         
                         <td class="center"><%=status %></td>
                         <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
