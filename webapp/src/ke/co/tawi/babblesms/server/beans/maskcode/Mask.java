@@ -61,7 +61,7 @@ public class Mask extends SMSSource {
         builder.append(getId());
         builder.append(", uuid=");
         builder.append(getUuid());
-        builder.append(", maskname=");
+        builder.append(", name=");
         builder.append(getSource());
         builder.append(", accountuuid=");
         builder.append(getAccountuuid());

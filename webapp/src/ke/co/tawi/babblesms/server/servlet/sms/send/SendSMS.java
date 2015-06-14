@@ -18,16 +18,27 @@ package ke.co.tawi.babblesms.server.servlet.sms.send;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
+import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
+import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
+import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
+import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
+
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
+import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
+
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.utils.StringUtil;
+import ke.co.tawi.babblesms.server.utils.comparator.PhonesByNetworkPredicate;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -47,6 +58,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.list.SetUniqueList;
 
 /**
  * Receives a form request to send SMS to Contact(s) or Group(s) 
@@ -56,17 +72,19 @@ import java.util.LinkedList;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class SendSMS extends HttpServlet {
-	final String SMSGW_URL_HTTP = PropertiesConfig.getConfigValue("SMSGW_API_URL"); 
-	final String SMSGW_USERNAME = PropertiesConfig.getConfigValue("SMSGW_USERNAME");
-	final String SMSGW_PASSWORD = PropertiesConfig.getConfigValue("SMSGW_PASSWORD");
-			
+				
 			
 	private Cache accountsCache;
 		
 	private PhoneDAO phoneDAO;
+	private GatewayDAO gatewayDAO;
+	private ContactGroupDAO ctgrpDAO;
+	private ShortcodeDAO shortcodeDAO;
+	private MaskDAO maskDAO;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
+		
 	
 	/**
 	 * @param config
@@ -79,6 +97,10 @@ public class SendSMS extends HttpServlet {
 		super.init(config);
 		
 		phoneDAO = PhoneDAO.getInstance();
+		gatewayDAO = GatewayDAO.getInstance(); 
+		ctgrpDAO= ContactGroupDAO.getInstance();
+		shortcodeDAO = ShortcodeDAO.getInstance();
+		maskDAO = MaskDAO.getInstance();
 		
 		CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
@@ -96,8 +118,13 @@ public class SendSMS extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession(true);
 		
+		// Respond as soon as possible to the client request
+		HttpSession session = request.getSession(true);
+		session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
+		response.sendRedirect("sendsms.jsp");
+		
+		// Get the relevant account		
 		Account account = new Account();
 		
 		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
@@ -105,128 +132,89 @@ public class SendSMS extends HttpServlet {
 	    if ((element = accountsCache.get(username)) != null) {
 	        account = (Account) element.getObjectValue();
 	    }
-			    
+		
+	    TawiGateway smsGateway = gatewayDAO.get(account);
+	    
+	    
+	    // Retrieve the web parameters
 		String[] groupselected = request.getParameterValues("groupselected");
 		String[] phones = request.getParameterValues("phones");
 		String source = request.getParameter("source");
 		String message = request.getParameter("message");
        
-        
-		//Group group;
 		
+		
+		// Deal with the case where one or more Groups has been selected
+		// Get phones of all the Contacts in the Group(s)
+		SetUniqueList phoneList = SetUniqueList.decorate(new LinkedList<Phone>()); // Does not allow duplicates 
+				
+		Group group;
+		List<Contact> contactList;		
+		 
 		if(groupselected != null) {
-			for(String group : groupselected) {
-				System.out.println("Group is: '" + group + "'");
-			}
+			for(String groupUuid : groupselected) {
+				group = new Group();
+				group.setUuid(groupUuid);
+				contactList = ctgrpDAO.getContacts(group);
+			 	
+				for(Contact contact : contactList) {
+					phoneList.addAll(phoneDAO.getPhones(contact) );
+				}				
+				
+			}// end 'for(String groupUuid : groupselected)'
 		}
 		
 		
+		// This is the case where individual Contacts may have been selected		
 		if(phones == null) {
 			phones = new String[0];
 		}
 		phones = StringUtil.removeDuplicates(phones);
-		
-		
-		List<Phone> phoneList = new LinkedList<>();
-		for(String phone : phones) {
-			System.out.println("Phone text is: " + phone);
-			phoneList.add(phoneDAO.getPhone(phone));
-			System.out.println("Phone obj is: " + phoneDAO.getPhone(phone));
-		}
-		
-		
-		/*
-		 
-		//removing any blank input field value passed here
-		List<String> grouplist = new ArrayList<>();
-                if(groupselected.length >0){
-    		for(String s :groupselected ) {
-      		  if(s != null && s.length() > 0) {
-         	  grouplist.add(s);
-      		  }
-    		}
-			//converting the list back to an array
-   		 groupselected = grouplist.toArray(new String[grouplist.size()]);
-		
-		}
-                
-                
-			List<String> newgroupList = new ArrayList<>(new HashSet(grouplist));
-			
-			if(newgroupList != null){
-			for (String group1 : newgroupList) {
-			logger.info("yyyyyyyyyyyy+++++++++++"+group1);
-				}}
-			logger.info("my message is"+message+"sent by"+source+"to"+"whose phone is"+contactselected);
-			if(contactselected!=null){
-			for(int i=0;i<contactselected.length;i++){
-			logger.info("xxxxxxxxxxxxxxxi+++++"+i+"++++++"+contactselected[i]);
-			
-		}}
-			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-			GroupDAO gDAO = GroupDAO.getInstance();
-			
-
-
-			PhoneDAO pDAO = PhoneDAO.getInstance();
-			ContactDAO cDAO = ContactDAO.getInstance();
-			Contact contact = new Contact();
-			List<Phone> phonelist = new ArrayList<>();
-			List<Contact> contactList = new ArrayList<>();
-			if(newgroupList != null){
-			for (String groupname : newgroupList) {
-		     	group = gDAO.getGroupByName(account ,groupname);
-			contactList = cgDAO.getContacts(group); 
-			for(Contact code:contactList){
-			for(int i =0; i < pDAO.getPhones(code).size();i++){
-			phonelist.add(pDAO.getPhones(code).get(i));
-		}	
-		}
-		}
-			List<Phone> newphoneList = new ArrayList<>(new HashSet(phonelist));
-			logger.info("my phonenumbers"+ phonelist);
-			 for(Phone phone:newphoneList){
-                         phones +=phone.getPhonenumber()+";"; 
-                
-			 
-		} 
-			 logger.info("my phones"+phones);
-		}
-
-			if(contactselected!=null){
-			for(String contactuuid:contactselected){
-			contact = cDAO.getContact(contactuuid);
-			for(int i =0; i < pDAO.getPhones(contact).size();i++){
-			phonelist.add(pDAO.getPhones(contact).get(i));
-			}}
-			logger.info("my phonenumbers"+ phonelist);
-                       for(Phone phone:phonelist){
-                         phones +=phone.getPhonenumber()+";"; 
-                 }}
-                       logger.info("my phones"+phones);
-           */
-		
-			Map<String,String> params;
-			PostSMS postThread;
-			
-			for(Phone phone : phoneList) {
-				params = new HashMap<>();
-			
-				params.put("username", SMSGW_USERNAME);		
-				params.put("password", SMSGW_PASSWORD);
-				params.put("source", source);
-				params.put("destination", phone.getPhonenumber());
-				params.put("message", message);
-				params.put("network", "safaricom_ke");
-											
-				System.out.println("Data to post: " + StringUtil.mapToString(params));
 				
-				postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-				//postThread.start(); 				
-			}
-			
-			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");
-			response.sendRedirect("sendsms.jsp");	
+		for(String phone : phones) {
+			phoneList.add(phoneDAO.getPhone(phone));
 		}
+		
+		
+		// Determine whether a shortcode or mask is the source
+		SMSSource smsSource;
+		Shortcode shortcode = shortcodeDAO.get(source);
+		Mask mask = null;
+		if(shortcode == null) {
+			mask = maskDAO.get(source);
+			smsSource = mask;
+			
+		} else {
+			smsSource = shortcode;
+		}
+		
+		
+		// Filter the phones to the Network of the source (mask or short code)
+		List<Phone> validPhoneList = new LinkedList<>();
+		validPhoneList.addAll(CollectionUtils.select(phoneList, 
+				new PhonesByNetworkPredicate(smsSource.getNetworkuuid())));
+		
+		
+		
+		
+		Map<String,String> params;
+		PostSMS postThread;
+		
+		for(Object phone : phoneList) {
+			params = new HashMap<>();
+		
+			params.put("username", smsGateway.getUsername());		
+			params.put("password", smsGateway.getPasswd());
+			params.put("source", source);
+			params.put("destination", ((Phone)phone).getPhonenumber());
+			params.put("message", message);
+			params.put("network", "safaricom_ke");
+													
+			postThread = new PostSMS(smsGateway.getUrl(), params, false);	
+			//postThread.start(); 				
+		}
+		
+			
+	}
 			
 }

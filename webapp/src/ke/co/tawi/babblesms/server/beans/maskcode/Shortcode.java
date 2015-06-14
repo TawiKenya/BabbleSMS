@@ -60,7 +60,7 @@ public class Shortcode extends SMSSource {
         builder.append("Shortcode ");
         builder.append("[uuid=");
         builder.append(getUuid());
-        builder.append(", codenumber=");
+        builder.append(", number=");
         builder.append(getSource());
         builder.append(", accountuuid=");
         builder.append(getAccountuuid());
