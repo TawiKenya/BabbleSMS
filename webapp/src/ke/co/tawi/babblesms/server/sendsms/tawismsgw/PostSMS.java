@@ -245,7 +245,7 @@ public class PostSMS extends Thread {
             		outgoingLog.setUuid(uuid);
             		outgoingLog.setOrigin(smsSource.getSource());
             		outgoingLog.setMessage(message);
-            		outgoingLog.setDestination(phoneStr);
+            		outgoingLog.setDestination(phone.getPhonenumber());
             		outgoingLog.setNetworkuuid(phone.getNetworkuuid());
             		outgoingLog.setLogTime(new Date());
             		outgoingLog.setMessagestatusuuid(MsgStatus.SENT);
