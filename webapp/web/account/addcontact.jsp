@@ -22,7 +22,6 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
@@ -30,7 +29,7 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.servlet.upload.ContactUpload"%>
 
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.LinkedList"%>
 <%@page import="java.util.List"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
@@ -58,12 +57,10 @@
     Cache statusCache = mgr.getCache(CacheVariables.CACHE_STATUS_BY_UUID);
     Cache networkCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-
-    List<Status> list = new ArrayList<Status>();
-    List<Group> contactsgrpList = new ArrayList<Group>();
-    List<Network> networkList = new ArrayList<Network>();
+    
+    List<Group> contactsgrpList = new LinkedList<Group>();
+    List<Network> networkList = new LinkedList<Network>();
   
-    Network network;
     List keys;
     Group cg;
 
@@ -78,20 +75,13 @@
     
     String accountuuid = account.getUuid();
     
-    GroupDAO gDAO = new GroupDAO();
-    contactsgrpList = gDAO.getGroups(account);
-
-    keys = statusCache.getKeys();
-    for (Object obj : keys) {
-        element = statusCache.get(obj);
-        list.add((Status) element.getObjectValue());
-    }
+    GroupDAO groupDAO = new GroupDAO();
+    contactsgrpList = groupDAO.getGroups(account);
 
     keys = networkCache.getKeys();
     for (Object key : keys) {
         element = networkCache.get(key);
-        network = (Network) element.getObjectValue();
-        networkList.add(network);
+        networkList.add((Network) element.getObjectValue());
     }
 %>
 
@@ -104,13 +94,10 @@
             <a href="index.jsp">Home</a> <span class="divider">/</span>
         </li>
         <li>
-            Add contact
+            Add Contact
         </li>
     </ul>
 </div>
-
-
-
 
 <div class="row-fluid sortable">
     <div class="box span12">
@@ -126,124 +113,82 @@
                     out.println("Form error: " + addErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_ERROR, null);
-                } if(StringUtils.isNotEmpty(addSuccessStr)) {
+                } 
+
+                if(StringUtils.isNotEmpty(addSuccessStr)) {
                     out.println("<p style='color:green;'>");
                     out.println(addSuccessStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
-
-               
-
             %>
+            
             <form class="form-horizontal" method="POST" action="addContact">
                 <fieldset>
                     <div class="control-group">
                         <label class="control-label" for="name">Name</label >
                         <div class="controls">
-                            <input class="input-xlarge focused"  id="name" id="contname" type="text" name="contname">
+                            <input class="input-xlarge focused"  id="name" id="name" type="text" name="name">
                         </div>
                     </div>
 
                     <div class="control-group" id="phone">
                         <label class="control-label" for="phone">Phone Number</label>
                         <div class="controls" id="addphones1">
-                            <input class="input-xlarge focused"  id="number" name="phonenum[]" type="text" onkeypress='return validateQty(event);' >
+                            <input class="input-xlarge focused"  id="number" name="phones" type="text" onkeypress='return validateQty(event);' >
                             <button id='addphns'>+</button>
-                            <select name="network[]" class="network" id="addphones">
-
-                                <%
-                                    int count = 1;
-                                    if (networkList != null) {
-                                        for (Network code : networkList) {
+                            
+                            <select name="networks" class="network" id="addphones">
+                                <%                                    
+                                    for (Network code : networkList) {
                                 %>
-                                    <option value="<%= code.getUuid()%>"><%= code.getName()%></option>
-                                <%
-                                            count++;
-                                        }
+                                        <option value="<%= code.getUuid()%>"><%= code.getName()%></option>
+                                <%                                         
                                     }
                                 %>
                             </select>
                         </div>
-
                     </div>
+                            
                     <div class="control-group" id="mail">
                         <label class="control-label" for="email">Email</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="email" name="email1[]" type="text" >
+                            <input class="input-xlarge focused" id="email" name="emails" type="text" >
                             <button id="addemail">+</button>
                         </div>
                     </div>
 
 		<div class="control-group">
-		 <label class="control-label">Description</label>
-		<div class="controls">
-		<textarea rows="3" cols="5" class="textarea" name="dept" placeholder="Add description here..."></textarea>
-		</div>	
+                    <label class="control-label">Description</label>
+                    <div class="controls">
+                        <textarea rows="3" cols="5" class="textarea" name="description" placeholder="Add description here..."></textarea>
+                    </div>	
 		</div>
-                    <br/>
-<!-- Group table here-->
-<div class="tablets">
-<div id="scrolltable">
-    <table id="scroll" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>All Groups</th>
-        </tr>
-    </thead>
-    <tbody id ="tablet">
+                <br/>
+                    
 
-	<%
-	
-	if (contactsgrpList != null) {
-         for (Group code : contactsgrpList) {
-	%>
+        <!-- Group table starts here-->
+        <div id="tableselect">
+            <table id="groupsel" class="table table-striped table-bordered">
+            <%
+                if (contactsgrpList != null) {
+                    for (Group group : contactsgrpList) {
+            %>
+                        <tr>
+                            <td class="center" >
+                                <input type="checkbox" id="remember" value="<%=group.getUuid()%>" name="groups" />
+                                <a groupuuid="<%=account.getUuid()%>" ><%=group.getName()%></a>
+                            </td>
+                        </tr>
+            <%   
+                    }// end 'for (Group group : contactsgrpList)'
+                }// end 'if (contactsgrpList != null)' 
+            %>
+            </table>
+        </div>
+        <!-- Group table ends here-->
 
-        <tr>
-	   
-            <td class="center"><a href="#"><%=code.getName()%></a></td>
-	    <td class="center" id ="hideANDseek"><%=code.getUuid()%></td>
-			
-		
-        </tr>
-        <%   
-	
-	
-    }
-    } 
-	
-	%>
-  
-    </tbody>
-</table>
-</div>
-<div id = "groupsform">
-<br/><br/><br/>
-<button type="submit"  id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-<button type="submit"  id = "remove2" > << Remove </button>
-
-
-<input type="hidden"  class ="groupsadded" name="groupsadded[]"  />
-</div>
-<div id="scrolltable21">
-<table id="scroll1" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th> Selected Group(s)</th>
-        </tr>
-    </thead>
-    <tbody id = "resulttable">   
-	
-  
-    </tbody>
-</table>
-</div>
-
-</div>
-<!-- Group table ends here-->
-
-
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><!--<br/><br/><br/><br/><br/><br/>-->
+<br/><br/><br/><br/><br/>
 <div class="form-actions">
 
 <div id="savecancelButtons">
@@ -294,7 +239,7 @@
 
                       <div class="imgload">
                       <a  href="../files/Contacts.xlsx" title="Download a sample excelsheet file">
-                      Download<br> a sample<br> Excel-Sheet file
+                      Download<br> a sample<br> MS Excel file
                       <img src="../img/excel.png"  alter="Excel Sheet File"></a>
                       </div>
                         </div>
@@ -319,8 +264,6 @@
                                                     </tr>
                                                     
                                                 <%   
-
-
                                                     }// end 'for (Group code : contactsgrpList)'
                                                 }// end 'if (contactsgrpList != null)' 
                                             %>
@@ -354,7 +297,7 @@
         //add more phone numbers upon clicking
         $("#addphone").click(function(e) {
             e.preventDefault();
-            $("#phone").append("<div class='controls'> <input style='margin:5px 3px 0 0;' class='input-xlarge focused'  id='number' name='phonenum[]' type='text'><select name='network[]' class='network'></select></div>");
+            $("#phone").append("<div class='controls'> <input style='margin:5px 3px 0 0;' class='input-xlarge focused'  id='number' name='phones' type='text'><select name='networks' class='network'></select></div>");
             //add values to network thruogh ajax call
             //get url path first
             var basepath = window.location.protocol + "//" + window.location.host + "/";
@@ -377,15 +320,16 @@
 <script type="text/javascript">
     
     function validateQty(event) {
-    var key = window.event ? event.keyCode : event.which;
+        var key = window.event ? event.keyCode : event.which;
 
-if (event.keyCode == 8 || event.keyCode == 46
- || event.keyCode == 37 || event.keyCode == 39) {
-    return true;
-}
-else if ( key < 48 || key > 57 ) {
-    return false;
-}
-else return true;
-};
+        if (event.keyCode == 8 || event.keyCode == 46
+         || event.keyCode == 37 || event.keyCode == 39) {
+            return true;
+            
+        } else if ( key < 48 || key > 57 ) {
+            return false;
+        }
+        
+        else return true;
+    };
 </script>

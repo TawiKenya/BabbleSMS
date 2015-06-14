@@ -25,15 +25,11 @@ import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.EmailDAO;
-import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.utils.StringUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -47,7 +43,6 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 
 /**
@@ -60,23 +55,16 @@ import org.apache.log4j.Logger;
 public class AddContact extends HttpServlet {
 	
 	
-	//private final String ERROR_NO_NAME = "You have to input a value.";
-	final String ERROR_PHONE_EXISTS = "The phone provided already exists in the system.";
-	final String ADD_SUCCESS = "contcat added successfully.";
+	final String ADD_SUCCESS = "Contact added successfully.";
 	final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
-	final String ERROR_DUPLICATE_EMAIL = "You have supplied duplicate email addresses.";
-	final String ERROR_PUBLICATE_PHONE = "You have supplied duplicate phone numbers.";
-
+	
 	private Cache accountsCache;
 	
 	private EmailDAO emailDAO;
 	private PhoneDAO phoneDAO;
 	private ContactDAO contactDAO;
-	private GroupDAO groupDAO;
 	private ContactGroupDAO cgDAO;
 		
-	private Logger logger;
-
 	
 	/**
 	 * @param config
@@ -93,12 +81,8 @@ public class AddContact extends HttpServlet {
         
 		emailDAO = EmailDAO.getInstance();
 		phoneDAO = PhoneDAO.getInstance();
-		contactDAO = ContactDAO.getInstance();
-		groupDAO = GroupDAO.getInstance();
+		contactDAO = ContactDAO.getInstance();		
 		cgDAO = ContactGroupDAO.getInstance();
-		
-		
-		logger = Logger.getLogger(this.getClass());
 	}
 	
 	
@@ -114,10 +98,7 @@ public class AddContact extends HttpServlet {
 			throws ServletException, IOException {
 		
 		HttpSession session = request.getSession(false);
-		
-		Contact contact;
-		Email email;
-		Phone phone;
+			
 		
 		Account account = new Account();
 		
@@ -127,87 +108,49 @@ public class AddContact extends HttpServlet {
 	        account = (Account) element.getObjectValue();
 	    }
 	    
-		String[] emailArray = request.getParameterValues("email1[]");
-		String[] phonenumArray = request.getParameterValues("phonenum[]");
-		String[] networkArray = request.getParameterValues("network[]");
-		String contactname = request.getParameter("contname").trim();
-		
-		String[] groupArray = request.getParameterValues("groupsadded[]");
-		
-		String description = request.getParameter("dept");
-		
-			
-		
-		Set<String> mySet = new HashSet<String>(Arrays.asList(emailArray));
-		Set<String> mySet2 = new HashSet<String>(Arrays.asList(phonenumArray));
-		Set<String> myGroupSet = new HashSet<String>(Arrays.asList(groupArray));
-		
-		int duplicateemail = emailArray.length - mySet.size();
-		int duplicatephone = phonenumArray.length - mySet2.size();
-		
-	
-		
-		// No First Name provided
-		if (StringUtils.isBlank(contactname) )
-		{
-			session.setAttribute(SessionConstants.ADD_ERROR, "contact name cant be empty");
-		} 
-		else if(phonenumArray[0].equals("")){
-				session.setAttribute(SessionConstants.ADD_ERROR, "phone number cant be empty");
-			
-		}else if(networkArray[0].equals("")){
-			session.setAttribute(SessionConstants.ADD_ERROR, "u must select a network");
+	    
+	    String name = request.getParameter("name").trim();
+		String[] phoneArray = request.getParameterValues("phones");		
+		String[] networkArray = request.getParameterValues("networks");		
+		String[] emailArray = request.getParameterValues("emails");
+		for(String str : emailArray) {
+			System.out.println("Email is: " + str);
 		}
-		else if(emailArray[0].equals("")){
-				session.setAttribute(SessionConstants.ADD_ERROR,"email field cant be empty");
-				
-		   logger.info("d"+emailArray.length);
+		
+		String description = request.getParameter("description");
+		String[] groupArray = request.getParameterValues("groups");
+						
+		if (StringUtils.isBlank(name) ) {
+			session.setAttribute(SessionConstants.ADD_ERROR, "Please provide a contact name.");
 			
-			if (!StringUtil.validateEmails(emailArray)) {
-		session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
-	}
+		} else if(phoneArray.length < 1) {
+				session.setAttribute(SessionConstants.ADD_ERROR, "Please provide at least one phone number.");
 			
-		} else if(existPhone(phonenumArray)){
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_PHONE_EXISTS);
-		}else if (duplicateemail >= 1) {
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_DUPLICATE_EMAIL);
+		} else if(networkArray.length < 1) {
+			session.setAttribute(SessionConstants.ADD_ERROR, "Please select a network.");
+			
+		} else if(emailArray.length > 0 && !StringUtil.validateEmails(emailArray)) {
+			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_INVALID_EMAIL);
+			
+		
+		} else {
 
-		} else if (duplicatephone >= 1) {
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_PUBLICATE_PHONE);
-		} 
-		else {
-
-			contact = new Contact();
-			contact.setName(contactname);
+			Contact contact = new Contact();
+			contact.setName(name);
 			contact.setDescription(description);
 			contact.setStatusUuid(Status.ACTIVE);
 			contact.setAccountUuid(account.getUuid());
 
-			if(contactDAO.putContact(contact)){
+			if(contactDAO.putContact(contact)) {
 				session.setAttribute(SessionConstants.ADD_SUCCESS, ADD_SUCCESS);
-			}
-			else{
+				
+			} else {
 				session.setAttribute(SessionConstants.ADD_ERROR, "Contact add Failed.");  
 			}
-			//get contact bean to update cache
-			String uuid = contact.getUuid();
+						
 
-			contact = contactDAO.getContact(uuid);
-
-			for (String group1 : myGroupSet) {
-
-				if(!(group1.equals(""))){
-					
-					//set the accounts uuid to the one posted by the form
-					account.setUuid(account.getUuid());
-					Group group = groupDAO.getGroupByName(account , group1);
-					cgDAO.putContact(contact, group);
-
-				}
-
-			}
-
-			//loop emails
+			// Save emails
+			Email email;
 			for (String email2 : emailArray) {
 				email = new Email();
 				email.setAddress(email2);
@@ -216,9 +159,12 @@ public class AddContact extends HttpServlet {
 				emailDAO.putEmail(email);
 
 			}
-			//loop phonenumbers               
+			
+			
+			// Save phone numbers    
+			Phone phone;
 			int count = 0;
-			for (String phonenum : phonenumArray) {
+			for (String phonenum : phoneArray) {
 				phone = new Phone();
 				phone.setPhonenumber(phonenum);
 				phone.setContactUuid(contact.getUuid());
@@ -226,26 +172,25 @@ public class AddContact extends HttpServlet {
 				phone.setStatusuuid(Status.ACTIVE);
 
 				phoneDAO.putPhone(phone);
-
-
+			    
 				count++;
 			}
+			
+			
+			// Associate the Contact with the Groups chosen
+			Group group;
+			for (String groupUuud : groupArray) {
+
+				group = new Group();
+				group.setUuid(groupUuud);
+				cgDAO.putContact(contact, group);
+			}
 		}
+		
 		response.sendRedirect("addcontact.jsp");   
 	}
 	
-	
-
-	private boolean existPhone(final String[] phonenumArray) {
-			boolean exists = false; 
-		for(String phone: phonenumArray){
-		if(phoneDAO.getPhone1(phone) !=null){
-		exists= true;
-		}
-		}
-			return exists;
-	}
-	
+		
 		
 	
 	private static final long serialVersionUID = 1L;
