@@ -74,6 +74,13 @@ CREATE TABLE Account (
 ALTER TABLE Account OWNER TO babblesms;
 
 
+
+-- ================================
+-- ================================
+-- 2. Contact and Group Management
+-- ================================
+-- ================================
+
 -- ----------------
 -- Table country
 -- ----------------
@@ -180,6 +187,12 @@ CREATE TABLE contactgroup (
 \COPY contactgroup(uuid,contactuuid,groupuuid,accountuuid) FROM '/tmp/contactgroup.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE contactgroup OWNER TO babblesms;
 
+
+-- ==================
+-- ==================
+-- 3. SMS Management
+-- ==================
+-- ==================
 
 -- -------------------
 -- Table shortcode
@@ -363,13 +376,13 @@ ALTER TABLE ShortcodeBalance OWNER TO babblesms;
 -- Table MaskPurchase
 -- ----------------------
 CREATE TABLE MaskPurchase(
-             Id SERIAL PRIMARY KEY,
-             Uuid text UNIQUE NOT NULL,
-             accountuuid text references account(uuid),
-             maskuuid text references Mask(uuid),
-             count integer NOT NULL CHECK (count>=0),
-             purchasedate timestamp with time zone 
-             );
+      Id SERIAL PRIMARY KEY,
+      Uuid text UNIQUE NOT NULL,
+      accountuuid text references account(uuid),
+      maskuuid text references Mask(uuid),
+      count integer NOT NULL CHECK (count>=0),
+      purchasedate timestamp with time zone 
+);
 \COPY MaskPurchase (Uuid,accountuuid,maskuuid,count,purchasedate) FROM '/tmp/MaskPurchase.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE MaskPurchase OWNER TO babblesms;
 
@@ -378,12 +391,31 @@ ALTER TABLE MaskPurchase OWNER TO babblesms;
 -- Table MaskBalance
 -- ---------------------
 CREATE TABLE MaskBalance(
-             Id SERIAL PRIMARY KEY,
-             Uuid text UNIQUE NOT NULL,
-             accountuuid text references account(uuid),
-             maskuuid text references Mask(uuid),
-             count integer NOT NULL CHECK (count>=0)  
-             );
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    accountuuid text references account(uuid),
+    maskuuid text references Mask(uuid),
+    count integer NOT NULL CHECK (count>=0)  
+);
 \COPY MaskBalance (Uuid,accountuuid,Maskuuid,count) FROM '/tmp/MaskBalance.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE MaskBalance OWNER TO babblesms;
 
+
+
+-- =========================
+-- =========================
+-- 4. SMS Gateway Management
+-- =========================
+-- =========================
+-- --------------------
+-- Table SMSGateway
+-- ---------------------
+CREATE TABLE SMSGateway(
+    Id SERIAL PRIMARY KEY,
+     text references account(uuid),
+    url text NOT NULL,
+    username text NOT NULL,
+    passwd text NOT NULL
+);
+\COPY SMSGateway (accountuuid,url,username,passwd) FROM '/tmp/SMSGateway.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE SMSGateway OWNER TO babblesms;

@@ -47,7 +47,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Receives form values from addcontact.jsp section and adds a new
- * {@link AddContact} to the database.
+ * {@link Contact} to the database.
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
@@ -190,8 +190,6 @@ public class AddContact extends HttpServlet {
 		response.sendRedirect("addcontact.jsp");   
 	}
 	
-		
-		
 	
 	private static final long serialVersionUID = 1L;
 }

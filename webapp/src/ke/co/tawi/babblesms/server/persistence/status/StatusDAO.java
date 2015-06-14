@@ -15,7 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.persistence.status;
 
-import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.status.Status;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 

@@ -45,7 +45,6 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.LinkedList;
 
@@ -115,9 +114,12 @@ public class SendSMS extends HttpServlet {
         
 		//Group group;
 		
-		for(String group : groupselected) {
-			System.out.println("Group is: '" + group + "'");
+		if(groupselected != null) {
+			for(String group : groupselected) {
+				System.out.println("Group is: '" + group + "'");
+			}
 		}
+		
 		
 		if(phones == null) {
 			phones = new String[0];
@@ -127,8 +129,11 @@ public class SendSMS extends HttpServlet {
 		
 		List<Phone> phoneList = new LinkedList<>();
 		for(String phone : phones) {
+			System.out.println("Phone text is: " + phone);
 			phoneList.add(phoneDAO.getPhone(phone));
+			System.out.println("Phone obj is: " + phoneDAO.getPhone(phone));
 		}
+		
 		
 		/*
 		 
@@ -217,7 +222,7 @@ public class SendSMS extends HttpServlet {
 				System.out.println("Data to post: " + StringUtil.mapToString(params));
 				
 				postThread = new PostSMS(SMSGW_URL_HTTP, params, false);	
-				postThread.start(); 				
+				//postThread.start(); 				
 			}
 			
 			session.setAttribute(SessionConstants.SENT_SUCCESS, "success");

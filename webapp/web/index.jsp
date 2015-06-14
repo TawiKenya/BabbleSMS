@@ -28,11 +28,6 @@
 <%@page import="org.jasypt.util.text.BasicTextEncryptor"%>
 
 <%
-    String username = (String) session.getAttribute("username");
-    if (username != null) {
-        response.sendRedirect("index.jsp");
-    }
-
     BasicTextEncryptor textEncryptor = new BasicTextEncryptor();    
     textEncryptor.setPassword(FontImageGenerator.SECRET_KEY);    
 
@@ -80,7 +75,12 @@
                           </div>
                           <div class="alert alert-info">
                     <%
-                        String loginErrStr = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ERROR_KEY);
+                        String loginErrStr = "";
+                        session = request.getSession(false);
+
+                        if(session != null) {
+                            loginErrStr = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ERROR_KEY);
+                        }                        
 
                         if (StringUtils.isNotEmpty(loginErrStr)) {
                             out.println("<p class=\"error\">");

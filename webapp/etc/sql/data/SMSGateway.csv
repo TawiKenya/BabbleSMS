@@ -1,0 +1,4 @@
+Account Uuid|URL|Username|Passwd
+C3CFA249-F2A3-8253-1F44-B1C594C6A8D2|http://localhost:8080/SMSGateway/sendsms|tawi|tawi312
+650195B6-9357-C147-C24E-7FBDAEEC74ED|http://localhost:8080/SMSGateway/sendsms|demo|demo
+C6D5BA33-C95E-BCC3-D951-2A099E5F9230|http://localhost:8080/SMSGateway/sendsms|transparency|transparency

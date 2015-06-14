@@ -304,6 +304,14 @@ the Java code.
 4. SMS Gateway Management
 =========================
 =========================
+For account management with the Tawi SMS Gateway.
+
+SMS Gateway
+- Account uuid references Account(uuid)
+- URL
+- Username
+- Password
+
 
 ==================
 ==================
@@ -324,17 +332,6 @@ the Java code.
 Unaudited Tables
 =================
 =================
-
----------------------
- Table credit
- ---------------------
- This table stores information to the user at each state. Note that the word 
- "State" is a future reserved SQL keyword.
- - Id
- - UUID
- - source
- - credit
- - useruuid
 
 
 ------------------

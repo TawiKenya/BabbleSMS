@@ -43,7 +43,6 @@ import org.apache.commons.collections.CollectionUtils;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class TestPostSMS {
-
 	
 	final String SMSGW_URL_HTTP = "http://192.168.0.50:8080/SMSGateway/sendsms";
 	final String SMSGW_USERNAME = "tawi", SMSGW_PASSWORD = "tawi123";
