@@ -412,7 +412,7 @@ ALTER TABLE MaskBalance OWNER TO babblesms;
 -- ---------------------
 CREATE TABLE SMSGateway(
     Id SERIAL PRIMARY KEY,
-     text references account(uuid),
+    accountuuid text references account(uuid),
     url text NOT NULL,
     username text NOT NULL,
     passwd text NOT NULL
