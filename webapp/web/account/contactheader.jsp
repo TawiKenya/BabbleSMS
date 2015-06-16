@@ -266,9 +266,10 @@ function hello(val){
                 </div>
                 <!-- top menu -->                        
                 <div class="topmenu">                     
-		    <a href="inbox.jsp">MESSAGES</a>
+		            <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                     <a href="portfolio.jsp">REPORT</a>
+                    <a href="purchase.jsp">PURCHASE</a>
 		    
                 </div>    
             </div>

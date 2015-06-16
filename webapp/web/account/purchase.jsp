@@ -1,33 +1,51 @@
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
 
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Locale"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Random"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.account.PurchaseHistory"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.purchaseHistory.PurchaseHistoryDAO"%>
+    Licensed under the Open Software License, Version 3.0 (the “License”); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.account.AccountBalance"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountBalanceDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
-<%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.ehcache.Cache"%>
-<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
-<%@page import="net.sf.ehcache.CacheManager"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-
+<%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.SMSPurchase"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.MaskPurchase"%>
+
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsPurchaseDAO"%>
+
+<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
+<%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.LinkedList"%>
+
+
+
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
     // The following is for session management.    
@@ -42,36 +60,90 @@
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
+        
 
-    String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
+    Cache shortcodesCache = mgr.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID);
     Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
+    Cache maskCache = mgr.getCache(CacheVariables.CACHE_MASK_BY_UUID);
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+    
+   
+   
+    SmsPurchaseDAO smspurchaseDAO = SmsPurchaseDAO.getInstance();
 
-    // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
-    HashMap<String, String> networkHash = new HashMap<String, String>();
+ 
+   
+    
+    Account account = new Account();
     Element element;
-    Network network;
+	if ((element = accountsCache.get(username)) != null) {
+        account = (Account) element.getObjectValue();
+    }
+     
+   
+    ShortcodePurchase shortcodepurchase;
+    MaskPurchase maskpurchase;
+    Mask mask;
     Shortcode shortcode;
+   // Network network;
+    
+                       //lis to hold  shortcode purchase details
+    List <ShortcodePurchase> shortcodepurchaseList = new LinkedList<ShortcodePurchase>();
+                        //this list to hold  mask purchase details
+    List<MaskPurchase> maskpurchaseList = new LinkedList<MaskPurchase>();
+                     //this hashmap to hold  mask name
+    HashMap<String, String> maskHash = new HashMap<String, String>();
+                   //this hashmap to hold  shortcode name
+    HashMap<String, String> shortcodeHash = new HashMap<String, String>();
+                 //newtwork hash, not yet implemented
+    HashMap<String, String> networkHash = new HashMap<String, String>();
+    
+    
+    List<SMSPurchase> purchaseList = smspurchaseDAO.getPurchases(account);	
+    
+        //filter purchase
+    for(SMSPurchase purchase : purchaseList) {
+        if(purchase instanceof ShortcodePurchase) {   
+            
+            shortcodepurchaseList.add(  ((ShortcodePurchase) purchase )    );       
+                
+        } else {
+                  
+           maskpurchaseList.add(  ((MaskPurchase) purchase )    );
+    }
+    }//end of for each 
+    
     List keys;
     
-    
-
-    keys = networksCache.getKeys();
+    //get mask details from chase, put them in hashmap
+     keys = maskCache.getKeys();
     for (Object key : keys) {
-        element = networksCache.get(key);
-        network = (Network) element.getObjectValue();
-        networkHash.put(network.getUuid(), network.getName());
+        element = maskCache.get(key);
+        mask = (Mask) element.getObjectValue();
+        if (account.getUuid().equals(mask.getAccountuuid())) {
+            maskHash.put(mask.getUuid(),mask.getMaskname()     );
+        }
+    }
+    
+     //get shortcode details from chase, put them in hashmap
+    keys = shortcodesCache.getKeys();
+    for (Object key : keys) {
+        element = shortcodesCache.get(key);
+        shortcode = (Shortcode) element.getObjectValue();
+        if (account.getUuid().equals(shortcode.getAccountuuid())) {
+            shortcodeHash.put(shortcode.getUuid(),shortcode.getCodenumber()   );
+        }
     }
 
-    PurchaseHistoryDAO pchsDAO = PurchaseHistoryDAO.getInstance();
-    List<PurchaseHistory> psclist = pchsDAO.getPurchaseHistoryByAccount(accountuuid);
-
-    AccountBalanceDAO accDAO = AccountBalanceDAO.getInstance();
-    List<AccountBalance> acclist = accDAO.getClientBalanceByAccount(accountuuid);
-
-    ShortcodeDAO shortcodeDAO=ShortcodeDAO.getInstance();
     
     
+    
+   
+   //date format
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
+
 %> 
 <jsp:include page="reportheader.jsp" />
 
@@ -89,127 +161,101 @@
 
 <div class="row-fluid sortable">		
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-            <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> Refresh</a>                  
-            <a class="btn" href="#" title="delete message" data-rel="tooltip"><i class="icon-trash"></i> Delete</a>  
-            <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>
-        </div>
+
         <div class="box-content">
-
-
-            <div class="content_title">
-                <h3>Account Balance</h3>
-                <p>Below is the summary of your account Balance:</p>
-            </div>
-            <table class="table table-striped table-bordered bootstrap-datatable datatable">
-
-                <thead>
-                    <tr>
-                        <th>*</th>
-
-                        <th>Mask</th>
-                        <th>Credit</th>
-                        <th>Network</th>
-                        <th>actions</th>
-                    </tr>
-                </thead> 
-
-                <tbody>
-                    <%                        int count = 1;
-                        if (acclist != null) {
-                            for (AccountBalance code : acclist) {
-                                
-                                //random number i.e credit
-                                Random rn = new Random();
-                                int credit = rn.nextInt(10) + 1;
-                    %>
-                    <tr>
-
-                        <td width="10%"><%=count%></td>
-                        <td class="center"><%=code.getOrigin()%></td>
-                        <td class="center"><%=code.getBalance()%></td>
-                        <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>
-                        <td class="center">
-                            <a class="btn btn-success" href="#">
-                                <i class="icon-zoom-in icon-white"></i>  
-                                View                                            
-                            </a>
-
-
-                        </td>
-
-
-                    </tr>
-
-                    <%
-                                count++;
-                            }
-                        }
-                    %>
-                </tbody>
-
-            </table> 
 
 
 
             <div class="content_title"> 
-                <h3>Purchase History</h3>
-                <p>Below is the summary of purchase history for your account:</p>
+                <h3>Mask</h3>
+
+                <p>Below is the History of the Masks managed by your account:</p>
             </div>
+
+
+
+            <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                <thead>
+                    <tr>
+                        <th>*</th>  
+                        <th>Amount</th>   
+                         <th>Date (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>                   
+                        <th>Mask</th>
+                        <th>Network</th>
+                        
+                         
+                    </tr>                    
+                </thead> 
+                
+                <tbody>
+                    <%                        
+                        int count = 1;
+                        if (maskpurchaseList != null) {
+                                 for(MaskPurchase msk : maskpurchaseList) {
+                      
+                    %>
+                                <tr>
+                                    <td width="10%"><%=count%></td>    
+                                    <td class="center"><%=msk.getCount()%></td>  
+                                     <td class="center"><%=msk.getPurchaseDate()%></td>  
+                                <td class="center"><%=maskHash.get( msk.getMaskuuid()  )%></td>
+                                
+                                </tr>
+
+                    <%
+                                count++;
+                         
+                                 }
+                        }// end 'if (maskpurchaseList != null)'
+                    %>
+
+
+                </tbody>
+            </table>  
+
+            <p>&nbsp;&nbsp;&nbsp;</p>
+                        
+
+            <div class="content_title"> 
+                <h3>Shortcode</h3>
+
+                <p>Below is the History of the shortcodes managed by your account:</p>
+
+            </div>
+
+
+
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
                         <th>*</th>
-
-                        
-                        <th>For</th>
-                        <th>Amount</th>
+                         <th>Ammount</th>
+                          <th>Date (<%= timezoneFormatter.format(new Date()) %> Time Zone)</th>
+                        <th>ShortCodes</th>
                         <th>Network</th>
-                        <th>Date</th>
+                       
+                       
                     </tr>
                 </thead>   
                 <tbody>
                     <%
-                          count = 1;
-                        if (psclist != null) {
-                            for (PurchaseHistory msk : psclist) {
-                                
-                                
-                          //date formatting
-                               
-                          SimpleDateFormat sdf=new SimpleDateFormat("E MMM dd HH:mm:ss z Y");
-                          Date currentdate;
-                          String dateAsString = sdf.format(msk.getPurchasetime());
-                          currentdate=sdf.parse(dateAsString);
-                          SimpleDateFormat sdf2=new SimpleDateFormat("MMM dd,yyyy z yyyy");
-                         // System.out.println(sdf2.format(currentdate));
-                          
-                          shortcode=shortcodeDAO.getShortcodeBycodeNumber(msk.getSource(),msk.getNetworkuuid());
-                          
-                          //System.out.println(shortcode);
-                          if(shortcode==null){
+                        count = 1;
+                         if (shortcodepurchaseList != null) {
+                                 for(ShortcodePurchase code : shortcodepurchaseList) {    
                     %>
-                    <tr>
-                        <td width="10%"><%=count%></td>
-                        <td width="10%"><%=msk.getSource()%></td>
-                        <td class="center"><%=msk.getAmount()%></td>
-                        <td class="center"><%=networkHash.get(msk.getNetworkuuid())%></td>
-                        <!--<td class="center"><%=sdf2.format(currentdate)%></td>-->
-			<td class="center"><%=msk.getPurchasetime()%></td>
-
-                    </tr>
+                                <tr>
+                                    <td width="10%"><%=count%></td>
+                                   <td class="center"><%=code.getCount()%></td> 
+                                    <td class="center"><%=code.getPurchaseDate()%></td> 
+                                 <td class="center"><%=shortcodeHash.get(code.getShortcodeuuid()  )%></td>
+                     
+                                </tr>
 
                     <%
                                 count++;
-                            }
-                          }     
-                        }
+                                 }
+                        }// end 'if (shortcodepurchaseList != null)'
                     %>
-
 
                 </tbody>
             </table> 
@@ -222,3 +268,5 @@
 
 
 <jsp:include page="footer.jsp" />
+
+
