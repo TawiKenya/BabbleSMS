@@ -19,6 +19,7 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+import ke.co.tawi.babblesms.server.persistence.network.networkcountDAO;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,17 +46,18 @@ import net.sf.ehcache.Element;
  * Returns a JSON list of Groups for a given account.
  * <p>
  * Sample output is as follows:<br/>
- * {  "groups": [
- * {"orange_contacts": "5", "name": "Management", "airtel_contacts": "10", "safaricom_contacts": "22", "uuid": "a118c8ea-f831-4288-986d-35e22c91fc4d"},
- * {"orange_contacts": "15", "name": "Parents", "airtel_contacts": "50", "safaricom_contacts": "30", "uuid": "094def52-bc18-4a9e-9b84-c34cc6476c75" },
- * {"orange_contacts": "23", "name": "Staff", "airtel_contacts": "24", "safaricom_contacts": "44", "uuid": "a2688d72-291b-470c-8926-31a903f5ed0c" },
- * {"orange_contacts": "64", "name": "Students", "airtel_contacts": "15", "safaricom_contacts": "0", "uuid": "9bef62f6-e682-4efd-98e9-ca41fa4ef993"},
- * {"orange_contacts": "19", "name": "Teachers", "airtel_contacts": "16", "safaricom_contacts": "2", "uuid": "e9570c5d-0cc4-41e5-81df-b0674e9dda1e" }
- * ] }
+ *{"Management":{"saf com":"92",    "orange":"16 ",  "airtel":"39 ",   "yu" :"17 "},' 
+ *'"   Parents":{"saf com" :"72",   "orange":"156 ",  "airtel":"71 ",  "yu" :"35 "},'
+ *"   Teachers":{"saf com" :"223 ", "orange":"17 ",   "airtel":"6 ",   "yu" :"5 "},'
+ *"      Staff":{"saf com" :"9 ",   "orange":"16 ",  "airtel":"61 ",   "yu" :"999"},'
+ *"   Students":{"saf com" :"21 ",  "orange":"34 ",   "airtel":"27 ",   "yu" :"67"}'
+ *}'
+ *
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * @author <a href="mailto:eugene.g99@gmail.com">Eugene Wang'ombe</a>
+ * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>
  * 
  */
 public class GetGroups extends HttpServlet {
@@ -119,12 +121,13 @@ public class GetGroups extends HttpServlet {
 	 * @return a HashMaps containing a list of other HashMaps, each HashMap with
 	 *         the relevant Group information.
 	 */
-	private Map<String, List<HashMap<String, String>>> getGroupMaps(
-			Account account) {
-		Map<String, List<HashMap<String, String>>> parentGroupHash = new HashMap<String, List<HashMap<String, String>>>();
-
-		List<HashMap<String, String>> groupMaps = new LinkedList<>();
-		HashMap<String, String> groupHash;
+	private HashMap<String,HashMap<String,Integer>> getGroupMaps(Account account) {
+		
+		HashMap<String,Integer> groupHash = new HashMap<>();
+		
+		HashMap<String,HashMap<String,Integer>> parentGroupHash = new HashMap<>();
+		
+		networkcountDAO netcount= networkcountDAO.getInstance();
 
 		if (account == null) {
 			return parentGroupHash;
@@ -132,17 +135,14 @@ public class GetGroups extends HttpServlet {
 
 		List<Group> groupList = groupDAO.getGroups(account);
 
-		for (Group group : groupList) {
-			groupHash = new HashMap<>();
-			groupHash.put("name", group.getName());
-			groupHash.put("uuid", group.getUuid());
-			groupHash.put("safaricom_contacts", "22");
-			groupHash.put("airtel_contacts", "10");
-			groupHash.put("orange_contacts", "5");
-
-			groupMaps.add(groupHash);
+		for (Group group : groupList) {			
+	    //get a list of count per network into a hashmap	 
+		groupHash =netcount.network(group.getUuid());
+		       
+		//put a the network count per group  and group name into a hashmp   
+		parentGroupHash.put(group.getName(),groupHash );  
 		}
-		parentGroupHash.put("groups", groupMaps);
+		
 
 		return parentGroupHash;
 	}

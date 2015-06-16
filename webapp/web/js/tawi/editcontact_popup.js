@@ -2,6 +2,8 @@
   Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
   Licensed under the OSL-3.0 License:
   http://opensource.org/licenses/OSL-3.0
+
+  Author: Migwi Ndung'u  <migwi@tawi.mobi>
 */
 /*for use by the second showtext table*/
 
@@ -54,8 +56,7 @@ $(document).ready(function() {
 	         $(".groupstablee").show();
 	         $(".templatestable").show();
 	         $(".tblTest").show();	         
-             });
-
+             });   
        
         
     function checkgroups(str){         
@@ -111,8 +112,9 @@ $(document).ready(function() {
         	 	text2= str2.substring(str2.indexOf("(")+1, str2.indexOf(")"));      	 	     	 	 
         	 	$clone = $item.clone();        	 	
         	 	$clone.find('#phone2').val(text); 
-        	 	$clone.find('#phone2').attr('title',text2);      
-        	 	$parent.append($clone);
+        	 	$clone.find('#phone2').attr('title',text2);
+                $clone.append("<button style='color:red;' onclick='event.preventDefault(); $(this).parent().hide();'>x</button>");      
+        	 	$parent.append($clone);                
         	 	$parent.find('#addphns').remove();
         	 	lists.length=lists.length-1;
         	 }        	 
@@ -141,7 +143,8 @@ $(document).ready(function() {
         	 	text= str2.substring(1,str2.indexOf("<"));        	 	
         	 	$clone = $item.clone();
         	 	$clone.find('#email').val(text);
-        	 	$parent.append($clone);
+                $clone.append("<button style='color:red;' onclick='event.preventDefault(); $(this).parent().hide();'>x</button>");
+        	 	$parent.append($clone);                
         	 	$parent.find('#addemail').remove();
         	 	lists.length=lists.length-1;
         	  }        	  
@@ -275,10 +278,12 @@ $(document).ready(function() {
 		
 		var control = $('#addphones1').clone();
 		control.find("#phone2").val("");
+        control.css("style","margin-top='1%';")
 		control.find("#addphns").remove();
-		$("#phone").append(control);
+        control.append("<button style='color:red;' onclick='event.preventDefault(); $(this).parent().hide();'>x</button>");
+		$("#phone").after(control);
               
-           });
+           });  
 
 //login form popup login-button click event
     $("#loginbtn").click(function() {

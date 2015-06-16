@@ -39,7 +39,7 @@ public interface BabblenetworkcountDAO {
      *gets the network names and 
      *and returns a hashmap with a count per network.
      */
-	public  HashMap<String, String> network(String uuid);
+	public  HashMap<String, Integer> network(String uuid);
 	
 
     /**

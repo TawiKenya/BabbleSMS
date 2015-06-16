@@ -50,7 +50,7 @@ public class TestnetworkcountDAO {
 		allnetworks.put("0DE968C9-7309-C481-58F7-AB6CDB1011EF","Airtel KE");
 		allnetworks.put("5C1D9939-136A-55DE-FD0E-61D8204E17C9","Orange KE");
 		allnetworks.put("B936DA83-8A45-E9F0-2EAE-D75F5C232E78","Safaricom KE");
-		allnetworks.put("fp769681d2e6-84f2-45ff-914c-522a3b076141","Safaricom UG");
+		//allnetworks.put("fp769681d2e6-84f2-45ff-914c-522a3b076141","Safaricom UG");
 				
 		assertEquals(netcount.allnetworks(), allnetworks);
 	}
@@ -68,15 +68,15 @@ public class TestnetworkcountDAO {
 	@Test
 	public void testnetwork(){	
 		
-		HashMap<String, String> netest=netcount.network(students);
+		HashMap<String, Integer> netest=netcount.network(students);
 		
-		HashMap<String,String> checknet = new HashMap<String,String>();
-		checknet.put("Yu KE", "1 contact(s)");
-		checknet.put("Safaricom KE", "27 contact(s)");
-		checknet.put("Orange KE", "31 contact(s)");
-		checknet.put("Safaricom UG","0 contact(s)");
-		checknet.put("Airtel KE", "20 contact(s)");
-		checknet.put("Total contacts","79 contact(s)");   
+		HashMap<String,Integer> checknet = new HashMap<>();
+		checknet.put("Yu KE", 0);
+		checknet.put("Safaricom KE", 30);
+		checknet.put("Orange KE", 31);
+		//checknet.put("Safaricom UG",0 );
+		checknet.put("Airtel KE", 17);
+		checknet.put("Total contacts",78);   
 		
 		assertEquals(netest,checknet);
 		
@@ -86,17 +86,18 @@ public class TestnetworkcountDAO {
 	@Test
 	public void testcontactspernetwork(){
 	List<Phone> phone=new ArrayList<Phone>();
-	phone=netcount.contactspernetwork(students, yu);
-		assertEquals(phone.size(),1);	
+	phone=netcount.contactspernetwork(management, orange);
+		assertEquals(phone.size(),9);	
 				
 	}
 	
 	/**counts all phone no.*/
+	
 	@Test
 	public void testallgrpcontacts(){
 		List<Phone> phone=new ArrayList<Phone>();
-		phone=netcount.allgrpcontacts(students);
-		   assertEquals(phone.size(),79);
+		phone=netcount.allgrpcontacts(teachers);
+		   assertEquals(phone.size(),5);
 	}
 	
 

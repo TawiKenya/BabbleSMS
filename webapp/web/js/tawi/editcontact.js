@@ -3,9 +3,9 @@
  * Licensed under the OSL-3.0 License:
  * http://opensource.org/licenses/OSL-3.0
  * 
- * This file is used for ...
+ * This file is used for popups
  * 
- * Author: Name <email>
+ * Author: Migwi Ndung'u  <migwi@tawi.mobi>
  */
 $(document).ready(function() {
 var groupname;
@@ -153,7 +153,10 @@ $("#close").click(function(event) {
  //add more email click
         $("#addemail").click(function(e) {
             e.preventDefault();
-            $("#mail").append("<div class='controls'> <input style='margin-top:5px;' class='input-xlarge focused'id='email' name='email[]' type='text'> </div>");
+            $("#mail").append("<div class='controls'> <input style='margin-top:5px;'"+
+             "class='input-xlarge focused'id='email' name='email[]' type='text'>"+
+            "<button style='color:red;' onclick='event.preventDefault(); $(this).parent().hide();'>x</button>"+
+            "</div>");
         });    
 	//settings edit password matcher called
 

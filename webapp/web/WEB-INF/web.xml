@@ -101,10 +101,10 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddTemplate</servlet-class>
     </servlet>     
         
-    <servlet>
+    <!--<servlet>
         <servlet-name>NetworkCount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Netcount</servlet-class>
-    </servlet>   
+    </servlet>-->   
     
     
     <servlet>
@@ -282,10 +282,10 @@
     </servlet-mapping>
 
     
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>NetworkCount</servlet-name>
         <url-pattern>/account/NetCount</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     
        <servlet-mapping>
         <servlet-name>addshortcode</servlet-name>

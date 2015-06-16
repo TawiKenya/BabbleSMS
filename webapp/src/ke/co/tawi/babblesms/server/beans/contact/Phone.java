@@ -99,32 +99,4 @@ public class Phone extends StorableBean {
 		builder.append("]");
 		return builder.toString();
 	}
-
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		
-		Phone phone;
-		
-		if(obj instanceof Phone) {
-			phone = (Phone) obj;
-			
-			return getUuid().equals(phone.getUuid());
-		}
-		
-		return false;
-	}
-
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return getUuid().hashCode();
-	}
 }

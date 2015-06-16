@@ -416,14 +416,14 @@ more
 <div class="control-group">
          <label class="control-label" for="name">Name</label>
              <div class="controls">
-         <input class="input-xlarge focused"  id="paragraph_1" type="text" name="name">
+         <input class="input-xlarge focused"  id="paragraph_1" type="text" name="name" required>
              </div>
 </div>
 
 <div class="control-group" id="phone">
         <label class="control-label" for="phone">Phone Number</label>
         <div class="controls" id="addphones1">
-        <input class="input-xlarge focused"  id="phone2"  name ="phone1[]" type="text">
+        <input class="input-xlarge focused"  id="phone2"  name ="phone1[]" type="text" required>
         <button id='addphns'>+</button>
         <select name="network[]" class="network" id="addphones">
 
@@ -444,7 +444,7 @@ more
 <div class="control-group" id="mail">
 <label class="control-label" for="email">Email</label>
 <div class="controls" id = "addemails1">
-<input class="input-xlarge focused"id="email" name="email[]" type="text" value="">
+<input class="input-xlarge focused"id="email" name="email[]" type="text" value="" required>
 <button id="addemail">+</button>
 </div>
 </div>
@@ -453,7 +453,7 @@ more
 <div class="control-group">
 <label class="control-label">Description</label>
 <div class="controls">
-<textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" ></textarea>
+<textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" required></textarea>
 </div>  
 </div>
 

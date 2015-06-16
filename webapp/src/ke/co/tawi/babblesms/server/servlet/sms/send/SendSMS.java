@@ -23,13 +23,11 @@ import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.beans.account.Account;
-
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
-
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
@@ -105,6 +103,7 @@ public class SendSMS extends HttpServlet {
 	 * 
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException {
 		

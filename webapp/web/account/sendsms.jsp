@@ -27,7 +27,6 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
-<%@page import="ke.co.tawi.babblesms.server.servlet.accountmngmt.Netcount"%>
 
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
@@ -268,8 +267,7 @@
                                                         <td class="center" >
                                                         <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
 
-                                                        <a class ="alink" href="#"  data-toggle="modal" data-target="#groupcheck" title="click to view details"
-                                                         name="<%=account.getUuid()%>" address="NetCount" ><%=code.getName()%></a>
+                                                        <a class ="alink" href="#"  data-toggle="modal" data-target="#groupcheck" title="click to view details" name="<%=account.getUuid()%>" ><%=code.getName()%></a>
                                                         </td>
                                                     </tr>
                                                     

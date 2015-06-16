@@ -128,14 +128,14 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Name</label >
                         <div class="controls">
-                            <input class="input-xlarge focused"  id="name" id="name" type="text" name="name">
+                            <input class="input-xlarge focused"  id="name" id="name" type="text" name="name" required>
                         </div>
                     </div>
 
                     <div class="control-group" id="phone">
                         <label class="control-label" for="phone">Phone Number</label>
                         <div class="controls" id="addphones1">
-                            <input class="input-xlarge focused"  id="number" name="phones" type="text" onkeypress='return validateQty(event);' >
+                            <input class="input-xlarge focused"  id="number" name="phones" type="text" onkeypress='return validateQty(event);' required>
                             <button id='addphns'>+</button>
                             
                             <select name="networks" class="network" id="addphones">
@@ -161,14 +161,13 @@
 		<div class="control-group">
                     <label class="control-label">Description</label>
                     <div class="controls">
-                        <textarea rows="3" cols="5" class="textarea" name="description" placeholder="Add description here..."></textarea>
+                        <textarea rows="3" cols="5" class="textarea" name="description" placeholder="Add description here..." required></textarea>
                     </div>	
-		</div>
-                <br/>
-                    
-
+		</div>                
         <!-- Group table starts here-->
-        <div id="tableselect">
+        <div class="control-group">
+        <label class="control-label">Groups</label>
+        <div id="tableselect11" class="controls" >
             <table id="groupsel" class="table table-striped table-bordered">
             <%
                 if (contactsgrpList != null) {
@@ -186,9 +185,9 @@
             %>
             </table>
         </div>
+        </div>
         <!-- Group table ends here-->
 
-<br/><br/><br/><br/><br/>
 <div class="form-actions">
 
 <div id="savecancelButtons">
@@ -211,13 +210,7 @@
                 %>  
             </h3>
             <p>Upload CSV file with format <code>name, phone, network</code></p>
-            <!--
-            <c:set var="uploadErrStr" value="${requestScope[SessionConstants.ADMIN_UPLOAD_FILE_ERROR_KEY]}" />  <%--Access session variables using constants as keys--%>
-            <c:set var="uploadSuccessStr" value="${requestScope[SessionConstants.ADMIN_UPLOAD_FILE_SUCCESS_KEY]}"/>
-            <c:if test="${!empty uploadErrStr}">
-                <p class="error">${uploadErrStr}</p> 
-                <c:set var="uploadErrStr" value=""/>
-            </c:if>-->
+            
             
             <form class="form-horizontal" method="POST" action="uploadContacts" name="uploadContacts" enctype="multipart/form-data">
                 <fieldset>
@@ -312,6 +305,11 @@
                 $(".network").append(data);
             });//ajax call ends here
         });
+
+        $("#deleteclone").click(function(e){
+        e.preventDefault();
+        $(this).parent().hide();
+     });
 
     });
 

@@ -92,13 +92,7 @@
         <![endif]-->
 
         <!-- The fav icon -->
-        <link rel="shortcut icon" href="img/favicon.ico">
-
-       <script type="text/javascript">
-            $(document).ready(function() {
-                $('#contactgrp').dataTable();
-            } );        
-        </script>
+        <link rel="shortcut icon" href="img/favicon.ico">       
 
         <script>
         $(document).ready(function() {

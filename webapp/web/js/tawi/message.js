@@ -16,8 +16,7 @@ $(document).ready(function(){
        //responds if element 'a' in class 'alink' is clicked
   $('a.alink').click(function(){  
 
-   var Accuuid = $(this).attr('name');
-   var address = $(this).attr('address');
+   var Accuuid = $(this).attr('name');  
 
        jsson=$(this).text(); 
    
@@ -28,8 +27,8 @@ $(document).ready(function(){
    //if response has not been cached do this..... 
   if(response===null){ 
 
-  var data = "uuid=" + escape(Accuuid);
-    console.log(data);
+  var data = "accountuuid=" + escape(Accuuid);
+    //console.log(data);
 
      //depending on a users browser a request object is created
      function getRequestObject() {
@@ -51,7 +50,7 @@ $(document).ready(function(){
     
       var request=getRequestObject();
       request.onreadystatechange =function() { handleResponse(request); };
-       request.open("POST", address, true);
+       request.open("POST", "getGroups", true);
        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
        request.send(data); 
  }
@@ -62,11 +61,11 @@ else{
      var obj = JSON.parse(response); 
     //console.log(obj);             
       var $tablelem = $('<table id="displaycontacts" class="table table-striped table-bordered">'+
-                  '<tr><td width="50%">'+saf+'</td><td width="50%">'+obj[jsson][saf]+'</td></tr>'+ 
-                  '<tr><td width="50%">'+orange+'</td><td width="50%">'+obj[jsson][orange]+'</td></tr>'+  
-                  '<tr><td width="50%">'+yu+'</td><td width="50%">'+obj[jsson][yu]+'</td></tr>'+  
-                  '<tr><td width="50%">'+airtel+'</td><td width="50%">'+obj[jsson][airtel]+'</td></tr>'+  
-                  '<tr><td width="50%">'+total+'</td><td width="50%">'+obj[jsson][total]+'</td></tr>'+          
+                  '<tr><td width="50%">'+saf+'</td><td width="50%">'+obj[jsson][saf]+' contact(s)</td></tr>'+ 
+                  '<tr><td width="50%">'+orange+'</td><td width="50%">'+obj[jsson][orange]+' contact(s)</td></tr>'+  
+                  '<tr><td width="50%">'+yu+'</td><td width="50%">'+obj[jsson][yu]+' contact(s)</td></tr>'+  
+                  '<tr><td width="50%">'+airtel+'</td><td width="50%">'+obj[jsson][airtel]+' contact(s)</td></tr>'+  
+                  '<tr><td width="50%">'+total+'</td><td width="50%">'+obj[jsson][total]+' contact(s)</td></tr>'+          
                   '</table>');
 
    $scroll.show();
@@ -91,11 +90,11 @@ function handleResponse(request) {
                  var obj = JSON.parse(response);
                  //console.log(obj);
                      var $tablelem = $('<table id="displaycontacts" class="table table-striped table-bordered">'+
-                  '<tr><td width="50%">'+saf+'</td><td width="50%">'+obj[jsson][saf]+'</td></tr>'+ 
-                  '<tr><td width="50%">'+orange+'</td><td width="50%">'+obj[jsson][orange]+'</td></tr>'+  
-                  '<tr><td width="50%">'+yu+'</td><td width="50%">'+obj[jsson][yu]+'</td></tr>'+  
-                  '<tr><td width="50%">'+airtel+'</td><td width="50%">'+obj[jsson][airtel]+'</td></tr>'+  
-                  '<tr><td width="50%">'+total+'</td><td width="50%">'+obj[jsson][total]+'</td></tr>'+          
+                  '<tr><td width="50%">'+saf+'</td><td width="50%">'+obj[jsson][saf]+' contact(s)</td></tr>'+ 
+                  '<tr><td width="50%">'+orange+'</td><td width="50%">'+obj[jsson][orange]+' contact(s)</td></tr>'+  
+                  '<tr><td width="50%">'+yu+'</td><td width="50%">'+obj[jsson][yu]+' contact(s)</td></tr>'+  
+                  '<tr><td width="50%">'+airtel+'</td><td width="50%">'+obj[jsson][airtel]+' contact(s)</td></tr>'+  
+                  '<tr><td width="50%">'+total+'</td><td width="50%">'+obj[jsson][total]+' contact(s)</td></tr>'+          
                   '</table>');
 
                   $scroll.show();

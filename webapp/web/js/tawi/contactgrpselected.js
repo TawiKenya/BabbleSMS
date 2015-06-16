@@ -3,7 +3,7 @@ function Chromecheck(){
 	$.browser.chrome = /chrom(e|ium)/.test(navigator.userAgent.toLowerCase());
   if($.browser.chrome){
      executevent();
-	}
+	    }
   }
 
 
@@ -12,28 +12,16 @@ $(document).ready(function(){
 		executevent();
 		}));
 
-		$('.nwk').on('click',(function(){
-		executevent();
-	}));
+   executevent();
 });
 
 function executevent(){
-	var grpselect=$('.groupselect option:selected').val();
-		var nwkselect=$('.networkselect option:selected').val();
+	var grpselect=$('.groupselect option:selected').val();		
 		var grpname=$('.groupselect option:selected').attr('name');
 		var nwkname=$('.networkselect option:selected').attr('name');
-		$('#header-display').html("<h3>Displaying "+grpname+" contacts in "+nwkname+"</h3>");
-		typenetcheck(grpselect,nwkselect);
+		$('#header-display').html("<h3>Displaying "+grpname+" contacts </h3>");
+    sendRequest("allnetworks.jsp?grp="+grpselect);		
 }
-
-function typenetcheck(grpselect,nwkselect){
-	if(nwkselect==="allnetworks"){
-	  sendRequest("allnetworks.jsp?grp="+grpselect);		
-	}
-	 else {
-	  sendRequest("selectednetwork.jsp?grp="+grpselect +"&amp;nwk="+nwkselect);	 	
-	}
-	 }
 
 //make ajax call to various files
 function sendRequest(str){         

@@ -102,7 +102,7 @@
 <div>
     <ul class="breadcrumb">
         <li>
-            <a href="index.jsp">Home</a> <span class="divider">/</span>
+            <a href="index.jsp">Home</a> <span class="divider">/GroupContacts</span>
         </li>
         <li>
             View Contacts per group 
@@ -121,7 +121,8 @@
         </div>
         <div class="box-content">
        
-<div class="controls"> <h4>Choose a group:&nbsp;             
+<div class="controls"> 
+          <h4>Choose a group:&nbsp;             
             <select class="groupselect" onclick="Chromecheck()">
                  <% if (contactsgrpList != null) {                        
                     out.println("<td>");
@@ -132,51 +133,12 @@
                  <option >No groups available</option>
                  <% } %>                          
                            
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      Choose a network:&nbsp;
-         <select class="networkselect" onclick="Chromecheck()">
-                <option class="nwk"  value="allnetworks" name="All Networks">All Networks</option>
-                   <%                   
-                      int count2 = 1;
-                   if (networkList != null) {
-                  for (Network netwk : networkList) {
-                     %>
-             <option  class="nwk" value="<%= netwk.getUuid()%>" name="<%= netwk.getName()%>"><%= netwk.getName()%></option>
-                     <%
-                  count2++;
-                       }
-                     }
-               %>
-          </select></h4>
-                        <div id="header-display"></div>
-                        <table class="table table-striped table-bordered" id="contactgrp">                        
-                        <thead > 
-                           <tr>
-                             <td width="10%">*</td>
-                             <td width="50%"><a>Contact Name/Network</a></td>
-                             <td width="40%"><a>Total contact count/Phone No.</a></td>
-                          </tr>
-                        </thead>
-                        <tbody >
-                           <%  int i=0;                           
-                             if (grpList != null) {
-                             
-                            for(Map.Entry fone: grpList.entrySet()){
-                              i++;
-                              %>
-                          <tr>
-                             <td width="10%"><%=i%></td>
-                             <td width="50%"><%=fone.getKey()%></td>
-                             <td width="40%"><%=fone.getValue()%></td>
-                          </tr>               
-                            <%}
-                            }                       
-
-                        else {%> 
-                        
-                       <% } %>  
-                        </tbody>
-                        </table>                       
+            </select>
+           
+          </h4>
+        <div id="header-display"></div>
+                <table class="table table-striped table-bordered" id="contactgrp">                        
+                </table>                       
       </div>
 
         </div>

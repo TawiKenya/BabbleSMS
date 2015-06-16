@@ -54,19 +54,6 @@
     final int PAGESIZE = 15;  
     int contactCount =1; 
 
-    /** The following is for session management.    
-    if (session == null) {
-        response.sendRedirect("../index.jsp");
-    }
-
-    String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
-    if (StringUtils.isEmpty(username)) {
-        response.sendRedirect("../index.jsp");
-    }
-
-    session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
-    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
-    **/
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
     Cache contactsCache = mgr.getCache(CacheVariables.CACHE_CONTACTS_BY_UUID);
@@ -77,14 +64,13 @@
     //EmailDAO emailDAO = EmailDAO.getInstance();
     //ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
     //GroupDAO gDAO = GroupDAO.getInstance();
-    //ContactDAO cdao = ContactDAO.getInstance();
+     ContactDAO cdao = ContactDAO.getInstance();
 
     networkcountDAO ncDAO= networkcountDAO.getInstance();
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
-    HashMap<String, String> contactHash = new HashMap<String, String>();
-   //HashMap<String, Email> emailHash = new HashMap<String, Email>();
+    HashMap<String, String> contactHash = new HashMap<String, String>();  
 
     String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
     Account account = new Account();
@@ -96,9 +82,10 @@
     
 
     Network network;
-    Contact contact;
-    //Phone phone;
+    Contact contact;    
     Email email;
+
+    String contactuuid;
 
     List<Phone> phoneList = new ArrayList<Phone>();
     List<Network> networkList = new ArrayList<Network>();
@@ -111,7 +98,7 @@
      //GroupDAO gDAO=new GroupDAO();
      ///contactsgrpList = gDAO.getGroups(account); 
 
-    /**List keys;
+    List keys;
      
     keys = networksCache.getKeys();
     for (Object key : keys) {
@@ -121,28 +108,21 @@
         networkList.add(network);
     }
 
-    List key2;
+
+
+    /**List key2;
     key2=contactsCache.getKeys();
     for(Object key:key2){
       element=contactsCache.get(key);
       contact =(Contact)element.getObjectValue();
       contactHash.put(contact.getUuid(),contact.getName());
     } */
-
+         Contact contacts= new Contact();
     
-           String grpuuid=request.getParameter("grp"); 
-           
-      /**if(grpuuid==null){
-           response.sendRedirect("../account/contact.jsp");       
-       }else{*/
+        String grpuuid=request.getParameter("grp"); 
+      
          phoneList=ncDAO.allgrpcontacts(grpuuid);
-         //phoneList=ncDAO.allgrpcontacts("9bef62f6-e682-4efd-98e9-ca41fa4ef993");    
-      /** }*/
-
-        
-
- 
-    // end else
+         // end else
 %>
  
 <table class="table table-striped table-bordered" id="contactgrp"> 
@@ -158,15 +138,19 @@
                  <% 
                  if(phoneList!=null){
 
-                 for (Phone phone:phoneList) {                
+                 for (Phone phone:phoneList) { 
+
+                contactuuid=phone.getContactUuid();
+
+                contacts = cdao.getContact(contactuuid);               
          %>
          <tr>
              
-             <td width="5%"> <%=contactCount%> </td>
+            <td width="5%"> <%=contactCount%> </td>             
 
-            <td class="center"> <a href="#"> <%=phone.getContactUuid()%> </a> </td> 
+            <td class="center"> <a href="#"><%=contacts.getName()%></a></td>             
 
-            <td class="center">  <%=phone.getPhonenumber()%> <%=phone.getNetworkuuid()%> </td>  
+            <td class="center">  <%=phone.getPhonenumber()%> (<%=networkHash.get(phone.getNetworkuuid())%>) </td>  
   
             <td style="display:none"> <%=phone.getStatusuuid()%> </td>
 
@@ -177,6 +161,7 @@
 
          <%         
                      contactCount++;
+                     contacts=null;
                  }
             }       
         %>
