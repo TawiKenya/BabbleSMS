@@ -217,6 +217,7 @@ A list of all SMS that have been sent from the system to Contacts.
 - Network UUID references Network
 - Messagestatus UUID references MessageStatus
 - Sender UUID references Account (UUID)
+- Phone UUID references Phone (UUID)
 
 
 -----------------------

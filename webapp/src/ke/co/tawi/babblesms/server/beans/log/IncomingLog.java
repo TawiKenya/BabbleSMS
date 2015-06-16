@@ -48,6 +48,8 @@ public class IncomingLog extends Log {
 		builder.append(getDestination());
 		builder.append(", getLogTime()=");
 		builder.append(getLogTime());
+		builder.append(", getNetworkUuid()=");
+		builder.append(getNetworkUuid());
 		builder.append("]");
 		return builder.toString();
 	}

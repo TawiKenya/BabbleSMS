@@ -21,6 +21,7 @@ import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.network.Country;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
+
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
@@ -31,6 +32,8 @@ import ke.co.tawi.babblesms.server.persistence.network.CountryDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 import ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO;
 import ke.co.tawi.babblesms.server.persistence.status.StatusDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
+
 import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 
 import java.io.File;
@@ -73,7 +76,8 @@ public class CacheInit extends HttpServlet {
     protected MessageStatusDAO msgDAO;
     protected MessageTemplateDAO msgtDAO;
     protected CountryDAO countryDAO;
-
+    protected ContactDAO contactDAO;
+    
     private CacheManager cacheManager;
     
     private SizeOfPolicyConfiguration sizeOfPolicyConfiguration;
@@ -98,8 +102,9 @@ public class CacheInit extends HttpServlet {
         maskDAO = MaskDAO.getInstance();
         msgDAO = MessageStatusDAO.getInstance();
         msgtDAO = MessageTemplateDAO.getInstance();
-        countryDAO=CountryDAO.getInstance();
-
+        countryDAO = CountryDAO.getInstance();
+        contactDAO = ContactDAO.getInstance();
+        
         sizeOfPolicyConfiguration = new SizeOfPolicyConfiguration();
         sizeOfPolicyConfiguration.setMaxDepthExceededBehavior("abort");
 
@@ -128,6 +133,13 @@ public class CacheInit extends HttpServlet {
 
         objList = accountDAO.getAllAccounts();
         initCacheByUuid(CacheVariables.CACHE_ACCOUNTS_BY_UUID, objList);
+        
+        List<? extends StorableBean> contactList;
+        for(Object obj : objList) {
+        	contactList = contactDAO.getContacts((Account)obj);
+        	initCacheByUuid(CacheVariables.CACHE_CONTACTS_BY_UUID, contactList);
+        }
+        
 
         objList = statusDAO.getAllStatus();
         initCacheByUuid(CacheVariables.CACHE_STATUS_BY_UUID, objList);
@@ -173,6 +185,7 @@ public class CacheInit extends HttpServlet {
      * @param objList
      */
     private void initCacheByUuid(String cacheName, List<? extends StorableBean> objList) {
+    	Cache cache = null;
         if (!cacheManager.cacheExists(cacheName)) {
             CacheConfiguration cacheConfig = new CacheConfiguration().sizeOfPolicy(sizeOfPolicyConfiguration);
             cacheConfig.setCopyOnRead(false); // Whether the Cache should copy elements it returns
@@ -180,17 +193,21 @@ public class CacheInit extends HttpServlet {
             cacheConfig.setEternal(true); // Sets whether elements are eternal.        
             cacheConfig.setName(cacheName); // Sets the name of the cache.
 
-            Cache cache = new Cache(cacheConfig);
+            cache = new Cache(cacheConfig);
             cacheManager.addCacheIfAbsent(cache);
             if (cache.getStatus() == Status.STATUS_UNINITIALISED) {
                 cache.initialise();
             }
-
-            for (StorableBean b : objList) {
-                cache.put(new Element(b.getUuid(), b)); // UUID as the key
-            }
+            
+        } else {
+        	CacheManager mgr = CacheManager.getInstance();
+        	cache = mgr.getCache(cacheName);
         }
-    }
+     
+        for (StorableBean b : objList) {
+            cache.put(new Element(b.getUuid(), b)); // UUID as the key            
+        }
+    }    
     
 
     /**

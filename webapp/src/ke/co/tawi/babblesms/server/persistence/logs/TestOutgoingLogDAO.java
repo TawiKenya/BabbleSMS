@@ -15,7 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.persistence.logs;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -29,6 +28,7 @@ import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 /**
  * Test for {@link OutgoingLogDAO}
@@ -51,7 +51,8 @@ public class TestOutgoingLogDAO {
     final String LOG_MESSAGE = "In the scheme of things",
             LOG_MESSAGE_NEW = "This a new SMS";
     final Date LOG_DATE = new Date(new Long("1412523201000"));  // 2014-10-05 18:33:21 (yyyy-MM-dd HH:mm:ss)
-
+    final String LOG_PHONEUUID = "e1d1143b-0dc1-4e30-aae8-edc98fb4db63";
+    
     final String NETWORKUUID1 = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78",
             NETWORKUUID2 = "5C1D9939-136A-55DE-FD0E-61D8204E17C9",
             NETWORKUUID3 = "0DE968C9-7309-C481-58F7-AB6CDB1011EF";
@@ -69,6 +70,7 @@ public class TestOutgoingLogDAO {
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingLog#getOutgoingLog(java.lang.String)}.
      */
+    @Ignore
     @Test
     public void testOutgoingLogString() {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -78,7 +80,7 @@ public class TestOutgoingLogDAO {
         assertEquals(log.getOrigin(), LOG_ORIGIN);
         assertEquals(log.getDestination(), LOG_DESTINATION);
         assertEquals(log.getMessage(), LOG_MESSAGE);
-        assertEquals(log.getNetworkuuid(), NETWORKUUID1);
+        assertEquals(log.getNetworkUuid(), NETWORKUUID1);
         assertEquals(log.getSender(), SENDERUUID);
         assertEquals(log.getMessagestatusuuid(), MESSAGESTATUSUUID);
         assertEquals(log.getLogTime(), LOG_DATE);
@@ -89,7 +91,7 @@ public class TestOutgoingLogDAO {
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO#getOutgoingLog(java.util.List, int, int)}.
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testGetOutgoingLogDListOfAccountIntInt() {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -119,21 +121,25 @@ public class TestOutgoingLogDAO {
         log.setOrigin(LOG_ORIGIN_NEW);
         log.setDestination(LOG_DESTINATION_NEW);
         log.setMessage(LOG_MESSAGE_NEW);
-        log.setNetworkuuid(NETWORKUUID2);
+        log.setNetworkUuid(NETWORKUUID2);
         log.setSender(SENDERUUID_NEW);
         log.setMessagestatusuuid(MESSAGESTATUSUUID_NEW);
-
+        log.setPhoneUuid(LOG_PHONEUUID);
+        
         assertTrue(storage.putOutgoingLog(log));
 
         log = storage.getOutgoingLog(LOG_UUID_NEW);
+                
         assertEquals(log.getUuid(), LOG_UUID_NEW);
         assertEquals(log.getOrigin(), LOG_ORIGIN_NEW);
         assertEquals(log.getDestination(), LOG_DESTINATION_NEW);
         assertEquals(log.getMessage(), LOG_MESSAGE_NEW);
-        assertEquals(log.getNetworkuuid(), NETWORKUUID2);
+        assertEquals(log.getNetworkUuid(), NETWORKUUID2);
         assertEquals(log.getSender(), SENDERUUID_NEW);
         assertEquals(log.getMessagestatusuuid(), MESSAGESTATUSUUID_NEW);
+        assertEquals(log.getPhoneUuid(), LOG_PHONEUUID);
     }
+    
     
     /**
      * Test method for

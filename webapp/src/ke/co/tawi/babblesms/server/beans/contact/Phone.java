@@ -26,8 +26,6 @@ import org.apache.commons.lang3.StringUtils;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class Phone extends StorableBean {
-
-	public static final String ACTIVE_STATUSUUID = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
 	
     private String phoneNumber;
     private String contactUuid;
@@ -98,5 +96,33 @@ public class Phone extends StorableBean {
 		builder.append(networkUuid);
 		builder.append("]");
 		return builder.toString();
+	}
+
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		
+		Phone phone;
+		
+		if(obj instanceof Phone) {
+			phone = (Phone) obj;
+			
+			return getUuid().equals(phone.getUuid());
+		}
+		
+		return false;
+	}
+
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
 	}
 }

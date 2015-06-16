@@ -269,11 +269,10 @@ CREATE TABLE outgoinglog (
     logTime timestamp with time zone DEFAULT now(),
     networkuuid text references network(uuid),
     sender text references account(uuid),
-    messagestatusuuid text references messagestatus(uuid)
+    messagestatusuuid text references messagestatus(uuid),
+    phoneuuid text references phone(uuid)
 );
-
--- import data from the CSV file for the outgoinglog table
-\COPY outgoinglog(uuid,origin,destination,message,networkuuid,sender,messagestatusuuid,logTime) FROM '/tmp/outgoinglog.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY outgoinglog(uuid,origin,destination,message,networkuuid,sender,messagestatusuuid,logTime,phoneuuid) FROM '/tmp/outgoinglog.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE outgoinglog OWNER TO babblesms;
 
 

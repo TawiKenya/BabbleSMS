@@ -184,7 +184,7 @@ public class SendSMS extends HttpServlet {
 		
 		
 		// Break down the phone list to go out to manageable sizes, each sublist
-		// being sent to the SMS Gateway in one call
+		// being sent to the SMS Gateway in one URL POST
 		List<List<Phone>> phonePartition = ListPartitioner.partition(validPhoneList, 10);
 		
 		
@@ -195,7 +195,7 @@ public class SendSMS extends HttpServlet {
 		for(List<Phone> list : phonePartition) {	
 			postThread = new PostSMS(smsGateway, list, smsSource, message, account, true);
 					
-			postThread.start(); 				
+			postThread.start(); 	
 		}
 			
 	}

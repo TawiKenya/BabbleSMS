@@ -20,18 +20,20 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.IncomingLog"%>
-<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentPage"%>
-<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentPaginator"%>
-<%@page import="ke.co.tawi.babblesms.server.session.SessionStatistics"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus"%>
+
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingLog"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus"%>
+
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentPage"%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentPaginator"%>
+<%@page import="ke.co.tawi.babblesms.server.session.SessionStatistics"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
@@ -160,7 +162,7 @@
         
     }
 
-    PhoneDAO phnDAO = PhoneDAO.getInstance();
+    PhoneDAO phoneDAO = PhoneDAO.getInstance();
     ContactDAO ctDAO = ContactDAO.getInstance();
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
@@ -258,34 +260,35 @@
                 <tbody>
                     <%
                         if (outgoingList != null) {
-                            for (OutgoingLog code : outgoingList) {
-                               String status = messageHash.get(code.getMessagestatusuuid());
-
-                    %>
-                    <tr width="5%">
-
-                        <td width="2%"><%=ussdCount%></td>
-                        
-                        <td class="center"><%=code.getMessage()%></td>
-                        <td class="center"><%=code.getOrigin()%> </td>
-                        <%
-                            /*if (phnDAO.getPhones(code.getDestination()) != null) {
+                            Contact contact = new Contact();
+                            Phone phone;
+                            for (OutgoingLog log : outgoingList) {
                                
-                                List<Phone> phoneList = phnDAO.getPhones(code.getDestination());
-                                Phone phone = phoneList.get(0);
-                                 String contactuuid = phone.getContactUuid();
-				Contact contacts = ctDAO.getContact(contactuuid);
-				String contactname = contacts.getName();*/
+                    %>
+                            <tr width="5%">
+
+                                <td width="2%"><%=ussdCount%></td>
+
+                                <td class="center"><%= log.getMessage()%></td>
+                                <td class="center"><%= log.getOrigin()%> </td>
+                                <td class="center"><%= networkHash.get(log.getNetworkUuid()) %></td>
+                        <%                            
+                            phone = phoneDAO.getPhone(log.getPhoneUuid());
+                            if (phone != null) {
+                                
+                                if ((element = contactsCache.get(phone.getContactUuid() )) != null) {
+                                    contact = (Contact) element.getObjectValue();
+                                }
                         %>
-                        <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td>
+                                <td class="center"><%= contact.getName() %></td>
                         
-                        <% // } else {%>
-                        <td class="center"><%=code.getDestination()%></td>  
-                      <%//}%>
+                        <%  } else { %>
+                                <td class="center"><%= log.getDestination() %></td>  
+                        <% } %>
                         
-                        <td class="center"><%=status %></td>
-                        <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
-                        <td class="center"><%=code.getUuid() %></td>
+                        <td class="center"><%= messageHash.get(log.getMessagestatusuuid()) %></td>
+                        <td class="center"><%= dateFormatter.format(log.getLogTime()) %> </td>
+                        <td class="center"><%= log.getUuid() %></td>
                     </tr>
 
                     <%

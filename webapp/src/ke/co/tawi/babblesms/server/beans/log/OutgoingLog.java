@@ -27,15 +27,19 @@ public class OutgoingLog extends Log {
 
     private String messagestatusuuid;
     private String sender;
-    private String networkuuid;
+    private String phoneUuid;
     
 
+    /**
+     * 
+     */
     public OutgoingLog() {
         super();
         messagestatusuuid = "";
         sender = "";
-        networkuuid = "";
+        phoneUuid = "";
     }
+    
     
     public String getMessagestatusuuid() {
         return messagestatusuuid;
@@ -53,15 +57,24 @@ public class OutgoingLog extends Log {
         this.sender = StringUtils.trimToEmpty(sender);
     }
 
-    public String getNetworkuuid() {
-        return networkuuid;
-    }
-
-    public void setNetworkuuid(String networkuuid) {
-        this.networkuuid = StringUtils.trimToEmpty(networkuuid);
-    }
-
     
+
+    /**
+	 * @return the phoneUuid
+	 */
+	public String getPhoneUuid() {
+		return phoneUuid;
+	}
+
+
+	/**
+	 * @param phoneUuid the phoneUuid to set
+	 */
+	public void setPhoneUuid(String phoneUuid) {
+		this.phoneUuid = phoneUuid;
+	}
+
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -78,13 +91,18 @@ public class OutgoingLog extends Log {
 		builder.append(getDestination());
 		builder.append(", getLogTime()=");
 		builder.append(getLogTime());
+		builder.append(", getNetworkUuid()=");
+		builder.append(getNetworkUuid());
 		builder.append(", messagestatusuuid=");
 		builder.append(messagestatusuuid);
 		builder.append(", sender=");
 		builder.append(sender);
 		builder.append(", networkuuid=");
-		builder.append(networkuuid);
+		builder.append(getNetworkUuid());
+		builder.append(", phoneUuid=");
+		builder.append(phoneUuid);
 		builder.append("]");
 		return builder.toString();
 	}
+	
 }

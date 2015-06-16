@@ -246,11 +246,12 @@ public class PostSMS extends Thread {
             		outgoingLog.setOrigin(smsSource.getSource());
             		outgoingLog.setMessage(message);
             		outgoingLog.setDestination(phone.getPhonenumber());
-            		outgoingLog.setNetworkuuid(phone.getNetworkuuid());
+            		outgoingLog.setNetworkUuid(phone.getNetworkuuid());
             		outgoingLog.setLogTime(new Date());
             		outgoingLog.setMessagestatusuuid(MsgStatus.SENT);
             		outgoingLog.setSender(account.getUuid());
-            	                	    
+            		outgoingLog.setPhoneUuid(phone.getUuid());         
+            		
             		outgoingLogDAO.putOutgoingLog(outgoingLog);
             	}
 				
