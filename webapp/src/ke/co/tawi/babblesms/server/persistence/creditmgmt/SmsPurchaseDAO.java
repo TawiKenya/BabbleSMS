@@ -94,9 +94,47 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	 */
 	@Override
 	public SMSPurchase getPurchase(String uuid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		SMSPurchase purchase = null;
+		
+	
+		try(
+			Connection con = dbCredentials.getConnection();	
+			   PreparedStatement ps = con.prepareStatement("SELECT * FROM shortcodepurchase WHERE uuid =?");
+		       PreparedStatement ps2 = con.prepareStatement("SELECT * FROM maskpurchase WHERE uuid =?");	
+				){
+			
+	
+			             ps.setString(1, uuid);
+			             ps2.setString(1, uuid );
+			             try(
+			            		 ResultSet  rs1 = ps.executeQuery();			
+			            		 ResultSet  rs2 = ps2.executeQuery();
+			            		 ){
+			            	 if(rs1.next()){
+					        	   uuid = rs1.getString("uuid");
+					        if(uuid != null)	 {
+					        	purchase = beanProcessor.toBean(rs1, ShortcodePurchase.class);	
+					        }				   
+					           }else if(rs2.next()){
+					        	   uuid = rs2.getString("uuid");
+					        	   if(uuid != null)	 {
+					        	   purchase = beanProcessor.toBean(rs2, MaskPurchase.class);	   
+					           }
+					        	   }//end if
+					
+			            	 
+			             } //end second try
+			             
+		}//end first try
+			            
+		catch(SQLException e) {
+			logger.error("SQLException while trying to get Purchase by " + uuid);
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}
+		
+		
+		return purchase;
+	}//end get purchase
 
 	
 	/**

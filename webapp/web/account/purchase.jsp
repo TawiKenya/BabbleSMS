@@ -86,7 +86,7 @@
     MaskPurchase maskpurchase;
     Mask mask;
     Shortcode shortcode;
-   // Network network;
+    Network network;
     
                        //lis to hold  shortcode purchase details
     List <ShortcodePurchase> shortcodepurchaseList = new LinkedList<ShortcodePurchase>();
@@ -98,6 +98,11 @@
     HashMap<String, String> shortcodeHash = new HashMap<String, String>();
                  //newtwork hash, not yet implemented
     HashMap<String, String> networkHash = new HashMap<String, String>();
+    HashMap<String, String> networkHash2 = new HashMap<String, String>();
+    
+     HashMap<String, String> networkHash3 = new HashMap<String, String>();
+    HashMap<String, String> networkHash4 = new HashMap<String, String>();
+    
     
     
     List<SMSPurchase> purchaseList = smspurchaseDAO.getPurchases(account);	
@@ -135,10 +140,43 @@
             shortcodeHash.put(shortcode.getUuid(),shortcode.getCodenumber()   );
         }
     }
+      //for mask, returns networkuuid
+     keys = maskCache.getKeys();
+    for (Object key : keys) {
+        element = maskCache.get(key);
+        mask = (Mask) element.getObjectValue();
+        if (account.getUuid().equals(mask.getAccountuuid())) {
+            networkHash.put(mask.getUuid(),mask.getNetworkuuid()     );
+        }
+    }
+    //for mask, returns network name using networkHash above
+    keys = networksCache.getKeys();
+    for (Object key : keys) {
+        element = networksCache.get(key);
+        network = (Network) element.getObjectValue();
+        networkHash2.put(network.getUuid(), network.getName());
+    }
 
-    
-    
-    
+
+  //for shortcode, returns networkuuid
+      keys = shortcodesCache.getKeys();
+    for (Object key : keys) {
+        element = shortcodesCache.get(key);
+        shortcode = (Shortcode) element.getObjectValue();
+       if (account.getUuid().equals(shortcode.getAccountuuid())) {
+            networkHash3.put(shortcode.getUuid(),shortcode.getNetworkuuid()     );
+        }
+    }
+    //for shortcode, returns network name using networkHash3 above
+    keys = networksCache.getKeys();
+    for (Object key : keys) {
+        element = networksCache.get(key);
+        network = (Network) element.getObjectValue();
+        networkHash4.put(network.getUuid(), network.getName());
+    }
+
+
+
    
    //date format
     SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
@@ -188,7 +226,12 @@
                 </thead> 
                 
                 <tbody>
-                    <%                        
+                
+              
+                
+                
+                    <%  
+                                         
                         int count = 1;
                         if (maskpurchaseList != null) {
                                  for(MaskPurchase msk : maskpurchaseList) {
@@ -199,7 +242,7 @@
                                     <td class="center"><%=msk.getCount()%></td>  
                                      <td class="center"><%=msk.getPurchaseDate()%></td>  
                                 <td class="center"><%=maskHash.get( msk.getMaskuuid()  )%></td>
-                                
+               <td class="center"><%=networkHash2.get(networkHash.get( msk.getMaskuuid()))%></td>        
                                 </tr>
 
                     <%
@@ -248,7 +291,7 @@
                                    <td class="center"><%=code.getCount()%></td> 
                                     <td class="center"><%=code.getPurchaseDate()%></td> 
                                  <td class="center"><%=shortcodeHash.get(code.getShortcodeuuid()  )%></td>
-                     
+                <td class="center"><%=networkHash4.get(networkHash3.get(code.getShortcodeuuid()))%></td>        
                                 </tr>
 
                     <%
