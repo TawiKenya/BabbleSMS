@@ -127,16 +127,20 @@
 <script>
           function showuser(str){ 
                var xreq;
-               /*if(str==""){
-                       document.getElementById("showtext").innerHTML="";
-                       return;
-                         }*/
-               if(window.XMLHttpRequest){
-                        xreq=new XMLHttpRequest();
-                }
-               else{
-               xreq=new ActiveXObject("Microsoft.XMLHTTP");
-                 }
+               if (window.XMLHttpRequest) {
+             xreq=new XMLHttpRequest();//for modern browsers, i.e. Opera,Mozilla, chrome e.t.c.
+             } 
+
+             else if (window.ActiveXObject) {
+               xreq=new ActiveXObject("Microsoft.XMLHTTP"); //for internet explorer
+             } 
+             else if(window.createRequest){             
+              xreq=window.createRequest();// for crystal browser
+             }
+             else {
+             xreq=null; 
+             alert("Your current browser failed, try Mozilla or chrome browsers");
+             }
               xreq.onreadystatechange=function (){
 
               if((xreq.readyState==4) && (xreq.status==200)){

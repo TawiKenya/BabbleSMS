@@ -1,7 +1,14 @@
+/*
+  Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
+  Licensed under the OSL-3.0 License:
+  http://opensource.org/licenses/OSL-3.0
+
+  Author: Migwi Ndung'u  <migwi@tawi.mobi>
+*/
 $(document).ready(function(){
 
   //"Orange KE":"2 contact(s)","Yu KE":"0 contact(s)","Safaricom KE":"1 contact(s)","Airtel KE":"2 contact(s)","Total contacts":"5 contact(s)"
-  var response = null;
+  var response=null;
 
   var saf = "Safaricom KE";
   var orange = "Orange KE";

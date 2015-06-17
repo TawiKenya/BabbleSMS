@@ -62,6 +62,7 @@
 <script type="text/javascript" src="../js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="../js/tawi/message.js"></script>
 <script type='text/javascript' src='../js/tawi/credittablejavascript.js'></script>
+<script type='text/javascript' src="../js/tawi/composepagejavascript.js"></script>
 <script type="text/javascript" src="../js/jquery/jquery.tokenize.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
 
@@ -253,57 +254,34 @@
                                 <div class="tablets" ><div class="tablets"> 
                                 </div>
                                     <!--<p>&nbsp;&nbsp;&nbsp;</p>-->
-                                    <div id="scrolltable">
-                                    <table id="scroll" class="table table-striped table-bordered">                                                                                
+                                <div id="scrolltable">
+                                <table id="scroll" class="table table-striped table-bordered">                                                                                
                                             
-                                        <tbody id = "resulttable">
+                                 <tbody id = "resulttable">
 
-                                            <%
-                                                if (contactsgrpList != null) {
-                                                    for (Group code : contactsgrpList) {
-                                            %>
+                                 <%
+                                    if (contactsgrpList != null) {
+                                    for (Group code : contactsgrpList) {
+                                        %>
 
-                                                    <tr>
-                                                        <td class="center" >
-                                                        <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected"/>
+                                         <tr>
+                                             <td class="center" >
+                                             <input type="checkbox" id="remember" value="<%=code.getUuid()%>" name="groupselected" onclick="getcount(this)"/>
 
-                                                        <a class ="alink" href="#"  data-toggle="modal" data-target="#groupcheck" title="click to view details" name="<%=account.getUuid()%>" ><%=code.getName()%></a>
-                                                        </td>
-                                                    </tr>
+                                            <a class ="alink" href="#"  data-toggle="modal" data-target="#groupcheck" title="click to view details" name="<%=account.getUuid()%>" ><%=code.getName()%></a>
+                                            </td>
+                                         </tr>
                                                     
-                                                <%   
-
-
-                                                    }// end 'for (Group code : contactsgrpList)'
-                                                }// end 'if (contactsgrpList != null)' 
-                                            %>
-                                        </tbody>                                             
+                                     <% 
+                               }// end 'for (Group code : contactsgrpList)'
+                             }// end 'if (contactsgrpList != null)' 
+                         %>
+                            </tbody>                                             
                                     </table>
-                                </div>                               
-                                                                   
-                                   <!--<div id="groupsform">
-                                        <br/><br/><br/>
-                                        <button type="submit" id ="add1" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add >> </button><br/><br/>
-                                        <button type="submit" id = "remove2"> << Remove </button>
-
-                                         <input type="hidden" class="groupsadded" name="groupselected" /> 
-                                    </div>-->
-                                    
-                                   <!-- <table id="scroll1" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Selected Groups</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id = "resulttable">
-
-                                        </tbody>
-                                    </table>-->
-
+                                </div>                              
+                                   
                                 </div>      
-                            </div>
-            <!--</div>-->
-            
+                            </div>         
             
                         <div class="section control-group">
 
@@ -338,15 +316,6 @@
                                         %>
                                     </select>
 
-                                    
-                                   <!--<div class="tokenize-samples Tokenizer">
-                                        <ul class="TokensContainer">
-                                            <li class="TokenSearch">
-                                            <input size="5" >
-                                            </li>
-                                        </ul>
-                                        <ul class="Dropdown"></ul>
-                                    </div>-->
                                 </div>                                
                             </div>
 
@@ -360,7 +329,7 @@
                                     update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                                 }
                                 });
-                                    update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
+                                    //update_tokenize_result('#tokenize_simple', '#tokenize_result_simple');
                             </script>
 
                    </div>  

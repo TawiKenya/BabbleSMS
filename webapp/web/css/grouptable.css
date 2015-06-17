@@ -6,7 +6,7 @@
 #scrolltable{
     width: 200px;
     height: 150px;    
-    margin-top: 2%;
+    margin-top: 1%;
     margin-left: 15%;
     float: left;
     overflow-y: scroll;
@@ -15,7 +15,7 @@ text-align: left;
 #scrolltable21{
     width: 200px;
     height: 150px;    
-    margin-top: 2%;
+    margin-top: 1%;
     overflow-y: scroll;
 text-align: left;
 float: left;
@@ -31,7 +31,7 @@ float: left;
 #scrolledit {
     width: 200px;
     height: 150px;    
-    margin-top: 2%;
+    margin-top: 1%;
     margin-left: 15%;
     overflow-y: scroll;
 text-align: left;
