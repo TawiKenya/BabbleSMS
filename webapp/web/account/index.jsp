@@ -95,7 +95,7 @@
         </li>
     </ul>
 </div>
-<div class="sortable row-fluid">
+<div class="sortable row-fluid " id="set-margin">
   
     <!-- <div style="width:500px; height:300px;" id="mobile"/> -->
    <a data-rel="tooltip" title="6 new groups." class="well span3 top-block" href="inbox.jsp">

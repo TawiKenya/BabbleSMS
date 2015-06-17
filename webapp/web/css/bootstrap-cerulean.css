@@ -57,6 +57,9 @@ sup {
 sub {
   bottom: -0.25em;
 }
+#set-margin{
+  margin-top: 5%;
+}
 img {
   max-width: 100%;
   vertical-align: middle;
