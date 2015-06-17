@@ -181,7 +181,7 @@
     
     
     <servlet>
-        <servlet-name>callback</servlet-name>
+        <servlet-name>Callback</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.sms.callback.Callback</servlet-class>
     </servlet>
 
@@ -301,7 +301,7 @@
         <url-pattern>/addcredit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>callback</servlet-name>
+        <servlet-name>Callback</servlet-name>
         <url-pattern>/callback</url-pattern>
     </servlet-mapping>
 

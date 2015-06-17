@@ -18,63 +18,103 @@ package ke.co.tawi.babblesms.server.servlet.sms.callback;
 import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
+
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
+import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
+import java.util.HashMap;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 /**
- * a Servlet that recieves incoming SMS and insert into db
+ * A Servlet that receives notifications on Incoming SMS and DLR status change
+ * from the Tawi SMS Gateway and processes them.
+ * <p>
  *
- * @author Email:<josephk@tawi.mobi>Joseph Kimani
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class Callback extends HttpServlet {
     
     private CacheManager cacheManager;
 
+    private OutgoingLogDAO outgoingLogDAO;
     
+    private Map<String,String> dlrstatusMap; // A mapping between the SMS Gateway DLR status
+     										 // codes and the Message Status codes of BabbleSMS
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
-
     
     /**
-     * @param request servlet request
-     * @param response servlet response
+     * @param config
+     * @throws ServletException
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-        doPost(request, response);
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        
+        outgoingLogDAO = OutgoingLogDAO.getInstance();
+        
+        dlrstatusMap = new HashMap<>();
+        dlrstatusMap.put("ACCEPTED_FOR_DELIVERY", MsgStatus.SENT);
+        dlrstatusMap.put("DELIVERY_SUCCESS", MsgStatus.RECEIVED);
+        dlrstatusMap.put("DELIVERY_FAILURE", MsgStatus.FAILURE);
+        dlrstatusMap.put("SMSC_REJECT", MsgStatus.FAILURE);
+        dlrstatusMap.put("SMSC_SUBMIT", MsgStatus.IN_TRANSIT);        
     }
 
-    /**
-     
-     * @param request servlet request
-     * @param response servlet response
-     
+    
+
+    /**     
+     * @param request 
+     * @param response 
+     * @throws ServletException, IOException     
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        
+        String callbackType = request.getParameter("callbackType");
+        
+        switch(callbackType) {
+        
+        	case "status":	// A notification of an SMS Status change
+        		String messageId = request.getParameter("messageId");
+        		DateTimeFormatter timeFormatter = ISODateTimeFormat.dateTimeNoMillis();
+        		LocalDateTime datetime = 
+        				timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
+        		String status = request.getParameter("status");
+        		
+        		OutgoingLog log = outgoingLogDAO.getOutgoingLog(messageId);
+        		log.setLogTime(datetime.toDate());
+        		log.setMessagestatusuuid(dlrstatusMap.get(status));
+        		
+        		outgoingLogDAO.putOutgoingLog(log);
+        		
+        		break;
+        }
+        
         
         //get parameter values
-        if (request.getParameter("callbackType") != null) {
+        
             //if callbacktype is incomingSMS proceed
             if (request.getParameter("callbackType").equals("incomingSms")) {
                 
@@ -103,17 +143,8 @@ public class Callback extends HttpServlet {
                     
                    }
             }
-        }
+        
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    
 
 }
