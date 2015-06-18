@@ -22,7 +22,6 @@ import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
-
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 
 import java.io.IOException;
@@ -57,13 +56,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import org.apache.commons.validator.routines.UrlValidator;
-
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 
 /**
@@ -156,7 +155,7 @@ public class PostSMS extends Thread {
 		Map<String,String> params;
 		
 		if(urlValidator.isValid(smsGateway.getUrl())) {		
-			
+						
 			// Prepare the parameters to send
 			params = new HashMap<>();
 			
@@ -225,16 +224,19 @@ public class PostSMS extends Thread {
 			
             try {
             	String[] strTokens = StringUtils.split(EntityUtils.toString(responseEntity), '&');
-            	String tmpStr = "";
+            	String tmpStr = "", dateStr = "";
             	for(String str : strTokens) {
             		if(StringUtils.startsWith(str, "messageIds")) {
             			tmpStr = StringUtils.removeStart(str, "messageIds=");
+            		} else if(StringUtils.startsWith(str, "datetime")) {
+            			dateStr = StringUtils.removeStart(str, "datetime=");
             		}
             	}
 				
             	strTokens = StringUtils.split(tmpStr, ';');
             	String phoneStr, uuid;
-            	Phone phone;
+            	Phone phone;            	
+            	DateTimeFormatter timeFormatter = ISODateTimeFormat.dateTimeNoMillis();
             	
             	for(String str : strTokens) {
             		phoneStr = StringUtils.split(str, ':')[0];
@@ -246,11 +248,15 @@ public class PostSMS extends Thread {
             		outgoingLog.setOrigin(smsSource.getSource());
             		outgoingLog.setMessage(message);
             		outgoingLog.setDestination(phone.getPhonenumber());
-            		outgoingLog.setNetworkUuid(phone.getNetworkuuid());
-            		outgoingLog.setLogTime(new Date());
+            		outgoingLog.setNetworkUuid(phone.getNetworkuuid());            		
             		outgoingLog.setMessagestatusuuid(MsgStatus.SENT);
             		outgoingLog.setSender(account.getUuid());
             		outgoingLog.setPhoneUuid(phone.getUuid());         
+            		
+            		// Set the date of the OutgoingLog to match the SMS Gateway time
+            		
+            		LocalDateTime datetime = timeFormatter.parseLocalDateTime(dateStr);
+            		outgoingLog.setLogTime(datetime.toDate());
             		
             		outgoingLogDAO.putOutgoingLog(outgoingLog);
             	}

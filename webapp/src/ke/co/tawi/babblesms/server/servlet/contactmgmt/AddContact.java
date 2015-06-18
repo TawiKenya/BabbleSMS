@@ -58,7 +58,7 @@ public class AddContact extends HttpServlet {
 	final String ADD_SUCCESS = "Contact added successfully.";
 	final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
 	
-	private Cache accountsCache;
+	private Cache accountsCache, contactCache;
 	
 	private EmailDAO emailDAO;
 	private PhoneDAO phoneDAO;
@@ -78,6 +78,7 @@ public class AddContact extends HttpServlet {
 		
 		CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+        contactCache = mgr.getCache(CacheVariables.CACHE_CONTACTS_BY_UUID);
         
 		emailDAO = EmailDAO.getInstance();
 		phoneDAO = PhoneDAO.getInstance();
@@ -188,9 +189,13 @@ public class AddContact extends HttpServlet {
 				}
 			}
 			
+			// Update the cache
+			contactCache.put(new Element(contact.getUuid(), contact)); // UUID as the key 			
 		}
 		
-		response.sendRedirect("addcontact.jsp");   
+		
+		response.sendRedirect("addcontact.jsp"); 		
+		
 	}
 	
 	
