@@ -161,7 +161,7 @@
 		<div class="control-group">
                     <label class="control-label">Description</label>
                     <div class="controls">
-                        <textarea rows="3" cols="5" class="textarea" name="description" placeholder="Add description here..." required></textarea>
+                        <textarea rows="3" cols="5" class="textarea" name="description" placeholder="Add description here..." ></textarea>
                     </div>	
 		</div>                
         <!-- Group table starts here-->

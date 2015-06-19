@@ -444,7 +444,7 @@ more
 <div class="control-group" id="mail">
 <label class="control-label" for="email">Email</label>
 <div class="controls" id = "addemails1">
-<input class="input-xlarge focused"id="email" name="email[]" type="text" value="" required>
+<input class="input-xlarge focused"id="email" name="email[]" type="text" value="" >
 <button id="addemail">+</button>
 </div>
 </div>
@@ -453,7 +453,7 @@ more
 <div class="control-group">
 <label class="control-label">Description</label>
 <div class="controls">
-<textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" required></textarea>
+<textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" ></textarea>
 </div>  
 </div>
 
