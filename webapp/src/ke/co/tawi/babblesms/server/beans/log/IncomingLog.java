@@ -23,14 +23,32 @@ package ke.co.tawi.babblesms.server.beans.log;
 */
 public class IncomingLog extends Log {
     
+	private String recipientUuid;
 
     /**
      * 
      */
     public IncomingLog() {
         super();
+        recipientUuid = "";
     }
 
+    
+    /**
+	 * @return the recipientUuid
+	 */
+	public String getRecipientUuid() {
+		return recipientUuid;
+	}
+
+
+	/**
+	 * @param recipientUuid the recipientUuid to set
+	 */
+	public void setRecipientUuid(String recipientUuid) {
+		this.recipientUuid = recipientUuid;
+	}	
+	
     
 	/**
 	 * @see java.lang.Object#toString()
@@ -50,7 +68,9 @@ public class IncomingLog extends Log {
 		builder.append(getLogTime());
 		builder.append(", getNetworkUuid()=");
 		builder.append(getNetworkUuid());
+		builder.append(", recipientUuid=");
+		builder.append(recipientUuid);
 		builder.append("]");
 		return builder.toString();
-	}
+	}	
 }

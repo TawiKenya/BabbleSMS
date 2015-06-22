@@ -19,7 +19,8 @@ import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
-
+import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
@@ -27,6 +28,8 @@ import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -34,10 +37,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
 import org.apache.commons.lang3.StringUtils;
-
 import org.apache.log4j.Logger;
-
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -63,6 +68,8 @@ public class Callback extends HttpServlet {
 	 										// be received from the SMS Gateway and the corresponding
     										// UUID in BabbleSMS
     
+    private List<Shortcode>  shortcodeList;
+    
     private Logger logger = Logger.getLogger(this.getClass());
     
     /**
@@ -87,6 +94,21 @@ public class Callback extends HttpServlet {
         networkMap = new HashMap<>();
         networkMap.put("safaricom_ke", Network.SAFARICOM_KE);
         networkMap.put("airtel_ke", Network.AIRTEL_KE);
+        
+        shortcodeList = new LinkedList<>();
+        
+        CacheManager mgr = CacheManager.getInstance();
+        Cache shortcodeCache = mgr.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID);
+        
+        List keys = shortcodeCache.getKeys();
+        
+        Element element; 
+        Shortcode shortcode;
+        for (Object key : keys) {
+            element = shortcodeCache.get(key);
+            shortcode = (Shortcode) element.getObjectValue();
+            shortcodeList.add(shortcode);
+        }
     }
 
     
@@ -100,7 +122,7 @@ public class Callback extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	DateTimeFormatter timeFormatter = ISODateTimeFormat.dateTimeNoMillis();
-        
+    	
         String callbackType = request.getParameter("callbackType");
         String messageId;
         LocalDateTime datetime;
@@ -150,6 +172,18 @@ public class Callback extends HttpServlet {
         		} else {
         			incomingLog.setOrigin(source);
         		}
+        		
+        		
+        		// Determine the account that it is destined for
+        		// This assumes that the same shortcode number cannot
+        		// be owned by multiple accounts
+        		for(Shortcode shortcode : shortcodeList) {
+        			if(shortcode.getCodenumber().equals(incomingLog.getDestination())) {
+        				incomingLog.setRecipientUuid(shortcode.getAccountuuid());
+        				break;
+        			}
+        		}
+        		
         		
         		logger.info("About to save " + incomingLog);
         		

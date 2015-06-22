@@ -84,6 +84,7 @@ public class CacheInit extends HttpServlet {
 
     private Logger logger = Logger.getLogger(this.getClass());
     
+    
     /**
      *
      * @param config
