@@ -63,7 +63,7 @@ public class Callback extends HttpServlet {
 	 										// be received from the SMS Gateway and the corresponding
     										// UUID in BabbleSMS
     
-    //private Logger logger = Logger.getLogger(this.getClass());
+    private Logger logger = Logger.getLogger(this.getClass());
     
     /**
      * @param config
@@ -150,6 +150,8 @@ public class Callback extends HttpServlet {
         		} else {
         			incomingLog.setOrigin(source);
         		}
+        		
+        		logger.info("About to save " + incomingLog);
         		
         		incomingLogDAO.putIncomingLog(incomingLog);
         		break;
