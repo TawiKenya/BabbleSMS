@@ -114,7 +114,7 @@ public class Callback extends HttpServlet {
         		break;
         		
         		
-        	case "incomingSMS":
+        	case "incomingSms":
         		logger.info("Have received incoming sms");
         		
         		String destination = request.getParameter("destination");
@@ -127,7 +127,7 @@ public class Callback extends HttpServlet {
         		logger.info("message is " + message);
         		
         		messageId = request.getParameter("messageId");
-        		System.out.println("messageId is " + message);
+        		logger.info("messageId is " + message);
         		
         		String network = request.getParameter("network");
         		logger.info("network is " + network);
@@ -141,7 +141,7 @@ public class Callback extends HttpServlet {
         
         //get parameter values
         
-            //if callbacktype is incomingSMS proceed
+            /*//if callbacktype is incomingSMS proceed
             if (request.getParameter("callbackType").equals("incomingSms")) {
                 
                 if (request.getParameter("destination") != null && request.getParameter("source") != null && request.getParameter("message") != null && request.getParameter("messageId") != null && request.getParameter("network") != null && request.getParameter("datetime") != null) {
@@ -168,7 +168,7 @@ public class Callback extends HttpServlet {
                     incomingLogDAO.putIncomingLog(incomingLog);
                     
                    }
-            }
+            }*/
         
     }
     
