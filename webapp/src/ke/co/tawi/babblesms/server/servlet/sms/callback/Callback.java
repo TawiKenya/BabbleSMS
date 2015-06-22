@@ -163,7 +163,7 @@ public class Callback extends HttpServlet {
         		
         		String phoneNum = "";
         		if(StringUtils.startsWith(source, "254")) {
-					phoneNum = "07" + StringUtils.substring(source, 3);
+					phoneNum = "07" + StringUtils.substring(source, 4);
 				}
         		
         		logger.info("phoneNum is " + phoneNum);
