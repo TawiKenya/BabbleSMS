@@ -177,7 +177,7 @@
                     <a href="inbox.jsp">MESSAGES</a>
                     <a href="contact.jsp">CONTACTS</a>
                     <a href="portfolio.jsp">REPORT</a>
-	                <a href="purchase.jsp">PURCHASE</a>  
+	               
                 </div>    
             </div>
 
@@ -194,12 +194,11 @@
                         <ul class="nav nav-tabs nav-stacked main-menu">
                             <!--menu to change depending on page requested-->
                             <li class="nav-header hidden-tablet">Message Board</li>
-                            
+                             <li><a class="ajax-link" href="portfolio.jsp"><i class="icon-globe"></i><span class="hidden-tablet">Balance</span></a></li>
+                            <li><a class="ajax-link" href="purchase.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Purchase History </span></a></li>
                             <li><a class="ajax-link" href="administrator.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Admin Notices</span></a></li>
-                            <li class="nav-header hidden-tablet">Portfolio</li>
-                            <li><a class="ajax-link" href="portfolio.jsp"><i class="icon-globe"></i><span class="hidden-tablet">Portfolio</span></a></li>
-                            <li><a class="ajax-link" href="purchase.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Credit </span></a></li>
-
+                           
+                            
                         </ul>
                         <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
                     </div><!--/.well -->

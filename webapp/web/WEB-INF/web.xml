@@ -325,12 +325,12 @@
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>
         <servlet-name>AdminLogin</servlet-name>
-        <url-pattern>/admin/adminLogin</url-pattern>
+        <url-pattern>/admin/Login</url-pattern>      
     </servlet-mapping>
     
     <servlet-mapping>
         <servlet-name>AdminLogout</servlet-name>
-        <url-pattern>/admin/adminLogout</url-pattern>
+        <url-pattern>/admin/Logout</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>

@@ -26,6 +26,7 @@
 
 <%@page import="org.jasypt.util.text.BasicTextEncryptor"%>
 
+
 <%
     String username = (String) session.getAttribute("username");
     if (username != null) {
@@ -33,9 +34,10 @@
     }
 
     BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-    // String ENCRYPT_PASSWORD = "Vuwachip2";
-    textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
-    //textEncryptor.setPassword(ENCRYPT_PASSWORD);
+   
+        String ENCRYPT_PASSWORD = "Vuwachip2";
+       //textEncryptor.setPassword(PropertiesConfig.getConfigValue(ENCRYPT_PASSWORD));
+       textEncryptor.setPassword(ENCRYPT_PASSWORD);
 
     final int CAPTCHA_LENGTH = 4;
     String captchaStr = RandomStringUtils.randomAlphabetic(CAPTCHA_LENGTH);
@@ -100,7 +102,7 @@
 
                 </div>
                     
-                <form class="form-horizontal" action="adminLogin" method="POST">
+                <form class="form-horizontal" action="Login" method="POST">
                     <fieldset>
                         <div class="input-prepend" title="Username" data-rel="tooltip">
                             <span class="add-on"><i class="icon-user"></i></span><input autofocus class="input-large span10" name="username" id="username" type="text" value="" />

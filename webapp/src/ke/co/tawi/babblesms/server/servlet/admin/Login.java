@@ -15,9 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.admin;
 
-import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -30,14 +27,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
+import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-
 import org.jasypt.util.text.BasicTextEncryptor;
+
 
 /**
  * Administrator account login servlet. 
@@ -48,16 +45,21 @@ import org.jasypt.util.text.BasicTextEncryptor;
 public class Login extends HttpServlet {
 
     
-    // Error message provided when incorrect captcha is submitted
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	// Error message provided when incorrect captcha is submitted
     final String ACCOUNT_SIGN_IN_BAD_CAPTCHA = "Sorry, the characters you entered did not "
             + "match those provided in the image. Please try again.";
     
     private BasicTextEncryptor textEncryptor;
     private String hiddenCaptchaStr = "";
     
-    private Cache accountsCache, statisticsCache, statisticsByUsernameCache,
+    /*private Cache accountsCache, statisticsCache, statisticsByUsernameCache,
             purchasesCache, balancesCache;
-    
+    */
           
     private Logger logger;
     
@@ -72,16 +74,11 @@ public class Login extends HttpServlet {
         super.init(config);
 
         textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
-
-        CacheManager mgr = CacheManager.getInstance();
-        //accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-        //statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_FOR_ALL_ACCOUNTS);
-        //statisticsByUsernameCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_USERNAME);
-
-        //urchasesCache = mgr.getCache(CacheVariables.CACHE_CLIENTPURCHASE_BY_ACCOUNTUUID);
-        //balancesCache = mgr.getCache(CacheVariables.CACHE_CLIENTBALANCE_BY_ACCOUNTUUID);
-
+       // textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD"));
+        String ENCRYPT_PASSWORD = "Vuwachip2";
+       textEncryptor.setPassword(ENCRYPT_PASSWORD);
+       // CacheManager mgr = CacheManager.getInstance();
+       
         logger = Logger.getLogger(this.getClass());
     }
 
@@ -96,11 +93,14 @@ public class Login extends HttpServlet {
            throws ServletException, IOException {
         HttpSession session = request.getSession(true);
 
+       
         String username = StringUtils.trimToEmpty(request.getParameter("username"));
         String password = StringUtils.trimToEmpty(request.getParameter("password"));
 
         hiddenCaptchaStr = request.getParameter("captchaHidden");
         String captchaAnswer = request.getParameter("captchaAnswer").trim();
+
+         
 
         if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
             session.setAttribute(SessionConstants.ADMIN_SIGN_IN_ERROR_KEY, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
