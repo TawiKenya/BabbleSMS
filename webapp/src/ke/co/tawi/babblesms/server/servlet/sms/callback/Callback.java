@@ -63,7 +63,7 @@ public class Callback extends HttpServlet {
 	 										// be received from the SMS Gateway and the corresponding
     										// UUID in BabbleSMS
     
-    private Logger logger = Logger.getLogger(this.getClass());
+    //private Logger logger = Logger.getLogger(this.getClass());
     
     /**
      * @param config
@@ -122,9 +122,7 @@ public class Callback extends HttpServlet {
         		break;
         		
         		
-        	case "incomingSms":
-        		logger.info("Have received incoming sms");        		
-        		        		        		
+        	case "incomingSms":        		
         		String network = request.getParameter("network").toLowerCase();        		
         		datetime = timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
         		
