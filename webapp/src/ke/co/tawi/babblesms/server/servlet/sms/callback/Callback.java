@@ -166,6 +166,8 @@ public class Callback extends HttpServlet {
 					phoneNum = "07" + StringUtils.substring(source, 3);
 				}
         		
+        		logger.info("phoneNum is " + phoneNum);
+        		
         		if(phoneDAO.getPhones(phoneNum).size() > 0) {
         			incomingLog.setOrigin(phoneNum);
         			
@@ -190,38 +192,6 @@ public class Callback extends HttpServlet {
         		incomingLogDAO.putIncomingLog(incomingLog);
         		break;
         }
-        
-        
-        //get parameter values
-        
-            /*//if callbacktype is incomingSMS proceed
-            if (request.getParameter("callbackType").equals("incomingSms")) {
-                
-                if (request.getParameter("destination") != null && request.getParameter("source") != null && request.getParameter("message") != null && request.getParameter("messageId") != null && request.getParameter("network") != null && request.getParameter("datetime") != null) {
-                    
-                    IncomingLog incomingLog = new IncomingLog();
-                    
-                    //get network uuid
-                    NetworkDAO networkDAO=NetworkDAO.getInstance();
-                    Network network=new Network();
-                    String [] networkname=request.getParameter("network").split(" ");
-                    
-                    network=networkDAO.getNetworkByName(networkname[0]);
-                    //get source uuid
-                    ShortcodeDAO shortcodeDAO = ShortcodeDAO.getInstance();
-                    Shortcode shortcode = new Shortcode();                    
-                    //shortcode = shortcodeDAO.getShortcodeBycodeNumber(request.getParameter("destination"),network.getUuid());
-                   
-                    incomingLog.setMessage(request.getParameter("message"));
-                    incomingLog.setOrigin(request.getParameter("source"));
-                    incomingLog.setDestination(shortcode.getUuid());
-                    
-                    
-                    //add incoming SMS.
-                    
-                    
-                   }
-            }*/
         
     }
     
