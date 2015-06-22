@@ -20,7 +20,6 @@ import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
-
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
@@ -38,6 +37,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -61,6 +61,7 @@ public class Callback extends HttpServlet {
     private Map<String,String> dlrstatusMap; // A mapping between the SMS Gateway DLR status
      										 // codes and the Message Status codes of BabbleSMS
     
+    private Logger logger = Logger.getLogger(this.getClass());
     
     /**
      * @param config
@@ -90,17 +91,18 @@ public class Callback extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+    	DateTimeFormatter timeFormatter = ISODateTimeFormat.dateTimeNoMillis();
         
         String callbackType = request.getParameter("callbackType");
+        String messageId;
+        LocalDateTime datetime;
         
         switch(callbackType) {
         
         	case "status":	// A notification of an SMS Status change
-        		String messageId = request.getParameter("messageId");
-        		DateTimeFormatter timeFormatter = ISODateTimeFormat.dateTimeNoMillis();
-        		LocalDateTime datetime = 
-        				timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
+        		messageId = request.getParameter("messageId");
+        		
+        		datetime = timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
         		String status = request.getParameter("status");
         		
         		OutgoingLog log = outgoingLogDAO.getOutgoingLog(messageId);
@@ -108,6 +110,30 @@ public class Callback extends HttpServlet {
         		log.setMessagestatusuuid(dlrstatusMap.get(status));
         		
         		outgoingLogDAO.putOutgoingLog(log);
+        		
+        		break;
+        		
+        		
+        	case "incomingSMS":
+        		logger.info("Have received incoming sms");
+        		
+        		String destination = request.getParameter("destination");
+        		logger.info("destination is " + destination);
+        		
+        		String source = request.getParameter("source");
+        		logger.info("source is " + source);
+        		
+        		String message = request.getParameter("message");
+        		logger.info("message is " + message);
+        		
+        		messageId = request.getParameter("messageId");
+        		System.out.println("messageId is " + message);
+        		
+        		String network = request.getParameter("network");
+        		logger.info("network is " + network);
+        		
+        		datetime = timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
+        		logger.info("datetime is " + datetime);
         		
         		break;
         }
