@@ -16,18 +16,15 @@
 package ke.co.tawi.babblesms.server.servlet.sms.callback;
 
 import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
-import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
+
 import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
-import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -37,13 +34,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.log4j.Logger;
+
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 /**
  * A Servlet that receives notifications on Incoming SMS and DLR status change
@@ -54,12 +52,16 @@ import net.sf.ehcache.Element;
  */
 public class Callback extends HttpServlet {
     
-    private CacheManager cacheManager;
-
     private OutgoingLogDAO outgoingLogDAO;
+    private IncomingLogDAO incomingLogDAO;
+    private PhoneDAO phoneDAO;
     
     private Map<String,String> dlrstatusMap; // A mapping between the SMS Gateway DLR status
      										 // codes and the Message Status codes of BabbleSMS
+    
+    private Map<String,String> networkMap; 	// A mapping between the Network parameters that can
+	 										// be received from the SMS Gateway and the corresponding
+    										// UUID in BabbleSMS
     
     private Logger logger = Logger.getLogger(this.getClass());
     
@@ -72,13 +74,19 @@ public class Callback extends HttpServlet {
         super.init(config);
         
         outgoingLogDAO = OutgoingLogDAO.getInstance();
+        incomingLogDAO = IncomingLogDAO.getInstance();
+        phoneDAO = PhoneDAO.getInstance();
         
         dlrstatusMap = new HashMap<>();
         dlrstatusMap.put("ACCEPTED_FOR_DELIVERY", MsgStatus.SENT);
         dlrstatusMap.put("DELIVERY_SUCCESS", MsgStatus.RECEIVED);
         dlrstatusMap.put("DELIVERY_FAILURE", MsgStatus.FAILURE);
         dlrstatusMap.put("SMSC_REJECT", MsgStatus.FAILURE);
-        dlrstatusMap.put("SMSC_SUBMIT", MsgStatus.IN_TRANSIT);        
+        dlrstatusMap.put("SMSC_SUBMIT", MsgStatus.IN_TRANSIT); 
+        
+        networkMap = new HashMap<>();
+        networkMap.put("safaricom_ke", Network.SAFARICOM_KE);
+        networkMap.put("airtel_ke", Network.AIRTEL_KE);
     }
 
     
@@ -115,26 +123,37 @@ public class Callback extends HttpServlet {
         		
         		
         	case "incomingSms":
-        		logger.info("Have received incoming sms");
-        		
-        		String destination = request.getParameter("destination");
-        		logger.info("destination is " + destination);
-        		
-        		String source = request.getParameter("source");
-        		logger.info("source is " + source);
-        		
-        		String message = request.getParameter("message");
-        		logger.info("message is " + message);
-        		
-        		messageId = request.getParameter("messageId");
-        		logger.info("messageId is " + message);
-        		
-        		String network = request.getParameter("network");
-        		logger.info("network is " + network);
-        		
+        		logger.info("Have received incoming sms");        		
+        		        		        		
+        		String network = request.getParameter("network").toLowerCase();        		
         		datetime = timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
-        		logger.info("datetime is " + datetime);
         		
+        		IncomingLog incomingLog = new IncomingLog();
+        		incomingLog.setDestination(request.getParameter("destination"));
+        		incomingLog.setUuid(request.getParameter("messageId"));
+        		incomingLog.setMessage(request.getParameter("message"));
+        		incomingLog.setLogTime(datetime.toDate());
+        		incomingLog.setNetworkUuid(networkMap.get(network));
+        		
+        		
+        		// The source saved in the address book may begin with "07"
+        		// but the one received for Kenya would begin with "254"
+        		// We have to reconcile the two
+        		String source = request.getParameter("source");
+        		
+        		String phoneNum = "";
+        		if(StringUtils.startsWith(source, "254")) {
+					phoneNum = "07" + StringUtils.substring(source, 3);
+				}
+        		
+        		if(phoneDAO.getPhones(phoneNum).size() > 0) {
+        			incomingLog.setOrigin(phoneNum);
+        			
+        		} else {
+        			incomingLog.setOrigin(source);
+        		}
+        		
+        		incomingLogDAO.putIncomingLog(incomingLog);
         		break;
         }
         
@@ -145,7 +164,7 @@ public class Callback extends HttpServlet {
             if (request.getParameter("callbackType").equals("incomingSms")) {
                 
                 if (request.getParameter("destination") != null && request.getParameter("source") != null && request.getParameter("message") != null && request.getParameter("messageId") != null && request.getParameter("network") != null && request.getParameter("datetime") != null) {
-                    IncomingLogDAO incomingLogDAO = IncomingLogDAO.getInstance();
+                    
                     IncomingLog incomingLog = new IncomingLog();
                     
                     //get network uuid
@@ -165,7 +184,7 @@ public class Callback extends HttpServlet {
                     
                     
                     //add incoming SMS.
-                    incomingLogDAO.putIncomingLog(incomingLog);
+                    
                     
                    }
             }*/
