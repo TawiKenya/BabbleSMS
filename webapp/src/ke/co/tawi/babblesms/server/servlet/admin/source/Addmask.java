@@ -45,7 +45,11 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Addmask extends HttpServlet {
 
-    final String ERROR_NO_MASKNAME = "Please provide a Mask Name.";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6081964120357956566L;
+	final String ERROR_NO_MASKNAME = "Please provide a Mask Name.";
     final String ERROR_NO_NETWORKNAME = "No Network selected.";
     final String ERROR_NO_ACCOUNTNAME = "No Account selected.";
         
@@ -131,19 +135,7 @@ public class Addmask extends HttpServlet {
         m.setMaskname(maskname);
         m.setNetworkuuid(networkuuid);
         m.setAccountuuid(accountuuid);
-        
-        int amount=0;
-        /*Credit c=new Credit();
-        c.setAccountuuid(accountuuid);
-        c.setSource(maskname);
-        c.setCredit(amount);
-
-
-        if(maskDAO.put(m)){
-           creditDAO.putCredit(c);
-         }*/
-
-        //m = maskDAO.getMaskByName(maskname);	// Ensures the mask is populated with the correct ID
+        maskDAO.put(m);
         updateMaskCache(m);
     }
 

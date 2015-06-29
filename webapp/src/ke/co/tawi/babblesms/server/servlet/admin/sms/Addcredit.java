@@ -79,11 +79,11 @@ public class Addcredit extends HttpServlet {
        String sourceuuid = StringUtils.trimToEmpty(request.getParameter("source")); 
        String  accountuuid = StringUtils.trimToEmpty(request.getParameter("user"));
       
-       System.out.println(sourceuuid);
-       System.out.println(accountuuid);
+      // System.out.println(sourceuuid);
+      // System.out.println(accountuuid);
        
        int count = Integer.parseInt(amount);
-       System.out.println(count);
+      // System.out.println(count);
         // No source provided
         if (StringUtils.isBlank(sourceuuid)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_CREDIT_ERROR_KEY, ERROR_INVALID_SOURCE);
@@ -116,11 +116,11 @@ public class Addcredit extends HttpServlet {
    	                  maskp.setPurchaseDate(new Date(new Long(Dates)));
    	                  maskp.setSourceUuid(maskuuid); 
    	                 smspurchaseDAO.put(maskp);
-   	             
-   	              System.out.println(maskuuid);
+   	              //success message here
+                    session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Credit updated successfully.");
+   	             // System.out.println(maskuuid);
                 	}
-                	  //success message here
-                    //session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Credit updated successfully.");
+                	 
                  }
                  //loop via shortcodes and check if the source is a shortcode
                 for(Shortcode code : shortcodeList)  {
@@ -131,11 +131,12 @@ public class Addcredit extends HttpServlet {
   		              shortcodep.setCount(count);
   		              shortcodep.setSourceUuid(codeuuid); 
   		                smspurchaseDAO.put(shortcodep);
-  		              System.out.println(sourceuuid);
-  	   	              System.out.println(codeuuid);
+  		              //System.out.println(sourceuuid);
+  	   	             // System.out.println(codeuuid);
+  		              //success message here
+  	                 session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Credit updated successfully.");
                 	}
-                	  //success message here
-                   // session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Credit updated successfully.");
+                	 
                 }
            
         	}

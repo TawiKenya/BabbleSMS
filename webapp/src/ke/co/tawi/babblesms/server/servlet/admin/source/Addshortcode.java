@@ -44,7 +44,11 @@ import org.apache.commons.lang3.StringUtils;
  */
 
 public class Addshortcode extends HttpServlet {
-    final String ERROR_NO_CODENUMBER = "Please provide a Code Number.";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3545773463936695477L;
+	final String ERROR_NO_CODENUMBER = "Please provide a Code Number.";
     final String ERROR_NO_NETWORKNAME = "No Network selected.";
     final String ERROR_NO_ACCOUNTNAME = "No Account selected.";
     final String ERROR_NO_CODENUMBER_EXISTS = "The Code Number provided already exists in the system.";
@@ -132,25 +136,9 @@ public class Addshortcode extends HttpServlet {
                 
         s.setCodenumber(codenumber);
         s.setNetworkuuid(networkuuid);
-        s.setAccountuuid(accountuuid);
-        
-        /*Credit c=new Credit();
-        
-        int amount=0;        
-        c.setAccountuuid(accountuuid);
-        c.setSource(codenumber);
-        c.setCredit(amount);
-        
-                
-       
-
-         if(shortcodeDAO.put(s)){
-             creditDAO.putCredit(c);
-           }*/
-        
-
-        //s = shortcodeDAO.getShortcodeBycodeNumber(codenumber, networkuuid);	// Ensures the shortcode is populated with the correct ID
-        //updateShortcodeCache(s);
+        s.setAccountuuid(accountuuid);    
+        shortcodeDAO.put(s);
+        updateShortcodeCache(s);
     }
 
     
