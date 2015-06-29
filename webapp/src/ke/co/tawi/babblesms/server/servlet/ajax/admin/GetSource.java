@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -20,7 +19,6 @@ import com.google.gson.GsonBuilder;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import net.sf.ehcache.Cache;
@@ -109,7 +107,7 @@ public class GetSource extends HttpServlet{
 	        element = shortcodesCache.get(key);
 	        shortcode = (Shortcode) element.getObjectValue();
 	        if (account.getUuid().equals(shortcode.getAccountuuid())) {
-	        sourceHash.put("uuid",shortcode.getSource());
+	        sourceHash.put("uuid",shortcode.getUuid());
 	        sourceHash.put("name",shortcode.getCodenumber()+"  ("+networkHash.get(shortcode.getNetworkuuid())+")");       
 	           }
 	        if(!sourceHash.isEmpty()){
@@ -123,7 +121,7 @@ public class GetSource extends HttpServlet{
 	         element = maskCache.get(key);
 	         mask = (Mask) element.getObjectValue();    
 	         if (account.getUuid().equals(mask.getAccountuuid())) {
-	         sourceHash.put("uuid", mask.getSource());
+	         sourceHash.put("uuid", mask.getUuid());
 	         sourceHash.put("name", mask.getMaskname()+"  ("+networkHash.get(mask.getNetworkuuid())+")");
 	        
 	         }
