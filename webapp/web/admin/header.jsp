@@ -44,9 +44,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content=".">
         <meta name="author" content="eugene" >
+        
+          <script src="../js/tawi/jquery-1.7.2.min.js"></script>
 
-        <!-- The styles -->
-        <!--<link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">-->
         <link href="../css/bootstrap-cerulean.css" rel="stylesheet">
         <style type="text/css">
             body {
@@ -56,6 +56,10 @@
                 padding: 9px 0;
             }
         </style>
+        <!-- jQuery -->	
+	<script src="../js/tawi/editcontact.js"></script>
+      
+        
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/charisma-app.css" rel="stylesheet">
         <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
@@ -75,20 +79,17 @@
         <link href='../css/template.css' rel='stylesheet'>
         <link href='../css/checkpass.css' rel='stylesheet'>
         <link href='../css/styles.css' rel='stylesheet'>
-        <script type="text/javascript" src="../js/passwdcheck.js"></script>
-
-
-        <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
+        
+      
+        
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
         
-
-       <script language="javascript" type="text/javascript" src="../js/phoneno.js"></script>
-
+        <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+  
+	
+        
+   
 
 
     </head>
@@ -105,84 +106,21 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                   
-
-
-                 <div id='cssmenu'>
-                  <ul>
-                  <li class='has-sub' ><a href='#'><span>Account Management</span></a>
-                  <ul>
-                <li><a href="addaccount.jsp" ><span>Add Account</span></a></li>
-                <li><a href="#" ><span>Edit Account</span></a></li>
-             <li class='last'><a href='#'><span>View Accounts</span></a></li>
-                </ul>
-
-
-        </li>
-            <li class='has-sub'><a href='#'><span>SMS Management</span></a>
-      
-             </li>
-        <li class='has-sub'><a href='#'><span>SMS Trafic</span></a></li>
-            <li class='has-sub'><a href='#'><span>Nitifications&Feeback</span></a></li>
-            <li class='has-sub'><a href='#'><span>Reports</span></a></li>
-            <li class='has-sub'><a href='#'><span>Admin settings</span></a></li>
-
-            </ul>
-
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <!-- theme selector starts -->
-                    <div class="btn-group pull-right theme-container" >
-                        <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" id="themes">
-                                <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
-                                <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
-                                <li><a data-value="cyborg" href="#"><i class="icon-blank"></i> lake victoria</a></li>
-                                <li><a data-value="redy" href="#"><i class="icon-blank"></i>clement</a></li>
-                                <li><a data-value="journal" href="#"><i class="icon-blank"></i>nairobi</a></li>
-                                <li><a data-value="simplex" href="#"><i class="icon-blank"></i>mombasa</a></li>
-                                <li><a data-value="slate" href="#"><i class="icon-blank"></i>naivasha</a></li>
-                                <li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
-                                <li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
-                        </ul>-->
-                    </div>
-                    <!-- theme selector ends -->
-
-                    <!-- user dropdown starts -->
+                   <a class="brand" href="index.html">  <span>Babble</span></a>
+                    
+		    <!-- user dropdown starts -->
                     <div class="btn-group pull-right" >
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="icon-user"></i><span class="hidden-phone"> <%=username%></span>
                             <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu">
+                            <!--<li><a href="#">Profile</a></li>-->
                             <li class="divider"></li>
-                            <li><a href="../Logout">Logout</a></li>
-                            
-                                <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                                </a>-->
-
+                            <li><a href="Logout">Logout</a></li>
+                            <li><a href="setting.jsp">Setting</a>
+                               
                                 <ul class="dropdown-menu" id="themes">
                                     <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
                                     <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
@@ -199,23 +137,41 @@
 
                         </ul>
 
-                        <!--<li class="help"><a href="#">Help</a></li>-->                  
+
                     </div>
 
                     <!-- user dropdown ends -->
-
-                    <div class="top-nav nav-collapse">
-                        <!--<ul class="nav">
-                                <li><a href="#">Visit Site</a></li>
-                                <li>
-                                        <form class="navbar-search pull-left">
-                                                <input placeholder="Search" class="search-query span2" name="query" type="text">
-                                        </form>
-                                </li>
-                        </ul>-->
-                    </div><!--/.nav-collapse -->
-
+                    
+                    
+                    
+                    
+                    
+                    
                 </div>
+                            
+                       <!-- top menu -->        
+                <div id='cssmenu'>
+                  <ul>
+                  <li class='has-sub' ><a href='#'><span>Account Management</span></a>
+                  <ul>
+                <li><a href="addaccount.jsp" ><span>Add Account</span></a></li>
+                <li><a href="#" ><span>Edit Account</span></a></li>
+             <li class='last'><a href='#'><span>View Accounts</span></a></li>
+                </ul>
+
+
+        </li>
+            <li class='has-sub'><a href='#'><span>SMS Management</span></a>
+      
+             </li>
+        <li class='has-sub'><a href='#'><span>SMS Trafic</span></a></li>
+            <li class='has-sub'><a href='#'><span>Nitifications& Feeback</span></a></li>
+            <li class='has-sub'><a href='#'><span>Reports</span></a></li>
+            <li class='has-sub'><a href='#'><span>Admin settings</span></a></li>
+
+            </ul>
+
+            </div>             
 
             </div>
 

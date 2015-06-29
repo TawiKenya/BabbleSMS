@@ -18,14 +18,7 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.accounts.AccountDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.network.NetworkDAO"%>
-
 <%
     // The following is for session management.    
     if (session == null) {
@@ -43,19 +36,12 @@
     String accountuuid = request.getParameter("accountuuid");
     CacheManager mgr = CacheManager.getInstance();
     Cache shortcodesCache = mgr.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID);
-    Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
     Cache maskCache = mgr.getCache(CacheVariables.CACHE_MASK_BY_UUID);
-    Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
-
-    // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
-    HashMap<String, String> networkHash = new HashMap();
-    HashMap<String, String> accountHash = new HashMap();
-
+    
     Element element;
     Shortcode shortcode;
     Mask mask;
-    Network network;
-    Account account;
+   
 
     List<Shortcode> shortcodelist = new ArrayList();
     List<Mask> masklist = new ArrayList();

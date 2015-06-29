@@ -141,6 +141,20 @@
     <!-- Ajax servlets end -->
     
     <!-- End - Account Holder servlets -->
+
+
+
+
+ <!-- Ajax admin servlets start -->
+    <servlet>
+        <servlet-name>GetSource</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.admin.GetSource</servlet-class>
+    </servlet>
+
+
+    <!-- Ajax admin servlets end -->
+    
+
     
     
     <!-- Start - Administrator servlets -->
@@ -176,6 +190,9 @@
         <servlet-name>addcredit</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.sms.Addcredit</servlet-class>
     </servlet>
+
+
+
     
     <!-- End - Administrator servlets -->
     
@@ -320,7 +337,26 @@
         <servlet-name>GetGroups</servlet-name>
         <url-pattern>/account/getGroups</url-pattern>
     </servlet-mapping>
+
+
+
     <!-- Client Ajax servlet mapping end -->
+
+   
+
+
+
+ <!-- Admin Ajax servlet mapping start -->
+    <servlet-mapping>
+        <servlet-name>GetSource</servlet-name>
+        <url-pattern>/admin/getSource</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- admin Ajax servlet mapping end -->
+
+
+
     
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>

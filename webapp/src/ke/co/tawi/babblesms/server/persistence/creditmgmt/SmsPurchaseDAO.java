@@ -142,7 +142,8 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	 */
 	@Override
 	public boolean put(SMSPurchase purchase) {
-		
+		ShortcodePurchase sp = new ShortcodePurchase();
+		MaskPurchase mp = new MaskPurchase();
 		Account account = new Account();
 		account.setUuid(purchase.getAccountUuid());
 		
@@ -162,7 +163,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 			
 			if(purchase instanceof ShortcodePurchase) {
 			
-				pst.setString(1, purchase.getUuid());
+				pst.setString(1, sp.getUuid());
 				pst.setString(2, purchase.getAccountUuid());
 				pst.setString(3,purchase.getSourceUuid());
 				pst.setInt(4, purchase.getCount());
@@ -176,7 +177,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 			
 			} else {  //  for mask
 				
-				pst2.setString(1, purchase.getUuid());
+				pst2.setString(1, mp.getUuid());
 				pst2.setString(2, purchase.getAccountUuid());
 				pst2.setString(3, purchase.getSourceUuid());
 				pst2.setInt(4, purchase.getCount());

@@ -44,8 +44,7 @@
         <meta name="description" content=".">
         <meta name="author" content="eugene" >
 
-        <!-- The styles -->
-        <!--<link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">-->
+       
         <link href="../css/bootstrap-cerulean.css" rel="stylesheet">
         <style type="text/css">
             body {
@@ -78,13 +77,23 @@
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
 
-        <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
+        
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
+        
+        <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+  
+	
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     </head>
 
@@ -102,25 +111,7 @@
                     </a>
                     <a class="brand" href="index.html">  <span>Babble</span></a>
 
-                    <!-- theme selector starts -->
-                    <div class="btn-group pull-right theme-container" >
-                        <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" id="themes">
-                                <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
-                                <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
-                                <li><a data-value="cyborg" href="#"><i class="icon-blank"></i> lake victoria</a></li>
-                                <li><a data-value="redy" href="#"><i class="icon-blank"></i>clement</a></li>
-                                <li><a data-value="journal" href="#"><i class="icon-blank"></i>nairobi</a></li>
-                                <li><a data-value="simplex" href="#"><i class="icon-blank"></i>mombasa</a></li>
-                                <li><a data-value="slate" href="#"><i class="icon-blank"></i>naivasha</a></li>
-                                <li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
-                                <li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
-                        </ul>-->
-                    </div>
-                    <!-- theme selector ends -->
+                    
 
                     <!-- user dropdown starts -->
                     <div class="btn-group pull-right" >
@@ -134,11 +125,7 @@
                             <li class="divider"></li>
                             <li><a href="../logout">Logout</a></li>
                             <li><a href="setting.jsp">Setting</a>
-                                <!--<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
-                                <span class="caret"></span>
-                                </a>-->
-
+                               
                                 <ul class="dropdown-menu" id="themes">
                                     <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
                                     <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
@@ -160,16 +147,6 @@
 
                     <!-- user dropdown ends -->
 
-                    <div class="top-nav nav-collapse">
-                        <!--<ul class="nav">
-                                <li><a href="#">Visit Site</a></li>
-                                <li>
-                                        <form class="navbar-search pull-left">
-                                                <input placeholder="Search" class="search-query span2" name="query" type="text">
-                                        </form>
-                                </li>
-                        </ul>-->
-                    </div><!--/.nav-collapse -->
 
                 </div>
                 <!-- top menu -->                        

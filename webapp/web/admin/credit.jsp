@@ -1,5 +1,10 @@
+
+
+
+
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.LinkedList"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
 <%@page import="net.sf.ehcache.Element"%>
 <%@page import="java.util.HashMap"%>
@@ -12,6 +17,8 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="java.util.List"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
+
+
 
 <%
     // The following is for session management.    
@@ -30,14 +37,20 @@
     //String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
     Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
-
+    
+    
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
+    
+    Account account = new Account();
     Element element;
-    Account account;
+    if ((element = accountCache.get(username)) != null) {
+        account = (Account) element.getObjectValue();
+    }
+   
 
     List<Account> userList = new ArrayList();
-
+   
     List keys;
 
     keys = accountCache.getKeys();
@@ -46,7 +59,8 @@
         account = (Account) element.getObjectValue();
         userList.add(account);
     }
-
+    
+  
 
 %> 
 <jsp:include page="header.jsp" />
@@ -127,7 +141,7 @@
                                     if (userList != null) {
                                         for (Account code : userList) {
                                 %>
-                                <option value="<%= code.getUuid()%>"><%= code.getUsername()%></option>
+                                <option value="<%= code.getUuid()%>" onclick="setSource(this)"><%= code.getUsername()%></option>
                                 <%
                                             count++;
                                         }
@@ -140,11 +154,10 @@
 
                     <div class="control-group">
                         <label class="control-label" for="name">Source*</label>
-                        <div class="controls">
-                            <select name="source" id="source" required="true">
-
-
-                            </select>
+                        <div class="controls" id ="getsource">
+                        <select name="source" id="source" >
+                        <!--options appear here-->
+                        </select>                            
                         </div>
 
                     </div> 
@@ -153,6 +166,8 @@
                         <label class="control-label" for="name">Amount*</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="amount" value="" onkeypress="return IsNumeric(event);" required="true">
+
+
 
                         </div>
 
@@ -171,6 +186,11 @@
     </div><!--/span-->
 
 </div><!--/row-->
+
+
+<script type="text/javascript"  src ="../js/tawi/admingetsource.js"></script>
+
+
 
 
 <jsp:include page="footer.jsp" />
