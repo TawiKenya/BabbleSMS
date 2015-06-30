@@ -190,7 +190,7 @@
                         <span class="pagePosition"><%= inboxPage.getTotalPage()%></span>
                     </span>   
                     <%
-                        if (!inboxPage.isLastPage()) {
+                        if (!inboxPage.isLastPage()) {                        
                     %>
                         <input class="toolbarBtn" type="submit" name="page" value="Next">  
                         <input class="toolbarBtn" type="submit" name="page" value="Last">
@@ -201,25 +201,25 @@
             </div>
 
             <div id="export">                
-                <form id="exportToPDF" name="exportCSV" method="post" action="exportCSV" target="_blank">
+                <!--<form id="exportToPDF" name="exportCSV" method="post" action="exportCSV" target="_blank">
                     <p>
                         <input class="toolbarBtn" type="submit" name="exportCSV" value="Export CSV" >
                         <input class="toolbarBtn" type="hidden" name="page" value="inbox.jsp">
                     </p>
-                </form>
+                </form>-->
 
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
                     <p>
-                        <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export Page">
-                        <input class="toolbarBtn" type="submit" name="exporttoExcel" value="Export Page Excel" >
+                        <input class="toolbarBtn" type="submit" name="exportExcel" value="Export Page As Excel">
+                        <input class="toolbarBtn1" type="hidden" name="ExportPageExcel" value="<%=inboxPage.getPageNum()%>" >
                         <input class="toolbarBtn" type="hidden" name="page" value="inbox.jsp">
                     </p>
                 </form>
 
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
                     <p>
-                        <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export All">
-                        <input class="toolbarBtn" type="submit" name="exporttoxEcel" value="Export All Excel" >
+                        <input class="toolbarBtn" type="submit" name="exportExcel" value="Export All As Excel">
+                        <input class="toolbarBtn1" type="hidden" name="ExportAllExcel" value="All" >
                         <input class="toolbarBtn" type="hidden" name="page" value="inbox.jsp">
                     </p>
                 </form>
@@ -318,7 +318,7 @@
                 </form>
             </div>                            
 
-            <div id="export">                
+            <!--<div id="export">                
                 <form id="exportToPDF" name="exportCSV" method="post" action="exportCSV" target="_blank">
                     <p>
                         <input class="toolbarBtn" type="submit" name="exportCSV" value="Export CSV" >
@@ -332,7 +332,7 @@
                         <input class="toolbarBtn" type="hidden" name="page" value="inbox.jsp">
                     </p>
                 </form>
-            </div>
+            </div>-->
         </div>    
 
 
