@@ -82,14 +82,15 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO OutgoinggroupLog (Uuid,origin,networkuuid,destination,message,sender,messagestatusuuid) VALUES (?,?,?,?,?,?);");
+            pstmt = conn.prepareStatement("INSERT INTO OutgoinggroupLog (Uuid, origin, networkuuid,"
+            		+ "destination, message, sender, messagestatusuuid) VALUES (?,?,?,?,?,?,?);");
 
             pstmt.setString(1, outgoinggroupLog.getUuid());
             pstmt.setString(2, outgoinggroupLog.getOrigin());
             pstmt.setString(3, outgoinggroupLog.getNetworkUuid()); 
             pstmt.setString(4, outgoinggroupLog.getDestination());
             pstmt.setString(5, outgoinggroupLog.getMessage());
-            pstmt.setString(6, outgoinggroupLog.getSender());
+            pstmt.setString(6, outgoinggroupLog.getSender()); 
             pstmt.setString(7, outgoinggroupLog.getMessagestatusuuid());
 
             pstmt.execute();

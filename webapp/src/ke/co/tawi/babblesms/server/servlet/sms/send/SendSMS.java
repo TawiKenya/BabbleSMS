@@ -22,13 +22,17 @@ import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
+import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
 
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
+import ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO;
 
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
@@ -72,8 +76,8 @@ public class SendSMS extends HttpServlet {
 	private ContactGroupDAO ctgrpDAO;
 	private ShortcodeDAO shortcodeDAO;
 	private MaskDAO maskDAO;
-		
-		
+	private SmsBalanceDAO smsBalanceDAO;	
+	private OutgoingGroupLogDAO groupLogDAO;	
 	
 	/**
 	 * @param config
@@ -90,6 +94,8 @@ public class SendSMS extends HttpServlet {
 		ctgrpDAO= ContactGroupDAO.getInstance();
 		shortcodeDAO = ShortcodeDAO.getInstance();
 		maskDAO = MaskDAO.getInstance();
+		smsBalanceDAO = SmsBalanceDAO.getInstance();
+		groupLogDAO = OutgoingGroupLogDAO.getInstance();
 		
 		CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
@@ -117,7 +123,8 @@ public class SendSMS extends HttpServlet {
 		// Get the relevant account		
 		Account account = new Account();
 		
-		String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
+		String username = request.getParameter("username");
+		
 		Element element;
 	    if ((element = accountsCache.get(username)) != null) {
 	        account = (Account) element.getObjectValue();
@@ -140,8 +147,11 @@ public class SendSMS extends HttpServlet {
 				
 		Group group;
 		List<Contact> contactList;		
-		 
+		List<OutgoingGrouplog> outgoingGroupList = new LinkedList<>();
+		
 		if(groupselected != null) {
+			OutgoingGrouplog groupLog;
+			
 			for(String groupUuid : groupselected) {
 				group = new Group();
 				group.setUuid(groupUuid);
@@ -151,8 +161,16 @@ public class SendSMS extends HttpServlet {
 					phoneList.addAll(phoneDAO.getPhones(contact) );
 				}				
 				
+				// Save an outgoing log for the group 
+				groupLog = new OutgoingGrouplog();
+				groupLog.setMessagestatusuuid(MsgStatus.SENT);
+				groupLog.setSender(account.getUuid());
+				groupLog.setDestination(group.getUuid());
+				groupLog.setMessage(message);
+				outgoingGroupList.add(groupLog);
+				
 			}// end 'for(String groupUuid : groupselected)'
-		}
+		}// end 'if(groupselected != null)'
 		
 		
 		// This is the case where individual Contacts may have been selected		
@@ -178,6 +196,13 @@ public class SendSMS extends HttpServlet {
 			smsSource = shortcode;
 		}
 		
+		// Set the network in the groups (if any) and save the log
+		for(OutgoingGrouplog log : outgoingGroupList) {
+			log.setNetworkUuid(smsSource.getNetworkuuid());
+			log.setOrigin(smsSource.getUuid());
+			groupLogDAO.putOutgoingGrouplog(log);
+		}
+		
 		
 		// Filter the phones to the Network of the source (mask or short code)
 		List<Phone> validPhoneList = new LinkedList<>();
@@ -199,7 +224,10 @@ public class SendSMS extends HttpServlet {
 					
 			postThread.start(); 	
 		}
-			
+		
+		
+		// Deduct credit
+		smsBalanceDAO.deductBalance(account, smsSource, validPhoneList.size());	
 	}
 			
 }

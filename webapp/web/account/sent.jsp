@@ -214,19 +214,12 @@
                 </form>
             </div>                            
 
-                <div id="export" class="row">
-                <form id="exportToPDF" name="exportCSV" method="post" action="exportCSV" target="_blank">
-                    <p>
-                        <input class="toolbarBtn" type="submit" name="exportCSV" value="Export CSV" >
-                        <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
-                    </p>
-                </form>
-                
+                <div id="export" class="row">                             
                  
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
                     <p>
                         <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export All">
-                        <input class="toolbarBtn" type="submit" name="exporttoxEcel" value="Export All Excel" >
+                        <input class="toolbarBtn" type="submit" name="exporttoxEcel" value="Export Page As Excel" >
                         <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
                     </p>
                 </form>
@@ -234,7 +227,7 @@
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
                     <p>
                         <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export Page">
-                        <input class="toolbarBtn" type="submit" name="exporttoExcel" value="Export Excel" >
+                        <input class="toolbarBtn" type="submit" name="exporttoExcel" value="Export All As Excel" >
                         <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
                     </p>
                 </form>               
@@ -333,22 +326,7 @@
                     %>                                
                 </form>
             </div>                            
-
-            <div id="export">
-                <form id="exportToPDF" name="exportCSV" method="post" action="exportCSV" target="_blank">
-                    <p>
-                        <input class="toolbarBtn" type="submit" name="exportCSV" value="Export CSV" >
-                        <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
-                    </p>
-                </form>
-
-                <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
-                    <p>
-                        <input class="toolbarBtn" type="submit" name="exportExcel" value="Export Excel" >
-                        <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
-                    </p>
-                </form>
-            </div>
+            
         </div>
 
     </div><!--/span-->

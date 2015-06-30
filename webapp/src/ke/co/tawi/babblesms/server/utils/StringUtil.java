@@ -118,7 +118,7 @@ public class StringUtil {
 	
 	
 	/**
-	 * Converts a {@link Map} int a String, for example for logging purposes
+	 * Converts a {@link Map} into a String, for example for logging purposes
 	 * 
 	 * @param map
 	 * @return a String representation of a Map.

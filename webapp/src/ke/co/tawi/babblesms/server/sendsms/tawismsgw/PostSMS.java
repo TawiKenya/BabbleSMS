@@ -23,6 +23,7 @@ import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
+import ke.co.tawi.babblesms.server.utils.StringUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,7 +34,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
@@ -50,16 +50,19 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
+//import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.validator.routines.UrlValidator;
+
 import org.apache.log4j.Logger;
+
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -170,7 +173,7 @@ public class PostSMS extends Thread {
 					break;
 					
 				case Network.AIRTEL_KE:
-					params.put("network", "airtel_ke");
+					params.put("network", "safaricom_ke");  // TODO: change to airtel_ke
 					break;	
 			}
 			
@@ -204,9 +207,10 @@ public class PostSMS extends Thread {
 				if(StringUtils.equalsIgnoreCase(url.getProtocol(), "http")) {
 					responseEntity = doPost(smsGateway.getUrl(), params, retry);
 										
-				} else if(StringUtils.equalsIgnoreCase(url.getProtocol(), "https")) {
-					doPostSecure(smsGateway.getUrl(), params, retry);
-				}
+				} 
+//				else if(StringUtils.equalsIgnoreCase(url.getProtocol(), "https")) {
+//					doPostSecure(smsGateway.getUrl(), params, retry);
+//				}
 							
 			} catch (MalformedURLException e) {
 				logger.error("MalformedURLException for URL: '" + smsGateway.getUrl() + "'");
@@ -349,7 +353,7 @@ public class PostSMS extends Thread {
 	 * @param params
 	 * @param retry
 	 */
-	private void doPostSecure(String url, Map<String,String> params, boolean retry) {				
+	/*private void doPostSecure(String url, Map<String,String> params, boolean retry) {				
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		UrlEncodedFormEntity entity;
 		
@@ -384,20 +388,20 @@ public class PostSMS extends Thread {
 			CloseableHttpResponse response = httpclient.execute(httppost);
 			HttpEntity responseEntity = response.getEntity();
 
-			/*
-			 * For debugging purposes
-			 */
-			/*
-			System.out.println("----------------------------------------");
-			System.out.println(response.getStatusLine());
-			Header[] headers = response.getAllHeaders();
-			for (int i = 0; i < headers.length; i++) {
-				System.out.println(headers[i]);
-			}
-			System.out.println("----------------------------------------");
-
-			System.out.println(EntityUtils.toString(responseEntity));
-			*/
+			
+//			For debugging purposes
+//			 
+//			
+//			System.out.println("----------------------------------------");
+//			System.out.println(response.getStatusLine());
+//			Header[] headers = response.getAllHeaders();
+//			for (int i = 0; i < headers.length; i++) {
+//				System.out.println(headers[i]);
+//			}
+//			System.out.println("----------------------------------------");
+//
+//			System.out.println(EntityUtils.toString(responseEntity));
+			
 		} catch (KeyStoreException e) {
 			logger.error("KeyStoreException for URL: '" + url + "'");
 			logger.error(ExceptionUtils.getStackTrace(e));	
@@ -430,6 +434,6 @@ public class PostSMS extends Thread {
 				}	
 			}// end 'if(retry)'
 		}
-	}
+	}*/
 }
 

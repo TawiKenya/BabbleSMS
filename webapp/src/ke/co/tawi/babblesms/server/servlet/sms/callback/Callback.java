@@ -165,9 +165,7 @@ public class Callback extends HttpServlet {
         		if(StringUtils.startsWith(source, "254")) {
 					phoneNum = "07" + StringUtils.substring(source, 4);
 				}
-        		
-        		logger.info("phoneNum is " + phoneNum);
-        		
+        		        		
         		if(phoneDAO.getPhones(phoneNum).size() > 0) {
         			incomingLog.setOrigin(phoneNum);
         			
@@ -185,9 +183,7 @@ public class Callback extends HttpServlet {
         				break;
         			}
         		}
-        		
-        		
-        		logger.info("About to save " + incomingLog);
+        		      		
         		
         		incomingLogDAO.putIncomingLog(incomingLog);
         		break;

@@ -27,7 +27,6 @@ public class OutgoingGrouplog extends Log {
 
     private String messagestatusuuid;
     private String sender;
-    private String networkuuid;
     
 
     public OutgoingGrouplog() {
@@ -35,7 +34,6 @@ public class OutgoingGrouplog extends Log {
                 
         messagestatusuuid = "";
         sender = "";
-        networkuuid = "";
     }
     
     public String getMessagestatusuuid() {
@@ -54,15 +52,7 @@ public class OutgoingGrouplog extends Log {
         this.sender = StringUtils.trimToEmpty(sender);
     }
     
-    public String getNetworkuuid() {
-        return networkuuid;
-    }
-
-    public void setNetworkuuid(String networkuuid) {
-        this.networkuuid = StringUtils.trimToEmpty(networkuuid);
-    }
-
-    
+       
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -74,7 +64,7 @@ public class OutgoingGrouplog extends Log {
 		builder.append(", getOrigin()=");
 		builder.append(getOrigin());
 		builder.append(", networkuuid=");
-		builder.append(networkuuid);
+		builder.append(getNetworkUuid());
 		builder.append(", getMessage()=");
 		builder.append(getMessage());
 		builder.append(", getLogTime()=");

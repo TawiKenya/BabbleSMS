@@ -207,11 +207,10 @@
                 <fieldset>
                     <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>
-                        
-                        
-                
+                                        
                         <div class="controls">
-                           
+            <input type="hidden" name="username" value="<%=username %>"> 
+            
             <select name ="destination" id="destination" required="true">
             <option value ="Choose">Choose Groups or Contacts</option>
             <option value = "Group">Group</option>
@@ -337,7 +336,7 @@
         <div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
-                            <form action="sendsms.jsp">
+                            
                                 
                                 <select name="source" id="source" required="true">
                                     <%
@@ -398,7 +397,6 @@
                                     }
                                 %>
                             </select>
-                            </form>
                         </div>
                     </div>       
 
