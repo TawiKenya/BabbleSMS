@@ -315,19 +315,23 @@
 
 </script>    
 
-<script type="text/javascript">
-    
+<script type="text/javascript">    
     function validateQty(event) {
-        var key = window.event ? event.keyCode : event.which;
+          var key = window.event ? event.keyCode : event.which; 
+           //choose the only keys allowed..
+       if (   event.keyCode === 8 //backspace key
+           || event.keyCode === 46  //delete key
+           || event.keyCode === 37   //left arrow key
+           || event.keyCode === 39  //right arrow key
+           || key === 0 //right and left arrow keys i mozilla
+           || key === 32  //whitespace key
+           || key === 45 //hypen key
+           || key === 118 // for mozilla (ctrl + v).|| (key === 17 && key === 67) //(ctrl + c)
+           || (key > 47 && key < 58 )//from 0 to 9
+           ) {
+               return true;
 
-        if (event.keyCode == 8 || event.keyCode == 46
-         || event.keyCode == 37 || event.keyCode == 39) {
-            return true;
-            
-        } else if ( key < 48 || key > 57 ) {
-            return false;
-        }
-        
-        else return true;
-    };
+         }        
+        else return false;
+      }
 </script>
