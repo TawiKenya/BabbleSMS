@@ -159,8 +159,8 @@
             </div> <!-- /.container -->
         </footer>
 
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="../js/jquery/jquery.js"></script>
+        <script src="../js/bootstrap/bootstrap.min.js"></script>
         <script>
             $(".nav-link").click(function(e) {
                 e.preventDefault();

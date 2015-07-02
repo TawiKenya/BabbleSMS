@@ -201,7 +201,7 @@ private void addNetwork() {
      */
     private boolean existsNetworkName(final String name) {
         boolean exists = false;
-
+       System.out.println(name); 
         if (networkDAO.getNetworkByName(name) != null) {
             exists = true;
         }

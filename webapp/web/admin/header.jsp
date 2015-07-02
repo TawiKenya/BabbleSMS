@@ -45,8 +45,9 @@
         <meta name="description" content=".">
         <meta name="author" content="eugene" >
         
-          <script src="../js/tawi/jquery-1.7.2.min.js"></script>
-
+         <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+         <script src="../js/jquery/jquery-1.7.2.min.js"></script>
+         
         <link href="../css/bootstrap-cerulean.css" rel="stylesheet">
         <style type="text/css">
             body {
@@ -57,7 +58,8 @@
             }
         </style>
         <!-- jQuery -->	
-	<script src="../js/tawi/editcontact.js"></script>
+       
+	
       
         
         <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -85,7 +87,7 @@
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
         
-        <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+       
   
 	
         
@@ -119,7 +121,7 @@
                             <!--<li><a href="#">Profile</a></li>-->
                             <li class="divider"></li>
                             <li><a href="Logout">Logout</a></li>
-                            <li><a href="setting.jsp">Setting</a>
+                            
                                
                                 <ul class="dropdown-menu" id="themes">
                                     <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
