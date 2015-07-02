@@ -77,13 +77,9 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public boolean putMask(Mask mask) {
         boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO Mask (Uuid, maskname,accountuuid,networkuuid) VALUES (?,?,?,?);");
+        try (Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("INSERT INTO Mask (Uuid, maskname,accountuuid,networkuuid) VALUES (?,?,?,?);");){
+            
             pstmt.setString(1, mask.getUuid());
             pstmt.setString(2, mask.getMaskname());
             pstmt.setString(3, mask.getAccountuuid());
@@ -97,20 +93,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
             logger.error("SQL Exception when trying to put mask: " + mask);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 
@@ -123,15 +106,12 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public Mask getMaskByName(String name) {
         Mask mask = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Mask WHERE maskName = ?;");
+        try( Connection conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Mask WHERE maskName = ?;");) {
+           
             pstmt.setString(1, name);
             rset = pstmt.executeQuery();
 
@@ -142,26 +122,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting mask with uuid: " + name);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return mask;
     }
 
@@ -171,15 +132,12 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public Mask getMask(String uuid) {
         Mask mask = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Mask WHERE Uuid = ?;");
+        try(Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Mask WHERE Uuid = ?;");) {
+            
             pstmt.setString(1, uuid);
             rset = pstmt.executeQuery();
 
@@ -190,26 +148,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting mask with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return mask;
     }
 
@@ -219,15 +158,12 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public List<Mask> getAllMasks() {
         List<Mask> list = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Mask;");
+        try(Connection conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Mask;");) {
+           
             rset = pstmt.executeQuery();
 
             list = b.toBeanList(rset, Mask.class);
@@ -235,26 +171,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all masks");
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return list;
     }
     
@@ -264,15 +181,12 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public List<Mask> getmaskbyaccount(String accuuid) {
         List<Mask> masklist = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Mask WHERE accountuuid=?;");
+        try(Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement   pstmt = conn.prepareStatement("SELECT * FROM Mask WHERE accountuuid=?;");) {
+           
             pstmt.setString(1, accuuid);
             rset = pstmt.executeQuery();
 
@@ -281,26 +195,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all masks");
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return masklist;
     }
 
@@ -313,13 +208,9 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public boolean updateMask(Mask mask) {
         boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE Mask SET MASKName=?,accountuuid=?,networkuuid=? WHERE Uuid = ?;");
+        try(Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("UPDATE Mask SET MASKName=?,accountuuid=?,networkuuid=? WHERE Uuid = ?;");) {
+           
             pstmt.setString(1, mask.getMaskname());
             pstmt.setString(2, mask.getAccountuuid());
             pstmt.setString(3, mask.getNetworkuuid());
@@ -331,20 +222,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
             logger.error("SQL Exception when deleting mask with uuid " + mask);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 
@@ -354,13 +232,9 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
     @Override
     public boolean deleteMask(String uuid) {
         boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("DELETE FROM Mask WHERE Uuid = ?;");
+        try( Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("DELETE FROM Mask WHERE Uuid = ?;");) {
+           
             pstmt.setString(1, uuid);
 
             pstmt.executeUpdate();
@@ -369,20 +243,7 @@ public class MaskDAO extends GenericDAO implements BabbleMaskDAO {
             logger.error("SQL Exception when deleting mask with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 

@@ -77,13 +77,9 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
     @Override
     public boolean putShortcode(Shortcode shortcode) {
         boolean success = true;
-        
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO Shortcode (Uuid, codenumber,accountuuid,networkuuid) VALUES (?,?,?,?);");
+        try(Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement  pstmt = conn.prepareStatement("INSERT INTO Shortcode (Uuid, codenumber,accountuuid,networkuuid) VALUES (?,?,?,?);");) {
+           
             pstmt.setString(1, shortcode.getUuid());
             pstmt.setString(2, shortcode.getCodenumber());
             pstmt.setString(3, shortcode.getAccountuuid());
@@ -95,20 +91,8 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
             logger.error("SQL Exception when trying to put shortcode: " + shortcode);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
+          
         return success;
     }
 
@@ -120,15 +104,12 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
     @Override
     public Shortcode getShortcode(String uuid) {
         Shortcode shortcode = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Shortcode WHERE Uuid = ?;");
+        try(Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Shortcode WHERE Uuid = ?;");) {
+            
             pstmt.setString(1, uuid);
             rset = pstmt.executeQuery();
 
@@ -139,26 +120,7 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting shortcode with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return shortcode;
     }
     
@@ -168,15 +130,12 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
     @Override
     public Shortcode getShortcodeBycodeNumber(String codenumber,String networkuuid) {
         Shortcode shortcode = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Shortcode WHERE codenumber = ? AND networkuuid=?;");
+        try (Connection  conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Shortcode WHERE codenumber = ? AND networkuuid=?;");){
+          
             pstmt.setString(1, codenumber);
             pstmt.setString(2, networkuuid);
             rset = pstmt.executeQuery();
@@ -188,26 +147,7 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting shortcode with uuid: " + codenumber);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return shortcode;
     }
     
@@ -218,15 +158,12 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
     @Override
     public List<Shortcode> getShortcodebyaccountuuid(String accuuid) {
         List<Shortcode> list = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Shortcode WHERE accountuuid=?;");
+        try(  Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Shortcode WHERE accountuuid=?;");) {
+          
             pstmt.setString(1, accuuid);
             rset = pstmt.executeQuery();
 
@@ -235,26 +172,7 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all shortcodes");
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return list;
     }
 
@@ -264,15 +182,12 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
     @Override
     public List<Shortcode> getAllShortcode() {
         List<Shortcode> list = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Shortcode;");
+        try(Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Shortcode;");) {
+           
             rset = pstmt.executeQuery();
 
             list = b.toBeanList(rset, Shortcode.class);
@@ -280,26 +195,7 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all shortcodes");
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return list;
     }
 
@@ -310,14 +206,10 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
      */
     @Override
     public boolean updateShortcode(Shortcode shortcode) {
-        boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE Shortcode SET codenumber=?,accountuuid=?,networkuuid=? WHERE Uuid = ?;");
+        boolean success = true; 
+        try( Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("UPDATE Shortcode SET codenumber=?,accountuuid=?,networkuuid=? WHERE Uuid = ?;");) {
+           
             pstmt.setString(1,shortcode.getCodenumber());
             pstmt.setString(2,shortcode.getAccountuuid());
             pstmt.setString(3,shortcode.getNetworkuuid());
@@ -329,20 +221,8 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
             logger.error("SQL Exception when deleting shortcode with uuid " + shortcode);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
         }
+          
         return success;
     }
 
@@ -352,13 +232,9 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
     @Override
     public boolean deleteShortcode(String uuid) {
         boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("DELETE FROM Shortcode WHERE Uuid = ?;");
+        try(Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement  pstmt = conn.prepareStatement("DELETE FROM Shortcode WHERE Uuid = ?;");) {
+           
             pstmt.setString(1, uuid);
 
             pstmt.executeUpdate();
@@ -367,20 +243,7 @@ public class ShortcodeDAO extends GenericDAO implements BabbleShortcodeDAO {
             logger.error("SQL Exception when deleting shortcode with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 

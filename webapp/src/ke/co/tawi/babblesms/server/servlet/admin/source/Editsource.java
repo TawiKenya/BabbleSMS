@@ -18,12 +18,13 @@ package ke.co.tawi.babblesms.server.servlet.admin.source;
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
-import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -34,8 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.ehcache.CacheManager;
-
-import org.apache.commons.validator.routines.EmailValidator;
+import net.sf.ehcache.Element;
 
 /**
  * Servlet used to edit source.
@@ -48,7 +48,11 @@ import org.apache.commons.validator.routines.EmailValidator;
         urlPatterns = {"/editsource", "/deletesource"})
 public class Editsource extends HttpServlet {
 
-    private CacheManager cacheManager;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6839655965091886176L;
+	private CacheManager cacheManager;
     private HttpSession session;
     private ShortcodeDAO shortcodeDAO;
     private MaskDAO maskDAO;
@@ -95,75 +99,107 @@ public class Editsource extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         HttpSession session = request.getSession(false);
-
+ List<Mask> maskList = new ArrayList<>();
+ List<Shortcode> shortcodeList = new ArrayList<>();
         // if edit source is called
         if (userPath.equals("/editsource")) {
-
+        	
+            Mask mask = new Mask();
+            Shortcode shortcode = new Shortcode();
+            
             String accountuuid = request.getParameter("accuuid");
             String source = request.getParameter("source");
             String networkuuid = request.getParameter("networkuuid");
             String sourceuuid = request.getParameter("sourceuuid");
-
-            /*if (maskDAO.getMask(sourceuuid) != null) {
-
-                Mask mask = new Mask();
+            
+            maskList = maskDAO.getmaskbyaccount(accountuuid); 
+            shortcodeList = shortcodeDAO.getShortcodebyaccountuuid(accountuuid);
+            
+            for(Mask msk : maskList){
+            String muuid = msk.getUuid(); 
+            if (sourceuuid.equals(muuid)) {
                 mask.setAccountuuid(accountuuid);
                 mask.setMaskname(source);
                 mask.setNetworkuuid(networkuuid);
-                mask.setUuid(sourceuuid);
-
+                mask.setUuid(muuid); 
                 if (maskDAO.updateMask(mask)) {
+                	updateMaskCache(mask); 
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Mask updated successfully.");
-                } else {
-                    session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Mask update failed.");
-
+                }else{
+                	session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Mask update failed.");
                 }
-              } else if (shortcodeDAO.getShortcode(sourceuuid) != null) {
+            }
+                //else {
+                   // session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Mask update failed.");
 
-                Shortcode shortcode = new Shortcode();
+                
+             // } 
+      
+            }//end mask for each
+            
+            
+                for(Shortcode code : shortcodeList){                 
+                String suuid = code.getUuid();
+                if(sourceuuid.equals(suuid)){	
                 shortcode.setAccountuuid(accountuuid);
                 shortcode.setCodenumber(source);
                 shortcode.setNetworkuuid(networkuuid);
-                shortcode.setUuid(sourceuuid);
-
+                shortcode.setUuid(suuid);
+               
                 if (shortcodeDAO.updateShortcode(shortcode)) {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Shortcode updated successfully.");
-                } else {
-                    session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Shortcode update failed.");
+                    updateShortcodeCache(shortcode); 
+                } 
+                else{
+                	session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Shortcode update failed.");	
                 }
-            }*/
+                
+                }
+                //else {
+                //    session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Shortcode update failed.");
+               // }
+            }//end shortcode for each
 
             response.sendRedirect("admin/source.jsp");
-
-        } // if delete account is called
-        else if (userPath.equals("/deletesource")) {
-
-            String sourceuuid = request.getParameter("sourceuuid");
-
-            /*
-            if (maskDAO.getMask(sourceuuid) != null) {
-                if (maskDAO.deleteMask(sourceuuid)) {
-
-                    session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Mask deleted successfully.");
-                } else {
-                    session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Mask deletion failed.");
-
-                }
-            } else if (shortcodeDAO.getShortcode(sourceuuid) != null) {
-                if (shortcodeDAO.deleteShortcode(sourceuuid)) {
-
-                    session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Shortcode deleted successfully.");
-                } else {
-                    session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Shortcode deletion failed.");
-
-                }
-            } */
+            }//end if editsource
             
+       
+     
+    
+    if (userPath.equals("/deletesource")) {   
+    	
+           String sourceuuid = request.getParameter("sourceuuid");
+           //System.out.println(sourceuuid); 
+           if(maskDAO.getMask(sourceuuid) !=null){
+        		   if (maskDAO.deleteMask(sourceuuid)) {
+        			 session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Mask deleted successfully."); 
+        		   }else{
+        			 session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Mask deletion failed.");  
+       	       }        	   
+           }
+           else if(shortcodeDAO.getShortcode(sourceuuid) !=null){
+    if (shortcodeDAO.deleteShortcode(sourceuuid)) {
+        			  session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Shortcode deleted successfully.");  
+        		   }else{
+            		   session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Shortcode deletion failed.");
+            		   
+            	   }          
             response.sendRedirect("admin/source.jsp");
-        }
-    }
+        
+         }
+      }
+    }//end dopodt
 
-    /**
+    private void updateShortcodeCache(Shortcode shortcode) {
+   cacheManager.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID).put(new Element(shortcode.getUuid(),shortcode));
+		
+	}
+
+	private void updateMaskCache(Mask mask) {
+  cacheManager.getCache(CacheVariables.CACHE_MASK_BY_UUID).put(new Element(mask.getUuid(),mask)); 
+	}
+
+	/**
      * Returns a short description of the servlet.
      *
      * @return a String containing servlet description

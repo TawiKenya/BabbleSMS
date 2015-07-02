@@ -91,15 +91,6 @@ public class Addcredit extends HttpServlet {
             throws ServletException, IOException {
         session = request.getSession(true);
         setClassParameters(request);
-        
-       /*String amount = StringUtils.trimToEmpty(request.getParameter("amount"));
-       String sourceuuid = StringUtils.trimToEmpty(request.getParameter("source")); 
-       String  accountuuid = StringUtils.trimToEmpty(request.getParameter("user"));*/
-      
-      // System.out.println(sourceuuid);
-      // System.out.println(accountuuid);
-        
-      // System.out.println(count);
         // No source provided
         if (StringUtils.isBlank(sourceuuid)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_CREDIT_ERROR_KEY, ERROR_INVALID_SOURCE);

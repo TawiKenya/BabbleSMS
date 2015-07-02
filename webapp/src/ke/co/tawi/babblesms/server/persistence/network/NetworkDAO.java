@@ -6,8 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+
+import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.network.Network;
@@ -17,6 +23,8 @@ import ke.co.tawi.babblesms.server.persistence.GenericDAO;
  * Copyright (c) Tawi Commercial Services Ltd., Jun 27, 2013
  *
  * @author <a href="mailto:japhethk@tawi.mobi">Japheth Korir</a>
+ * @author <a href="mailto:mwenda@tawi.mobi">peter mwenda</a>
+ * @author <a href="mailto:michael@tawi.mobi">michael wakahe</a>
  * @version %I%, %G%
  */
 public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
@@ -24,7 +32,9 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     private static NetworkDAO networkDAO;
 
     private final Logger logger;
-
+  
+    
+    
     public static NetworkDAO getInstance() {
         if (networkDAO == null) {
             networkDAO = new NetworkDAO();
@@ -39,6 +49,10 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
         super();
         logger = Logger.getLogger(this.getClass());
     }
+    
+    
+    
+    
 
     /**
      * Used for testing purposes only.
@@ -53,6 +67,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
         logger = Logger.getLogger(this.getClass());
+   
     }
 
     /**
@@ -61,13 +76,9 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     @Override
     public boolean putNetwork(Network network) {
         boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO Network (Uuid, Name,countryuuid) VALUES (?,?,?);");
+        try (Connection  conn = dbCredentials.getConnection();
+        		 PreparedStatement  pstmt = conn.prepareStatement("INSERT INTO Network (Uuid, Name,countryuuid) VALUES (?,?,?);");) {
+            
             pstmt.setString(1, network.getUuid());
             pstmt.setString(2, network.getName());
             pstmt.setString(3, network.getCountryuuid());
@@ -79,20 +90,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
             logger.error("SQL Exception when trying to put network: " + network);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 
@@ -106,14 +104,14 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     public Network getNetworkByName(String name) {
         Network network = null;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Network WHERE LOWER(name) like LOWER(?);");
+        try( Connection conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Network WHERE LOWER(name) like LOWER(?);");
+        		
+        		) {
+           
             pstmt.setString(1, "%"+name +"%");
             rset = pstmt.executeQuery();
 
@@ -124,26 +122,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting network with uuid: " + name);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return network;
     }
 
@@ -153,15 +132,12 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     @Override
     public Network getNetwork(String uuid) {
         Network network = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Network WHERE Uuid = ?;");
+        try(Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement   pstmt = conn.prepareStatement("SELECT * FROM Network WHERE Uuid = ?;");) {
+           
             pstmt.setString(1, uuid);
             rset = pstmt.executeQuery();
 
@@ -172,26 +148,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting network with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return network;
     }
 
@@ -201,15 +158,12 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     @Override
     public List<Network> getAllNetworks() {
         List<Network> list = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         ResultSet rset = null;
         BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM Network;");
+        try( Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement   pstmt = conn.prepareStatement("SELECT * FROM Network;");) {
+            
             rset = pstmt.executeQuery();
 
             list = b.toBeanList(rset, Network.class);
@@ -217,26 +171,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all networks");
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return list;
     }
 
@@ -249,12 +184,9 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     public boolean updateNetwork(String uuid, String network) {
         boolean success = true;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE Network SET Name=? WHERE Uuid = ?;");
+        try( Connection conn = dbCredentials.getConnection();
+        		 PreparedStatement  pstmt = conn.prepareStatement("UPDATE Network SET Name=? WHERE Uuid = ?;");) {
+            
             pstmt.setString(1, network);
             pstmt.setString(2, uuid);
 
@@ -264,20 +196,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
             logger.error("SQL Exception when deleting network with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 
@@ -287,13 +206,9 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
     @Override
     public boolean deleteNetwork(String uuid) {
         boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("DELETE FROM Network WHERE Uuid = ?;");
+        try (Connection conn = dbCredentials.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("DELETE FROM Network WHERE Uuid = ?;");){
+            
             pstmt.setString(1, uuid);
 
             pstmt.executeUpdate();
@@ -302,20 +217,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
             logger.error("SQL Exception when deleting network with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         return success;
     }
 

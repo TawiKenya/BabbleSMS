@@ -15,11 +15,11 @@ import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 
 /**
  * Servlet used to add/edit and delete networks.
@@ -32,22 +32,24 @@ import org.apache.commons.validator.routines.EmailValidator;
         urlPatterns = {"/addnetwork", "/editnetwork", "/deletenetwork"})
 public class Addnetwork extends HttpServlet {
 
-    final String ERROR_NO_NETWORKNAME = "Please provide a Network Name.";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3689148443770189970L;
+	final String ERROR_NO_NETWORKNAME = "Please provide a Network Name.";
     final String ERROR_NETWORKNAME_EXISTS = "The Network Name provided already exists in the system.";
     final String ERROR_NO_COUNTRYNAME = "Please select Country.";
 
     private String networkname;
     private String countryuuid;
-
+    private Cache networkCache;
     // This is used to store parameter names and values from the form.
     private HashMap<String, String> paramHash;
-    private EmailValidator emailValidator;
+    //private EmailValidator emailValidator;
 
     private NetworkDAO networkDAO;
 
     private CacheManager cacheManager;
-    private HttpSession session;
-
     /**
      *
      * @param config
@@ -56,9 +58,8 @@ public class Addnetwork extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
-        emailValidator = EmailValidator.getInstance();
-
+        CacheManager mgr = CacheManager.getInstance();
+        networkCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID); 
         networkDAO = NetworkDAO.getInstance();
 
         cacheManager = CacheManager.getInstance();
@@ -110,13 +111,15 @@ public class Addnetwork extends HttpServlet {
             response.sendRedirect("admin/network.jsp");
 
         } // if edit network is called
-        else if (userPath.equals("/editnetwork")) {
-
+        else if (userPath.equals("/editnetwork")) {             
             String networkuuid = request.getParameter("networkuuid");
             String networkname = request.getParameter("networkname");
-
+            Network net = new Network();
+            net.setUuid(networkuuid);
+            net.setName(networkname); 
             if (networkDAO.updateNetwork(networkuuid, networkname)) {
                 session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Network updated successfully.");
+                networkCache.put(new Element(net.getUuid(), net));   
             } else {
                 session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Network update failed.");
             }
@@ -135,12 +138,16 @@ public class Addnetwork extends HttpServlet {
             }
         
         response.sendRedirect("admin/network.jsp");
+     
     }
 }
 
+
+
+
 /**
  *
- */
+ */ 
 private void addNetwork() {
         Network n = new Network();
 
@@ -162,6 +169,8 @@ private void addNetwork() {
         cacheManager.getCache(CacheVariables.CACHE_NETWORK_BY_UUID).put(new Element(net.getUuid(), net));
     }
 
+    
+    
     /**
      * Set the class variables that represent form parameters.
      *
@@ -170,7 +179,7 @@ private void addNetwork() {
     private void setClassParameters(HttpServletRequest request) {
         networkname = StringUtils.trimToEmpty(request.getParameter("network"));
         countryuuid = StringUtils.trimToEmpty(request.getParameter("countryuuid"));
-
+    
     }
 
     /**
