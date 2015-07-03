@@ -157,7 +157,7 @@ public class ContactUpload extends HttpServlet {
        // Here we assume that only one file was uploaded
        // First we inspect if it is ok
        String feedback = uploadUtil.inspectContactFile(uploadedFile);
-	   session.setAttribute(UPLOAD_FEEDBACK, feedback);
+	   session.setAttribute(UPLOAD_FEEDBACK,"<p class='error'>"+feedback+"<p>");
     	    	
        response.sendRedirect("addcontact.jsp");
        

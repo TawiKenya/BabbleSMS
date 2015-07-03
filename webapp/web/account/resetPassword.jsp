@@ -39,7 +39,7 @@
 
         if (StringUtils.isNotEmpty(sendEmailerr)) {
             out.println("<p style = \"color:red;\">");
-            out.println("Form error: " + sendEmailerr);
+            out.println("Form error:  ***" + sendEmailerr);
             out.println("</p>");
             session.setAttribute(SessionConstants.EMAIL_SEND_ERROR, null);
         }

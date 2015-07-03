@@ -87,18 +87,7 @@
 
     List<Phone> phoneList = new ArrayList<Phone>();
     List<Network> networkList = new ArrayList<Network>();   
-     
-     //GroupDAO gDAO=new GroupDAO();
-     ///contactsgrpList = gDAO.getGroups(account); 
-   
-
-    /**List key2;
-    key2=contactsCache.getKeys();
-    for(Object key:key2){
-      element=contactsCache.get(key);
-      contact =(Contact)element.getObjectValue();
-      contactHash.put(contact.getUuid(),contact.getName());
-    } **/
+    
            Contact contacts= new Contact();
     
            String grpuuid=request.getParameter("grp"); 

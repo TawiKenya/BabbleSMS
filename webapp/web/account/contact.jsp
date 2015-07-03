@@ -229,7 +229,7 @@ more
                 
 
                 if (StringUtils.isNotEmpty(addErrStr)) {
-                    out.println("<p style = \"color:red;\">");
+                     out.println("<p class='error'>");
                     out.println("Form error: " + addErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_ERROR, null);
@@ -243,7 +243,7 @@ more
                 }
                 
                 if (StringUtils.isNotEmpty(deleteErrStr)) {
-                    out.println("<p style = \"color:red;\">");
+                     out.println("<p class='error'>");
                     out.println("Form error: " + deleteErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.DELETE_ERROR, null);
@@ -257,7 +257,7 @@ more
                 }
                 
                 if (StringUtils.isNotEmpty(updateErrStr)) {
-                    out.println("<p style = \"color:red;\">");
+                     out.println("<p class='error'>");
                     out.println("Form error: " + updateErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.UPDATE_ERROR, null);

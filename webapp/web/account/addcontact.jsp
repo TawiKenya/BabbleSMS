@@ -63,6 +63,7 @@
   
     List keys;
     Group cg;
+    String notNull=null;
 
     Group cgroup = new Group();
     
@@ -109,7 +110,7 @@
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.ADD_SUCCESS);
               
                 if (StringUtils.isNotEmpty(addErrStr)) {
-                    out.println("<p style='color:red;'>");
+                    out.println("<p class='error'>");
                     out.println("Form error: " + addErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_ERROR, null);
@@ -204,7 +205,11 @@
             <h3>
                 <%
                     if(StringUtils.isNotBlank((String)session.getAttribute( ContactUpload.UPLOAD_FEEDBACK ))) {
-                        out.println(session.getAttribute( ContactUpload.UPLOAD_FEEDBACK ));
+                    String servletResponse =(String)session.getAttribute( ContactUpload.UPLOAD_FEEDBACK );
+                        out.println(servletResponse);
+                        //used by javascript 
+                        if(servletResponse!=null){notNull=servletResponse.substring(0,10);
+                        }                    
                         session.setAttribute(ContactUpload.UPLOAD_FEEDBACK, null);
                     }
                 %>  
@@ -214,7 +219,7 @@
             
             <form class="form-horizontal" method="POST" action="uploadContacts" name="uploadContacts" enctype="multipart/form-data">
                 <fieldset>
-                    <div class="control-group">
+                    <div class="control-group" id="javascript" javaScriptCheck="<%=notNull%>">
                                               
                          
                         <label class="control-label" for="upload">Contact CSV</label>
@@ -281,6 +286,16 @@
     </div><!--/span-->
 
 </div><!--/row-->
+
+<!--scroll to the bottom the page if file upload is done -->
+<script type="text/javascript">
+$("document").ready(function() {    
+        var check1 = $("#javascript").attr("javaScriptCheck");
+        if(check1.length>4){
+           $("html, body").animate({ scrollTop: $(document).height() });
+        }   
+    });
+</script>
 
 
 <jsp:include page="footer.jsp" />

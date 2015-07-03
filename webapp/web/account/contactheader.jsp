@@ -62,7 +62,7 @@
    <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
    <script src="../js/jquery/jquery-1.7.2.min.js"></script>
 	<!-- CSS -->
-
+        <link href="../css/errorFormat.css" rel='stylesheet'>
         <link href="../css/bootstrap.min.css">
         <link href="../css/dataTables.bootstrap.css">
 	    <link href="../css/bootstrap-responsive.css" rel="stylesheet">

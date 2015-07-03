@@ -187,7 +187,7 @@
 
                  //display errors
                 if (StringUtils.isNotEmpty(addErrStr)) {
-                    out.println("<p style='color:red'>");
+                    out.println("<p class='error'>");
                     out.println(addErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_ERROR, null);

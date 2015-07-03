@@ -111,8 +111,8 @@
                             }	
 
 	 if (StringUtils.isNotEmpty(addErrStr)) {
-				out.println("<p class=\"error\"></p>");
-                                out.println("<p class=\"error\">");
+				out.println("<p class='error'></p>");
+                                out.println("<p class='error'>");
                                 out.println( addErrStr);
                                 out.println("</p>");
                                 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, null);

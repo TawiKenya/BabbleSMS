@@ -76,7 +76,7 @@
         <link href='../css/opa-icons.css' rel='stylesheet'>
         <link href='../css/uploadify.css' rel='stylesheet'>
         <link href='../css/template.css' rel='stylesheet'>
-
+         <link href="../css/errorFormat.css" rel='stylesheet'>
         
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
