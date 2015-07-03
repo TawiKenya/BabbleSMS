@@ -23,9 +23,6 @@ import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
 import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -99,8 +96,6 @@ public class Editsource extends HttpServlet {
             throws ServletException, IOException {
         String userPath = request.getServletPath();
         HttpSession session = request.getSession(false);
- List<Mask> maskList = new ArrayList<>();
- List<Shortcode> shortcodeList = new ArrayList<>();
         // if edit source is called
         if (userPath.equals("/editsource")) {
         	
@@ -112,16 +107,11 @@ public class Editsource extends HttpServlet {
             String networkuuid = request.getParameter("networkuuid");
             String sourceuuid = request.getParameter("sourceuuid");
             
-            maskList = maskDAO.getmaskbyaccount(accountuuid); 
-            shortcodeList = shortcodeDAO.getShortcodebyaccountuuid(accountuuid);
-            
-            for(Mask msk : maskList){
-            String muuid = msk.getUuid(); 
-            if (sourceuuid.equals(muuid)) {
+            if(maskDAO.getMask(sourceuuid)!=null){ 
                 mask.setAccountuuid(accountuuid);
                 mask.setMaskname(source);
                 mask.setNetworkuuid(networkuuid);
-                mask.setUuid(muuid); 
+                mask.setUuid(sourceuuid);  
                 if (maskDAO.updateMask(mask)) {
                 	updateMaskCache(mask); 
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Mask updated successfully.");
@@ -129,22 +119,12 @@ public class Editsource extends HttpServlet {
                 	session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Mask update failed.");
                 }
             }
-                //else {
-                   // session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Mask update failed.");
-
-                
-             // } 
-      
-            }//end mask for each
-            
-            
-                for(Shortcode code : shortcodeList){                 
-                String suuid = code.getUuid();
-                if(sourceuuid.equals(suuid)){	
+              
+            else if(shortcodeDAO.getShortcode(sourceuuid)!=null){	
                 shortcode.setAccountuuid(accountuuid);
                 shortcode.setCodenumber(source);
                 shortcode.setNetworkuuid(networkuuid);
-                shortcode.setUuid(suuid);
+                shortcode.setUuid(sourceuuid);
                
                 if (shortcodeDAO.updateShortcode(shortcode)) {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Shortcode updated successfully.");
@@ -154,12 +134,7 @@ public class Editsource extends HttpServlet {
                 	session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Shortcode update failed.");	
                 }
                 
-                }
-                //else {
-                //    session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Shortcode update failed.");
-               // }
-            }//end shortcode for each
-
+            }
             response.sendRedirect("admin/source.jsp");
             }//end if editsource
             
