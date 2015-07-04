@@ -15,9 +15,11 @@
  */
 package ke.co.tawi.babblesms.server.persistence.logs;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
+
 import java.util.List;
 
-import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
 
 /**
  * Persistence description for {@link OutgoingGrouplog}
@@ -29,49 +31,26 @@ public interface BabbleOutgoingGroupLogDAO {
 
     /**
      *
-     * @param OutgoingGrouplog
+     * @param log
      * @return		<code>true</code> if successfully inserted; <code>false</code>
      * for otherwise
      */
-    public boolean putOutgoingGrouplog(OutgoingGrouplog outgoinggroupLog);
+    public boolean put(OutgoingGrouplog log);
 
-    /**
-     *
-     * @param uuid
-     * @param network
-     * @return		<code>true</code> if successfully deleted; <code>false</code> for
-     * otherwise
-     */
-    public boolean updateOutgoingGrouplog(String uuid, String network);
-
+    
     /**
      *
      * @param uuid
      * @return	a network
      */
-    public OutgoingGrouplog getOutgoingGrouplog(String uuid);
+    public OutgoingGrouplog get(String uuid);
+    
     
     /**
      *
-     * @param accountuuid
-     * @return	a network
+     * @param account
+     * @return	a list of {@link OutgoingGrouplog}s belonging to this account.
      */
-    public List<OutgoingGrouplog> getOutgoingGrouplogByAccount(String accountuuid);
-
-    /**
-     *
-     * @return	a list of networks
-     */
-    public List<OutgoingGrouplog> getAllOutgoingGrouplogs();
-
-    /**
-     *
-     * @param uuid
-     * @return		<code>true</code> if successfully deleted; <code>false</code> for
-     * otherwise
-     */
-    public boolean deleteOutgoingGrouplog(String uuid);
-
-    
+    public List<OutgoingGrouplog> get(Account account);       
 
 }

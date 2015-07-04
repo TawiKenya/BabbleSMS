@@ -25,29 +25,48 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class OutgoingGrouplog extends Log {
 
-    private String messagestatusuuid;
+    private String messagestatusUuid;
     private String sender;
     
 
+    /**
+     * 
+     */
     public OutgoingGrouplog() {
         super();
                 
-        messagestatusuuid = "";
+        messagestatusUuid = "";
         sender = "";
     }
     
+    
+    /**
+     * @return the messagestatusUuid
+     */
     public String getMessagestatusuuid() {
-        return messagestatusuuid;
+        return messagestatusUuid;
     }
 
-    public void setMessagestatusuuid(String messagestatusuuid) {
-        this.messagestatusuuid = StringUtils.trimToEmpty(messagestatusuuid);
+    
+    /**
+     * @param messagestatusUuid
+     */
+    public void setMessagestatusUuid(String messagestatusUuid) {
+        this.messagestatusUuid = StringUtils.trimToEmpty(messagestatusUuid);
     }
 
+    
+    /**
+     * @return the sender
+     */
     public String getSender() {
         return sender;
     }
 
+    
+    /**
+     * @param sender
+     */
     public void setSender(String sender) {
         this.sender = StringUtils.trimToEmpty(sender);
     }
@@ -71,8 +90,8 @@ public class OutgoingGrouplog extends Log {
 		builder.append(getLogTime());
 		builder.append(", getDestination()=");
 		builder.append(getDestination());
-		builder.append(", messagestatusuuid=");
-		builder.append(messagestatusuuid);
+		builder.append(", messagestatusUuid=");
+		builder.append(messagestatusUuid);
 		builder.append(", sender=");
 		builder.append(sender);
 		builder.append("]");

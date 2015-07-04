@@ -276,9 +276,9 @@ CREATE TABLE outgoinglog (
 ALTER TABLE outgoinglog OWNER TO babblesms;
 
 
--- -------------------
+-- -----------------------
 -- Table outgoingGrouplog
--- -------------------
+-- -----------------------
 CREATE TABLE outgoingGrouplog (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
@@ -290,8 +290,6 @@ CREATE TABLE outgoingGrouplog (
     sender text references account(uuid),
     messagestatusuuid text references messagestatus(uuid)
 );
-
--- import data from the CSV file for the outgoingGrouplog table
 \COPY outgoingGrouplog(uuid,origin,networkuuid,destination,message,sender,messagestatusuuid,logTime) FROM '/tmp/outgoingGrouplog.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE outgoingGrouplog OWNER TO babblesms;
 

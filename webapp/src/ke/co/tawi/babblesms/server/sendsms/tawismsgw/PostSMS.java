@@ -262,7 +262,7 @@ public class PostSMS extends Thread {
             		LocalDateTime datetime = timeFormatter.parseLocalDateTime(dateStr);
             		outgoingLog.setLogTime(datetime.toDate());
             		
-            		outgoingLogDAO.putOutgoingLog(outgoingLog);
+            		outgoingLogDAO.put(outgoingLog);
             	}
 				
 			} catch (ParseException e) {

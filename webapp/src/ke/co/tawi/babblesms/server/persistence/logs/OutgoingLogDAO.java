@@ -85,10 +85,10 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
     
     
     /**
-     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#putOutgoingLog(ke.co.tawi.babblesms.server.beans.log.OutgoingLog)
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#put(ke.co.tawi.babblesms.server.beans.log.OutgoingLog)
      */
     @Override
-    public boolean putOutgoingLog(OutgoingLog outgoingLog) {
+    public boolean put(OutgoingLog outgoingLog) {
         boolean success = true;
 
         try (
@@ -122,10 +122,10 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
 
     
     /**
-     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#getOutgoingLog(java.lang.String)
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#get(java.lang.String)
      */
     @Override
-    public OutgoingLog getOutgoingLog(String uuid) {
+    public OutgoingLog get(String uuid) {
         OutgoingLog outgoingLog = null;
 
         try (
@@ -152,10 +152,10 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
    
     
     /**
-     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#getOutgoingLog(Account, int, int)
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#get(Account, int, int)
      */
     @Override
-    public List<OutgoingLog> getOutgoingLog(Account account, int fromIndex, int toIndex) {
+    public List<OutgoingLog> get(Account account, int fromIndex, int toIndex) {
         List<OutgoingLog> list = new ArrayList<>();
         
         try (

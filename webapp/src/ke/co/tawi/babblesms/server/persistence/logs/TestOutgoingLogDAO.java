@@ -68,14 +68,14 @@ public class TestOutgoingLogDAO {
 
     /**
      * Test method for
-     * {@link ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingLog#getOutgoingLog(java.lang.String)}.
+     * {@link ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingLog#get(java.lang.String)}.
      */
     @Ignore
     @Test
     public void testOutgoingLogString() {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 
-        OutgoingLog log = storage.getOutgoingLog(LOG_UUID);
+        OutgoingLog log = storage.get(LOG_UUID);
         assertEquals(log.getUuid(), LOG_UUID);
         assertEquals(log.getOrigin(), LOG_ORIGIN);
         assertEquals(log.getDestination(), LOG_DESTINATION);
@@ -89,7 +89,7 @@ public class TestOutgoingLogDAO {
 
     /**
      * Test method for
-     * {@link ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO#getOutgoingLog(java.util.List, int, int)}.
+     * {@link ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO#get(java.util.List, int, int)}.
      */
     @Ignore
     @Test
@@ -98,7 +98,7 @@ public class TestOutgoingLogDAO {
         AccountDAO acDAO = AccountDAO.getInstance();
         Account account = new Account();
         account = acDAO.getAccount(SENDERUUID);
-        List<OutgoingLog> list = storage.getOutgoingLog(account, 5, 15);
+        List<OutgoingLog> list = storage.get(account, 5, 15);
 
         //assertEquals(list.size(), 10);
         System.out.println(list);
@@ -126,9 +126,9 @@ public class TestOutgoingLogDAO {
         log.setMessagestatusuuid(MESSAGESTATUSUUID_NEW);
         log.setPhoneUuid(LOG_PHONEUUID);
         
-        assertTrue(storage.putOutgoingLog(log));
+        assertTrue(storage.put(log));
 
-        log = storage.getOutgoingLog(LOG_UUID_NEW);
+        log = storage.get(LOG_UUID_NEW);
                 
         assertEquals(log.getUuid(), LOG_UUID_NEW);
         assertEquals(log.getOrigin(), LOG_ORIGIN_NEW);

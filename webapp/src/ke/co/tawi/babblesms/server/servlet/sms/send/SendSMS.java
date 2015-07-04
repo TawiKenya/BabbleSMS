@@ -163,7 +163,7 @@ public class SendSMS extends HttpServlet {
 				
 				// Save an outgoing log for the group 
 				groupLog = new OutgoingGrouplog();
-				groupLog.setMessagestatusuuid(MsgStatus.SENT);
+				groupLog.setMessagestatusUuid(MsgStatus.SENT);
 				groupLog.setSender(account.getUuid());
 				groupLog.setDestination(group.getUuid());
 				groupLog.setMessage(message);
@@ -200,7 +200,7 @@ public class SendSMS extends HttpServlet {
 		for(OutgoingGrouplog log : outgoingGroupList) {
 			log.setNetworkUuid(smsSource.getNetworkuuid());
 			log.setOrigin(smsSource.getUuid());
-			groupLogDAO.putOutgoingGrouplog(log);
+			groupLogDAO.put(log);
 		}
 		
 		

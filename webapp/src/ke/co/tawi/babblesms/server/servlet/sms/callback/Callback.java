@@ -135,11 +135,11 @@ public class Callback extends HttpServlet {
         		datetime = timeFormatter.parseLocalDateTime(request.getParameter("datetime"));
         		String status = request.getParameter("status");
         		
-        		OutgoingLog log = outgoingLogDAO.getOutgoingLog(messageId);
+        		OutgoingLog log = outgoingLogDAO.get(messageId);
         		log.setLogTime(datetime.toDate());
         		log.setMessagestatusuuid(dlrstatusMap.get(status));
         		
-        		outgoingLogDAO.putOutgoingLog(log);
+        		outgoingLogDAO.put(log);
         		
         		break;
         		

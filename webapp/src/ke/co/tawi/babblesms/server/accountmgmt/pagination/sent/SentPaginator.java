@@ -75,7 +75,7 @@ public class SentPaginator {
      */
     public SentPage getFirstPage() {
         SentPage page = new SentPage();
-        List<OutgoingLog> userList = outgoingLogDAO.getOutgoingLog(account,0, PAGESIZE);
+        List<OutgoingLog> userList = outgoingLogDAO.get(account,0, PAGESIZE);
         page = new SentPage(1, getTotalPage(), PAGESIZE, userList);   
 
         return page;
@@ -96,7 +96,7 @@ public class SentPaginator {
 
         startIndex = (totalPage - 1) * PAGESIZE;
         sessionCount = countUtils.getIncomingCount(account.getUuid());
-        sessionList = outgoingLogDAO.getOutgoingLog(account,startIndex, sessionCount);
+        sessionList = outgoingLogDAO.get(account,startIndex, sessionCount);
 
         page = new SentPage(totalPage, totalPage, PAGESIZE, sessionList);
 
@@ -116,7 +116,7 @@ public class SentPaginator {
 
         SentPage page = new SentPage();
 
-        List<OutgoingLog> sessionList = outgoingLogDAO.getOutgoingLog(account,currentPage.getPageNum() * 
+        List<OutgoingLog> sessionList = outgoingLogDAO.get(account,currentPage.getPageNum() * 
         		PAGESIZE, ((currentPage.getPageNum() * PAGESIZE) + PAGESIZE));
 
         page = new SentPage(currentPage.getPageNum() + 1, totalPage, PAGESIZE, sessionList);
@@ -136,7 +136,7 @@ public class SentPaginator {
         int totalPage = getTotalPage();
 
         SentPage page = new SentPage();
-        List<OutgoingLog> sessionList = outgoingLogDAO.getOutgoingLog(account,(currentPage.getPageNum() - 2)
+        List<OutgoingLog> sessionList = outgoingLogDAO.get(account,(currentPage.getPageNum() - 2)
                 * PAGESIZE, ((currentPage.getPageNum() - 1) * PAGESIZE));
 
         page = new SentPage(currentPage.getPageNum() - 1, totalPage, PAGESIZE, sessionList);

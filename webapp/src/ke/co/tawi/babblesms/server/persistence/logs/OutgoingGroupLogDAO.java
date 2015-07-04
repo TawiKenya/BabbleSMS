@@ -16,12 +16,15 @@
 package ke.co.tawi.babblesms.server.persistence.logs;
 
 import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -36,16 +39,24 @@ import org.apache.log4j.Logger;
  */
 public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGroupLogDAO {
 
-    private static OutgoingGroupLogDAO outgoingGroupLogDAO;
+    private static OutgoingGroupLogDAO logDAO;
 
-    private final Logger logger;
+    private BeanProcessor beanProcessor = new BeanProcessor();
+    
+    private Logger logger;
 
+    
+    /**
+     * @return the singleton instance of {@link OutgoingGroupLogDAO}
+     */
     public static OutgoingGroupLogDAO getInstance() {
-        if (outgoingGroupLogDAO == null) {
-            outgoingGroupLogDAO = new OutgoingGroupLogDAO();
+        if (logDAO == null) {
+            logDAO = new OutgoingGroupLogDAO();
         }
-        return outgoingGroupLogDAO;
+        
+        return logDAO;
     }
+    
 
     /**
      *
@@ -54,6 +65,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
         super();
         logger = Logger.getLogger(this.getClass());
     }
+    
 
     /**
      * Used for testing purposes only.
@@ -70,271 +82,98 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
         logger = Logger.getLogger(this.getClass());
     }
 
+    
     /**
      *
      */
     @Override
-    public boolean putOutgoingGrouplog(OutgoingGrouplog outgoinggroupLog) {
+    public boolean put(OutgoingGrouplog log) {
         boolean success = true;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+        try(
+        		Connection conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO OutgoinggroupLog (Uuid, origin, networkuuid,"
+                		+ "destination, message, sender, messagestatusuuid, logTime) "
+                		+ "VALUES (?,?,?,?,?,?,?,?);");	
+        		) {            
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO OutgoinggroupLog (Uuid, origin, networkuuid,"
-            		+ "destination, message, sender, messagestatusuuid) VALUES (?,?,?,?,?,?,?);");
-
-            pstmt.setString(1, outgoinggroupLog.getUuid());
-            pstmt.setString(2, outgoinggroupLog.getOrigin());
-            pstmt.setString(3, outgoinggroupLog.getNetworkUuid()); 
-            pstmt.setString(4, outgoinggroupLog.getDestination());
-            pstmt.setString(5, outgoinggroupLog.getMessage());
-            pstmt.setString(6, outgoinggroupLog.getSender()); 
-            pstmt.setString(7, outgoinggroupLog.getMessagestatusuuid());
-
+            pstmt.setString(1, log.getUuid());
+            pstmt.setString(2, log.getOrigin());
+            pstmt.setString(3, log.getNetworkUuid()); 
+            pstmt.setString(4, log.getDestination());
+            pstmt.setString(5, log.getMessage());
+            pstmt.setString(6, log.getSender()); 
+            pstmt.setString(7, log.getMessagestatusuuid());
+            pstmt.setTimestamp(8, new Timestamp(log.getLogTime().getTime()));
+            
             pstmt.execute();
 
         } catch (SQLException e) {
-            logger.error("SQL Exception when trying to put outgoinggroupLog: " + outgoinggroupLog);
+            logger.error("SQL Exception when trying to put: " + log);
             logger.error(ExceptionUtils.getStackTrace(e));
+            
             success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
+        
         return success;
     }
-
+    
+   
     /**
-     *
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#get(java.lang.String)
      */
     @Override
-    public OutgoingGrouplog getOutgoingGrouplog(String uuid) {
-        OutgoingGrouplog outgoingGrouplog = null;
+    public OutgoingGrouplog get(String uuid) {
+        OutgoingGrouplog log = null;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        BeanProcessor b = new BeanProcessor();
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM OutgoinggroupLog WHERE Uuid = ?;");
+        try(
+        		Connection conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OutgoinggroupLog WHERE Uuid = ?;");
+        		) {            
+            
             pstmt.setString(1, uuid);
-            rset = pstmt.executeQuery();
-
+            ResultSet rset = pstmt.executeQuery();
+            
             if (rset.next()) {
-                outgoingGrouplog = b.toBean(rset, OutgoingGrouplog.class);
+                log = beanProcessor.toBean(rset, OutgoingGrouplog.class);
             }
 
         } catch (SQLException e) {
             logger.error("SQL Exception when getting outgoingGrouplog with uuid: " + uuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return outgoingGrouplog;
+            logger.error(ExceptionUtils.getStackTrace(e));            
+        } 
+        
+        return log;
     }
 
+    
     /**
-     *
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#get(ke.co.tawi.babblesms.server.beans.account.Account)
      */
     @Override
-    public List<OutgoingGrouplog> getOutgoingGrouplogByAccount(String accountuuid) {
-        List<OutgoingGrouplog> outgoingGrouplog = null;
+    public List<OutgoingGrouplog> get(Account account) {
+        List<OutgoingGrouplog> logList = null;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        BeanProcessor b = new BeanProcessor();
 
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM OutgoinggroupLog WHERE sender = ? Order By logTime desc;");
-            pstmt.setString(1, accountuuid);
-            rset = pstmt.executeQuery();
-
-            if (rset.next()) {
-                outgoingGrouplog = b.toBeanList(rset, OutgoingGrouplog.class);
-            }
+        try(
+        		Connection conn = dbCredentials.getConnection();
+        		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OutgoinggroupLog WHERE sender=? "
+        				+ "Order By logTime desc;");
+    		) {
+            
+            pstmt.setString(1, account.getUuid());
+            
+            try( ResultSet rset = pstmt.executeQuery();	) {
+            	logList = beanProcessor.toBeanList(rset, OutgoingGrouplog.class);
+	        }            
 
         } catch (SQLException e) {
-            logger.error("SQL Exception when getting outgoingGrouplog with uuid: " + accountuuid);
+            logger.error("SQL Exception when getting outgoingGrouplog of: " + account);
             logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return outgoingGrouplog;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public List<OutgoingGrouplog> getAllOutgoingGrouplogs() {
-        List<OutgoingGrouplog> list = null;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-        BeanProcessor b = new BeanProcessor();
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT * FROM OutgoingGroupLog Order By id desc;");
-            rset = pstmt.executeQuery();
-
-            list = b.toBeanList(rset, OutgoingGrouplog.class);
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when getting all outgoinggroupLogs");
-            logger.error(ExceptionUtils.getStackTrace(e));
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return list;
-    }
-
-    /**
-     * @param uuid
-     * @param outgoingLog
-     * @return success
-     */
-    @Override
-    public boolean updateOutgoingGrouplog(String uuid, String outgoingGroupLog) {
-        boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE OutgoinggroupLog SET messagestatusuuid=? WHERE Uuid = ?;");
-            pstmt.setString(1, outgoingGroupLog);
-            pstmt.setString(2, uuid);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when deleting outgoingGroupLog with uuid " + uuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return success;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public boolean deleteOutgoingGrouplog(String uuid) {
-        boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("DELETE FROM OutgoingGroupLog WHERE Uuid = ?;");
-            pstmt.setString(1, uuid);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when deleting outgoingGroupLog with uuid " + uuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return success;
-    }
-
+            
+        } 
+        
+        return logList;
+    }        
     
 }
