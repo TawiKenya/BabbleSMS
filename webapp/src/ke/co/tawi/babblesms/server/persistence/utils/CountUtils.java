@@ -75,62 +75,7 @@ public class CountUtils extends GenericDAO {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
     }
 
-    /**
-     * Gets the count of all IncomingLog requests belonging to this account.
-     *
-     * @param accountuuid
-     *
-     * @return int total count of incominglog requests
-     */
-    public int getIncomingLog(String accountuuid) {
-        int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT count(*) FROM incominglog WHERE recipientuuid = ?;");
-
-            pstmt.setString(1, accountuuid);
-
-            rset = pstmt.executeQuery();
-            rset.next();
-            count = count + rset.getInt(1);
-
-        } catch (SQLException e) {
-            logger.error("SQLException exception while getting all messages count of account with uuid '"
-                    + accountuuid + "'");
-            logger.error(ExceptionUtils.getStackTrace(e));
-
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-
-        return count;
-    }
-    
+        
     
     /**
      * Gets the count of all IncomingLog requests belonging to this account.

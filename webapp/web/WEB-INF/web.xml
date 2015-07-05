@@ -138,6 +138,11 @@
         <servlet-name>GetGroups</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroups</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>GetBalance</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetBalance</servlet-class>
+    </servlet>
     <!-- Ajax servlets end -->
     
     <!-- End - Account Holder servlets -->
@@ -331,6 +336,7 @@
         <servlet-name>ContactUpload</servlet-name>
         <url-pattern>/account/uploadContacts</url-pattern>
     </servlet-mapping>
+
     
     <!-- Client Ajax servlet mapping start -->
     <servlet-mapping>
@@ -338,11 +344,11 @@
         <url-pattern>/account/getGroups</url-pattern>
     </servlet-mapping>
 
-
-
+    <servlet-mapping>
+        <servlet-name>GetBalance</servlet-name>
+        <url-pattern>/account/getBalance</url-pattern>
+    </servlet-mapping>
     <!-- Client Ajax servlet mapping end -->
-
-   
 
 
 
