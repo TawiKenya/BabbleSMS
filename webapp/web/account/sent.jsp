@@ -188,7 +188,13 @@
         <div class="clear"></div>
 
         <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left:9px;">
-
+           
+           <div id="refresh">
+                <form name="pageForm" method="post" action="sent.jsp">
+                    <p><input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />
+                        <input class="toolbarBtn" type="hidden" name="page" value="First" /></p>
+                </form>
+            </div>
 
             <div id="pagination">
                 <form name="pageForm" method="post" action="sent.jsp">                                
@@ -296,12 +302,7 @@
         <div class="clear"></div>
 
         <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left:9px;">
-            <div id="refresh">
-                <form name="pageForm" method="post" action="refreshUSSD">
-                    <p><input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />
-                        <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp" /></p>
-                </form>
-            </div>
+            
 
             <div id="pagination">
                 <form name="pageForm" method="post" action="sent.jsp">                                
