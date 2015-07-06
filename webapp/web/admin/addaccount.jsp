@@ -137,7 +137,7 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Name*</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="name" value="" required="true">
+                            <input class="input-xlarge focused" id="receiver" type="text" name="name"  value="<%= StringUtils.trimToEmpty(paramHash.get("name")) %>" required="true">
 
                         </div>
 
@@ -147,7 +147,7 @@
                         <label class="control-label" for="name">Username*</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="username" required="true"
-                                   value="<%= StringUtils.trimToEmpty(paramHash.get("name")) %>" >                                    
+                                   value="<%= StringUtils.trimToEmpty(paramHash.get("username")) %>" >                                    
                         </div>
 
                     </div> 
@@ -174,7 +174,7 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Phone Number</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="mobile" type="text" name="phone" value="" >
+                            <input class="input-xlarge focused" id="mobile" type="text" name="phone"   value="<%= StringUtils.trimToEmpty(paramHash.get("phone")) %>">
 
                         </div>
 
@@ -183,7 +183,7 @@
                     <div class="control-group">
                         <label class="control-label" for="name">Email*</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="email" name="email" value="" required="true">
+                            <input class="input-xlarge focused" id="receiver" type="email" name="email"value="<%= StringUtils.trimToEmpty(paramHash.get("email")) %>"  required="true>
 
                         </div>
 

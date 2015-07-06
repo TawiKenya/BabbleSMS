@@ -116,8 +116,11 @@ public class AddAccount extends HttpServlet {
         } else if (StringUtils.isBlank(username)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_USERNAME);
 
-            // An invalid email provided    
-        } else if (!emailValidator.isValid(email)) {
+            // usernane exist   
+        }else if(userNameExist(username)){
+        	session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, "username already exist in the System");
+        }
+        else if (!emailValidator.isValid(email)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_INVALID_EMAIL);
 
             // No website login password provided
@@ -149,7 +152,17 @@ public class AddAccount extends HttpServlet {
     
 
    
-    /**
+    private boolean userNameExist(String username) {
+		boolean exist = false;
+		if(accountDAO.getAccountByName(username)!=null){
+			exist = true;
+		}
+		
+		return exist;
+	}
+
+
+	/**
      * @param name
      * @param username
      * @param email
