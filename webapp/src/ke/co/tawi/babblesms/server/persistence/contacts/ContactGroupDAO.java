@@ -157,6 +157,8 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	public List<Contact> getContacts(Group group) {
 		
 		List<Contact> contactList = new ArrayList<>();
+		Contact ct;
+		ContactDAO contactDAO = ContactDAO.getInstance();
 		
 		try (
 			   Connection conn = dbCredentials.getConnection();
@@ -167,7 +169,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	           try(ResultSet rset = pstmt.executeQuery();){
 		           
 		           while(rset.next()){
-		        	   Contact ct = ContactDAO.getInstance().getContact(rset.getString("contactuuid"));
+		        	   ct = contactDAO.getContact(rset.getString("contactuuid"));
 		        	   contactList.add(ct);
 		           }
 	           }

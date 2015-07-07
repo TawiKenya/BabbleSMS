@@ -1,4 +1,22 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
 package ke.co.tawi.babblesms.server.persistence.network;
+
+import ke.co.tawi.babblesms.server.beans.network.Country;
+import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,16 +26,14 @@ import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import org.apache.log4j.Logger;
 
-import ke.co.tawi.babblesms.server.beans.network.Country;
-import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 /**
  * Copyright (c) Tawi Commercial Services Ltd., Jun 27, 2013
  *
  * @author <a href="mailto:japhethk@tawi.mobi">Japheth Korir</a>
- * @version %I%, %G%
  */
 public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
 
@@ -55,6 +71,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         logger = Logger.getLogger(this.getClass());
     }
 
+    
     /**
      *
      */
@@ -93,8 +110,10 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
                 }
             }
         }
+        
         return success;
     }
+    
 
     /**
      *
@@ -144,9 +163,11 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
                 }
             }
         }
+        
         return network;
     }
 
+    
     /**
      *
      */
@@ -192,8 +213,10 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
                 }
             }
         }
+        
         return network;
     }
+    
 
     /**
      *
@@ -237,12 +260,14 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
                 }
             }
         }
+        
         return list;
     }
+    
 
     /**
      * @param uuid
-     * @param network
+     * @param country
      * @return success
      */
     @Override
@@ -254,7 +279,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
 
         try {
             conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE Country SET Name=?,codefips=? WHERE Uuid = ?;");
+            pstmt = conn.prepareStatement("UPDATE Country SET Name=?, codefips=? WHERE Uuid = ?;");
             pstmt.setString(1, country);
             pstmt.setString(2, code);
             pstmt.setString(3, uuid);
@@ -265,6 +290,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
             logger.error("SQL Exception when deleting network with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
+            
         } finally {
             if (pstmt != null) {
                 try {
@@ -279,45 +305,9 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
                 }
             }
         }
+        
         return success;
     }
-
-    /**
-     *
-     */
-    @Override
-    public boolean deleteCountry(String uuid) {
-        boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("DELETE FROM Country WHERE Uuid = ?;");
-            pstmt.setString(1, uuid);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when deleting network with uuid " + uuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return success;
-    }
+    
 
 }

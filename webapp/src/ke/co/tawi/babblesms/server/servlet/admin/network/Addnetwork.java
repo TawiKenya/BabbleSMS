@@ -1,4 +1,24 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
 package ke.co.tawi.babblesms.server.servlet.admin.network;
+
+import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.beans.network.Network;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,10 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.network.Network;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -126,20 +142,7 @@ public class Addnetwork extends HttpServlet {
 
             response.sendRedirect("admin/network.jsp");
 
-        } // if delete network is called
-        else if (userPath.equals("/deletenetwork")) {
-
-            String networkuuid = request.getParameter("networkuuid");
-
-            if (networkDAO.deleteNetwork(networkuuid)) {
-                session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Network deleted successfully.");
-            } else {
-                session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Network deletion failed.");
-            }
-        
-        response.sendRedirect("admin/network.jsp");
-     
-    }
+        } 
 }
 
 
@@ -222,14 +225,3 @@ private void addNetwork() {
     }
 }
 
-/*
- ** Local Variables:
- **   mode: java
- **   c-basic-offset: 2
- **   tab-width: 2
- **   indent-tabs-mode: nil
- ** End:
- **
- ** ex: set softtabstop=2 tabstop=2 expandtab:
- **
- */

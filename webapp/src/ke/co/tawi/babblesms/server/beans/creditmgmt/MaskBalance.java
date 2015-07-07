@@ -67,5 +67,6 @@ public class MaskBalance extends SMSBalance {
 		builder.append(maskUuid);
 		builder.append("]");
 		return builder.toString();
-	}	
+	}
+	
 }

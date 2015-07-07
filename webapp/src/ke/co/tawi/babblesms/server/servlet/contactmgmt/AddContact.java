@@ -53,8 +53,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class AddContact extends HttpServlet {
-	
-	
+			
 	final String ADD_SUCCESS = "Contact added successfully.";
 	final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
 	
@@ -199,6 +198,6 @@ public class AddContact extends HttpServlet {
 	}
 	
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -36479159003174979L;
 }
 

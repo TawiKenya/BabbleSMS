@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
  */
 public class DbPoolUtil extends HttpServlet {
 
+	
 	private static DBCredentials dbCredentials;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -65,4 +66,7 @@ public class DbPoolUtil extends HttpServlet {
     	
 		dbCredentials.closeConnections();		
 	} 
+    
+    
+    private static final long serialVersionUID = -7899535368789138778L;
 }

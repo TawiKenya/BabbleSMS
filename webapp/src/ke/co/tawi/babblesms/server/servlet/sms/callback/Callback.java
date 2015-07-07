@@ -57,7 +57,8 @@ import org.joda.time.format.ISODateTimeFormat;
  */
 public class Callback extends HttpServlet {
     
-    private OutgoingLogDAO outgoingLogDAO;
+	
+	private OutgoingLogDAO outgoingLogDAO;
     private IncomingLogDAO incomingLogDAO;
     private PhoneDAO phoneDAO;
     
@@ -191,5 +192,7 @@ public class Callback extends HttpServlet {
         
     }
     
+    
+    private static final long serialVersionUID = -1235395974580302882L;
 
 }

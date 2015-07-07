@@ -124,10 +124,10 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
      	   ) {
          	   pstmt.setString(1, account.getUuid());           
          	   pstmt.setString(2, "%" + name + "%");
-     	       ResultSet rset = pstmt.executeQuery();
+         	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, Contact.class);
-     	       
+         	   }
         } catch (SQLException e) {
             logger.error("SQLException when getting contacts of " + account  +
             		" and name '" + name +  "'");
@@ -151,10 +151,10 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
      	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Contact WHERE accountuuid = ?;");    		   
      	   ) {
          	   pstmt.setString(1, account.getUuid());   
-     	       ResultSet rset = pstmt.executeQuery();
+     	       try(ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, Contact.class);
-     	       
+     	       }  
         } catch (SQLException e) {
             logger.error("SQLException when getting contacts of " + account);
             logger.error(ExceptionUtils.getStackTrace(e));
@@ -247,10 +247,10 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
 			psmt.setInt(2, endIndex - startIndex);
 			psmt.setInt(3, startIndex);
 			
-			ResultSet rset = psmt.executeQuery();
+			try(ResultSet rset = psmt.executeQuery();){
 			
 			 contactList = beanProcessor.toBeanList(rset, Contact.class);
-  
+			}
 		} catch (SQLException e) {
 			logger.error("SQLException when trying to get a Contact List with an index and offset.");
             logger.error(ExceptionUtils.getStackTrace(e));
