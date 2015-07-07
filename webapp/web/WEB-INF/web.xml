@@ -183,8 +183,8 @@
     </servlet>
 
      <servlet>
-        <servlet-name>DeleteAccount</servlet-name>
-        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.DeleteAccount</servlet-class>
+        <servlet-name>AccountStatus</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AccountStatus</servlet-class>
     </servlet>
  
     <servlet>
@@ -391,7 +391,7 @@
     </servlet-mapping>
 
      <servlet-mapping>
-        <servlet-name>DeleteAccount</servlet-name>
+        <servlet-name>AccountStatus</servlet-name>
         <url-pattern>/deleteaccount</url-pattern>
     </servlet-mapping>
     <!-- End - Administrator servlet mapping -->
