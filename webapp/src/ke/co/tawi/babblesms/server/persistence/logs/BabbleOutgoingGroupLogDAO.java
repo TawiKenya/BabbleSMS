@@ -53,4 +53,42 @@ public interface BabbleOutgoingGroupLogDAO {
      */
     public List<OutgoingGrouplog> get(Account account);       
 
+
+    /**
+     *
+     * @return	a list of networks
+     */
+    public List<OutgoingGrouplog> getAllOutgoingGrouplogs();
+    
+    /**
+     * @param String uuid
+     * @param String outgoingGroupLog
+     * @return <code>true</code> if successfully updated; <code>false</code> for
+     * otherwise
+     */
+    
+    public boolean updateOutgoingGrouplog(String uuid, String outgoingGroupLog);
+
+    /**
+     *
+     * @param  String uuid
+     * @return		<code>true</code> if successfully deleted; <code>false</code> for
+     * otherwise
+     */
+    public boolean deleteOutgoingGrouplog(String uuid);
+    
+    
+    /**
+     * @param {@link Account} account
+     * @param int fromIndex
+     * @param int toIndex
+     * 
+     * @return a list of{@link OutgoingGrouplog}s
+     * */   
+    
+    public List<OutgoingGrouplog> getOutGoingGroupLog(Account account, int fromIndex, int toIndex);
+
+    
+
+
 }

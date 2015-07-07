@@ -15,6 +15,7 @@
  */
 package ke.co.tawi.babblesms.server.accountmgmt.pagination.sent;
 
+import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 
 import java.io.Serializable;
@@ -52,14 +53,14 @@ public class SentPage implements Serializable {
      * @param pageNum	the page number
      * @param totalPage	total pages
      * @param pagesize	the number of items in the page
-     * @param contents	the USSD session logs
+     * @param userList	the USSD session logs
      */
     public SentPage(final int pageNum, final int totalPage, final int pagesize,
-            final List<OutgoingLog> contents) {
+            final List<OutgoingLog> userList) { 
         this.pageNum = pageNum;
         this.totalPage = totalPage;
         this.pagesize = pagesize;
-        this.contents = contents;
+        this.contents = userList;
     }
 
     /**

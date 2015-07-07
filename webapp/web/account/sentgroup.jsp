@@ -21,6 +21,8 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentGroup"%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentGroupPaginator"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO"%>
@@ -71,7 +73,7 @@
         account = (Account) element.getObjectValue();
     }
 
-    List<OutgoingGrouplog> outgoingList = outgoinglogDAO.getOutgoingGrouplogByAccount(account.getUuid());
+    List<OutgoingGrouplog> outgoingList ;
 
     List<Group> groupList = groupDAO.getGroups(account);
 
@@ -90,7 +92,42 @@
 
     for(Group group : groupList) {
         groupHash.put(group.getUuid(), group.getName());
-    }
+    }        
+
+    SentGroupPaginator paginator = new SentGroupPaginator(account.getUuid());    
+    
+    SentGroup sgPage;
+    int ussdCount = 0; // The current count of the USSD sessions
+
+    
+        sgPage = (SentGroup) session.getAttribute("currentPage");
+        String referrer = request.getHeader("referer");
+        String pageParam = (String) request.getParameter("page");
+
+        // We are to give the first page
+        if (sgPage == null
+                || !StringUtils.endsWith(referrer, "sentgroup.jsp")
+                || StringUtils.equalsIgnoreCase(pageParam, "First")) {
+            sgPage = paginator.getFirstPage();
+
+            // We are to give the last page
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "Last")) {
+            sgPage = paginator.getLastPage();
+
+            // We are to give the previous page
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "Previous")) {
+            sgPage = paginator.getPreviousPage(sgPage);
+
+            // We are to give the next page 
+        } else {
+            sgPage = paginator.getNextpage(sgPage);
+        }
+
+        session.setAttribute("currentPage", sgPage);
+
+        outgoingList = sgPage.getOutGoingGroupList();
+
+        ussdCount = (sgPage.getPageNumber() - 1) * sgPage.getPageSize() + 1;
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h:mma");
     SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
@@ -111,7 +148,7 @@
 
 <div class="row-fluid sortable">		
     <div class="box span12">
-        <div class="box-header well" data-original-title>
+        <!--<div class="box-header well" data-original-title>
             <a class="toolbarBtn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> Refresh</a>                  
             <a class="toolbarBtn" href="#" title="delete message" data-rel="tooltip"><i class="icon-trash"></i> Delete</a>  
            <!-- <div class="box-icon">
@@ -119,9 +156,50 @@
                 <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
                 <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
             </div>-->
+        <!--</div>-->
+
+
+        <div class="clear"></div>
+
+        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left: 9px;">
+        <div id="refresh">
+                <form name="pageForm" method="post" action="sentgroup.jsp">
+                    <input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />
+                    <input class="toolbarBtn" type="hidden" name="page" value="First" />
+                     </form>
+            </div>
+            <div id="pagination">
+                <form name="pageForm" method="post" action="sentgroup.jsp">                                
+                    <%                                            
+                        if (!sgPage.isFirstPage()) {
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="First" />
+                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                    <%
+                        }
+                    %>
+                    <span class="pageInfo">Page 
+                        <span class="pagePosition currentPage"><%= sgPage.getPageNumber()%></span> of 
+                        <span class="pagePosition"><%= sgPage.getTotalSize()%></span>
+                    </span>   
+                    <%
+                        if (!sgPage.isLastPage()) {                        
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
+                        <input class="toolbarBtn" type="submit" name="page" value="Last">
+                    <%
+                        }
+                    %>                                
+                </form>
+            </div>
+
+            
         </div>
-        <div class="box-content">
-            <table class="bootstrap-datatable datatable ussdTable">
+
+        <div class="clear"></div>
+
+         <div class="box-content" style="margin-top: -0.5%">
+            <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
                 <thead>
                     <tr>
 
@@ -136,14 +214,13 @@
                 </thead>   
                 <tbody>
                     <%                       
-                        int count = 1;
-
+                        
                         if (outgoingList != null) {
                             for (OutgoingGrouplog code : outgoingList) {                                
                     %>
                     
                                 <tr>
-                                    <td width="2%"><%=count%></td>
+                                    <td width="2%"><%=ussdCount%></td>
                                     <td class="center"><%= groupHash.get(code.getDestination()) %> </td>
                                     <td class="center"><%= code.getMessage() %></td>
                                     <td class="center" width="4%"><%= code.getOrigin() %> </td> 
@@ -153,13 +230,46 @@
                                 </tr>
 
                     <%
-                                count++;
+                                ussdCount++;
                             }// end 'for (OutgoingGrouplog code : outgoingList)'
                         }// end 'if (outgoingList != null)'
                     %>
                 </tbody>
             </table>            
         </div>
+        <div class="clear"></div>
+
+        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left: 9px;">
+           <div id="pagination">
+                <form name="pageForm" method="post" action="sentgroup.jsp">                                
+                    <%                                            
+                        if (!sgPage.isFirstPage()) {
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="First" />
+                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                    <%
+                        }
+                    %>
+                    <span class="pageInfo">Page 
+                        <span class="pagePosition currentPage"><%= sgPage.getPageNumber()%></span> of 
+                        <span class="pagePosition"><%= sgPage.getTotalSize()%></span>
+                    </span>   
+                    <%
+                        if (!sgPage.isLastPage()) {                        
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
+                        <input class="toolbarBtn" type="submit" name="page" value="Last">
+                    <%
+                        }
+                    %>                                
+                </form>
+            </div>
+
+            
+        </div>
+
+        <div class="clear"></div>
+
     </div><!--/span-->
 
 </div><!--/row-->

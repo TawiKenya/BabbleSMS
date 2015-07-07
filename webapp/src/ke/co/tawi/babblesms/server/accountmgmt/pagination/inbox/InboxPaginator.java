@@ -71,6 +71,7 @@ public class InboxPaginator {
     
 
     /**
+     * Constructor used for testing ONLY
      *
      * @param dbName
      * @param dbHost

@@ -15,6 +15,8 @@
  */
 package ke.co.tawi.babblesms.server.persistence.logs;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 import ke.co.tawi.babblesms.server.beans.account.Account;
@@ -24,6 +26,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -36,10 +39,13 @@ import org.apache.log4j.Logger;
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
+ * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>
  */
 public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGroupLogDAO {
 
     private static OutgoingGroupLogDAO logDAO;
+    
+    private  BeanProcessor b = new BeanProcessor();
 
     private BeanProcessor beanProcessor = new BeanProcessor();
     
@@ -67,6 +73,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
     }
     
 
+    
     /**
      * Used for testing purposes only.
      *
@@ -81,15 +88,15 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
         logger = Logger.getLogger(this.getClass());
     }
+    
 
     
     /**
-     *
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#putOutgoingGrouplog(ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog)
      */
     @Override
     public boolean put(OutgoingGrouplog log) {
         boolean success = true;
-
         try(
         		Connection conn = dbCredentials.getConnection();
         		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO OutgoinggroupLog (Uuid, origin, networkuuid,"
@@ -110,47 +117,55 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
 
         } catch (SQLException e) {
             logger.error("SQL Exception when trying to put: " + log);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            
+            logger.error(ExceptionUtils.getStackTrace(e));            
             success = false;
-        } 
-        
-        return success;
+
+        }   return success;
+
     }
-    
-   
+
     /**
+
      * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#get(java.lang.String)
      */
     @Override
+
     public OutgoingGrouplog get(String uuid) {
         OutgoingGrouplog log = null;
-
         try(
         		Connection conn = dbCredentials.getConnection();
         		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OutgoinggroupLog WHERE Uuid = ?;");
-        		) {            
-            
+        		) {        
+
             pstmt.setString(1, uuid);
-            ResultSet rset = pstmt.executeQuery();
-            
+
+              try(
+                  ResultSet rset = pstmt.executeQuery();            
+                  ){
+
             if (rset.next()) {
                 log = beanProcessor.toBean(rset, OutgoingGrouplog.class);
             }
-
+              }
         } catch (SQLException e) {
             logger.error("SQL Exception when getting outgoingGrouplog with uuid: " + uuid);
+
             logger.error(ExceptionUtils.getStackTrace(e));            
         } 
         
         return log;
+
     }
+    
+    
 
     
     /**
      * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#get(ke.co.tawi.babblesms.server.beans.account.Account)
+
      */
     @Override
+
     public List<OutgoingGrouplog> get(Account account) {
         List<OutgoingGrouplog> logList = null;
 
@@ -167,13 +182,131 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
             	logList = beanProcessor.toBeanList(rset, OutgoingGrouplog.class);
 	        }            
 
+
         } catch (SQLException e) {
             logger.error("SQL Exception when getting outgoingGrouplog of: " + account);
+
+            logger.error(ExceptionUtils.getStackTrace(e));       
+        }
+        return logList;
+    }
+
+    
+    
+    
+    /**
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#getAllOutgoingGrouplogs()
+     */
+    @Override
+    public List<OutgoingGrouplog> getAllOutgoingGrouplogs() {
+        List<OutgoingGrouplog> list = null; 
+        try(
+        	Connection conn = dbCredentials.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OutgoingGroupLog Order By id desc;");
+        	) {            
+               try(
+                   ResultSet rset = pstmt.executeQuery();            
+                   ){
+                     list = b.toBeanList(rset, OutgoingGrouplog.class);
+                     }
+        } catch (SQLException e) {
+            logger.error("SQL Exception when getting all outgoinggroupLogs");
+            logger.error(ExceptionUtils.getStackTrace(e));        
+        }
+        return list;
+    }
+    
+    
+
+    /**
+     *  @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#updateOutgoingGrouplog(java.lang.String, java.lang.String)    
+     */
+    @Override
+    public boolean updateOutgoingGrouplog(String uuid, String outgoingGroupLog) {
+        boolean success = true;       
+
+        try(  Connection  conn = dbCredentials.getConnection();
+              PreparedStatement  pstmt = conn.prepareStatement("UPDATE OutgoinggroupLog SET "
+                		+ "messagestatusuuid=? WHERE Uuid = ?;");
+        		) {           
+           
+            pstmt.setString(1, outgoingGroupLog);
+            pstmt.setString(2, uuid);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception when deleting outgoingGroupLog with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
-            
+            success = false;
         } 
         
-        return logList;
-    }        
+        return success;
+    }
+    
+    
+    
+
+    /**
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#deleteOutgoingGrouplog(java.lang.String)
+     */
+    @Override
+    public boolean deleteOutgoingGrouplog(String uuid) {
+        boolean success = true;
+        
+        try (
+        	Connection conn = dbCredentials.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM OutgoingGroupLog WHERE Uuid = ?;");
+              ){            
+            
+            pstmt.setString(1, uuid);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception when deleting outgoingGroupLog with uuid " + uuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            success = false;
+        } 
+        
+        return success;
+    }
+ 
+    /**
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO
+     * #getOutGoingGroupLog(ke.co.tawi.babblesms.server.beans.account.Account, int, int)
+     */
+    @Override
+    public List<OutgoingGrouplog> getOutGoingGroupLog(Account account, int fromIndex, int toIndex) {
+        List<OutgoingGrouplog> list = new ArrayList<>();
+        try 
+            (
+        		Connection conn =  dbCredentials.getConnection();
+    		    PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OutgoingGroupLog WHERE sender = ?"
+        		+ " ORDER BY logTime DESC LIMIT ? OFFSET ? ;");
+            ) {
+        	
+        	pstmt.setString(1, account.getUuid());
+        	pstmt.setInt(2, toIndex - fromIndex);
+        	pstmt.setInt(3, fromIndex);
+        	
+        	try(ResultSet rset = pstmt.executeQuery();) {
+        		list = b.toBeanList(rset, OutgoingGrouplog.class);
+        	}
+        } 
+        
+        catch (SQLException e) {
+        	
+            logger.error("SQLException while getting incomingLog from index "
+                    + fromIndex + " to index " + toIndex + ".");
+            logger.error(ExceptionUtils.getStackTrace(e));
+
+        }
+
+        return list;
+    }
+    
+
+
     
 }

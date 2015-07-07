@@ -15,15 +15,18 @@
  */
 package ke.co.tawi.babblesms.server.persistence.logs;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.Assert.*;
 
 import java.util.List;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -43,7 +46,7 @@ public class TestOutgoingGroupLogDAO {
 
     final String LOG_UUID = "a79c5824-6d32-4a94-9005-adc925db15d6", LOG_UUID_NEW = "R77YRHDJHSDWEUIRFJHKFSKJ";
     final String LOG_ORIGIN = "tawi", LOG_ORIGIN_NEW = "20272";
-    final String LOG_DESTINATION = "78584892-4f5a-45bb-8b6e-bb5f1fd659bd",
+    final String LOG_DESTINATION = "a118c8ea-f831-4288-986d-35e22c91fc4",
             LOG_DESTINATION_NEW = "d312e301-9103-4326-93b8-fd3114264e00";
     final String LOG_MESSAGE = "The simple truth is",
             LOG_MESSAGE_NEW = "This a new SMS";
@@ -56,8 +59,9 @@ public class TestOutgoingGroupLogDAO {
     final String MESSAGESTATUSUUID = "49229BA2-91E5-7E64-F49C-923B7927C40D",
             MESSAGESTATUSUUID_NEW = "2F4AF191-8557-86C5-5D72-47DD44D303B1",
             MESSAGESTATUSUUID_UPDATE = "04C7CD60-9CC2-1B1A-EB6B-4A3E1FA8AC38";
+    final String DEMO_USER = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
 
-    private OutgoingGroupLogDAO storage;
+    private OutgoingGroupLogDAO storage = new  OutgoingGroupLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 
     /**
      * Test method for
@@ -82,11 +86,10 @@ public class TestOutgoingGroupLogDAO {
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO#getOutgoingGroupLog(java.util.List, int, int)}.
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testGetOutgoingGroupLogDListOfStringIntInt() {
-        storage = new OutgoingGroupLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-
+       
         /*List<OutgoingGrouplog> list = storage.getOutgoingGrouplogByAccount(SENDERUUID);
 
         //assertEquals(list.size(), 10);
@@ -103,11 +106,12 @@ public class TestOutgoingGroupLogDAO {
      *
      * 
      * */
+     @Ignore
      @Test 
+
      public void testPutOutgoingGroupLog() { 
-    	 storage = new
-      OutgoingGroupLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-     
+    	 
+
      OutgoingGrouplog log = new OutgoingGrouplog(); 
      log.setUuid(LOG_UUID_NEW);
      log.setOrigin(LOG_ORIGIN_NEW);
@@ -125,5 +129,48 @@ public class TestOutgoingGroupLogDAO {
       assertEquals(log.getSender(), SENDERUUID_NEW);
       assertEquals(log.getMessagestatusuuid(), MESSAGESTATUSUUID_NEW);
      }    
+     
+
+     /**
+     * Test method for
+     * {@link ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingGroupLog#UpdateOutgoingGroupLog(ke.co.tawi.babblesms.server.beans.log.OutgoingGroupLog)}.
+     *
+     * 
+     * */
+     @Ignore
+     @Test 
+     public void testUpdateOutgoingGroupLog() { 
+    	 
+      assertTrue(storage.updateOutgoingGrouplog(LOG_UUID_NEW,MESSAGESTATUSUUID_UPDATE));
+      
+      OutgoingGrouplog log = storage.get(LOG_UUID_NEW);
+      assertEquals(log.getUuid(), LOG_UUID_NEW);
+      assertEquals(log.getOrigin(),LOG_ORIGIN_NEW); 
+      assertEquals(log.getDestination(), LOG_DESTINATION_NEW);
+      assertEquals(log.getMessage(), LOG_MESSAGE_NEW);
+      assertEquals(log.getSender(), SENDERUUID_NEW);
+      assertEquals(log.getMessagestatusuuid(), MESSAGESTATUSUUID_UPDATE);
+     }
+     
+
+     /**
+      * Test method for
+      * {@link ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#getOutGoingGroupLog(ke.co.tawi.babblesms.server.beans.account.Account, int, int)
+      * 
+      * */
+     
+     @Test
+     public void testgetOutGoingGroupLog(){  
+    	 Account account = new Account();
+    	 account.setUuid(DEMO_USER);
+     
+     List<OutgoingGrouplog> list = new ArrayList<>();
+     list= storage.getOutGoingGroupLog(account, 0, 15);
+     for(int i=0; i<list.size();i++){
+    	 System.out.println(list.get(i));
+     }
+    	 
+     }
+     
      
 }

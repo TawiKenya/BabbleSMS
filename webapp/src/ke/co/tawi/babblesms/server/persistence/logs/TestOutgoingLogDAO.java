@@ -70,7 +70,7 @@ public class TestOutgoingLogDAO {
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingLog#get(java.lang.String)}.
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testOutgoingLogString() {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -97,7 +97,8 @@ public class TestOutgoingLogDAO {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
         AccountDAO acDAO = AccountDAO.getInstance();
         Account account = new Account();
-        account = acDAO.getAccount(SENDERUUID);
+        //account = acDAO.getAccount(SENDERUUID);
+        account.setUuid(SENDERUUID); 
         List<OutgoingLog> list = storage.get(account, 5, 15);
 
         //assertEquals(list.size(), 10);
@@ -112,6 +113,7 @@ public class TestOutgoingLogDAO {
      * Test method for
      * {@link ke.co.tawi.babblesms.server.persistence.items.logs.OutgoingLog#PutOutgoingLog(ke.co.tawi.babblesms.server.beans.log.OutgoingLog)}.
      */
+    @Ignore
     @Test
     public void testPutOutgoingLog() {
         storage = new OutgoingLogDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);

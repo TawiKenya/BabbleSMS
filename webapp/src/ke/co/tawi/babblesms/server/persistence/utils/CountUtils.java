@@ -430,40 +430,24 @@ public class CountUtils extends GenericDAO {
      * @return int total count of outgoinglog requests
      */
     public int getOutgoingGroupLog(String accountuuid) {
-        int count = 0;
+        int count = 0;  
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT count(*) FROM outgoinggrouplog WHERE sender = ?");
+        try(	Connection conn = dbCredentials.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("SELECT count(*) FROM outgoinggrouplog WHERE sender = ?");
+        		) {           
             pstmt.setString(1, accountuuid);
-
-            rset = pstmt.executeQuery();
+                 try(
+                ResultSet rset = pstmt.executeQuery();            
+                		 ){
             rset.next();
             count = count + rset.getInt(1);
-
+                 }
         } catch (SQLException e) {
             logger.error("SQLException exception while getting all airtime count of  '"
                     + accountuuid + "' and '" + accountuuid + "'");
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
+        } 
 
         return count;
     }
