@@ -26,7 +26,6 @@
 
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.servlet.accountmngmt.VeiwGrpContacts"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -55,17 +54,13 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
 
-    List<Group> contactsgrpList = new ArrayList<>();   
-         
+    List<Group> contactsgrpList = new ArrayList<>();          
 
      AccountDAO accountDAO = AccountDAO.getInstance();
      Account account = accountDAO.getAccountByName(username);
 
      GroupDAO gDAO = new GroupDAO();
-    contactsgrpList = gDAO.getGroups(account);
-
-    VeiwGrpContacts gcDAO = VeiwGrpContacts.getInstance();
-    HashMap<String, String> grpList = gcDAO.getcontacts("a118c8ea-f831-4288-986d-35e22c91fc4d");
+    contactsgrpList = gDAO.getGroups(account);   
 
     String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
@@ -100,13 +95,12 @@
 %>
 
 <div>
-    <ul class="breadcrumb">
+    <ul class="breadcrumb" onload="sendRequest2()">
         <li>
-            <a href="index.jsp">Home</a> <span class="divider">/GroupContacts</span>
+            <a href="index.jsp">Home</a> 
+            <span class="divider">/GroupContacts</span>
         </li>
-        <li>
-            View Contacts per group 
-        </li>
+        
     </ul>
 </div>
 
@@ -121,7 +115,7 @@
         </div>
         <div class="box-content">
        
-<div class="controls"> 
+    <div class="controls"> 
           <h4>Choose a group:&nbsp;             
             <select class="groupselect" onclick="Chromecheck()">
                  <% if (contactsgrpList != null) {                        
@@ -136,16 +130,30 @@
             </select>
            
           </h4>
-        <div id="header-display"></div>
+           <div id="header-display"></div>
                 <table class="table table-striped table-bordered" id="contactgrp">                        
-                </table>                       
-      </div>
+                </table> 
 
+                    <div>
+                   <span id="prev" name="<%=accountuuid%>" > 
+                <span class="icon-fast-backward"></span>
+                   &nbsp;<a>Prev</a>&nbsp;&nbsp;&nbsp;
+                   </span>
+                  &nbsp;&nbsp;&nbsp;
+
+                   <span id="next" > 
+                   <a>Next</a>&nbsp;
+                <span class="icon-fast-forward"></span>
+                   </span>
+                   </div>
+            </div>
         </div>
     </div><!--/span-->
 
 </div><!--/row-->
 
+<!--manages the table on contactspergroup page-->
+<script src="../js/tawi/contactgrpselected.js"></script>
 
 
 <jsp:include page="footer.jsp" />

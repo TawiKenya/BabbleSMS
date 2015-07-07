@@ -6,45 +6,102 @@
   Author: Migwi Ndung'u  <migwi@tawi.mobi>
 */
 
-function networkselect(val){	
-//Name of the selected network service provider
-var networkprovider=val.label;
+   //global variables
+   var jssonBalance=null;
+   var response=null;
+   var saf=0;
+   var orange=0;
+   var yu=0;
+   var airtel=0;
 
-//changes network provider color according to the item clicked
-if(networkprovider=='Safaricom KE') {
-$("#Safaricom").html('<td><font color=green>Safaricom</font></td>');
-	$("#Orange").html('<td>Orange</td>');
-	$("#Yu").html('<td>Yu</td>');
-	$("#Airtel").html('<td>Airtel</td>');
+
+function networkselect(val){	
+         //Name of the selected network service provider
+       var networkprovider=val.label;
+
+          //maskuuid or shortcodeuuid of the source to be used
+       var sourceUuid = val.value;
+          //gets current balance of a given mask or shortcode
+          if(jssonBalance===null){
+            currentBalance="<font font-size=8px color=red><i><u>Null Destination!!</u></i></font>";
+          }
+          else{  var currentBalance=jssonBalance[sourceUuid];
+          }
+        
+          //changes network provider color according to the item clicked
+      if(networkprovider=='Safaricom KE') {
+          creditConsumed("<font color=green>Safaricom</font>","Orange","Yu","Airtel");
+          creditBalance("<font color=green>"+currentBalance+"</font>","0","0","0");
 	     }
 	
-else if (networkprovider=='Yu KE') {  	
-  	$("#Yu").html('<td><font color=blue>Yu</font></td>');
-	$("#Safaricom").html('<td>Safaricom</td>');
-	$("#Orange").html('<td>Orange</td>');
-	$("#Airtel").html('<td>Airtel</td>');
+      else if (networkprovider=='Yu KE') {  
+          creditConsumed("Safaricom","Orange","<font color=blue>Yu</font>","Airtel");	
+          creditBalance("0","0","<font color=blue>"+currentBalance+"</font>","0");  	
 	     }
 	
-else if(networkprovider=='Airtel KE'){
-	$("#Airtel").html('<td><font color=red>Airtel</font></td>');
-	$("#Safaricom").html('<td>Safaricom</td>');
-	$("#Orange").html('<td>Orange</td>');
-	$("#Yu").html('<td>Yu</td>');
+      else if(networkprovider=='Airtel KE'){
+         creditConsumed("Safaricom","Orange","Yu","<font color=red>Airtel</font>");
+         creditBalance("0","0","0","<font color=red>"+currentBalance+"</font>");	
 	     }
 	
-else if (networkprovider=='Orange KE'){
-	$("#Orange").html('<td><font color=orange>Orange</font></td>');
-	$("#Safaricom").html('<td>Safaricom</td>');
-	$("#Yu").html('<td>Yu</td>');
-	$("#Airtel").html('<td>Airtel</td>');
+      else if (networkprovider=='Orange KE'){
+          creditConsumed("Safaricom","<font color=orange>Orange</font>","Yu","Airtel");	
+          creditBalance("0","<font color=orange>"+currentBalance+"</font>","0","0");
         }
+    }
+
+   function creditConsumed(safcom1,orange1,yu1,airtel1){
+         $("#Safaricom").html('<td>'+safcom1+'</td>');
+         $("#Orange").html('<td>'+orange1+'</td>');
+         $("#Yu").html('<td>'+yu1+'</td>');
+         $("#Airtel").html('<td>'+airtel1+'</td>');
+         }   
+
+
+   function creditBalance(safcom3,orange3,yu3,airtel3){
+        $("#safcreditbalance").html('<td>'+safcom3+'</td>');
+        $("#orangecreditbalance").html('<td>'+orange3+'</td>');
+        $("#yucreditbalance").html('<td>'+yu3+'</td>');
+        $("#airtelcreditbalance").html('<td>'+airtel3+'</td>');
+   }
+
+function getCreditBalance(called){
+  //dont get the jssonBalance again if it already exists
+      if(jssonBalance===null){
+  var accountUuid = called.name;
+  //alert(" its called :"+accountUuid);
+  var data = "accountuuid=" + escape(accountUuid);  
+     xreq=getRequestObject11();
+     xreq.onreadystatechange= function(){HandleBalance(xreq);};                
+     xreq.open("POST", "getBalance", true);
+     xreq.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+     xreq.send(data);
+       }
+    }
+
+function HandleBalance(balance){
+ if((balance.readyState==4) && (balance.status==200)){
+     jssonBalance=JSON.parse(balance.responseText);     
+   }
 }
 
-var response=null;
-var saf=0;
-var orange=0;
-var yu=0;
-var airtel=0;
+
+function getRequestObject11() {
+          if (window.XMLHttpRequest) {
+             return(new XMLHttpRequest());//for modern browsers, i.e. Opera,Mozilla, chrome e.t.c.
+             } 
+
+             else if (window.ActiveXObject) {
+               return(new ActiveXObject("Microsoft.XMLHTTP")); //for internet explorer
+             } 
+             else if(window.createRequest){             
+              return(window.createRequest());// for crystal browser
+             }
+             else {
+             return(null);//the browser failed to create a reques object
+             alert("Your current browser failed, try Mozilla or chrome browsers");
+             }
+           }  
 
 function getcount(val){	
 	
@@ -54,7 +111,7 @@ function getcount(val){
     var select=$item.html();    
     var xreq;     
     
-    //assigned once if click only once n assigned repeat if it is clicked for the second time
+    //assigned 'once' if clicked only once and assigned 'repeat' if it is clicked for the second time
 	if($(val).is(":checked")){		
 	    jsson='once';		        	
 	}else{		
@@ -62,25 +119,8 @@ function getcount(val){
 	}	
        
        if(response===null){
-	var data = "accountuuid=" + escape(Accuuid);
-
-	
-      if (window.XMLHttpRequest) {
-      xreq=new XMLHttpRequest();//for modern browsers, i.e. Opera,Mozilla, chrome e.t.c.
-             } 
-
-      else if (window.ActiveXObject) {
-      xreq=new ActiveXObject("Microsoft.XMLHTTP"); //for internet explorer
-             } 
-
-      else if(window.createRequest){             
-      xreq=window.createRequest();// for crystal browser
-             }
-
-      else { xreq=null; //the browser failed to create a reques object
-      alert("Your current browser failed, try Mozilla or chrome browsers");
-             }  
-
+	var data = "accountuuid=" + escape(Accuuid);  
+     xreq=getRequestObject11();
      xreq.onreadystatechange= function(){Handleresp(xreq);};                
      xreq.open("POST", "getGroups", true);
      xreq.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -138,10 +178,9 @@ function getcount(val){
      jsson=null;                                         
               }
           }
-          
-
-
        }
+
+
         //return the current safaricom contacts count
        function safGroupCount(){
        	return saf;
@@ -158,3 +197,4 @@ function getcount(val){
        function airtelGroupCount(){
        	return airtel;
        }
+

@@ -32,7 +32,7 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.network.networkcountDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.utils.Networkcount"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.contact.ContactPaginator"%>
@@ -52,21 +52,16 @@
 <%    
     
     final int PAGESIZE = 15;  
-    int contactCount =1; 
+    int contactCount =0; 
 
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
     Cache contactsCache = mgr.getCache(CacheVariables.CACHE_CONTACTS_BY_UUID);
     Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
-   // Cache emailCache = mgr.getCache(CacheVariables.CACHE_EMAIL_BY_UUID);
-    
-    //PhoneDAO phoneDAO = PhoneDAO.getInstance();
-    //EmailDAO emailDAO = EmailDAO.getInstance();
-    //ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-    //GroupDAO gDAO = GroupDAO.getInstance();
+   
      ContactDAO cdao = ContactDAO.getInstance();
 
-    networkcountDAO ncDAO= networkcountDAO.getInstance();
+    Networkcount ncDAO= Networkcount.getInstance();
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
@@ -89,14 +84,7 @@
 
     List<Phone> phoneList = new ArrayList<Phone>();
     List<Network> networkList = new ArrayList<Network>();
-    //List<Contact> newcontlist = new ArrayList<Contact>(); 
-   // List<Email> emailList = new ArrayList<>();
-    //List<Group> contactGroupList = new ArrayList<Group>();
-    //List<Group> contactsgrpList = new ArrayList<Group>();
-    //List<Contact> contactPageList = new ArrayList<Contact>();  
-     
-     //GroupDAO gDAO=new GroupDAO();
-     ///contactsgrpList = gDAO.getGroups(account); 
+    
 
     List keys;
      
@@ -108,20 +96,17 @@
         networkList.add(network);
     }
 
-
-
-    /**List key2;
-    key2=contactsCache.getKeys();
-    for(Object key:key2){
-      element=contactsCache.get(key);
-      contact =(Contact)element.getObjectValue();
-      contactHash.put(contact.getUuid(),contact.getName());
-    } */
          Contact contacts= new Contact();
     
-        String grpuuid=request.getParameter("grp"); 
+        String grpuuid=request.getParameter("grp");
+
+        int count=Integer.parseInt(request.getParameter("count"));
+         
+        contactCount=contactCount+count;
       
-         phoneList=ncDAO.allgrpcontacts(grpuuid);
+         phoneList=ncDAO.allgrpcontacts(grpuuid,contactCount);
+
+         contactCount=contactCount+1;
          // end else
 %>
  
@@ -139,9 +124,7 @@
                  if(phoneList!=null){
 
                  for (Phone phone:phoneList) { 
-
                 contactuuid=phone.getContactUuid();
-
                 contacts = cdao.getContact(contactuuid);               
          %>
          <tr>
@@ -150,7 +133,7 @@
 
             <td class="center"> <a href="#"><%=contacts.getName()%></a></td>             
 
-            <td class="center">  <%=phone.getPhonenumber()%> (<%=networkHash.get(phone.getNetworkuuid())%>) </td>  
+            <td class="center">  <%=phone.getPhonenumber()%>  (<%=networkHash.get(phone.getNetworkuuid())%>) </td>  
   
             <td style="display:none"> <%=phone.getStatusuuid()%> </td>
 
@@ -160,9 +143,8 @@
          </tr>
 
          <%         
-                     contactCount++;
-                     contacts=null;
-                 }
+                     contactCount++;                     
+                 }               
             }       
         %>
         </tbody>

@@ -149,8 +149,6 @@
 <script src="../js/tawi/editcontact.js"></script>
 <!--affect the popup on contact page-->
 <script src="../js/tawi/editcontact_popup.js"></script>
-<!--manages the table on contactspergroup page-->
-<script src="../js/tawi/contactgrpselected.js"></script>
 
 <script type="text/javascript">
 

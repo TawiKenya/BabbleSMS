@@ -187,7 +187,7 @@
 
                  //display errors
                 if (StringUtils.isNotEmpty(addErrStr)) {
-                    out.println("<p class='error'>");
+                    out.println("<p style='color:red'>");
                     out.println(addErrStr);
                     out.println("</p>");
                     session.setAttribute(SessionConstants.ADD_ERROR, null);
@@ -207,11 +207,12 @@
                 <fieldset>
                     <div class="control-group" id ="grouptable">
                         <label class="control-label" for="destination">TO:</label>
-                                        
+                        
+                        
+                
                         <div class="controls">
-            <input type="hidden" name="username" value="<%=username %>"> 
-            
-            <select name ="destination" id="destination" required="true">
+                           
+            <select id="destination" required="true" name="<%=accountuuid%>" onclick="getCreditBalance(this)">
             <option value ="Choose">Choose Groups or Contacts</option>
             <option value = "Group">Group</option>
             
@@ -222,7 +223,7 @@
                                     <tr width="5%">
                                         <th>Network</th>
                                         <th>Credit Consumed</th>
-                                        <th>Balance</th>
+                                        <th>Credit Balance</th>
                                     </tr>
                                    <tr width="5%">
                                        <td id="Safaricom"><font color="green">Safaricom</font></td>
@@ -336,7 +337,7 @@
         <div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
-                            
+                            <form action="sendsms.jsp">
                                 
                                 <select name="source" id="source" required="true">
                                     <%
@@ -397,6 +398,7 @@
                                     }
                                 %>
                             </select>
+                            </form>
                         </div>
                     </div>       
 

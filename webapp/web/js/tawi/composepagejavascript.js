@@ -59,11 +59,9 @@ function countChar(val) {
 	            //get current safaricom contacts count from credittable.js in the selected group(s)
            countSaf=safGroupCount(); 
            //lert("countSaf:"+countSaf);
-           var Count=countSaf*(Math.floor(sms/160)+1);      	
-                $("#safcreditconsumed").html('<td><font color=green>'+Count+'</font></td>');
-	            $("#orangecreditconsumed").html('<td>0</td>');
-	            $("#yucreditconsumed").html('<td>0</td>');
-	            $("#airtelcreditconsumed").html('<td>0</td>');
+           var Count=countSaf*(Math.floor(sms/160)+1); 
+           changeNetworkcolor("<font color=green>"+Count+"</font>","0","0","0");  	
+               
 	         }
 	
            else if (netcheck=='Yu KE') {
@@ -71,34 +69,35 @@ function countChar(val) {
            countYu=yuGroupCount();
            //alert("countYu:"+countYu);	
            var Count=countYu*(Math.floor(sms/160)+1);
-  	         $("#yucreditconsumed").html('<td><font color=blue>'+Count+'</font></td>');
-	            $("#safcreditconsumed").html('<td>0</td>');
-	            $("#orangecreditconsumed").html('<td>0</td>');
-	            $("#airtelcreditconsumed").html('<td>0</td>');
+           changeNetworkcolor("0","0","<font color=blue>"+Count+"</font>","0");  	         
 	         }
+
 	
            else if(netcheck=='Airtel KE'){
                //get current airtel contacts count from credittable.js in the selected group(s) 	
             countAirtel=airtelGroupCount();
             //alert("countAirtel:"+countAirtel);
             var Count=countAirtel*(Math.floor(sms/160)+1);
-	            $("#airtelcreditconsumed").html('<td><font color=red>'+Count+'</font></td>');
-	            $("#safcreditconsumed").html('<td>0</td>');
-	            $("#orangecreditconsumed").html('<td>0</td>');
-	            $("#yucreditconsumed").html('<td>0</td>');
+            changeNetworkcolor("0","0","0","<font color=red>"+Count+"</font>");	            
 	            }
+
 	
            else if (netcheck=='Orange KE'){
 	          //get current orange contacts count from credittable.js in the selected group(s)
             countOrange=orangeGroupCount();
             //alert("countOrange:"+countOrange);
             var Count=countOrange*(Math.floor(sms/160)+1);
-	            $("#orangecreditconsumed").html('<td><font color=orange>'+Count+'</font></td>');
-	            $("#safcreditconsumed").html('<td>0</td>');
-	            $("#yucreditconsumed").html('<td>0</td>');
-	            $("#airtelcreditconsumed").html('<td>0</td>');
+            changeNetworkcolor("0","<font color=orange>"+Count+"</font>","0","0");	            
                 }
        
+        }
+
+        function changeNetworkcolor(safcom2,orange2,yu2,airtel2){
+        	    $("#safcreditconsumed").html('<td>'+safcom2+'</td>');
+	            $("#orangecreditconsumed").html('<td>'+orange2+'</td>');
+	            $("#yucreditconsumed").html('<td>'+yu2+'</td>');
+	            $("#airtelcreditconsumed").html('<td>'+airtel2+'</td>');
+
         }
 
         //function change color of button in the compose page modal
