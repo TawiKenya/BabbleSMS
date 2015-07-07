@@ -195,12 +195,13 @@
                                 <input type="hidden" name="statusuuid" value="<%=code.getStatusuuid()%>">
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
-                            </form>
+                           <!-- </form>
                             <form name="delete" method="post" action="../deleteaccount">
 
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
+                                
                                 <input class="btn btn-success" type="submit" name="deletenetwork" id="submit" value="Delete" /> 
-                            </form>
+                            </form> -->
                         </td>      
 
 

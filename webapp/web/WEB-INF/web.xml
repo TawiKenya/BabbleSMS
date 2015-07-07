@@ -182,6 +182,11 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.EditAccount</servlet-class>
     </servlet>
 
+     <servlet>
+        <servlet-name>DeleteAccount</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.DeleteAccount</servlet-class>
+    </servlet>
+ 
     <servlet>
         <servlet-name>addshortcode</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.source.Addshortcode</servlet-class>
@@ -383,6 +388,11 @@
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
         <url-pattern>/editAccount</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>DeleteAccount</servlet-name>
+        <url-pattern>/deleteaccount</url-pattern>
     </servlet-mapping>
     <!-- End - Administrator servlet mapping -->
     
