@@ -32,7 +32,6 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO"%>
@@ -42,6 +41,7 @@
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.LinkedList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.net.URLEncoder"%>
@@ -52,7 +52,7 @@
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.StringEscapeUtils"%>
-
+<%@page import="org.apache.log4j.Logger"%>
 
 
 <style type= "text/css">
@@ -72,6 +72,8 @@
     if (session == null) {
         response.sendRedirect("../index.jsp");
     }
+
+    Logger logger = Logger.getLogger(this.getClass());
 
     String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
 
@@ -119,18 +121,28 @@
         i++;
     }
     
-
-    List<Network> networkList = new ArrayList();
+    
     List<Shortcode> shortcodelist = new ArrayList();
     List<Mask> masklist;
     List<MessageTemplate> msgTemplatelist = new ArrayList();
     List<Group> contactsgrpList = new ArrayList<Group>();
-    List<Contact> contactList = new ArrayList();
+    List<Contact> contactList = new LinkedList<Contact>();
 
     GroupDAO gDAO = new GroupDAO();
     contactsgrpList = gDAO.getGroups(account);
-    ContactDAO cDAO =  ContactDAO.getInstance();
-    contactList= cDAO.getContacts(account);
+    
+    
+    Contact ct;
+    String uuid = account.getUuid();
+    keys = contactsCache.getKeys();
+
+    for (Object key : keys) {
+        element = contactsCache.get(key);
+        ct = (Contact) element.getObjectValue();
+        if(ct.getAccountUuid().equals(uuid)) {
+            contactList.add(ct);
+        }
+    }
 
     PhoneDAO phoneDAO = PhoneDAO.getInstance();
 
@@ -143,7 +155,7 @@
    shortcodelist = shortcodeDAO.getShortcodes(account);
    msgTemplatelist = msgtemplDAO.getTemplates(account);
        
-    Contact contacts;
+    
     
     MessageTemplate messageTemplate;
     List<Phone> list2 = new ArrayList();
@@ -154,8 +166,6 @@
 
     int credit_Balance = 0;
     int credit_Consumed = 0;
-    //the current accountUuid
-    String accountuuid = account.getUuid();
 
 %>
 <jsp:include page="messageheader.jsp" />
@@ -212,7 +222,7 @@
                 
                         <div class="controls">
                            
-            <select id="destination" required="true" name="<%=accountuuid%>" onclick="getCreditBalance(this)">
+            <select id="destination" required="true" name="<%=account.getUuid()%>" onclick="getCreditBalance(this)">
             <option value ="Choose">Choose Groups or Contacts</option>
             <option value = "Group">Group</option>
             
