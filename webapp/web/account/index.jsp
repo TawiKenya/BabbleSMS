@@ -337,7 +337,7 @@
 <script src="../js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>
 <script src="../js/jqplot/jquery.highlighter.min.js"></script>
 <script src="../js/jqplot/jquery.cursor.min.js"></script>
-<link href="../css/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>
+<link href="../css/jquery/jquery.jqplot.min.css" type="text/css" rel="stylesheet"/>
 
 <script type="text/javascript">
 /*

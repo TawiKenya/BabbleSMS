@@ -19,7 +19,7 @@
 <html>
 <head>
 	<title>success</title>
-	<link rel="stylesheet" type="text/css" href="../css/resetPassword.css"> 
+	<link rel="stylesheet" type="text/css" href="../css/tawi/resetPassword.css"> 
 </head>
 <body>
 <div class="container">

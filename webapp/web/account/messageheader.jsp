@@ -39,7 +39,7 @@
     <meta name="author" content="eugene" >
     <!-- The styles -->
     <!--<link id="bs-css" href="css/bootstrap-cerulean.css" rel="stylesheet">-->
-    <link href="../css/bootstrap-cerulean.css" rel="stylesheet">
+    <link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
     <style type="text/css">
     body {
     padding-bottom: 40px;
@@ -51,32 +51,32 @@
     <!-- jQuery -->
     <script src="../js/jquery/jquery-1.7.2.min.js"></script>  
 
-     <link href="../css/errorFormat.css" rel='stylesheet'>
-    <link href="../css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="../css/charisma-app.css" rel="stylesheet">
-    <link href="../css/jquery-ui-1.8.21.custom.css" rel="stylesheet">
-    <link href='../css/fullcalendar.css' rel='stylesheet'>
-    <link href='../css/fullcalendar.print.css' rel='stylesheet' media='print'>
-    <link href='../css/chosen.css' rel='stylesheet'>
-    <link href='../css/uniform.default.css' rel='stylesheet'>
-    <link href='../css/colorbox.css' rel='stylesheet'>
-    <link href='../css/jquery.cleditor.css' rel='stylesheet'>
-    <link href='../css/jquery.noty.css' rel='stylesheet'>
-    <link href='../css/noty_theme_default.css' rel='stylesheet'>
-    <link href='../css/elfinder.min.css' rel='stylesheet'>
-    <link href='../css/elfinder.theme.css' rel='stylesheet'>
-    <link href='../css/jquery.iphone.toggle.css' rel='stylesheet'>
-    <link href='../css/opa-icons.css' rel='stylesheet'>
-    <link href='../css/uploadify.css' rel='stylesheet'>
-    <link href='../css/template.css' rel='stylesheet'>
-    <link href='../css/site.css' rel='stylesheet'>
-    <link href='../css/grouptable.css' rel='stylesheet'>
-    <link href="../css/poup.css" rel="stylesheet">
-    <link href="../css/credit.css" rel="stylesheet">
+     <link href="../css/tawi/errorFormat.css" rel='stylesheet'>
+    <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+    <link href="../css/tawi/charisma-app.css" rel="stylesheet">
+    <link href="../css/jquery/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+    <link href='../css/tawi/fullcalendar.css' rel='stylesheet'>
+    <link href='../css/tawi/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='../css/tawi/chosen.css' rel='stylesheet'>
+    <link href='../css/tawi/uniform.default.css' rel='stylesheet'>
+    <link href='../css/tawi/colorbox.css' rel='stylesheet'>
+    <link href='../css/jquery/jquery.cleditor.css' rel='stylesheet'>
+    <link href='../css/jquery/jquery.noty.css' rel='stylesheet'>
+    <link href='../css/tawi/noty_theme_default.css' rel='stylesheet'>
+    <link href='../css/tawi/elfinder.min.css' rel='stylesheet'>
+    <link href='../css/tawi/elfinder.theme.css' rel='stylesheet'>
+    <link href='../css/jquery/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='../css/tawi/opa-icons.css' rel='stylesheet'>
+    <link href='../css/tawi/uploadify.css' rel='stylesheet'>
+    <link href='../css/tawi/template.css' rel='stylesheet'>
+    <link href='../css/tawi/site.css' rel='stylesheet'>
+    <link href='../css/tawi/grouptable.css' rel='stylesheet'>
+    <link href="../css/tawi/poup.css" rel="stylesheet">
+    <link href="../css/tawi/credit.css" rel="stylesheet">
     <!--jqplot charts-->
     <!--<script language="javascript" type="text/javascript" src="../js/jqplot/jquery.min.js"></script>-->
     <script language="javascript" type="text/javascript" src="../js/jqplot/jquery.jqplot.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/jquery.jqplot.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/jquery/jquery.jqplot.min.css" />
     <script type="text/javascript" src="../js/jquery/jquery-1.4.2.min.js"></script>
     <script src="../js/jquery/jquery.autocomplete.js"></script>
     <style type= "text/css">
@@ -84,7 +84,7 @@
     </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="text/javascript" src="../js/jquery/jquery.tokenize.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
+    <link rel="stylesheet" type="text/css" href="../css/jquery/jquery.tokenize.css" />
     <script type="text/javascript" src="../js/jqplot/jquery.jqplot.min.js"></script>
     <script type="text/javascript" src="../js/jqplot/jqplot.barRenderer.min.js"></script>
     <script type="text/javascript" src="../js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>

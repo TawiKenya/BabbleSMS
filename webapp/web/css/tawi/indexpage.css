@@ -934,7 +934,7 @@ input[type=file]:hover:not(:checked)+._nb-small-dark-button:before,._nb-small-da
     align-contents: bottom;
     height:82px;
     width:150px;    
-    background: url("../img/made-in-kenya.png");
+    background: url("../../img/made-in-kenya.png");
 }
 
 ._nb-small-pseudo-inverted-button{
@@ -4381,11 +4381,11 @@ body{
 .b-mail-domik__social-icon,.b-mail-domik__social .b-dropdowna__switcher .b-pseudo-link{
 	width:24px;
 	height:24px;
-	background-image:url(../blocks/b-mail-domik/social/b-mail-domik__social_sprite_24.png)
+	background-image:url(../../blocks/b-mail-domik/social/b-mail-domik__social_sprite_24.png)
 }
 
 .b-mail-domik__social .b-dropdowna__switcher .b-pseudo-link{
-	background:url(../blocks/b-mail-domik/social/b-mail-domik__social_swith.png) 0 -33px no-repeat
+	background:url(../../blocks/b-mail-domik/social/b-mail-domik__social_swith.png) 0 -33px no-repeat
 }
 
 #js .b-mail-domik__social .b-dropdowna__switcher .b-pseudo-link{
@@ -4554,7 +4554,7 @@ body{
 }
 
 .b-overlay .b-mail-domik__roof{
-	background-image:url(../blocks/b-mail-domik/_type/b-mail-domik_popup__roof_overlay.png)
+	background-image:url(../../blocks/b-mail-domik/_type/b-mail-domik_popup__roof_overlay.png)
 }
 
 .b-overlay .b-heading{
@@ -4569,7 +4569,7 @@ body{
 }
 
 .b-overlay_loginpage{
-	background:url(../blocks/b-overlay/b-overlay.png) no-repeat 0 62px
+	background:url(../../blocks/b-overlay/b-overlay.png) no-repeat 0 62px
 }
 
 .b-head-frost{
@@ -4732,7 +4732,7 @@ body{
 	cursor:pointer;
 	top:-5px;
 	pointer-events:auto;
-	background-image:url(../blocks/b-head-decor/close.svg);
+	background-image:url(../../blocks/b-head-decor/close.svg);
 	width:23px;
 	height:23px;
 	opacity:.6
@@ -4805,7 +4805,7 @@ body{
 	height:115px;
 	width:100%;
 	overflow:hidden;
-	background:url(../blocks/b-head-decor/b-head-decor_newyear.png) repeat-x 0 0
+	background:url(../../blocks/b-head-decor/b-head-decor_newyear.png) repeat-x 0 0
 }
 
 .b-page_newyear .b-head-decor__inner{
@@ -4926,71 +4926,71 @@ body{
 }
 
 .b-ball_n1 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n1.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n1.png) no-repeat
 }
 
 .b-ball_n2 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n2.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n2.png) no-repeat
 }
 
 .b-ball_n3 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n3.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n3.png) no-repeat
 }
 
 .b-ball_n4 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n4.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n4.png) no-repeat
 }
 
 .b-ball_n5 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n5.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n5.png) no-repeat
 }
 
 .b-ball_n6 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n6.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n6.png) no-repeat
 }
 
 .b-ball_n7 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n7.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n7.png) no-repeat
 }
 
 .b-ball_n8 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n8.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n8.png) no-repeat
 }
 
 .b-ball_n9 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_n9.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_n9.png) no-repeat
 }
 
 .b-ball_i1 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_i1.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_i1.png) no-repeat
 }
 
 .b-ball_i2 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_i2.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_i2.png) no-repeat
 }
 
 .b-ball_i3 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_i3.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_i3.png) no-repeat
 }
 
 .b-ball_i4 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_i4.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_i4.png) no-repeat
 }
 
 .b-ball_i5 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_i5.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_i5.png) no-repeat
 }
 
 .b-ball_i6 .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_i6.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_i6.png) no-repeat
 }
 
 .b-ball_ya .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_ya.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_ya.png) no-repeat
 }
 
 .b-ball_frost .b-ball__i{
-	background:url(../blocks/b-ball/b-ball_frost.png) no-repeat
+	background:url(../../blocks/b-ball/b-ball_frost.png) no-repeat
 }
 
 .b-ball_i1{
@@ -5240,15 +5240,15 @@ body{
 }
 
 .b-teaser_share .b-share-icon,.b-teaser_share .b-share__text{
-	background:url(../blocks/b-share/_type/b-share_teaser.png) 100% 0 no-repeat
+	background:url(../../blocks/b-share/_type/b-share_teaser.png) 100% 0 no-repeat
 }
 
 .b-teaser_share_big .b-share-icon,.b-teaser_share_big .b-share__text{
-	background:url(../blocks/b-share/_type/b-share_teaser__middle.png) 100% 0 no-repeat
+	background:url(../../blocks/b-share/_type/b-share_teaser__middle.png) 100% 0 no-repeat
 }
 
 .b-teaser_share__middle .b-share-icon,.b-teaser_share__middle .b-share__text{
-	background:url(../blocks/b-share/_type/b-share_teaser__middle.png) 100% 0 no-repeat
+	background:url(../../blocks/b-share/_type/b-share_teaser__middle.png) 100% 0 no-repeat
 }
 
 .b-teaser_share__middle .b-share-icon{
@@ -5349,11 +5349,11 @@ body{
 
 div.b-page_newyear{
 	overflow:hidden;
-	background:url(../blocks/b-page/_type/b-page_newyear.png) repeat-x 0 0!important
+	background:url(../../blocks/b-page/_type/b-page_newyear.png) repeat-x 0 0!important
 }
 
 .b-page_newyear+.b-page-bottom{
-	background:url(../blocks/b-page/m-skin-blue.png) 50% 0
+	background:url(../../blocks/b-page/m-skin-blue.png) 50% 0
 }
 
 .b-page_newyear+.b-page-bottom .b-extras{
@@ -5386,35 +5386,35 @@ body.b-page_newyear{
 
 @media only screen and (max-width:1024px){
 	body.b-page_newyear{
-		background-image:url(../blocks/b-page/_type/bg_newyear/1024x768.jpg)
+		background-image:url(../../blocks/b-page/_type/bg_newyear/1024x768.jpg)
 	}
 
 }
 
 @media only screen and (min-width:1025px) and (max-width:1280px){
 	body.b-page_newyear{
-		background-image:url(../blocks/b-page/_type/bg_newyear/1280x960.jpg)
+		background-image:url(../../blocks/b-page/_type/bg_newyear/1280x960.jpg)
 	}
 
 }
 
 @media only screen and (min-width:1281px) and (max-width:1440px){
 	body.b-page_newyear{
-		background-image:url(../blocks/b-page/_type/bg_newyear/1440x1080.jpg)
+		background-image:url(../../blocks/b-page/_type/bg_newyear/1440x1080.jpg)
 	}
 
 }
 
 @media only screen and (min-width:1441px) and (max-width:1680px){
 	body.b-page_newyear{
-		background-image:url(../blocks/b-page/_type/bg_newyear/1680x1260.jpg)
+		background-image:url(../../blocks/b-page/_type/bg_newyear/1680x1260.jpg)
 	}
 
 }
 
 @media only screen and (min-width:1681px){
 	body.b-page_newyear{
-		background-image:url(../blocks/b-page/_type/bg_newyear/1920x1440.jpg)
+		background-image:url(../../blocks/b-page/_type/bg_newyear/1920x1440.jpg)
 	}
 
 }
@@ -5564,7 +5564,7 @@ body.b-page_newyear{
 }
 
 .b-page_newyear .b-jingle .b-link_w .b-link__ico{
-	background-image:url(../blocks/b-page/_type/b-jingle__play.png);
+	background-image:url(../../blocks/b-page/_type/b-jingle__play.png);
 	width:44px;
 	height:44px
 }
@@ -5658,27 +5658,27 @@ body.b-page_newyear{
 	padding-top:70px;
 	padding-right:0;
 	margin-right:0;
-	background:url(../blocks/b-page/_type/b-page_newyear__greeting.png) 50% 0 no-repeat
+	background:url(../../blocks/b-page/_type/b-page_newyear__greeting.png) 50% 0 no-repeat
 }
 
 .lang_be .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_be.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_be.png)
 }
 
 .lang_kk .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_kk.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_kk.png)
 }
 
 .lang_uk .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_uk.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_uk.png)
 }
 
 .lang_az .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_az.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_az.png)
 }
 
 .lang_hy .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_hy.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_hy.png)
 }
 
 .lang_ka .b-page_newyear .b-create-account__item_center{
@@ -5686,19 +5686,19 @@ body.b-page_newyear{
 }
 
 .lang_ro .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_ro.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_ro.png)
 }
 
 .lang_tt .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_tt.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_tt.png)
 }
 
 .lang_en .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_en.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_en.png)
 }
 
 .lang_tr .b-page_newyear .b-create-account__item_center{
-	background-image:url(../blocks/b-page/_type/b-page_newyear__greeting_tr.png)
+	background-image:url(../../blocks/b-page/_type/b-page_newyear__greeting_tr.png)
 }
 
 .b-page_newyear .b-big-button{
@@ -5794,11 +5794,11 @@ body.b-page_newyear{
 }
 
 .b-mail-domik__unreadmail .b-link__ico{
-	background:url(../blocks/b-page/_type/b-jingle__unread.png) 100% 0 no-repeat
+	background:url(../../blocks/b-page/_type/b-jingle__unread.png) 100% 0 no-repeat
 }
 
 .b-mail-domik__compose .b-link__ico{
-	background:url(../blocks/b-page/_type/b-jingle__compose.png) 100% 0 no-repeat;
+	background:url(../../blocks/b-page/_type/b-jingle__compose.png) 100% 0 no-repeat;
 	height:18px
 }
 
@@ -5906,7 +5906,7 @@ html,body{
 	padding: 0;
 	color:#000;
 	background-position:right top;
-	background-image: url(../img/background.jpg);
+	background-image: url(../../img/background.jpg);
 	background-size: 100% 100%;
     background-repeat: no-repeat;
     border-radius: 5px;
@@ -6599,7 +6599,7 @@ html,body{
 .new .b-stamp{
 	display:inline-block;
 	margin-bottom:30px;
-	background:url(../blocks/b-stamp/b-stamp_flat.png) no-repeat
+	background:url(../../blocks/b-stamp/b-stamp_flat.png) no-repeat
 }
 
 .new .b-stamp__mail{

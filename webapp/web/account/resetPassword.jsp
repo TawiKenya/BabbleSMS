@@ -27,7 +27,7 @@
 <html>
     <head>
         <title>Forgot Password</title>
-    <link rel="stylesheet" type="text/css" href="../css/resetPassword.css">    
+    <link rel="stylesheet" type="text/css" href="../css/tawi/resetPassword.css">    
        </head>
     
     

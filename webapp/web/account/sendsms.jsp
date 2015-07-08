@@ -64,7 +64,7 @@
 <script type='text/javascript' src='../js/tawi/credittablejavascript.js'></script>
 <script type='text/javascript' src="../js/tawi/composepagejavascript.js"></script>
 <script type="text/javascript" src="../js/jquery/jquery.tokenize.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/jquery.tokenize.css" />
+<link rel="stylesheet" type="text/css" href="../css/jquery/jquery.tokenize.css" />
 
 
 <%

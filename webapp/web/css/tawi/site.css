@@ -11,7 +11,7 @@ http://opensource.org/licenses/OSL-3.0
 }
 
 .bg {
-    background: url("../img/bg_input.gif") repeat-x scroll center top
+    background: url("../../img/bg_input.gif") repeat-x scroll center top
         #E6E6E6;
     border: 1px solid #CCCCCC;
     border-radius: 5px;
@@ -28,7 +28,7 @@ http://opensource.org/licenses/OSL-3.0
 }
 
 #captchaAnswer {
-    background: url("../img/bg_input.gif") repeat-x scroll center top
+    background: url("../../img/bg_input.gif") repeat-x scroll center top
         #E6E6E6;
     border: 1px solid #CCCCCC;
     border-radius: 5%;
