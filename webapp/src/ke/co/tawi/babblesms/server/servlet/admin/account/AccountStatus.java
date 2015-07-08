@@ -52,8 +52,8 @@ public class AccountStatus extends HttpServlet{
 		     System.out.println(status);
 		
 		     Account account = new Account();
-		     account.setUuid(uuid);
-		     account.setStatusuuid(status); 
+		      account.setUuid(uuid);
+		      account.setStatusuuid(status); 
 		    if(accountDAO.updateStatus(uuid, status)){
 		    	updateAccountCache(account);
 		    	 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_SUCCESS_KEY, "Account deleted successifully");
