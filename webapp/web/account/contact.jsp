@@ -176,7 +176,6 @@
            
     } 
     }// end else
-
     
 %> 
 <jsp:include page="contactheader.jsp" />
@@ -269,6 +268,24 @@ more
                     out.println("</p>");
                     session.setAttribute(SessionConstants.UPDATE_SUCCESS, null);
                 } 
+
+
+    String success = (String)session.getAttribute("success");
+    String fail = (String)session.getAttribute("fail");
+
+    if (StringUtils.isNotEmpty(fail)) {
+                    out.println("<p class='error'>");
+                    out.println(fail);
+                    out.println("</p>");
+                    session.setAttribute("fail", null);
+                }
+
+                if (StringUtils.isNotEmpty(success)) {
+                    out.println("<p style='color:green'>");
+                    out.println(success);
+                    out.println("</p>");
+                    session.setAttribute("success", null);
+                }
 
             %>
             <div id="search-head"></div>
@@ -423,7 +440,7 @@ more
 <div class="control-group" id="phone">
         <label class="control-label" for="phone">Phone Number</label>
         <div class="controls" id="addphones1">
-        <input class="input-xlarge focused"  id="phone2"  name ="phone1[]" type="text" required>
+        <input class="input-xlarge focused"  id="phone2"  name ="phone1[]" type="text" onkeypress='return validateQty(event);' required>
         <button id='addphns'>+</button>
         <select name="network[]" class="network" id="addphones">
 
@@ -486,6 +503,27 @@ more
 </div>
 
 <!-- Contact Form  for the pop up ends-->
+
+<script type="text/javascript">    
+    function validateQty(event) {
+          var key = window.event ? event.keyCode : event.which; 
+           //choose the only keys allowed..
+       if (   event.keyCode === 8 //backspace key
+           || event.keyCode === 46  //delete key
+           || event.keyCode === 37   //left arrow key
+           || event.keyCode === 39  //right arrow key
+           || key === 0 //right and left arrow keys i mozilla
+           || key === 32  //whitespace key
+           || key === 45 //hypen key
+           || key === 118 // for mozilla (ctrl + v).|| (key === 17 && key === 67) //(ctrl + c)
+           || (key > 47 && key < 58 )//from 0 to 9
+           ) {
+               return true;
+
+         }        
+        else return false;
+      }
+</script>
 
 
 <jsp:include page="footer.jsp" />

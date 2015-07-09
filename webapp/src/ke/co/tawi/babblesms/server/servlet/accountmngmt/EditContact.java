@@ -27,11 +27,14 @@ import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.beans.contact.Email;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.beans.status.Status;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletConfig;
@@ -52,6 +55,7 @@ import org.apache.commons.lang3.StringUtils;
  * <p>
  *  
  * @author <a href="mailto:wambua@tawi.mobi">Godfrey Wambua</a>
+ * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>
  */
 public class EditContact extends HttpServlet {
 
@@ -59,7 +63,13 @@ public class EditContact extends HttpServlet {
 	
 	private Cache accountCache;
 	private static Contact contact;
-
+	private ContactGroupDAO cgDAO;
+	private EmailDAO eDAO;
+	private String ACTIVE_STATUS;
+	private String SUSPENDED_STATUS;
+	private HashMap<String, Email> eMap;
+	private HashMap<String, Phone> phMap;
+	
 	
 	/**
 	 *
@@ -69,9 +79,13 @@ public class EditContact extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-
+		 eDAO=EmailDAO.getInstance();
+	     cgDAO = ContactGroupDAO.getInstance();
 		CacheManager mgr = CacheManager.getInstance();
 		accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+		Status state = new Status();
+		ACTIVE_STATUS=state.ACTIVE;
+		SUSPENDED_STATUS=state.SUSPENDED;
 	}
 
 	
@@ -91,122 +105,194 @@ public class EditContact extends HttpServlet {
 		if (StringUtils.isEmpty(username)) {
 			response.sendRedirect("../index.jsp");
 		}
-		
 		Account account = new Account();
 
 		Element element;
 		if ((element = accountCache.get(username)) != null) {
 			account = (Account) element.getObjectValue();
-		}
-		//String[] emailArray = request.getParameterValues("email[]");
-		String contactname = request.getParameter("name");
-		String contactstatusuuid = request.getParameter("statusuuid");
-		String description =request.getParameter("description");
+		}		
+		String contactname = request.getParameter("name").trim();
+		String contactstatusuuid = request.getParameter("statusuuid").trim();
+		String description =request.getParameter("description").trim();
 		String [] groupArray =request.getParameterValues("groupselected[]");
-		String cuuid = request.getParameter("uuid");
-		
-		for(int i=0;i<groupArray.length;i++){
-		System.out.println("JSP sent ::::"+groupArray[i]+" contactname:"+contactname+
-				" statusuuid:"+contactstatusuuid+ " description:"+description+" "
-						+ " cuuid:"+cuuid);	
-		}
-		
-		//String [] groupsArray =request.getParameterValues("groupsdeleted[]");
-		
+		String cuuid = request.getParameter("uuid").trim();
 		String [] phonenumArray = request.getParameterValues("phone1[]"); 
 		String [] emailArray = request.getParameterValues("email[]");
 		String[] networkArray = request.getParameterValues("network[]");
-		//Set<String> myGroupSet = new HashSet<String>(Arrays.asList(groupArray));
-		//Set<String> groupSet = new HashSet<String>(Arrays.asList(groupsArray));
+		
 		if(contactname.equals("") || phonenumArray.equals("")){
-			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_NAME);
+			session.setAttribute("fail", ERROR_NO_NAME);
 		}
 
-		else{
-			//The update method  
-			//Contact contact = new Contact();
-			ContactDAO contactsDAO = ContactDAO.getInstance();
-			contact = contactsDAO.getContact(cuuid);
-			contact.setName(contactname);
-			contact.setDescription(description);
-			contact.setAccountUuid(account.getUuid());		
-			contactsDAO.updateContact(cuuid, contact);
+		else{	
 			
-			Phone phone;
-			PhoneDAO phoneDAO=PhoneDAO.getInstance();
-			List<Phone> plist = phoneDAO.getPhones(contact);
+			boolean Contact = saveContact(cuuid,contactname,description,account);
+			boolean Phone = savePhone(phonenumArray,networkArray,cuuid,contactstatusuuid);
+			boolean Email= saveEmail(cuuid, emailArray);
+			boolean Group = saveGroup(account, groupArray );
 			
-			for(int i = 0; i < plist.size();i++){
-			 phone = plist.get(i);
-			
-			String phonenum = phonenumArray[i];
-			phone.setPhonenumber(phonenum);
-			phone.setNetworkuuid(networkArray[i]);	
-			phoneDAO.updatePhone(phone.getUuid(), phone);
+			if(Contact==true && Phone==true && Email==true && Group==true){
+				session.setAttribute("success", "Saved Successfully!!");
+				
+			}else{
+				session.setAttribute("fail", "An Error occurred, Please try Again!!");
 			}
-			
-			if(phonenumArray.length > plist.size()){
-			//int plistSize = plist.size();
-			//int arrayLength = phonenumArray.length;
-			for(int count = plist.size();count < phonenumArray.length;count ++){
-			Phone newPhone =new Phone();
-			String phonenums = phonenumArray[count];
-			newPhone.setPhonenumber(phonenums);
-			newPhone.setContactUuid(cuuid);
-			newPhone .setStatusuuid(contactstatusuuid);
-			newPhone.setNetworkuuid(networkArray[count]);
-			phoneDAO.putPhone(newPhone);
-                }
-			}
-			
-			Email email;
-			EmailDAO emailDAO=EmailDAO.getInstance();
-			List<Email> elist = emailDAO.getEmails(contact);
-			for(int j = 0; j < elist.size();j++){
-			email = elist.get(j);
-			
-			String phonenums = emailArray[j];
-			email.setAddress(phonenums);
-			emailDAO.updateEmail(email.getUuid(), email);
-			}
-			if(emailArray.length > elist.size()){
-			
-			for(int count2 = elist.size();count2 < emailArray.length;count2 ++){
-			Email newEmail =new Email();
-			
-			newEmail.setAddress(emailArray[count2]);
-			newEmail.setContactuuid(cuuid);
-            newEmail.setStatusuuid(contactstatusuuid);
-            emailDAO.putEmail(newEmail);
-                   }
-			}
-			
-			if(groupArray.length>0){
-			for (String group1 : groupArray) {
-		    System.out.println(group1);
-			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-			GroupDAO gDAO = GroupDAO.getInstance();
-			Group group = gDAO.getGroupByName(account , group1);
-			cgDAO.putContact(contact, group);
-				}
-			}
-			
-			/**for (String group2 : groupSet) {
-
-			if(!(group2.equals(""))){
-			ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
-			GroupDAO gDAO = GroupDAO.getInstance();
-			Group groups = gDAO.getGroupByName(account , group2);
-			cgDAO.removeContact(contact, groups);
-
-				}
-
-			}*/
-			                
-			
 		}
 
 		response.sendRedirect("contact.jsp");
 	}
 	
+	
+	/**
+	 * 
+	 * @param String cuuid
+	 * @param String contactname
+	 * @param String description
+	 * @param {{@link Account} account
+	 * 
+	 * @return <code> true if a contact is saved </code> and <code> false if  
+	 * otherwise;</code>
+	 */	
+	  public boolean saveContact(String cuuid,String contactname, String description, Account account){
+		  boolean save = true;
+		  try{
+	    	   ContactDAO contactsDAO = ContactDAO.getInstance();
+				contact = contactsDAO.getContact(cuuid);
+				contact.setName(contactname);
+				contact.setDescription(description);
+				contact.setAccountUuid(account.getUuid());		
+				contactsDAO.updateContact(cuuid, contact);
+		  }catch(Exception e){			  
+			  save =false;
+		  }
+		    return save;
+	        }
+	       
+	  
+	  /**
+	   * @param  String Array phonenumArray
+	   * @param  String Array networkArray
+	   * @param String cuuid
+	   * @param String contactstatusuuid
+	   * 
+	   *  @return <code> true if a contact is saved </code> and <code> false if  
+	   * otherwise;</code>
+	   */
+	    public boolean savePhone(String [] phonenumArray, String []networkArray,String cuuid, String contactstatusuuid){
+	    	boolean save=true;
+	    	try{
+	    	PhoneDAO phoneDAO=PhoneDAO.getInstance();
+			List<Phone> plist = phoneDAO.getPhones(contact);
+			
+			phMap = new HashMap<>();
+			for(Phone ph:plist){
+				ph.setStatusuuid(SUSPENDED_STATUS);
+				phMap.put(ph.getPhonenumber(), ph);				
+			   }  
+			int i=0;
+			//Avoid the Null exception Error
+			try{
+			for(String phoneNum: phonenumArray){
+				if(phMap.containsKey(phoneNum.trim())){
+					Phone phone=phMap.get(phoneNum.trim());
+					phone.setStatusuuid(ACTIVE_STATUS);
+					phone.setNetworkuuid(networkArray[i].trim());
+					phoneDAO.updatePhone(phone.getUuid(), phone);					
+					i++;
+				}
+				else{
+					Phone newPhone =new Phone();					
+					newPhone.setPhonenumber(phoneNum.trim());
+					newPhone.setContactUuid(cuuid);
+					newPhone .setStatusuuid(ACTIVE_STATUS);
+					newPhone.setNetworkuuid(networkArray[i].trim());
+					phoneDAO.putPhone(newPhone);					
+					i++;
+				}
+			}
+			}catch(Exception e){}
+	    	}catch(Exception e){	    		
+	    		save=false;
+	    	}
+	    	
+	    return save;	
+	      }
+	    
+	    
+	    /**
+	     * 
+	     * @param String cuuid
+	     * @param String Array emailArray
+	     * 
+	     *  @return <code> true if a contact is saved </code> and <code> false if  
+	     * otherwise;</code> 
+	     */
+	    
+	     public boolean saveEmail(String cuuid,String [] emailArray){
+	    	  boolean save = true;
+	    	  try{
+				//Map to hold email address and email object
+				eMap = new HashMap<>();		
+				List<Email> elist = eDAO.getEmails(contact);
+				for(Email email:elist){
+				    email.setStatusuuid(SUSPENDED_STATUS);
+				    eMap.put(email.getAddress(), email);
+				     }
+				//Avoid the Null exception Error
+				try{
+				for(String emailAddr: emailArray){
+					if(eMap.containsKey(emailAddr.trim())){
+						Email nEmail = new Email();
+						nEmail=eMap.get(emailAddr.trim());
+					    nEmail.setStatusuuid(ACTIVE_STATUS); 
+					    eDAO.updateEmail(nEmail.getUuid(), nEmail);					   
+					}
+					else{
+						Email newEmail =new Email();					
+						newEmail.setAddress(emailAddr.trim());
+						newEmail.setContactuuid(cuuid);
+			            newEmail.setStatusuuid(ACTIVE_STATUS);
+			            eDAO.putEmail(newEmail);			
+					}
+				} 
+				}catch(Exception e){}
+	    	  }catch (Exception e){	    		  
+	    		  save=false;
+	    	  }
+				
+		  return save;
+	  }
+
+	     
+	     /**
+	      * @param {@link Account} account
+	      * @param  String [] groupArray
+	      * 
+	      *  @return <code> true if a contact is saved </code> and <code> false if  
+	      * otherwise;</code>
+	      */
+
+         public boolean saveGroup(Account account, String [] groupArray ){
+        	boolean save=true;        	
+        	try{	          			
+	           GroupDAO gDAO =GroupDAO.getInstance();
+		        List<Group> Glist=gDAO.getGroups(account);
+		        for(Group gp:Glist){
+		        cgDAO.removeContact(contact, gp);	
+		           }
+		        //Avoid the Null exception Error
+		        try{
+              if(groupArray.length>0){            	  
+	          for (String groupuuid : groupArray) {		    
+	             Group group  = new Group();
+	             group.setUuid(groupuuid.trim());
+	             cgDAO.putContact(contact, group);
+		                 }
+                     }
+                   }catch(Exception e){}
+        	}catch(Exception e){        		
+        		save = false;
+        	}
+	              return save;
+              }
 }
