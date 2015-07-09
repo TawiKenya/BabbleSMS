@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 /**
  * Copyright (c) Tawi Commercial Services Ltd., Jun 27, 2013
  *
- * @author <a href="mailto:japhethk@tawi.mobi">Japheth Korir</a>
  * @author <a href="mailto:mwenda@tawi.mobi">peter mwenda</a>
  * @author <a href="mailto:michael@tawi.mobi">michael wakahe</a>
  */

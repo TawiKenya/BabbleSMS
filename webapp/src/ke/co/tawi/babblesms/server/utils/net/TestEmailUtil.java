@@ -56,7 +56,7 @@ public class TestEmailUtil {
 	final String BODY ="hello...! this is tawi";
 	
 	final String OUT_E_SERVER ="mail.tawi.mobi";
-	final int OUT_E_PORT =25;
+	final int OUT_E_PORT = 25;
 		
 
 	/**
@@ -65,7 +65,8 @@ public class TestEmailUtil {
 	//@Ignore
 	@Test
 	public void testSendEmailStringStringArrayStringArrayStringArrayStringStringStringInt() {
-		EmailUtil util = new EmailUtil(FROM, TO, CC, BCC, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		EmailUtil util = new EmailUtil(FROM, TO, CC, BCC, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT,
+				"smtpUsername", "smtpPasswd");
 		util.run();
 		
 	}
@@ -77,7 +78,8 @@ public class TestEmailUtil {
 	@Ignore
 	@Test
 	public void testSendEmailStringStringStringStringStringInt() {
-		EmailUtil util = new EmailUtil(FROM, TO2, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT);
+		EmailUtil util = new EmailUtil(FROM, TO2, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT,
+				"smtpUsername", "smtpPasswd");
 		util.run();
 		
 	}	

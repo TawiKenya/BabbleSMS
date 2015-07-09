@@ -113,10 +113,12 @@ public class ResetPassword  extends HttpServlet {
 					EmailUtil util = new EmailUtil(
 							PropertiesConfig.getConfigValue("EMAIL_DEFAULT_EMAIL_FROM"), // from
 							email, // to 
-							"BabbleSMS Password Reset", // subject, 
+							"SMS Password Reset", // subject, 
 							body, 
-							PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP"), // outgoing SMTP 
-						 	Integer.parseInt(PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP_PORT")) // outgoing SMTP port
+							PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP"), // outgoing SMTP host
+						 	Integer.parseInt(PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP_PORT")), // outgoing SMTP port
+						 	PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP_USERNAME"), // outgoing SMTP username 
+						 	PropertiesConfig.getConfigValue("EMAIL_OUTGOING_SMTP_PASSWORD") // outgoing SMTP password
 							);
 					util.start();
 					
@@ -124,8 +126,7 @@ public class ResetPassword  extends HttpServlet {
 					
 					session.setAttribute(SessionConstants.EMAIL_SEND_SUCCESS, null);
 					response.sendRedirect("successResetPasswd.jsp");	
-			}
-					
+			}					
 	
 	}//end doPost
 

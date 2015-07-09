@@ -17,9 +17,12 @@ package ke.co.tawi.babblesms.server.utils.net;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.mail.DefaultAuthenticator;
 
 import org.apache.log4j.Logger;
 
@@ -40,6 +43,7 @@ public class EmailUtil extends Thread {
     private String[] to, cc, bcc; 
 	private String subject, body, outgoingEmailServer;
 	private int outgoingEmailPort;
+    private String outgoingUsername, outgoingPassword;
     
 	
     /**
@@ -57,9 +61,12 @@ public class EmailUtil extends Thread {
      * @param body
      * @param outgoingEmailServer
      * @param outgoingEmailPort
+     * @param outgoingUsername 
+     * @param outgoingPassword 
      */
     public EmailUtil(String from, String[] to, String[] cc, String[] bcc, 
-			String subject, String body, String outgoingEmailServer, int outgoingEmailPort) {
+			String subject, String body, String outgoingEmailServer, int outgoingEmailPort,
+			String outgoingUsername, String outgoingPassword) {
     	
     	this.from = from;
     	this.to = to;
@@ -69,6 +76,8 @@ public class EmailUtil extends Thread {
     	this.body = body;
     	this.outgoingEmailServer = outgoingEmailServer;
     	this.outgoingEmailPort = outgoingEmailPort;
+    	this.outgoingUsername = outgoingUsername;
+    	this.outgoingPassword = outgoingPassword;
     }
     
     
@@ -79,9 +88,12 @@ public class EmailUtil extends Thread {
      * @param body
      * @param outgoingEmailServer
      * @param outgoingEmailPort
+     * @param outgoingUsername 
+     * @param outgoingPassword 
      */
     public EmailUtil(String from, String to, String subject, String body, 
-    		String outgoingEmailServer, int outgoingEmailPort) {
+    		String outgoingEmailServer, int outgoingEmailPort,
+    		String outgoingUsername, String outgoingPassword) {
     	
     	this.from = from;
     	this.to = new String[] {to};
@@ -91,6 +103,8 @@ public class EmailUtil extends Thread {
     	this.body = body;
     	this.outgoingEmailServer = outgoingEmailServer;
     	this.outgoingEmailPort = outgoingEmailPort;
+    	this.outgoingUsername = outgoingUsername;
+    	this.outgoingPassword = outgoingPassword;
     }
 	
      
@@ -136,6 +150,11 @@ public class EmailUtil extends Thread {
 		try {
 			email = new SimpleEmail();
 			
+			email.setHostName(outgoingEmailServer);
+			email.setSmtpPort(outgoingEmailPort); 
+			//email.setAuthenticator(new DefaultAuthenticator(outgoingUsername, outgoingPassword));
+			//email.setSSLOnConnect(true);
+			
 			email.setFrom(from);						
 			email.addTo(to);
 			
@@ -149,8 +168,7 @@ public class EmailUtil extends Thread {
 						
 			email.setSubject(subject);
 			email.setMsg(body);
-			email.setHostName(outgoingEmailServer);
-			email.setSmtpPort(outgoingEmailPort); 
+			
 			
 			if(validateEmails(to)) {
 				email.send();
@@ -161,8 +179,8 @@ public class EmailUtil extends Thread {
 			
 			
 		} catch(EmailException e) {
-			logger.error("EmailException when trying to send out a SimpleEmail.");
-			logger.error(e);
+			logger.error("EmailException when trying to send out a SimpleEmail: " + this.toString());
+			logger.error(ExceptionUtils.getStackTrace(e));
 		}	
 	}
 
