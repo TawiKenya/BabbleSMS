@@ -117,9 +117,7 @@ public class Group extends StorableBean {
         builder.append("[uuid=");
         builder.append(getUuid());
         builder.append(", description=");
-        builder.append(description);
-        builder.append(", stausuuid=");
-        builder.append(statusuuid);
+        builder.append(description);        
         builder.append(", name=");
         builder.append(name);
         builder.append(", creationdate=");

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.contact.Group;
+import ke.co.tawi.babblesms.server.beans.status.Status;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 
@@ -42,6 +43,8 @@ public class EditGroup extends HttpServlet {
 	
 	private final String ERROR_NO_GROUP_NAME = "Please provide the group name";
 	private Logger logger = Logger.getLogger(this.getClass());
+	private String ACTIVE_STATUS;
+	private String SUSPENDED_STATUS;
 	
 	
 	/**
@@ -53,6 +56,9 @@ public class EditGroup extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
+		Status state = new Status ();
+		ACTIVE_STATUS = state.ACTIVE;
+		SUSPENDED_STATUS=state.SUSPENDED;
 
 	}
 	
@@ -68,9 +74,9 @@ public class EditGroup extends HttpServlet {
 	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
 		HttpSession session = request.getSession(true);
 		
-		String gname = request.getParameter("name");
-		String gdesc = request.getParameter("phone1");
-		String gUuid = request.getParameter("uuid");
+		String gname = request.getParameter("name").trim();
+		String gdesc = request.getParameter("phone1").trim();
+		String gUuid = request.getParameter("uuid").trim();
 		
 		if(gname.equals("")){
 			session.setAttribute(SessionConstants.ADD_ERROR, ERROR_NO_GROUP_NAME);
@@ -81,6 +87,7 @@ public class EditGroup extends HttpServlet {
 			group.setName(gname);
 			group.setDescription(gdesc);
 			group.setUuid(gUuid);
+			group.setStatusuuid(ACTIVE_STATUS); 
 			
 			logger.info(group);
 			
@@ -89,7 +96,8 @@ public class EditGroup extends HttpServlet {
 				session.setAttribute(SessionConstants.UPDATE_SUCCESS, "successfully saved");
 			}
 			else{
-				session.setAttribute(SessionConstants.ADD_ERROR, "failed! Please try again");
+				
+				session.setAttribute(SessionConstants.ADD_ERROR, "failed! Please try again ");
 			}
 			
 		}
