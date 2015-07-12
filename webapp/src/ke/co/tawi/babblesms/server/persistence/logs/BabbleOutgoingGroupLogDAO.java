@@ -60,22 +60,15 @@ public interface BabbleOutgoingGroupLogDAO {
      */
     public List<OutgoingGrouplog> getAllOutgoingGrouplogs();
     
+    
     /**
      * @param String uuid
      * @param String outgoingGroupLog
      * @return <code>true</code> if successfully updated; <code>false</code> for
      * otherwise
-     */
-    
+     */    
     public boolean updateOutgoingGrouplog(String uuid, String outgoingGroupLog);
 
-    /**
-     *
-     * @param  String uuid
-     * @return		<code>true</code> if successfully deleted; <code>false</code> for
-     * otherwise
-     */
-    public boolean deleteOutgoingGrouplog(String uuid);
     
     
     /**
@@ -87,8 +80,4 @@ public interface BabbleOutgoingGroupLogDAO {
      * */   
     
     public List<OutgoingGrouplog> getOutGoingGroupLog(Account account, int fromIndex, int toIndex);
-
-    
-
-
 }

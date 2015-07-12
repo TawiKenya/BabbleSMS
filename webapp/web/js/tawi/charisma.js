@@ -1,3 +1,10 @@
+/*
+  Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
+  Licensed under the OSL-3.0 License:
+  http://opensource.org/licenses/OSL-3.0
+
+  Author: Migwi Ndung'u  <migwi@tawi.mobi>
+*/
 $(document).ready(function(){
 	//themes, change CSS with JS
 	//default theme(CSS) is cerulean, change it if needed

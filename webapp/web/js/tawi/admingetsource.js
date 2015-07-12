@@ -5,13 +5,6 @@
 
   Author: Migwi Ndung'u  <migwi@tawi.mobi>
 */
-/*
-  Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
-  Licensed under the OSL-3.0 License:
-  http://opensource.org/licenses/OSL-3.0
-
-  Author: Migwi Ndung'u  <migwi@tawi.mobi>
-*/
   function setSource(val11) {  
   var Accuuid = val11.value;
 
@@ -53,7 +46,7 @@ function handleResponse(request) {
                  $("#source").remove();
                  var $source = $('<select name="source" id="source" ></select>');                   
                
-               for(var i=0;i<obj.length;i++){
+               for(var i=0; i<obj.length; i++) {
                	var uuid = obj[i].uuid;
                	var name = obj[i].name;
              var $item=$('<option value='+uuid+'>'+name+'</option>');

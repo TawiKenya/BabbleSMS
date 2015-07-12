@@ -45,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ResetPassword  extends HttpServlet {
 	
-	
+		
 	final String ERROR_EMPTY_PARAMETERS = "You have to input a value.";
 	final String ERROR_INVALID_PARAMETERS = "The username and email do not match.";
 			
@@ -140,5 +140,5 @@ public class ResetPassword  extends HttpServlet {
     }	
 	
 	
-	static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3380539156339604660L;
 }

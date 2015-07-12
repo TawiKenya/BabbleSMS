@@ -16,10 +16,7 @@
 package ke.co.tawi.babblesms.server.persistence.logs;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
-import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
-import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 import java.sql.Connection;
@@ -32,6 +29,7 @@ import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -45,8 +43,6 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
 
     private static OutgoingGroupLogDAO logDAO;
     
-    private  BeanProcessor b = new BeanProcessor();
-
     private BeanProcessor beanProcessor = new BeanProcessor();
     
     private Logger logger;
@@ -124,6 +120,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
 
     }
 
+    
     /**
 
      * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#get(java.lang.String)
@@ -188,6 +185,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
 
             logger.error(ExceptionUtils.getStackTrace(e));       
         }
+        
         return logList;
     }
 
@@ -207,12 +205,13 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
                try(
                    ResultSet rset = pstmt.executeQuery();            
                    ){
-                     list = b.toBeanList(rset, OutgoingGrouplog.class);
+                     list = beanProcessor.toBeanList(rset, OutgoingGrouplog.class);
                      }
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all outgoinggroupLogs");
             logger.error(ExceptionUtils.getStackTrace(e));        
         }
+        
         return list;
     }
     
@@ -244,33 +243,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
         return success;
     }
     
-    
-    
-
-    /**
-     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO#deleteOutgoingGrouplog(java.lang.String)
-     */
-    @Override
-    public boolean deleteOutgoingGrouplog(String uuid) {
-        boolean success = true;
         
-        try (
-        	Connection conn = dbCredentials.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement("DELETE FROM OutgoingGroupLog WHERE Uuid = ?;");
-              ){            
-            
-            pstmt.setString(1, uuid);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when deleting outgoingGroupLog with uuid " + uuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } 
-        
-        return success;
-    }
  
     /**
      * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingGroupLogDAO
@@ -291,11 +264,10 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
         	pstmt.setInt(3, fromIndex);
         	
         	try(ResultSet rset = pstmt.executeQuery();) {
-        		list = b.toBeanList(rset, OutgoingGrouplog.class);
+        		list = beanProcessor.toBeanList(rset, OutgoingGrouplog.class);
         	}
-        } 
-        
-        catch (SQLException e) {
+        	
+        } catch (SQLException e) {
         	
             logger.error("SQLException while getting incomingLog from index "
                     + fromIndex + " to index " + toIndex + ".");

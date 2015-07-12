@@ -208,6 +208,7 @@ public class EmailUtil extends Thread {
 		builder.append(", outgoingEmailPort=");
 		builder.append(outgoingEmailPort);
 		builder.append("]");
+		
 		return builder.toString();
 	}
     

@@ -15,10 +15,16 @@
  */
 package ke.co.tawi.babblesms.server.servlet.ajax.client;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,13 +42,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance;
-import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
-import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance;
-import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
+
 /**
  * Returns a JSON list of smsSources for a given account.
  * <p>
@@ -57,45 +57,40 @@ import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
  * <p>
  * 
  * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>
- * 
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a> 
  */
-
 public class GetBalance extends HttpServlet {
 	
-	 private SmsBalanceDAO smsDAO;
-	 private Cache accountsCache;
+	 
+	private SmsBalanceDAO smsBalanceDAO;
+	private Cache accountsCache;
+		
+	
 	
 	/**
-	 * method should get the current balances of credit per shortcode
+	 * @see javax.servlet.GenericServlet#init()
 	 */
-	
-	private static final long serialVersionUID = -5092008900475975666L;
-	
-	/**initiates the servlet*/
-	   @Override
+	@Override
 	public void init() throws ServletException{	
 		super.init();
 		CacheManager mgr = CacheManager.getInstance();
 		  accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
 		
-		smsDAO=SmsBalanceDAO.getInstance();
-		
-	   }
+		smsBalanceDAO = SmsBalanceDAO.getInstance();		
+   }
 	   
 	   
-	   /**
-		 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
-		 *      javax.servlet.http.HttpServletResponse)
-		 */
-	
-	   @Override
-	public void doPost(HttpServletRequest request,HttpServletResponse response) 
+	  	
+    /**
+     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+	protected void doPost(HttpServletRequest request,HttpServletResponse response) 
 	         throws ServletException,IOException{
-		String accountUuid=request.getParameter("accountuuid");
-				
-		
+		String accountUuid = request.getParameter("accountuuid");
+						
 		Element element;
-		Account account=null;
+		Account account = null;
 		
 		if ((element = accountsCache.get(accountUuid)) != null) {
 			account = (Account) element.getObjectValue();
@@ -114,45 +109,50 @@ public class GetBalance extends HttpServlet {
 		
 		out.write(gson.toJson(getSMS(account)).getBytes());
 		out.flush();
-		out.close();
-		
-	    }
+		out.close();		
+    }
 	   
-	   /**
-	    * @param account
-	    * @return Map with smsSource and its balance*/
+    
+	/**
+	  * @param account
+	  * @return Map with smsSource and its balance
+      */	   
+    public Map<String,Integer> getSMS(Account account){
+	   List<SMSBalance> balanceList = new LinkedList<>();
+	   Map<String,Integer> balance = new HashMap<>();
 	   
-	   public Map<String,Integer> getSMS(Account account){
-		   List<SMSBalance> sms = new ArrayList<>();
-		   Map<String,Integer> balance = new HashMap<>();
-		   sms = smsDAO.getBalances(account);
-		   for(SMSBalance bal:sms){
-			   //if list object is of type ShortcodeBalance
-			   if(bal instanceof ShortcodeBalance){
-				  ShortcodeBalance scb = (ShortcodeBalance) bal;
-				 balance.put(scb.getShortcodeUuid(), bal.getCount());
-				   
-			   }
-			   //if list object is of type MaskBalance
-			   else if(bal instanceof MaskBalance){
-				   MaskBalance mb = (MaskBalance)bal;
-				   balance.put(mb.getMaskUuid(), bal.getCount());
-			   }			 
-		   }
-			return balance;		   
+	   balanceList = smsBalanceDAO.getBalances(account);
+	   
+	   ShortcodeBalance scb;
+	   MaskBalance mb;
+	   for(SMSBalance bal : balanceList){
+		   
+		   //if list object is of type ShortcodeBalance
+		   if(bal instanceof ShortcodeBalance){
+			 scb = (ShortcodeBalance) bal;
+			 balance.put(scb.getShortcodeUuid(), bal.getCount());
+			   		   
+		   //if list object is of type MaskBalance
+		   } else if(bal instanceof MaskBalance){
+			   mb = (MaskBalance)bal;
+			   balance.put(mb.getMaskUuid(), bal.getCount());
+		   }			 
 	   }
 	   
+	   return balance;		   
+   }
 	   
 	   
-	   @Override
-	public void doGet(HttpServletRequest request,HttpServletResponse response) 
+	   
+   /**
+    * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+    */
+   @Override
+   protected void doGet(HttpServletRequest request,HttpServletResponse response) 
 	         throws ServletException,IOException{
 		doPost(request,response);
-	    }
-	   
-	   
-	public void destroy(){
-		
-	   }
+    }	   
 
+   
+	private static final long serialVersionUID = -7568761645749920089L;
 }

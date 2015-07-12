@@ -15,8 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.ajax.client;
 
-import static org.junit.Assert.fail;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,32 +24,35 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
+
+
 /**
- * Tests our JSON list of Groups for a given account.
+ * Tests the servlet that returns a JSON representation of a Contact.
  * <p>
- * 
- * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>
+ *  
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * 
  */
+public class TestGetContact {
 
-public class TestGetBalance {
-	final String CGI_URL = "http://localhost:8080/BabbleSMS/account/getBalance";
+	final String CGI_URL = "http://localhost:8080/BabbleSMS/account/getContact";
 	
-	final String ACCOUNTUUID_DEMO = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
+	final String CONTACT_UUID = "650195B6-9357-C147-C24E-7FBDAEEC74ED";
 	
 	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroups#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+	 * Test method for {@link ke.co.tawi.babblesms.server.servlet.ajax.client.GetContact#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
 	 */
 	@Test
-	public void testDoPostHttpServletRequestHttpServletResponse() {
-		
-		 try {
-        	System.out.println("JSON response for account uuid '" + ACCOUNTUUID_DEMO + "':\n" + 
-            		getResponse(CGI_URL + "?" +	"accountuuid=" + URLEncoder.encode(ACCOUNTUUID_DEMO, "UTF-8")));
+	public void testDoGetHttpServletRequestHttpServletResponse() {
+		try {
+        	System.out.println("JSON response for contact uuid '" + CONTACT_UUID + "':\n" + 
+            		getResponse(CGI_URL + "?" +	"contactUuid=" + URLEncoder.encode(CONTACT_UUID, "UTF-8")));
         	
         } catch(UnsupportedEncodingException e) {
-        	fail("Test to get balance for account uuid " + ACCOUNTUUID_DEMO);
+        	fail("Test to get balance for account uuid " + CONTACT_UUID);
         	e.printStackTrace();
         }
 	}
@@ -93,5 +94,4 @@ public class TestGetBalance {
         
 		return stringBuff.toString();
 	}
-
 }
