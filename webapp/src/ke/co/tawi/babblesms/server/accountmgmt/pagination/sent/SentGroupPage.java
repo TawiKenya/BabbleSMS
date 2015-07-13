@@ -26,7 +26,7 @@ import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
  * 
  * @author <a href="mailto:migwi@tawi.mobi">Migwi Ndung'u</a>*/
 
-public class SentGroup implements Serializable {
+public class SentGroupPage implements Serializable {
   
 	private int pageNumber;
 	private int totalSize;
@@ -34,7 +34,7 @@ public class SentGroup implements Serializable {
 	private List<OutgoingGrouplog> outGoingGroupList;
 	
 	
-	public SentGroup(){
+	public SentGroupPage(){
 		pageNumber=1;
 		totalSize=1;
 		pageSize=1;
@@ -48,7 +48,7 @@ public class SentGroup implements Serializable {
 	 * @param list of {@link of OutgoingGrouplog}
 	 *  */
 	
-	public SentGroup(final int pageNumber, final int totalSize, final int pageSize, 
+	public SentGroupPage(final int pageNumber, final int totalSize, final int pageSize, 
 			final List<OutgoingGrouplog> outGoingGroupList){
 		this.pageNumber=pageNumber;
 		this.totalSize = totalSize;

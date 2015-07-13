@@ -66,13 +66,13 @@ public class SentGroupPaginator {
      /**
       * @return the first page details, of the Html view
       */
-     public SentGroup getFirstPage(){
-    	 SentGroup sent  = new SentGroup();
+     public SentGroupPage getFirstPage(){
+    	 SentGroupPage sent  = new SentGroupPage();
     	 
     	 List<OutgoingGrouplog> Olog = null;
     	 Olog = outGoingGrplog.getOutGoingGroupLog(account, 0, PAGE_SIZE);
     	 
-    	 sent = new SentGroup(1, this.getTotalPages(),PAGE_SIZE,Olog); 
+    	 sent = new SentGroupPage(1, this.getTotalPages(),PAGE_SIZE,Olog); 
     	 return sent;
      }
      
@@ -84,14 +84,14 @@ public class SentGroupPaginator {
       *@return next Page details 
       *
       */
-     public SentGroup  getNextpage(final SentGroup sg){
-    	 SentGroup sent =new SentGroup();
+     public SentGroupPage  getNextpage(final SentGroupPage sg){
+    	 SentGroupPage sent =new SentGroupPage();
     	 
     	 List<OutgoingGrouplog> Olog = null;
     	 int pg = sg.getPageNumber()*PAGE_SIZE;
     	 Olog = outGoingGrplog.getOutGoingGroupLog(account, pg+1, pg+PAGE_SIZE);
     	 
-    	 sent = new SentGroup(sg.getPageNumber()+1, this.getTotalPages(),PAGE_SIZE,Olog); 
+    	 sent = new SentGroupPage(sg.getPageNumber()+1, this.getTotalPages(),PAGE_SIZE,Olog); 
     	 return sent; 
      }     
      
@@ -102,14 +102,14 @@ public class SentGroupPaginator {
       * @param current page details
       * @return previous page details
       */
-     public SentGroup  getPreviousPage(final SentGroup sg){
-          SentGroup sent  = new SentGroup();
+     public SentGroupPage  getPreviousPage(final SentGroupPage sg){
+    	 SentGroupPage sent  = new SentGroupPage();
     	 
     	 List<OutgoingGrouplog> Olog = null;
     	  int pg = (sg.getPageNumber()-1)*PAGE_SIZE;
     	 Olog = outGoingGrplog.getOutGoingGroupLog(account, pg, pg+PAGE_SIZE);
     	 
-    	 sent = new SentGroup(sg.getPageNumber()-1, this.getTotalPages(),PAGE_SIZE,Olog); 
+    	 sent = new SentGroupPage(sg.getPageNumber()-1, this.getTotalPages(),PAGE_SIZE,Olog); 
     	 return sent;  
      }
      
@@ -117,14 +117,14 @@ public class SentGroupPaginator {
      /***
       * MOves to the last page and gets its comprehensive details
       */
-     public SentGroup  getLastPage(){
-         SentGroup sent  = new SentGroup();
+     public SentGroupPage  getLastPage(){
+    	 SentGroupPage sent  = new SentGroupPage();
     	 
     	 List<OutgoingGrouplog> Olog = null;
     	 int totalcount = countUtils.getOutgoingGroupLog(account.getUuid());
     	 Olog = outGoingGrplog.getOutGoingGroupLog(account,(this.getTotalPages()-1)*PAGE_SIZE, totalcount);
     	 
-    	 sent = new SentGroup(this.getTotalPages(), this.getTotalPages(),PAGE_SIZE,Olog); 
+    	 sent = new SentGroupPage(this.getTotalPages(), this.getTotalPages(),PAGE_SIZE,Olog); 
     	 return sent;
      }
      

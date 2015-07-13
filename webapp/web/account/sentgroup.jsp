@@ -21,7 +21,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentGroup"%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentGroupPage"%>
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentGroupPaginator"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO"%>
@@ -96,11 +96,11 @@
 
     SentGroupPaginator paginator = new SentGroupPaginator(account.getUuid());    
     
-    SentGroup sgPage;
+    SentGroupPage sgPage;
     int ussdCount = 0; // The current count of the USSD sessions
 
     
-        sgPage = (SentGroup) session.getAttribute("currentPage");
+        sgPage = (SentGroupPage) session.getAttribute("currentPage");
         String referrer = request.getHeader("referer");
         String pageParam = (String) request.getParameter("page");
 

@@ -61,8 +61,8 @@
 
 <script type="text/javascript" src="../js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="../js/tawi/message.js"></script>
-<script type='text/javascript' src='../js/tawi/credittablejavascript.js'></script>
-<script type='text/javascript' src="../js/tawi/composepagejavascript.js"></script>
+<script type='text/javascript' src='../js/tawi/credittable.js'></script>
+<script type='text/javascript' src="../js/tawi/composepage.js"></script>
 <script type="text/javascript" src="../js/jquery/jquery.tokenize.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/jquery/jquery.tokenize.css" />
 
