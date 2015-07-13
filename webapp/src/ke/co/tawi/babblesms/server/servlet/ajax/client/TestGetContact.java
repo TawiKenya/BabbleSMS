@@ -52,7 +52,7 @@ public class TestGetContact {
             		getResponse(CGI_URL + "?" +	"contactUuid=" + URLEncoder.encode(CONTACT_UUID, "UTF-8")));
         	
         } catch(UnsupportedEncodingException e) {
-        	fail("Test to get balance for account uuid " + CONTACT_UUID);
+        	fail("Test to get balance for contact uuid " + CONTACT_UUID);
         	e.printStackTrace();
         }
 	}
