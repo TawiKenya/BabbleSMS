@@ -43,6 +43,8 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 
     private static ContactGroupDAO contactGroupDAO;
     
+    private ContactDAO contactDAO;
+    
     private Logger logger = Logger.getLogger(this.getClass());
 
     
@@ -63,6 +65,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
      */
     protected ContactGroupDAO() {
         super();
+        contactDAO = ContactDAO.getInstance();
     }
     
 
@@ -78,6 +81,8 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
     public ContactGroupDAO(String dbName, String dbHost, String dbUsername,
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
+        contactDAO = new ContactDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
+        
         logger = Logger.getLogger(this.getClass());
     }
     
@@ -158,7 +163,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 		
 		List<Contact> contactList = new ArrayList<>();
 		Contact ct;
-		ContactDAO contactDAO = ContactDAO.getInstance();
+		
 		
 		try (
 			   Connection conn = dbCredentials.getConnection();
