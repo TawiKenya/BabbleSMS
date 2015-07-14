@@ -32,7 +32,8 @@ $(document).ready(function() {
    *but function differently*/
 	$("#cancel1").click(function(event){
              event.preventDefault();             
-             window.location="../accounts/contact.jsp";             
+             //window.location="../account/contact.jsp";  
+             $('#contactdiv').remove();           
              });
    
      /*used by search tbltest table after search

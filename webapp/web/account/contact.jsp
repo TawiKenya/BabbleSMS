@@ -66,20 +66,13 @@
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
     
     CacheManager mgr = CacheManager.getInstance();
-    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-    Cache contactsCache = mgr.getCache(CacheVariables.CACHE_CONTACTS_BY_UUID);
-    Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
-    Cache emailCache = mgr.getCache(CacheVariables.CACHE_EMAIL_BY_UUID);
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);    
+    Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);    
     
-    PhoneDAO phoneDAO = PhoneDAO.getInstance();
-    EmailDAO emailDAO = EmailDAO.getInstance();
-    ContactGroupDAO cgDAO = ContactGroupDAO.getInstance();
     GroupDAO groupDAO = GroupDAO.getInstance();
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
-    HashMap<String, String> networkHash = new HashMap<String, String>();
-    HashMap<String, Phone> phoneHash = new HashMap<String, Phone>();
-    HashMap<String, Email> emailHash = new HashMap<String, Email>();
+    HashMap<String, String> networkHash = new HashMap<String, String>();    
 
     
     Account account = new Account();
@@ -89,15 +82,9 @@
         account = (Account) element.getObjectValue();
     }
     
-    Network network;
-    Phone phone;
-    Email email;
-
-    List<Phone> phoneList = new ArrayList<Phone>();
-    List<Network> networkList = new ArrayList<Network>();
-    List<Contact> newcontlist = new ArrayList<Contact>(); 
-    List<Email> emailList = new ArrayList<Email>();
-    List<Group> contactGroupList = new ArrayList<Group>();
+    Network network;    
+    
+    List<Network> networkList = new ArrayList<Network>();   
     List<Group> contactsgrpList = new ArrayList<Group>(); 
      
     contactsgrpList = groupDAO.getGroups(account); 
@@ -112,74 +99,14 @@
         networkList.add(network);
     }
 	
-        
-    //pagination logic
     
-    // Declaring variables for pagination logic
-    CountUtils cUtils = CountUtils.getInstance();
-    int allContact = cUtils.getContacts(account.getUuid());
-    ContactPaginator contactPaginator = new ContactPaginator(account.getUuid());
-    ContactPage contactPage;
-    List<Contact> contactPageList;
-    String pageParam = (String) request.getParameter("first");
-    int contactCount;
-    int count = allContact;
-    String headerreference = request.getHeader("referer");
-
-    if (count == 0) { 
-        contactPage = new ContactPage();
-        contactPageList = new ArrayList<Contact>();
-        contactCount = 0;
-
-    } 
-    
-    else {
-        contactPage = (ContactPage) session.getAttribute("currentIncomingPage");
        
-
-        // Fetching the first contact page
-        if (contactPage == null || StringUtils.equalsIgnoreCase(pageParam, "first") || !StringUtils.endsWith(headerreference, "contact.jsp")) {
-            contactPage = contactPaginator.getFirstContactPage( account);
-
-        }
-        
-        //  Fetching the last page
-        if (StringUtils.equalsIgnoreCase(pageParam, "last")) {
-            contactPage = contactPaginator.getLastContactPage( account , allContact);
-        }
-
-            // Fetching the previous page
-       if (StringUtils.equalsIgnoreCase(pageParam, "<<")) {
-            contactPage = contactPaginator.getPreviousContactPage( account , contactPage);
-       }
-
-       if (StringUtils.equalsIgnoreCase(pageParam, "second")) {
-            contactPage = contactPaginator.getSecondContactPage( account);
-          }
-          
-          // Fetching the next page 
-       if(StringUtils.equalsIgnoreCase(pageParam, ">>")) {
-          
-            contactPage = contactPaginator.getNextContactPage(account , contactPage);
-        }
-
-        session.setAttribute("currentIncomingPage", contactPage);
-
-        contactPageList = contactPage.getContents();
-
-        //logic to determine contactCount
-       if (StringUtils.equalsIgnoreCase(pageParam, "last")){
-              contactCount = (allContact - PAGESIZE) + 1;
-       }
-       else{
-        contactCount = ((contactPage.getPageNum() - 1) * PAGESIZE) + 1;
-           
-    } 
-    }// end else
     
 %> 
 <jsp:include page="contactheader.jsp" />
 
+<!--manages the table on contacts page-->
+<script src="../js/tawi/contactgrpselected.js"></script>
 
 <!--<link rel="stylesheet" type="text/css" href="../css/grouptable.css">-->
 
@@ -212,11 +139,9 @@ more
 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Send email</a></li>
      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sortby</a></li>  
-</ul>
+</ul>     
 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search:&nbsp;<input type="text" name="search" onkeyup="showuser(this.value)"  placeholder = "type then click enter to search" autofocus="autofocus">
-            
-            <%                      
+         <%                                
                 String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.ADD_SUCCESS);
                 
@@ -286,95 +211,35 @@ more
                     out.println("</p>");
                     session.setAttribute("success", null);
                 }
-
-            %>
-            <div id="search-head"></div>
-           <div id="showtext">
-             <table class="table table-striped table-bordered " id="table_id">
-
-                <thead>
-                    <tr>
-                        <th>*</th>
-                        <th><a href="#">Name</a></th>
-                        <th><a href="#">Phone</a></th>
-                        <th><a href="#">Email</a></th>
-                        <th><a href="#">Group</a></th>
-                    </tr>
-                </thead>   
-       
-		<tbody class="tblTest" >
-                    
-            <%
-                if (contactPageList != null) {
-                    int count1 = 1;
-
-                 for (Contact contact : contactPageList) {
-                                    
-                    emailList = emailDAO.getEmails(contact);
-                    contactGroupList = cgDAO.getGroups(contact, account);
-                    phoneList = phoneDAO.getPhones(contact);                  
-            %>
-          
-                    <tr>
-
-                       <td width="5%"><%=contactCount%></td>
-                       <td class="center"><a class="Zlink" href="#" title="click to edit details"><%=contact.getName()%></a></td>
-         				
-                    <% 
-                        // Print Phone Numbers
-                        if (phoneList != null) {
-                            out.println("<td>");
-                            for(Phone ph : phoneList) {
-                                out.println(ph.getPhonenumber() + " (" +
-                                    StringUtils.split( networkHash.get(ph.getNetworkuuid()) )[0] + 
-                                    ")<br/>");           
-                            }
-                            out.println("</td>");
-
-                        } else { // end 'if (phoneList != null)'
-                            out.println("<td>&nbsp;</td>");
-                        }
+          %>
+                  
+          <h4>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search by Name:&nbsp;<input type="text" name="search" onkeyup="showuser(this.value)"  placeholder = "type then click enter to search" autofocus="autofocus"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-                        // Print Emails
-                        if (emailList != null) {
-                            out.println("<td>");
-                            for(Email mail : emailList) {
-                                out.println(mail.getAddress() + "<br/>");           
-                            }
-                            out.println("</td>");
+          Search by Group:&nbsp;             
+            <select class="groupselect" onclick="Chromecheck()">
+             <option class="grp" value="empty" name="All Contacts" >All Contacts</option>
+                 <% if (contactsgrpList != null) {                        
+                    out.println("<td>");                   
+                    for(Group gr : contactsgrpList) { %>
+                  <option class="grp" value="<%=gr.getUuid()%>" name="<%=gr.getName()%>" ><%=gr.getName()%></option>          
+                          <%}                            
+                 } else {%> 
+                 <option >No groups available</option>
+                 <% } %>                          
+                           
+            </select>
+           
+          </h4>
+           <div id="header-display"></div>
+                
 
-                        } else { // end 'if ( emailList != null)'
-                            out.println("<td>&nbsp;</td>");
-                        }               
-                      
-                        // Print Groups
-                        if (contactGroupList != null) {                        
-                            out.println("<td>");
-                            for(Group gr : contactGroupList) {
-                                out.println(gr.getName() + "<br/>");           
-                            }
-                            out.println("</td>");
+            <!--the new page is appended here-->
+              
+           </div>    
 
-                        } else { // end 'if ( contactGroupList != null)'
-                            out.println("<td>&nbsp;</td>");
-                        }
-
-                        out.println("<td style='display:none'>"+contact.getDescription()+"</td>");
-                        out.println("<td style='display:none'>"+contact.getUuid()+"</td>");
-                        
-                     contactCount++;
-                     out.println("</tr>");
-
-             	}// end 'for (Contact contact : contactPageList)'		
-
-            }// end 'if (contactPageList != null)'
-        %>
-               
-
-                </tbody>
-            </table> 
-           </div>  
+            
 
 
         </div>
@@ -383,43 +248,28 @@ more
 
 
 </div><!--/row-->
+
+
 <div style ="margin-left:30%; width:50%;">
-<form action = "contact.jsp" method = "POST">
+                   <span id="prev" name="<%=account.getUuid()%>" > 
+                <span class="icon-fast-backward"></span>
+                   &nbsp;<a>Prev</a>&nbsp;&nbsp;&nbsp;
+                   </span>
+                  &nbsp;&nbsp;&nbsp;
 
-        <% 
-        if(contactPage.isFirstPage()){
-    %>
-        <input type = "submit" value = "first" name = "first" disabled ="disabled">
-        <input type = "submit" value = "<<" name = "first" disabled = "disabled">
-        <!--<input type = "submit" value = "second" name = "first"> -->  
-        <input type = "submit" value = ">>" name = "first">  
-        <input type = "submit" value = "last" name = "first">
-    <%
-    }
+                   <span id="next" > 
+                   <a>Next</a>&nbsp;
+                <span class="icon-fast-forward"></span>
+                   </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <input id="first"  value="First" type="submit" style="color:#fff; background-color:#555;">
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <input id="last"  value="Last" type="submit" style="color:#fff; background-color:#555;">                      
 
-        if(contactPage.isLastPage()){
-    %>
-        <input type = "submit" value = "first" name = "first">
-        <input type = "submit" value = "<<" name = "first">
-       <!-- <input type = "submit" value = "second" name = "first"> -->  
-       <input type = "submit" value = ">>" name = "first" disabled ="disabled">  
-       <input type = "submit" value = "last" name = "first"disabled ="disabled">
-    <%
-        }
- 
-     if(!contactPage.isFirstPage() && !contactPage.isLastPage()){
-    %>
-       <input type = "submit" value = "first" name = "first">
-       <input type = "submit" value = "<<" name = "first">
-       <!-- <input type = "submit" value = "second" name = "first"> -->  
-       <input type = "submit" value = ">>" name = "first">  
-       <input type = "submit" value = "last" name = "first">
-       <%
-          }
-        %>
-</form>
-</div> 
+                   </div>
 
+
+        
 
 
 <!-- Contact Form  for the pop up starts-->

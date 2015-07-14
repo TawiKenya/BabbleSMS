@@ -306,8 +306,8 @@ function hello(val){
                   <li><a class="ajax-link" href="groups.jsp"><i class="icon-globe"></i><span class="hidden-tablet">All groups</span></a></li>
 		  <!--   <li><a class="ajax-link" href="#"><i class="icon-globe"></i><span class="hidden-tablet">View group</span></a></li>-->
                   <li><a class="ajax-link" href="addgroup.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li>
-	          <!--<li><a class="ajax-link" href="#"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li>-->	 
-	          <li><a class="ajax-link" href="contactspergroup.jsp"><i class="icon-folder-open"></i><span class="hidden-tablet">Group Contacts</span></a></li>    
+	          <!--<li><a class="ajax-link" href="#"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li> 
+	          <li><a class="ajax-link" href="contactspergroup.jsp"><i class="icon-folder-open"></i><span class="hidden-tablet">Group Contacts</span></a></li>-->    
                         </ul>
                         <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
                     </div><!--/.well -->

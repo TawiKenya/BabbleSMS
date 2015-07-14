@@ -69,7 +69,8 @@ public class TestContactGroupDAO {
     /**
      * method for testing removing a contact from a contact group 
      */
-    @Ignore
+
+    //@Ignore
     @Test
     public void testRemovecontact(){
     	 storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -88,6 +89,7 @@ public class TestContactGroupDAO {
     /**
      * method for testing getting  contacts given a group object
      */    
+    //@Ignore
     @Test
     public void testGetcontacts(){
     	 storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -97,13 +99,35 @@ public class TestContactGroupDAO {
     	 
     	 List<Contact> list = storage.getContacts(group);
     	 
-    	 assertEquals(list.size(), 7);    	
+
+    	 assertEquals(list.size(), 73);    	
+
+    }
+    
+    
+    /**
+     * method for testing getting a given limit of contacts
+     */
+    //@Ignore
+    @Test
+    public void testGetContactsbyLimit(){
+    	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+    	Group group = new Group();
+   	    group.setUuid(CGROUPUUID);
+   	 
+   	 List<Contact> list = storage.getContacts(group,1,15);
+   	 for(int i=0;i<list.size(); i++){
+   		 System.out.println(list.get(i)); 
+   	 }
+    	
     }
     
     /**
      * method for testing getting groups given a contact object
      */
-    @Ignore
+
+    //@Ignore
+
     @Test
     public void testGetgroups(){
     	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -114,14 +138,15 @@ public class TestContactGroupDAO {
     	account.setUuid(ACCUUID_NEW);
     	List<Group> list = storage.getGroups(contact,account);
     	
-    	assertEquals(list.size(), 3);
+    	assertEquals(list.size(), 0);
     	
     }
     
     /**
      * method to test creating a new contactgroup association given a group and contact object
      */
-    @Ignore
+
+    //@Ignore
     @Test
     public void putContactgroup(){
     	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);

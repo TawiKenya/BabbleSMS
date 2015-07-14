@@ -57,6 +57,15 @@ public interface BabbleContactGroupDAO {
   * @return a list of {@link Contact}s belonging to the particular {@link Group}
   */
 	public List<Contact> getContacts(Group group);
+	
+	
+	/**
+	 * @param int fromIndex
+	 * @param int toIndex
+	  * @param group
+	  * @return a list of {@link Contact}s belonging to the particular {@link Group} of given pageSize
+	  */
+		public List<Contact> getContacts(Group group, int fromIndex, int toIndex);
    
    
    /**

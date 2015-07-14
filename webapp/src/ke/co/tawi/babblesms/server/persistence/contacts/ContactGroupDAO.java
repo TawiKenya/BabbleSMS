@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -43,8 +44,10 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 
     private static ContactGroupDAO contactGroupDAO;
     
+
     private ContactDAO contactDAO;
-    
+    private GroupDAO groupDAO; 
+
     private Logger logger = Logger.getLogger(this.getClass());
 
     
@@ -66,6 +69,8 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
     protected ContactGroupDAO() {
         super();
         contactDAO = ContactDAO.getInstance();
+        groupDAO = GroupDAO.getInstance();
+
     }
     
 
@@ -81,8 +86,10 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
     public ContactGroupDAO(String dbName, String dbHost, String dbUsername,
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-        contactDAO = new ContactDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
-        
+
+        contactDAO =  new ContactDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
+        groupDAO = new  GroupDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
+
         logger = Logger.getLogger(this.getClass());
     }
     
@@ -162,9 +169,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	public List<Contact> getContacts(Group group) {
 		
 		List<Contact> contactList = new ArrayList<>();
-		Contact ct;
-		
-		
+		Contact ct;		
 		try (
 			   Connection conn = dbCredentials.getConnection();
 			   PreparedStatement pstmt = conn.prepareStatement("SELECT contactuuid FROM contactgroup WHERE groupuuid = ?;");
@@ -187,6 +192,45 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 		
         return contactList;
 	}
+           
+
+	/**
+	 * method to get contacts from the contact group relationship given a group object 
+	 * 
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleContactGroupDAO#getContacts(ke.co.tawi.babblesms.server.beans.contact.Group, int pagesize)
+	 * 
+	 * @return a list of contacts associated with the given group object
+	 */
+	@Override
+	public List<Contact> getContacts(Group group, int fromIndex, int toIndex) {
+		List<Contact> contactList = new ArrayList<>();
+		Contact ct;
+				
+		try (
+			   Connection conn = dbCredentials.getConnection();
+			   PreparedStatement pstmt = conn.prepareStatement("SELECT contactuuid FROM contactgroup WHERE groupuuid = ?"
+			   		+ "LIMIT ? OFFSET ? ;");
+			)
+		   {
+	           pstmt.setString(1,group.getUuid());
+	           pstmt.setInt(2, toIndex - fromIndex);
+			   pstmt.setInt(3, fromIndex);
+	           try(ResultSet rset = pstmt.executeQuery();){
+		           
+		           while(rset.next()){
+		        	   ct = contactDAO.getContact(rset.getString("contactuuid"));
+		        	   contactList.add(ct);
+		           }
+	           }
+	           
+	           
+           } catch (SQLException e) {
+	           logger.error("SQL Exception when getting contacts belonging to " + group);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	       }
+		
+        return contactList;
+	}
 
 
 	
@@ -195,8 +239,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	 */
 	@Override
 	public List<Group> getGroups(Contact contact , Account account ) {		
-		List<Group> groupList = new ArrayList<>();
-		GroupDAO groupDAO = GroupDAO.getInstance();
+		List<Group> groupList = new ArrayList<>();		
 		
 		try (
 			Connection conn = dbCredentials.getConnection();
@@ -227,4 +270,6 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
         return groupList;	
 	}
 
+
+	
 }

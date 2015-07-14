@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
+import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
+import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
 
@@ -32,9 +34,10 @@ import ke.co.tawi.babblesms.server.persistence.utils.CountUtils;
  */
 public class ContactPaginator {
 	
-	private String userName; 
 	public final int PAGESIZE = 15; 
 	private CountUtils countUtils;
+	private ContactDAO contactDAO;
+	private ContactGroupDAO cgrpDAO;
     private String accountuuid;
 	
 	/**
@@ -42,17 +45,11 @@ public class ContactPaginator {
 	 */
 	public ContactPaginator(String accountuuid) {
 		countUtils = CountUtils.getInstance();
+		contactDAO = ContactDAO.getInstance();
+		cgrpDAO = ContactGroupDAO.getInstance();
 		this.accountuuid = accountuuid;
 	}
-
 	
-	/**
-	 * @param uname
-	 */
-//	public ContactPaginator() {
-	//	this.userName = uname;		
-	//}
-
 	
 	/**
 	 * a method used to fetch the first contact page 
@@ -64,14 +61,16 @@ public class ContactPaginator {
 	 * @param account
 	 * @return ContactPage an instance of the class contactPage
 	 */
-	public ContactPage getFirstContactPage(Account account) {
-		int startIndex = 0;
+	public ContactPage getFirstContactPage(Object object) {
+		int startIndex = 0;		
 		int endIndex = startIndex + PAGESIZE;
 		List<Contact> returnList = new ArrayList<Contact>();
-		   
-        returnList = ContactDAO.getInstance().getContactList (account , startIndex , endIndex);
-
-        return new ContactPage(1, getTotalPage(), PAGESIZE, returnList);		   
+		
+		returnList=CheckType(object,startIndex , endIndex);		
+		
+        return new ContactPage(1, calculateTotalPage(object), PAGESIZE, returnList);
+		
+		
 	}
 	
 	
@@ -81,14 +80,14 @@ public class ContactPaginator {
 	 * @param account
 	 * @return ContactPage instance with a list of second contact sub list
 	 */
-	public ContactPage getSecondContactPage(Account account) {
+	public ContactPage getSecondContactPage(Object object) {
 		int startIndex = PAGESIZE;
 		int endIndex = startIndex + PAGESIZE;
 		List<Contact> returnList = new ArrayList<Contact>();
 		     
-		returnList = ContactDAO.getInstance().getContactList (account , startIndex , endIndex);
+		returnList=CheckType(object,startIndex , endIndex);
 	        
-		return new ContactPage(2, getTotalPage(), PAGESIZE, returnList);
+		return new ContactPage(2, calculateTotalPage(object), PAGESIZE, returnList);
 	}
 	
 	
@@ -102,15 +101,15 @@ public class ContactPaginator {
 	 * @param StartIndex refers to the total count of the contacts of the account under inspection
 	 * @return an instance of contactPAge containing the last contact sub list
 	 */
-	public ContactPage getLastContactPage(Account account , int StartIndex) {
+	public ContactPage getLastContactPage(Object object , int StartIndex) {
 		int startIndex = StartIndex - PAGESIZE;
 		int endIndex = PAGESIZE + startIndex;
 		
 		List<Contact> returnList = new ArrayList<Contact>();
 				
-		returnList = ContactDAO.getInstance().getContactList (account , startIndex , endIndex);
+		returnList=CheckType(object,startIndex , endIndex);
 
-        return new ContactPage(getTotalPage(), getTotalPage(), PAGESIZE, returnList);
+        return new ContactPage(calculateTotalPage(object), calculateTotalPage(object), PAGESIZE, returnList);
 	}
 	
 	
@@ -123,15 +122,15 @@ public class ContactPaginator {
 	 * to fetch the next contact page
 	 * @return a {@link ContactPage}
 	 */
-	public ContactPage getNextContactPage(Account account , final ContactPage currentPage) {
+	public ContactPage getNextContactPage(Object object, final ContactPage currentPage) {
 		int startIndex = currentPage.getPageNum() * PAGESIZE;
 		int endIndex = PAGESIZE + startIndex;
 		
 		List<Contact> returnList = new ArrayList<Contact>();
 		    	  
-    	returnList = ContactDAO.getInstance().getContactList (account , startIndex , endIndex);    
+		returnList=CheckType(object,startIndex , endIndex);    
      
-    	return new ContactPage(currentPage.getPageNum() + 1 , getTotalPage(), PAGESIZE, returnList);
+    	return new ContactPage(currentPage.getPageNum() + 1 , calculateTotalPage(object), PAGESIZE, returnList);
 	}
 	
 	
@@ -142,18 +141,18 @@ public class ContactPaginator {
 	 * @param currentPage used as a central point so that its possible to fetch the  previous contact page
 	 * @return ContactPage  with the previous contact sublist
 	 */
-	public ContactPage getPreviousContactPage( Account account , final ContactPage currentPage) {				
+	public ContactPage getPreviousContactPage( Object object , final ContactPage currentPage) {				
 		int startIndex  = ( (currentPage.getPageNum() - 2) * PAGESIZE );
 		int endIndex = (currentPage.getPageNum() - 1) * PAGESIZE;
 		List<Contact> returnList = new ArrayList<Contact>();
 				
 		if(startIndex >= 0){
-			  returnList = ContactDAO.getInstance().getContactList (account , startIndex , endIndex);
+			returnList=CheckType(object,startIndex , endIndex);
 		} else {
 	        returnList = currentPage.getContents();		
 		}
 	      
-		return new ContactPage(currentPage.getPageNum() - 1 , getTotalPage(), PAGESIZE, returnList);        
+		return new ContactPage(currentPage.getPageNum() - 1 , calculateTotalPage(object), PAGESIZE, returnList);        
 	}
 	
     /**
@@ -170,6 +169,66 @@ public class ContactPaginator {
 
 //TODO: divide by the page size and add one to take care of remainders and what else?
         return ((totalSize - 1) / PAGESIZE) + 1;
+    }
+    
+    
+    /**
+     * Calculates the total number of pages that would be printed for the selected group
+     * sessions that belong to the logged-in account
+     *@param Group group
+     * @return	an integer
+     */
+    public int getTotalPage(Group group) {
+        int totalSize = 0;
+
+        //get the number of all sessions belonging to this email
+        totalSize = countUtils.getContactInGroup(group.getUuid());
+
+//TODO: divide by the page size and add one to take care of remainders and what else?
+        return ((totalSize - 1) / PAGESIZE) + 1;
+    }
+    
+    
+    /**
+     * @param Object of type Account or Group
+     * @param int startIndex
+     * @param int endIndex
+     * 
+     * method checks if the object parameter is of type Account or Group
+     * @return list of contacts
+     */
+    
+    private List<Contact> CheckType(Object object, int startIndex , int endIndex){    	
+      List<Contact> reList=new ArrayList<>();
+		   if(object instanceof Account){
+			   Account account =(Account)object;
+     reList = contactDAO.getContactList (account , startIndex , endIndex);
+		   }
+		   else if(object instanceof Group){
+			   Group group = (Group)object;
+		reList = cgrpDAO.getContacts(group , startIndex , endIndex);
+		   }
+    	return reList;
+    }
+    
+    
+    /**
+     * Method checks the type of Object and then returns the correct totalPage value
+     * @param Object object(Either Account or Group)
+     * @return int total
+     */   
+    
+    
+    public int calculateTotalPage(Object object){
+    	int TotalPage=0;
+    	if(object instanceof Account){
+			TotalPage=getTotalPage();
+		}
+		else if(object instanceof Group){
+			Group group = (Group)object;
+			TotalPage=getTotalPage(group);
+		}
+    	return TotalPage;
     }
 	
 }
