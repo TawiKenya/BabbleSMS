@@ -73,8 +73,8 @@
         statistics = (SessionStatistics) element.getObjectValue();
     }
 
-    CountUtils ct = CountUtils.getInstance();
-    int incoming = ct.getIncomingLog(accountuuid);
+    CountUtils ct = CountUtils.getInstance();    
+    int incoming = ct.getIncomingCount(accountuuid);
     int outgoing = ct.getOutgoingLog(accountuuid);
     int contacts = ct.getContacts(accountuuid);
     int groups = ct.getGroups(accountuuid);

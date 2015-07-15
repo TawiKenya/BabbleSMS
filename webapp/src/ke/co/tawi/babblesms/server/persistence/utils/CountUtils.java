@@ -87,39 +87,23 @@ public class CountUtils extends GenericDAO {
     public int getIncomingCount(String accountuuid) {
         int count=0;
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT count(*) FROM incominglog WHERE recipientuuid = ?;");
+        try (Connection conn = dbCredentials.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT count(*) FROM incominglog WHERE recipientuuid = ?;");
+        		){           
+            
             pstmt.setString(1, accountuuid);
-
-            rset = pstmt.executeQuery();
+                try(ResultSet rset = pstmt.executeQuery();){
+            
             rset.next();
             count = count + rset.getInt(1);
+                }
 
         } catch (SQLException e) {
             logger.error("SQLException while getting all incoming SMS count of account with uuid '"
                     + accountuuid + "'");
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-            if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
-
+        } 
         return count;
     }
 
@@ -181,28 +165,20 @@ public class CountUtils extends GenericDAO {
      */
     public int getIncomingCount(String accountuuid, Network network, Date startTime, Date endTime) {
         int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            /*pstmt = conn.prepareStatement("SELECT COUNT(*) FROM incomingLog WHERE destination "
-                    + "IN (SELECT codenumber FROM shortcode WHERE networkUuid = ? AND accountUuid = ?) "
-                    + "AND logTime BETWEEN ? AND ?;");*/
-            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM incominglog WHERE networkuuid = ? AND recipientuuid = ? AND logTime BETWEEN ? AND ?;");
+        try 
+        (Connection conn = dbCredentials.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM incominglog WHERE networkuuid = ? "
+             		+ "AND recipientuuid = ? AND logTime BETWEEN ? AND ?;");
+        		){          
             pstmt.setString(1, network.getUuid());
             pstmt.setString(2, accountuuid);
             pstmt.setTimestamp(3, new Timestamp(startTime.getTime()));
             pstmt.setTimestamp(4, new Timestamp(endTime.getTime()));
-
-            rset = pstmt.executeQuery();
+                 try(ResultSet rset = pstmt.executeQuery();){            
             if (rset.next()) {
                 count = count + rset.getInt(1);
             }
-
+                      }
 
         } catch (SQLException e) {
             logger.error("SQLException while getting all incoming SMS count of account with uuid '"
@@ -210,19 +186,7 @@ public class CountUtils extends GenericDAO {
                     + "between " + startTime + " and " + endTime);
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
+        } 
 
         return count;
     }
@@ -243,46 +207,28 @@ public class CountUtils extends GenericDAO {
      */
     public int getOutgoingCount(String accountuuid, Network network, Date startTime, Date endTime) {
         int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM outgoingLog WHERE networkUuid = ? AND sender = ? "
+        try
+        (Connection conn = dbCredentials.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM outgoingLog WHERE networkUuid = ? AND sender = ? "
                     + "AND logTime BETWEEN ? AND ?;");
+        		) {     
             pstmt.setString(1, network.getUuid());
             pstmt.setString(2, accountuuid);
             pstmt.setTimestamp(3, new Timestamp(startTime.getTime()));
             pstmt.setTimestamp(4, new Timestamp(endTime.getTime()));
-
-            rset = pstmt.executeQuery();
+            
+            try(ResultSet rset = pstmt.executeQuery();){
             if (rset.next()) {
                 count = count + rset.getInt(1);
+                }
             }
-
         } catch (SQLException e) {
             logger.error("SQLException while getting all outgoing USSD count of email '"
                     + accountuuid + "' and network '" + network + "' "
                     + "between " + startTime + " and " + endTime);
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
-        
+        }         
         return count;
     }
     
@@ -336,41 +282,26 @@ public class CountUtils extends GenericDAO {
      */
     public int getOutgoingDeliveredCount(String accountuuid, Network network) {
         int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM outgoingLog WHERE networkuuid = ? AND sender = ? "
-                    + "where messagestatusuuid='49229BA2-91E5-7E64-F49C-923B7927C40D';");
+        try
+        (Connection conn = dbCredentials.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM outgoingLog WHERE networkuuid = ? AND sender = ? "
+                     + "where messagestatusuuid='49229BA2-91E5-7E64-F49C-923B7927C40D';");
+        		){            
+            
             pstmt.setString(1, network.getUuid());
             pstmt.setString(2, accountuuid);
 
-            rset = pstmt.executeQuery();
+            
+            try(ResultSet rset = pstmt.executeQuery();){
             rset.next();
             count = count + rset.getInt(1);
-
+            }
         } catch (SQLException e) {
             logger.error("SQLException exception while getting all outgoing USSD count of email '"
                     + accountuuid + "' and of network '" + network + "'.");
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
-        
+        }         
         return count;
     }
 
@@ -384,40 +315,22 @@ public class CountUtils extends GenericDAO {
      */
     public int getOutgoingLog(String accountuuid) {
         int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT count(*) FROM outgoinglog WHERE sender = ?");
+        try 
+        (  Connection conn = dbCredentials.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT count(*) FROM outgoinglog WHERE sender = ?");
+        		) {            
             pstmt.setString(1, accountuuid);
-
-            rset = pstmt.executeQuery();
+            
+            try(ResultSet rset = pstmt.executeQuery();){
             rset.next();
             count = count + rset.getInt(1);
-
+            }
         } catch (SQLException e) {
             logger.error("SQLException exception while getting all airtime count of  '"
                     + accountuuid + "' and '" + accountuuid + "'");
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
-
+        } 
         return count;
     }
 
@@ -553,40 +466,22 @@ public class CountUtils extends GenericDAO {
      */
     public int getGroups(String accountuuid) {
         int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM groups WHERE accountuuid = ?;");
+        try
+        (Connection conn = dbCredentials.getConnection();
+          PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM groups WHERE accountuuid = ?;");
+        		){
+            
             pstmt.setString(1, accountuuid);
-
-            rset = pstmt.executeQuery();
+              try( ResultSet rset = pstmt.executeQuery();){            
             rset.next();
             count = rset.getInt(1);
-
+              }
         } catch (SQLException e) {
             logger.error("SQLException exception while getting all topup of '"
                     + accountuuid + "' and '" + accountuuid + "' and '" + accountuuid + "'.");
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
-
+        } 
         return count;
     }
 
@@ -598,40 +493,22 @@ public class CountUtils extends GenericDAO {
      */
     public int getContactInGroup(String groupuuid) {
         int count = 0;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rset = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-
-            pstmt = conn.prepareStatement("SELECT COUNT(*) FROM contactgroup WHERE groupuuid = ?;");
+        try
+        (Connection conn = dbCredentials.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM contactgroup WHERE groupuuid = ?;");
+        		) {          
             pstmt.setString(1, groupuuid);
-
-            rset = pstmt.executeQuery();
+            
+            try( ResultSet rset = pstmt.executeQuery();){
             rset.next();
             count = rset.getInt(1);
-
+            }
         } catch (SQLException e) {
             logger.error("SQLException exception while getting all topup of '"
                     + groupuuid);
             logger.error(ExceptionUtils.getStackTrace(e));
 
-        } finally {
-                if (rset != null) {
-                try { rset.close(); } catch (SQLException e) { }
-            }
-
-            if (pstmt != null) {
-                try { pstmt.close(); } catch (SQLException e) { }
-            }
-
-            if (conn != null) {
-                try { conn.close(); } catch (SQLException e) { }
-            }
-        }
-
+        } 
         return count;
     }
     
