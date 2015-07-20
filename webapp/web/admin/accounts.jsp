@@ -188,20 +188,13 @@
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
                                 <input type="hidden" name="name" value="<%=code.getName()%>">
-
                                 <input type="hidden" name="mobile" value="<%=code.getMobile()%>">
                                 <input type="hidden" name="dailysmslimit" value="<%=code.getDailysmslimit()%>">
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">
                                 <input type="hidden" name="statusuuid" value="<%=code.getStatusuuid()%>">
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
-                                <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
-                           <!-- </form>
-                            <form name="delete" method="post" action="../deleteaccount">
-
-                                <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
-                                
-                                <input class="btn btn-success" type="submit" name="deletenetwork" id="submit" value="Delete" /> 
-                            </form> -->
+                                <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" />
+                                </form>                          
                         </td>      
 
 
