@@ -274,7 +274,7 @@ more
 
 <!-- Contact Form  for the pop up starts-->
 <div id="contactdiv"style="display:none;">
-<form class="form"  onsubmit="return formValidator()" action = "editcontact" method = "POST" id="contact" >
+<form class="form" action = "editcontact" method = "POST" id="contact" >
 <!--onsubmit="return formValidator()"-->
 <b> Edit Contact Details</b>
 <p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:20px;" id ="close">x</p>

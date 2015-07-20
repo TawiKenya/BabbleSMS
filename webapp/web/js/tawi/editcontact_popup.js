@@ -186,7 +186,7 @@ $(document).ready(function() {
         var description = $("#textarea").val();
         if (name == "" || email == "" || contact == "" || description == "")
         {
-            alert("Please Fill All Fields");
+            //alert("Please Fill All Fields");
 		
         }
         else
