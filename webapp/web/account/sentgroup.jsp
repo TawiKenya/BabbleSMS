@@ -119,7 +119,7 @@
             sgPage = paginator.getPreviousPage(sgPage);
 
             // We are to give the next page 
-        } else {
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "next"))  {
             sgPage = paginator.getNextpage(sgPage);
         }
 

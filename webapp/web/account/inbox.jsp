@@ -137,7 +137,7 @@
             inboxPage = paginator.getPrevPage(inboxPage);
 
             // We are to give the next page 
-        } else {
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "next"))  {
             inboxPage = paginator.getNextPage(inboxPage);
         }
 
