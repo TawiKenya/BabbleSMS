@@ -132,7 +132,6 @@ public class SendSMS extends HttpServlet {
 		
 	    TawiGateway smsGateway = gatewayDAO.get(account);
 	    
-	    
 	    // Retrieve the web parameters
 		String[] groupselected = request.getParameterValues("groupselected");
 		String[] phones = request.getParameterValues("phones");

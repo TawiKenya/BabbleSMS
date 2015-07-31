@@ -347,8 +347,7 @@
         <div class="control-group">
                         <label class="control-label" for="source">Source:</label>
                         <div class="controls">
-                            <form action="sendsms.jsp">
-                                
+                                                            
                                 <select name="source" id="source" required="true">
                                     <%
                                         //for mask
@@ -408,7 +407,6 @@
                                     }
                                 %>
                             </select>
-                            </form>
                         </div>
                     </div>       
 
@@ -434,6 +432,8 @@
                     </div>
                     </div>
                 </fieldset>
+                            
+                        <input type="hidden" name="username" value="<%= username %>">
             </form>
 
             
