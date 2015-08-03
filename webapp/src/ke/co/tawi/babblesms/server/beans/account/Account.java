@@ -15,9 +15,9 @@
  */
 package ke.co.tawi.babblesms.server.beans.account;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
-
 import java.util.Date;
+
+import ke.co.tawi.babblesms.server.beans.StorableBean;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,6 +40,7 @@ public class Account extends StorableBean {
     private int dailysmslimit;
     private Date creationdate;
     private String statusuuid;
+    private String callback;
 
     /**
      *
@@ -55,6 +56,7 @@ public class Account extends StorableBean {
         dailysmslimit =0;
         creationdate = new Date();
         statusuuid = "";
+        callback = "";
     }
 
     /**
@@ -204,6 +206,20 @@ public class Account extends StorableBean {
 
     
 	/**
+	 * @return the callback
+	 */
+	public String getCallback() {
+		return callback;
+	}
+
+	/**
+	 * @param callback the callback to set
+	 */
+	public void setCallback(String callback) {
+		this.callback =  StringUtils.trimToEmpty(callback);
+	}
+
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -229,6 +245,8 @@ public class Account extends StorableBean {
 		builder.append(creationdate);
 		builder.append(", statusuuid=");
 		builder.append(statusuuid);
+		builder.append(", callback=");
+		builder.append(callback);
 		builder.append("]");
 		return builder.toString();
 	}

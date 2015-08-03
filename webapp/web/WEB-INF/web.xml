@@ -187,6 +187,11 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.EditAccount</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>resetPassword</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.ResetPassword</servlet-class>
+    </servlet>
+
      <servlet>
         <servlet-name>AccountStatus</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AccountStatus</servlet-class>
@@ -398,6 +403,10 @@
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
         <url-pattern>/editAccount</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>resetPassword</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>

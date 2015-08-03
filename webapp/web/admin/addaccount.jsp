@@ -179,29 +179,46 @@
                         </div>
 
                     </div> 
-
-                    <div class="control-group">
+                            
+                            
+                           
+                            
+                      
+                      <div class="control-group">
                         <label class="control-label" for="name">Email*</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="email" name="email"value="<%= StringUtils.trimToEmpty(paramHash.get("email")) %>"  required="true>
+                            <input class="input-xlarge focused" id="receiver" type="text" name="email" 
+                                   value="<%= StringUtils.trimToEmpty(paramHash.get("email")) %>" required="true">
 
                         </div>
 
                     </div> 
 
 
-                    <div class="form-actions">
+                    <div class="control-group">
+                        <label class="control-label" for="name">Callback Url</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="mobile" type="text" name="callback" 
+                                   value="<%= StringUtils.trimToEmpty(paramHash.get("callback")) %>">
 
+                        </div>
+
+                    </div>       
+                            
+                      
+
+                    <div class="form-actions">
                         <button type="submit" name="sendsms" value="Send"   class="btn btn-primary">Add</button>
                     </div>
+                            
                 </fieldset>
             </form>
 
 
-        </div>
+       
     </div><!--/span-->
 
-</div><!--/row-->
+
 
 
 

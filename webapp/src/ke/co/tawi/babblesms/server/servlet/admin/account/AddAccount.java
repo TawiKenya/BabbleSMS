@@ -15,12 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.admin.account;
 
-import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.status.Status;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.status.Status;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
@@ -98,7 +97,8 @@ public class AddAccount extends HttpServlet {
     	String email = StringUtils.trimToEmpty(request.getParameter("email"));
     	String loginPasswd = StringUtils.trimToEmpty(request.getParameter("password"));
     	String loginPasswd2 = StringUtils.trimToEmpty(request.getParameter("password2"));
-    	String phone = StringUtils.trimToEmpty(request.getParameter("phone"));     
+    	String phone = StringUtils.trimToEmpty(request.getParameter("phone"));  
+    	String callback = StringUtils.trimToEmpty(request.getParameter("callback"));  
             	
     	// This is used to store parameter names and values from the form.
     	Map<String, String> paramHash = new HashMap<>();    	
@@ -106,6 +106,7 @@ public class AddAccount extends HttpServlet {
     	paramHash.put("username", username);
     	paramHash.put("email", email);
     	paramHash.put("phone", phone);
+    	paramHash.put("callback", callback);
         
 
         // No Name provided
@@ -126,7 +127,7 @@ public class AddAccount extends HttpServlet {
             // No website login password provided
         } else if (StringUtils.isBlank(loginPasswd) || StringUtils.isBlank(loginPasswd2)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_LOGIN_PASSWD);
-
+        
             // The website login passwords provided do not match
         } else if (!StringUtils.equals(loginPasswd, loginPasswd2)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_LOGIN_PASSWD_MISMATCH);
@@ -140,7 +141,7 @@ public class AddAccount extends HttpServlet {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_PARAMETERS, null);
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, null);
         	
-        	 addAccount(name, username, email, loginPasswd, phone);
+        	 addAccount(name, username, email, loginPasswd, phone,callback);
         	 
              session.setAttribute(SessionConstants.ADMIN_ADD_SUCCESS, "Account created successfully.");
         }
@@ -170,7 +171,7 @@ public class AddAccount extends HttpServlet {
      * @param phone
      */
     private void addAccount(String name, String username, String email, String loginPasswd, 
-    		String phone) {
+    		String phone,String callback) {
         Account a = new Account();
 
         a.setName(name);
@@ -178,6 +179,7 @@ public class AddAccount extends HttpServlet {
         a.setLogpassword(loginPasswd);
         a.setEmail(email);
         a.setMobile(phone);
+        a.setCallback(callback);
         a.setStatusuuid(Status.ACTIVE);
 
         accountDAO.putAccount(a);           

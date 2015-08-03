@@ -87,7 +87,7 @@
 <div class="row-fluid sortable">		
     <div class="box span12">
         <div class="box-header well" data-original-title>
-            <a class="btn" href="accounts.jsp" title="view accounts" data-rel="tooltip">View</a>                  
+          <!--  <a class="btn" href="accounts.jsp" title="view accounts" data-rel="tooltip">View</a>  -->                
             <a class="btn" href="addaccount.jsp" title="add accounts" data-rel="tooltip">Add</a>  
             <div class="box-icon">
                 <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> </a>                  
@@ -164,11 +164,10 @@
                 <thead>
                     <tr>
                         <th>*</th>
-                        <th>Uuid</th>
                         <th>Username</th>
                         <th>Mobile</th>
-                        <th>Dailysmslimit</th>
                         <th>Email</th>
+                        <th>Callback Url</th>
                         <th>actions</th>
                     </tr>
                 </thead>   
@@ -179,11 +178,10 @@
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>
-                        <td class="center"><%=code.getUuid()%></td>
                         <td class="center"><%=code.getUsername()%></td>
                         <td class="center"><%=code.getMobile()%></td>
-                        <td class="center"><%=code.getDailysmslimit()%></td>
-                        <td class="center"><%=code.getEmail()%> </td>							
+                        <td class="center"><%=code.getEmail()%> </td>
+                         <td class="center"><%=code.getCallback()%> </td>  							
                         <td class="center">
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
@@ -191,9 +189,10 @@
                                 <input type="hidden" name="mobile" value="<%=code.getMobile()%>">
                                 <input type="hidden" name="dailysmslimit" value="<%=code.getDailysmslimit()%>">
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">
+                                 <input type="hidden" name="callback" value="<%=code.getCallback()%>">
                                 <input type="hidden" name="statusuuid" value="<%=code.getStatusuuid()%>">
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
-                                <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" />
+                     <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
                                 </form>                          
                         </td>      
 

@@ -22,12 +22,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 
 
@@ -175,7 +175,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         try (
         		Connection conn = dbCredentials.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account" 
-        		+"(Uuid, username, logpassword, name, mobile, email,statusuuid) VALUES (?,?,?,?,?,?,?);");
+        		+"(Uuid, username, logpassword, name, mobile, email,statusuuid,callback) VALUES (?,?,?,?,?,?,?,?);");
             ) {
         	
             pstmt.setString(1, account.getUuid());
@@ -185,6 +185,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.setString(5, account.getMobile());
             pstmt.setString(6, account.getEmail()); 
             pstmt.setString(7, account.getStatusuuid());
+            pstmt.setString(8, account.getCallback());
 
             pstmt.executeUpdate();
             
@@ -207,7 +208,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 
         try (  Connection conn = dbCredentials.getConnection();
         	PreparedStatement pstmt = conn.prepareStatement("UPDATE Account SET username=?, "
-        			+ "logpassword=?, name=?, mobile=?, email=? WHERE Uuid = ?;");
+        			+ "logpassword=?, name=?, mobile=?, email=?, callback =? WHERE Uuid = ?;");
         	) {
             
             pstmt.setString(1, account.getUsername());
@@ -215,7 +216,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.setString(3, account.getName());
             pstmt.setString(4, account.getMobile());
             pstmt.setString(5, account.getEmail());
-            pstmt.setString(6, account.getUuid());
+            pstmt.setString(6, account.getCallback());
+            pstmt.setString(7, account.getUuid());
 
             pstmt.executeUpdate();
 

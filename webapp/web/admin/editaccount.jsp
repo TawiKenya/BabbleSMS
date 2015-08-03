@@ -1,3 +1,20 @@
+<%
+    /**
+    Copyright 2015 Tawi Commercial Services Ltd
+
+    Licensed under the Open Software License, Version 3.0 (the ?License?); you may 
+    not use this file except in compliance with the License. You may obtain a copy 
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed 
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations 
+    under the License.
+    */
+%>
 <%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.ArrayList"%>
@@ -102,16 +119,7 @@
                             <input class="input-xlarge focused"  id="networkname" name="name" type="text" value="<%=request.getParameter("name")%>">
                         </div>
                     </div>
-                        
-                     
-
-                     <div class="control-group">
-                        <label class="control-label" for="network">Log Password</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused"  id="networkname" name="loginPasswd" type="text" value="<%=request.getParameter("loginPasswd")%>">
-                        </div>
-                    </div>
-
+                    
                     <div class="control-group">
                         <label class="control-label" for="network">Phone Number</label>
                         <div class="controls">
@@ -126,6 +134,13 @@
                         </div>
                     </div>
 
+                     <div class="control-group">
+                        <label class="control-label" for="network">Callback Url</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused"  id="networkname" name="callback" type="text" value="<%=request.getParameter("callback")%>">
+                        </div>
+                    </div>
+
                    
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">
@@ -135,7 +150,59 @@
 
                 </fieldset>
             </form>
+
+
+            
+
+              </fieldset> 
+           </form>
+
         </div>
+
+
+
+
+
+<div class="box-content">
+
+    
+             <p> 
+            <a href="#">Edit Log Password</a>               
+            </p>
+           <form  class="form-horizontal" action="../resetPassword" method="POST">
+              <fieldset>
+                  
+                     <div class="control-group">
+                        <label class="control-label" for="network">Log Password</label>
+                        <div class="controls">
+                         <input class="input-xlarge focused"  id="networkname" name="loginPasswd" type="text" value="">
+                        </div>
+                    </div>
+
+
+                    <div class="control-group">
+                        <label class="control-label" for="network">Cornfirm Log Password</label>
+                        <div class="controls">
+                     <input class="input-xlarge focused"  id="networkname" name="loginPasswd2" type="text" value="">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-actions">
+                        <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                        <a href="accounts.jsp"><button class="btn">Cancel</button></a>
+                    </div>
+</div>
+
+
+
+
+
+
+
+
     </div><!--/span-->
 
 </div><!--/row-->

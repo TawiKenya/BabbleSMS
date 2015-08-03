@@ -15,7 +15,8 @@
  */
 package ke.co.tawi.babblesms.server.persistence.accounts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -41,29 +42,32 @@ public class TestAccountDAO {
 
 	final String ACC_UUID = "C3CFA249-F2A3-8253-1F44-B1C594C6A8D2",
 			ACC_UUID_NEW = "a7uL81d2e6-84f2-45ff-914c-522a3b076141";
+	
+	final String STATUS_UUID = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
 
-	final String ACC_USERNAME = "Lacota", 
+	final String ACC_USERNAME = "tawi", 
 			ACC_USERNAME_NEW = "Neewusername",
 			ACC_USERNAME_UPDATE = "updateusername";
 
-	final String LOG_PASSWORD = "lac32@$",
+	final String LOG_PASSWORD = "tawi312",
 			LOG_PASSWORD_NEW = "Neewpassword",
 			LOG_PASSWORD_UPDATE = "UPDATEpassword";
 
-	final String NAME = "Gloria", 
-			NAME_NEW = "kiiaragwii",
+	final String NAME = "Tawi", 
+			NAME_NEW = "newname",
 			NAME_UPDATE = "UPDATEkiaragwi";
 
 	final String MOBILE = "0871 727 2000",
-	             MOBILE_NEW = "252739382923",
+	             MOBILE_NEW = "0739382923",
 			MOBILE_UPDATE = "254738382999";
 
-	final String EMAIL = "ukeria86@yahoo.com",
+	final String EMAIL = "admin@tawi.mobi",
 			EMAIL_NEW = "ssss@gmail.com",
 			EMAIL_UPDATE = "UPDATE@gmail.com";
+	final String CALLBACK = "http://account.co.ke",CALLBACK_NEW = "http://hhh.co.ke";
 
 	private AccountDAO storage;
-	//private AccountDAO storagenew;
+	
 	
 
 	/**
@@ -86,6 +90,7 @@ public class TestAccountDAO {
       	assertEquals(acc.getName(),NAME);  
       	assertEquals(acc.getMobile(),MOBILE);
       	assertEquals(acc.getEmail(),EMAIL);
+      	assertEquals(acc.getCallback(),CALLBACK_NEW);
 		
 	}
 
@@ -107,6 +112,7 @@ public class TestAccountDAO {
 	      assertEquals(acc.getName(), NAME);
 	      assertEquals(acc.getMobile(), MOBILE);
 	      assertEquals(acc.getEmail(), EMAIL);
+	      assertEquals(acc.getCallback(),CALLBACK_NEW);
 	
 		
 	}
@@ -116,7 +122,7 @@ public class TestAccountDAO {
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#getAllAccounts()}
 	 * .
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAllAccounts() {
 
@@ -124,7 +130,7 @@ public class TestAccountDAO {
 
 		List<Account> list = storage.getAllAccounts();
 
-		assertEquals(list.size(), 9);
+		assertEquals(list.size(), 5);
 		System.out.println(list);
 		for (Account l : list) {
 			System.out.println(l);
@@ -141,7 +147,6 @@ public class TestAccountDAO {
 	@Test
 	public void testPutAccount() {
 		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-
 		
 		Account acc = new Account();
 		acc.setUuid(ACC_UUID_NEW);
@@ -150,9 +155,11 @@ public class TestAccountDAO {
 		acc.setName(NAME_NEW);
 		acc.setMobile(MOBILE_NEW);
 		acc.setEmail(EMAIL_NEW);
+		acc.setStatusuuid(STATUS_UUID);
+		acc.setCallback(CALLBACK_NEW);
 	
 		
-		assertTrue(storage.putAccount(acc));
+		assertTrue(storage.putAccount(acc)); 
 		acc = storage.getAccount(ACC_UUID_NEW);
 		
 		assertEquals(acc.getUuid(),ACC_UUID_NEW);
@@ -161,6 +168,8 @@ public class TestAccountDAO {
 		assertEquals(acc.getName(),NAME_NEW);
 		assertEquals(acc.getMobile(),MOBILE_NEW);
 		assertEquals(acc.getEmail(),EMAIL_NEW);
+		assertEquals(acc.getStatusuuid(),STATUS_UUID);
+		assertEquals(acc.getCallback(),CALLBACK_NEW);
 		
 
 	}
@@ -170,7 +179,7 @@ public class TestAccountDAO {
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)}
 	 * .
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testUpdateAccount() {
 
@@ -186,6 +195,7 @@ public class TestAccountDAO {
 		 acc.setName(NAME_UPDATE);
 		 acc.setMobile(MOBILE_UPDATE);
 		 acc.setEmail(EMAIL_UPDATE);
+		 acc.setCallback(CALLBACK); 
 		  
 		 
 		assertTrue(storage.updateAccount( ACC_UUID_NEW, acc));
@@ -197,6 +207,7 @@ public class TestAccountDAO {
 		 assertEquals(acc.getName(), NAME_UPDATE); 
 		 assertEquals(acc.getMobile(), MOBILE_UPDATE); 
 		 assertEquals(acc.getEmail(), EMAIL_UPDATE);
+		 assertEquals(acc.getCallback(), CALLBACK);
 		 
 
 	}
