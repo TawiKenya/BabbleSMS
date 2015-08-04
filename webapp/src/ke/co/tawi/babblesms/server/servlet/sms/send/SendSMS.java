@@ -25,7 +25,7 @@ import ke.co.tawi.babblesms.server.beans.maskcode.SMSSource;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.log.OutgoingGrouplog;
-import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
+
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.PhoneDAO;
 import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
@@ -33,7 +33,7 @@ import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
 import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingGroupLogDAO;
-import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
+
 import ke.co.tawi.babblesms.server.sendsms.tawismsgw.PostSMS;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
@@ -132,7 +132,6 @@ public class SendSMS extends HttpServlet {
 		
 	    TawiGateway smsGateway = gatewayDAO.get(account);
 	    
-	    
 	    // Retrieve the web parameters
 		String[] groupselected = request.getParameterValues("groupselected");
 		String[] phones = request.getParameterValues("phones");
@@ -170,23 +169,30 @@ public class SendSMS extends HttpServlet {
 				outgoingGroupList.add(groupLog);
 				
 			}// end 'for(String groupUuid : groupselected)'
-		}// end 'if(groupselected != null)'		
+		}// end 'if(groupselected != null)'
 		
+		
+		// This is the case where individual Contacts may have been selected		
+		if(phones == null) {
+			phones = new String[0];
+		}
+		phones = StringUtil.removeDuplicates(phones);
+				
+		for(String phone : phones) {
+			phoneList.add(phoneDAO.getPhone(phone));
+		}
 		
 		
 		// Determine whether a shortcode or mask is the source
 		SMSSource smsSource;
-		String sourcename;
 		Shortcode shortcode = shortcodeDAO.get(source);
 		Mask mask = null;
 		if(shortcode == null) {
 			mask = maskDAO.get(source);
 			smsSource = mask;
-			sourcename=mask.getMaskname();
 			
 		} else {
 			smsSource = shortcode;
-			sourcename = shortcode.getCodenumber();
 		}
 		
 		// Set the network in the groups (if any) and save the log
@@ -197,37 +203,11 @@ public class SendSMS extends HttpServlet {
 		}
 		
 		
-		
-		// This is the case where individual Contacts may have been selected		
-				if(phones == null) {
-					phones = new String[0];
-				}
-				phones = StringUtil.removeDuplicates(phones);
-						
-				for(String phone : phones) {
-					phoneList.add(phoneDAO.getPhone(phone));
-				}
-		
 		// Filter the phones to the Network of the source (mask or short code)
 		List<Phone> validPhoneList = new LinkedList<>();
-		validPhoneList.addAll(CollectionUtils.select(phoneList,	new PhonesByNetworkPredicate(smsSource.getNetworkuuid())));
+		validPhoneList.addAll(CollectionUtils.select(phoneList, 
+				new PhonesByNetworkPredicate(smsSource.getNetworkuuid())));
 		
-		//save the log details
-		for(Phone ph: validPhoneList){
-			OutgoingLog OutgLog= new OutgoingLog();
-			OutgLog.setOrigin(sourcename);
-			OutgLog.setDestination(ph.getPhonenumber());
-			OutgLog.setMessage(message);
-			OutgLog.setNetworkUuid(ph.getNetworkuuid());
-			OutgLog.setMessagestatusuuid(new MsgStatus().SENT);
-			OutgLog.setSender(account.getUuid()); 
-			OutgLog.setPhoneUuid(ph.getUuid());
-			
-			//System.out.println(OutgLog);
-			
-			OutgoingLogDAO outDAO = OutgoingLogDAO.getInstance();
-			outDAO.put(OutgLog);
-		}		
 		
 		// Break down the phone list to go out to manageable sizes, each sublist
 		// being sent to the SMS Gateway in one URL POST

@@ -181,41 +181,5 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
         return list;
     }
 
-
-	/**
-	 * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#update(ke.co.tawi.babblesms.server.beans.log.OutgoingLog)
-	 */
-	@Override
-	public boolean update(OutgoingLog outgoingLog) {
-		boolean success = true;
-
-        try (
-        		Connection conn = dbCredentials.getConnection();
-        		PreparedStatement pstmt = conn.prepareStatement("UPDATE OutgoingLog Set origin=?, destination=?, message=?,"
-        				+ " logtime=?, networkuuid=?, sender=?, messagestatusuuid=?, phoneuuid=? WHERE Uuid==? ");
-        		) {
-        	
-            
-            pstmt.setString(1, outgoingLog.getOrigin());
-            pstmt.setString(2, outgoingLog.getDestination());
-            pstmt.setString(3, outgoingLog.getMessage());
-            pstmt.setTimestamp(4, new Timestamp(outgoingLog.getLogTime().getTime()));
-            pstmt.setString(5, outgoingLog.getNetworkUuid());
-            pstmt.setString(6, outgoingLog.getSender());
-            pstmt.setString(7, outgoingLog.getMessagestatusuuid());
-            pstmt.setString(8, outgoingLog.getPhoneUuid());
-            pstmt.setString(9, outgoingLog.getUuid());
-            
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when trying to put " + outgoingLog);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } 
-        
-        return success;
-	}
-
 }
 

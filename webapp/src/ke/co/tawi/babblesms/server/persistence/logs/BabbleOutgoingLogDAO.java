@@ -57,12 +57,4 @@ public interface BabbleOutgoingLogDAO {
      */
     public List<OutgoingLog> get(Account account, int fromIndex, int toIndex);
     
-    
-    /**
-     * @param outgoingLog
-     * @return	<code>true</code> if successfully updated; <code>false</code>
-     * for otherwise
-     */
-    public boolean update(OutgoingLog outgoingLog);
-    
 }
