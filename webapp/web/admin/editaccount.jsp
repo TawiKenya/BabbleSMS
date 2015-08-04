@@ -134,13 +134,6 @@
                         </div>
                     </div>
 
-                     <div class="control-group">
-                        <label class="control-label" for="network">Callback Url</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused"  id="networkname" name="callback" type="text" value="<%=request.getParameter("callback")%>">
-                        </div>
-                    </div>
-
                    
                     <div class="form-actions">
                         <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">

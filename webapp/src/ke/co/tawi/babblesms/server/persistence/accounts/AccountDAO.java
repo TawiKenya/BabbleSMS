@@ -24,10 +24,12 @@ import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+
 
 
 
@@ -175,17 +177,17 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
         try (
         		Connection conn = dbCredentials.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account" 
-        		+"(Uuid, username, logpassword, name, mobile, email,statusuuid,callback) VALUES (?,?,?,?,?,?,?,?);");
+        		+"(Uuid, username, logpassword, name, mobile, email,statusuuid) VALUES (?,?,?,?,?,?,?);");
             ) {
         	
             pstmt.setString(1, account.getUuid());
             pstmt.setString(2, account.getUsername());
-            pstmt.setString(3, account.getLogpassword());
+            pstmt.setString(3, SecurityUtil.getMD5Hash(account.getLogpassword()));
             pstmt.setString(4, account.getName());
             pstmt.setString(5, account.getMobile());
             pstmt.setString(6, account.getEmail()); 
             pstmt.setString(7, account.getStatusuuid());
-            pstmt.setString(8, account.getCallback());
+           
 
             pstmt.executeUpdate();
             
@@ -208,16 +210,15 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 
         try (  Connection conn = dbCredentials.getConnection();
         	PreparedStatement pstmt = conn.prepareStatement("UPDATE Account SET username=?, "
-        			+ "logpassword=?, name=?, mobile=?, email=?, callback =? WHERE Uuid = ?;");
+        			+ "logpassword=?, name=?, mobile=?, email=? WHERE Uuid = ?;");
         	) {
             
             pstmt.setString(1, account.getUsername());
-            pstmt.setString(2, account.getLogpassword());
+            pstmt.setString(2, SecurityUtil.getMD5Hash(account.getLogpassword()));
             pstmt.setString(3, account.getName());
             pstmt.setString(4, account.getMobile());
             pstmt.setString(5, account.getEmail());
-            pstmt.setString(6, account.getCallback());
-            pstmt.setString(7, account.getUuid());
+            pstmt.setString(6, account.getUuid());
 
             pstmt.executeUpdate();
 

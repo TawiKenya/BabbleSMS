@@ -66,12 +66,11 @@ CREATE TABLE Account (
     email text,
     dailysmsLimit int,
     creationdate timestamp with time zone DEFAULT now(),
-    statusuuid text REFERENCES status(uuid),
-    callback text
+    statusuuid text REFERENCES status(uuid)
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY Account(uuid,username,logpassword,apiusername,apipassword,usertype,name,mobile,email,dailysmsLimit,statusuuid,callback) FROM '/tmp/Accounts.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Account(uuid,username,logpassword,apiusername,apipassword,usertype,name,mobile,email,dailysmsLimit,statusuuid ) FROM '/tmp/Accounts.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Account OWNER TO babblesms;
 
 

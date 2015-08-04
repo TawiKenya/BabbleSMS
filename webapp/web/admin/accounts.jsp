@@ -167,7 +167,6 @@
                         <th>Username</th>
                         <th>Mobile</th>
                         <th>Email</th>
-                        <th>Callback Url</th>
                         <th>actions</th>
                     </tr>
                 </thead>   
@@ -180,8 +179,7 @@
                         <td width="10%"><%=count%></td>
                         <td class="center"><%=code.getUsername()%></td>
                         <td class="center"><%=code.getMobile()%></td>
-                        <td class="center"><%=code.getEmail()%> </td>
-                         <td class="center"><%=code.getCallback()%> </td>  							
+                        <td class="center"><%=code.getEmail()%> </td>							
                         <td class="center">
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
@@ -189,7 +187,6 @@
                                 <input type="hidden" name="mobile" value="<%=code.getMobile()%>">
                                 <input type="hidden" name="dailysmslimit" value="<%=code.getDailysmslimit()%>">
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">
-                                 <input type="hidden" name="callback" value="<%=code.getCallback()%>">
                                 <input type="hidden" name="statusuuid" value="<%=code.getStatusuuid()%>">
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
                      <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 

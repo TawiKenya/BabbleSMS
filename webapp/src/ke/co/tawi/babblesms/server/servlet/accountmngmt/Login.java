@@ -18,6 +18,7 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
+import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.session.SessionStatistics;
 import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
@@ -40,9 +41,7 @@ import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import org.apache.log4j.Logger;
-
 import org.jasypt.util.text.BasicTextEncryptor;
 
 /**
@@ -134,8 +133,7 @@ public class Login extends HttpServlet {
 
             } else {
                 // Correct login
-                if (StringUtils.equals(password, account.getLogpassword())) {
-
+                if (StringUtils.equals(SecurityUtil.getMD5Hash(password), account.getLogpassword())) {
                     updateCache(account.getUuid());
                     session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID, account.getUuid());
                     session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY, username);

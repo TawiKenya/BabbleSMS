@@ -65,7 +65,7 @@ suspended, deleted etc
  - email
  - dailysmsLimit
  - Status uuid references Status(uuid)
- - callback
+ 
  
  
 ================================

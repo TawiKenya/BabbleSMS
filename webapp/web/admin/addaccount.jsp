@@ -194,17 +194,6 @@
 
                     </div> 
 
-
-                    <div class="control-group">
-                        <label class="control-label" for="name">Callback Url</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="mobile" type="text" name="callback" 
-                                   value="<%= StringUtils.trimToEmpty(paramHash.get("callback")) %>">
-
-                        </div>
-
-                    </div>       
-                            
                       
 
                     <div class="form-actions">

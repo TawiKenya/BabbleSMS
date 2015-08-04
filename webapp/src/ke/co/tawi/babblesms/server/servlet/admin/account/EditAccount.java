@@ -69,17 +69,15 @@ public class EditAccount extends HttpServlet {
     	
     	String accountuuid = request.getParameter("accountuuid");
         String username = request.getParameter("username");
-        String password = request.getParameter("loginPasswd");
         String name = request.getParameter("name");
         String mobile = request.getParameter("mobile");
         String email = request.getParameter("email");
         String callback = request.getParameter("callback");
       
 
-        Account account = new Account();
+        Account account = accountDAO.getAccount(accountuuid);
         account.setUuid(accountuuid);
         account.setUsername(username);
-        account.setLogpassword(password);
         account.setName(name);
         account.setMobile(mobile);
         account.setEmail(email);
