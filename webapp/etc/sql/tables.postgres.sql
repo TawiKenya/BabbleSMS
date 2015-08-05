@@ -294,6 +294,17 @@ CREATE TABLE outgoingGrouplog (
 ALTER TABLE outgoingGrouplog OWNER TO babblesms;
 
 
+------------------------------
+--Table contactgroupsent
+------------------------------
+CREATE TABLE contactgroupsent(
+    Id SERIAL PRIMARY KEY,
+    sentcontactuuid text,
+    sentgroupuuid text references outgoingGrouplog(uuid)
+ );
+\COPY contactgroupsent(sentcontactuuid, sentgroupuuid) FROM '/tmp/contactgroupsent.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE contactgroupsent OWNER TO babblesms;
+
 -- -------------------
 -- Table messagetemplate
 -- -------------------

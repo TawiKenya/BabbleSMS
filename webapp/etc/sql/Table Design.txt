@@ -236,6 +236,15 @@ A list of all SMS that have been sent from the system to Groups.
 - Sender UUID references Account (UUID)
 - Network UUID references Network
 
+------------------------------
+Table contactgroupsent
+------------------------------
+Shows a relationship of a contact to which a message is sent to and the
+group the said contacts is associated with.
+- Id(primary key)
+- sentContactUUID references outgoinglog(UUID)
+- sentGroupUID references outgoingGroupLog(UUID)
+
 
 ---------------------
  Table messagetemplate
