@@ -18,6 +18,7 @@ package ke.co.tawi.babblesms.server.persistence.smsgw.tawi;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,6 +102,59 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 		}
    
 		return gw;
+	}
+
+
+	
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.smsgw.tawi.BabbleGatewayDAO#put(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway)
+	 */
+	public boolean put(TawiGateway gateway) {
+		boolean success = true;
+		try(
+				Connection conn = dbCredentials.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SMSGateway" 
+		        		+"(accountUuid, url, username, passwd) VALUES (?,?,?,?);");
+				) {
+			pstmt.setString(1, gateway.getAccountUuid() );
+			pstmt.setString(2, gateway.getUrl());
+			pstmt.setString(3, gateway.getUsername());
+			pstmt.setString(4, SecurityUtil.getMD5Hash(gateway.getPasswd()));
+			pstmt.executeUpdate();
+		}
+		catch (SQLException e) {
+			logger.error("SQLException when trying to put TawiGateway "+gateway);
+			logger.error(ExceptionUtils.getStackTrace(e));
+			success = false;
+		}
+		return success;
+	}
+
+
+	
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.smsgw.tawi.BabbleGatewayDAO#edit(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway)
+	 */
+	public boolean edit(TawiGateway gateway) {
+		boolean success = true;
+		try(Connection conn = dbCredentials.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("UPDATE SMSGateway SET url=?, "
+				+ "username=?, passwd=?, WHERE accountUuid = ?;");
+		) {
+			pstmt.setString(1, gateway.getUrl());
+			pstmt.setString(2, gateway.getUsername());
+			pstmt.setString(3, gateway.getPasswd());
+			pstmt.setString(4, gateway.getAccountUuid());
+			pstmt.executeUpdate();
+
+    }catch (SQLException e) {
+	logger.error("SQLException when editting TawiGateway "+gateway);
+	logger.error(ExceptionUtils.getStackTrace(e));
+     success = false;
+   }
+		
+		
+		return success;
 	}
 
 }

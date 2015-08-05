@@ -27,4 +27,8 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 public interface BabbleGatewayDAO {
 
 	public TawiGateway get(Account account);
+	
+	public boolean  put(TawiGateway gateway);
+	
+	public  boolean edit(TawiGateway gateway);
 }

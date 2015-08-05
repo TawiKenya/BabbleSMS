@@ -59,6 +59,9 @@ public class ResetPassword extends HttpServlet  {
     }
     
     
+    /**
+     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	HttpSession session = request.getSession(false);
@@ -75,10 +78,6 @@ public class ResetPassword extends HttpServlet  {
     	}else{
  
     	account.setLogpassword(SecurityUtil.getMD5Hash((loginPasswd)));  
-
-        accountCache.put(new Element(account.getEmail(), account));
-
-    	
         if(accountDAO.updateAccount(accountuuid, account)){
         	 accountCache.put(new Element(account.getUsername(), account));
             session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Account Password updated successfully.");
@@ -93,6 +92,9 @@ public class ResetPassword extends HttpServlet  {
 
    
     
+    /**
+     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);

@@ -26,7 +26,7 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
 public class TawiGateway extends StorableBean {
 
 	private String url;
-	private String username, password;
+	private String username, passwd;
 	private String accountUuid;
 	
 	
@@ -38,9 +38,10 @@ public class TawiGateway extends StorableBean {
 		
 		url = "";
 		username = "";
-		password = "";
+		passwd = "";
 		accountUuid = "";
 	}
+
 
 
 	/**
@@ -51,12 +52,14 @@ public class TawiGateway extends StorableBean {
 	}
 
 
+
 	/**
 	 * @param url the url to set
 	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 
 
 	/**
@@ -67,6 +70,7 @@ public class TawiGateway extends StorableBean {
 	}
 
 
+
 	/**
 	 * @param username the username to set
 	 */
@@ -75,20 +79,23 @@ public class TawiGateway extends StorableBean {
 	}
 
 
+
 	/**
-	 * @return the password
+	 * @return the passwd
 	 */
 	public String getPasswd() {
-		return password;
+		return passwd;
 	}
+
 
 
 	/**
-	 * @param password the password to set
+	 * @param passwd the passwd to set
 	 */
-	public void setPasswd(String password) {
-		this.password = password;
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
 	}
+
 
 
 	/**
@@ -99,12 +106,14 @@ public class TawiGateway extends StorableBean {
 	}
 
 
+
 	/**
 	 * @param accountUuid the accountUuid to set
 	 */
 	public void setAccountUuid(String accountUuid) {
 		this.accountUuid = accountUuid;
 	}
+
 
 
 	/**
@@ -119,8 +128,8 @@ public class TawiGateway extends StorableBean {
 		builder.append(url);
 		builder.append(", username=");
 		builder.append(username);
-		builder.append(", password=");
-		builder.append(password);
+		builder.append(", passwd=");
+		builder.append(passwd);
 		builder.append("]");
 		return builder.toString();
 	}

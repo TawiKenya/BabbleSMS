@@ -90,7 +90,7 @@ public class TestAccountDAO {
       	assertEquals(acc.getName(),NAME);  
       	assertEquals(acc.getMobile(),MOBILE);
       	assertEquals(acc.getEmail(),EMAIL);
-      	assertEquals(acc.getCallback(),CALLBACK_NEW);
+      	
 		
 	}
 
@@ -112,7 +112,7 @@ public class TestAccountDAO {
 	      assertEquals(acc.getName(), NAME);
 	      assertEquals(acc.getMobile(), MOBILE);
 	      assertEquals(acc.getEmail(), EMAIL);
-	      assertEquals(acc.getCallback(),CALLBACK_NEW);
+	      
 	
 		
 	}
@@ -156,7 +156,7 @@ public class TestAccountDAO {
 		acc.setMobile(MOBILE_NEW);
 		acc.setEmail(EMAIL_NEW);
 		acc.setStatusuuid(STATUS_UUID);
-		acc.setCallback(CALLBACK_NEW);
+		
 	
 		
 		assertTrue(storage.putAccount(acc)); 
@@ -169,7 +169,7 @@ public class TestAccountDAO {
 		assertEquals(acc.getMobile(),MOBILE_NEW);
 		assertEquals(acc.getEmail(),EMAIL_NEW);
 		assertEquals(acc.getStatusuuid(),STATUS_UUID);
-		assertEquals(acc.getCallback(),CALLBACK_NEW);
+		
 		
 
 	}
@@ -195,7 +195,7 @@ public class TestAccountDAO {
 		 acc.setName(NAME_UPDATE);
 		 acc.setMobile(MOBILE_UPDATE);
 		 acc.setEmail(EMAIL_UPDATE);
-		 acc.setCallback(CALLBACK); 
+		
 		  
 		 
 		assertTrue(storage.updateAccount( ACC_UUID_NEW, acc));
@@ -207,7 +207,7 @@ public class TestAccountDAO {
 		 assertEquals(acc.getName(), NAME_UPDATE); 
 		 assertEquals(acc.getMobile(), MOBILE_UPDATE); 
 		 assertEquals(acc.getEmail(), EMAIL_UPDATE);
-		 assertEquals(acc.getCallback(), CALLBACK);
+		 
 		 
 
 	}
