@@ -20,7 +20,8 @@
 <%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
-
+<%@page import="ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
 <%@page import="java.util.ArrayList"%>
@@ -51,6 +52,9 @@
     //String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
     Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
+
+    GatewayDAO gatewayDAO = GatewayDAO.getInstance();
+    List<TawiGateway> gatewaylist = gatewayDAO.getAllRecords();
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
@@ -160,6 +164,7 @@
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, null);
                 }
             %>
+            <div>
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
@@ -198,10 +203,56 @@
 
                     <%
                             count++;
+                    
+                    }
+                    %>
+                </tbody>
+            </table>  
+            </div>
+
+       <br>   <br>   <br>
+
+          <div>
+<table class="table table-striped table-bordered bootstrap-datatable datatable">
+                <thead>
+                    <tr>
+                        <th>*</th>
+                         <th>Account Username</th>
+                        <th> Notification Url</th>                     
+                    </tr>
+                </thead>   
+                <tbody>
+                    <%                                                          
+                        int cnt = 1;
+                        for(TawiGateway g : gatewaylist){
+                    %>
+                    <tr>
+                        <td width="10%"><%=cnt%></td>
+                         <td class="center"><%=g.getUsername()%></td>     
+                        <td class="center"><%=g.getUrl()%></td>                                          
+                        <td class="center">
+                            <form name="edit" method="post" action="editurl.jsp"> 
+                                 <input type="hidden" name="Url" value="<%=g.getUrl()%>">
+                                 <input type="hidden" name="Username" value="<%=g.getUsername()%>">
+                                 <input type="hidden" name="accountuuid" value="<%=g.getAccountUuid()%>">
+                     <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
+                                </form>                          
+                        </td>      
+
+
+                    </tr>
+
+                    <%
+                            cnt++;
                         }
+                    
                     %>
                 </tbody>
             </table>            
+
+      </div>
+
+
         </div>
     </div><!--/span-->
 

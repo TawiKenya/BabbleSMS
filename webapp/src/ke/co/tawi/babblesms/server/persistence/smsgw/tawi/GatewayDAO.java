@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -104,6 +105,32 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 		return gw;
 	}
 
+	
+	
+
+	@Override
+	public TawiGateway getByAccountUsername(String username) {
+		TawiGateway gw = null;
+
+		try (
+			Connection conn = dbCredentials.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SMSGateway WHERE username = ?;");
+			) {
+			
+			pstmt.setString(1, username);           
+			ResultSet rset = pstmt.executeQuery();
+       
+			if (rset.next()) {
+				gw = beanProcessor.toBean(rset, TawiGateway.class);
+			}
+       
+		} catch (SQLException e) {
+			logger.error("SQLException when getting TawiGateway with username: " + username);
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}
+   
+		return gw;
+	}
 
 	
 	/**
@@ -120,11 +147,12 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 			pstmt.setString(2, gateway.getUrl());
 			pstmt.setString(3, gateway.getUsername());
 			pstmt.setString(4, SecurityUtil.getMD5Hash(gateway.getPasswd()));
-			pstmt.executeUpdate();
+			pstmt.execute();
 		}
 		catch (SQLException e) {
 			logger.error("SQLException when trying to put TawiGateway "+gateway);
 			logger.error(ExceptionUtils.getStackTrace(e));
+			System.out.println(ExceptionUtils.getStackTrace(e));
 			success = false;
 		}
 		return success;
@@ -139,7 +167,7 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 		boolean success = true;
 		try(Connection conn = dbCredentials.getConnection();
 		PreparedStatement pstmt = conn.prepareStatement("UPDATE SMSGateway SET url=?, "
-				+ "username=?, passwd=?, WHERE accountUuid = ?;");
+				+ "username=?, passwd=? WHERE accountUuid = ?;");
 		) {
 			pstmt.setString(1, gateway.getUrl());
 			pstmt.setString(2, gateway.getUsername());
@@ -150,11 +178,36 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
     }catch (SQLException e) {
 	logger.error("SQLException when editting TawiGateway "+gateway);
 	logger.error(ExceptionUtils.getStackTrace(e));
+	System.out.println(ExceptionUtils.getStackTrace(e));
      success = false;
    }
 		
 		
 		return success;
 	}
+
+
+	
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.smsgw.tawi.BabbleGatewayDAO#getAll()
+	 */
+	public List<TawiGateway> getAllRecords() {
+		List<TawiGateway> list = null;
+		try( Connection conn = dbCredentials.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SMSGateway;");
+				ResultSet rset = pstmt.executeQuery();
+				){
+			list = beanProcessor.toBeanList(rset, TawiGateway.class);
+			
+		}catch(SQLException e){
+			logger.error("SQL Exception when getting all from SMSGateway");
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
+		}
+		
+		return list;
+	}
+
+
 
 }

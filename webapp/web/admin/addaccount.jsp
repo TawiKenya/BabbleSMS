@@ -208,6 +208,90 @@
     </div><!--/span-->
 
 
+      
+
+
+<br><br><br><br>
+
+
+
+
+
+
+      <div class="box-content">
+            <form  class="form-horizontal"   action="addUrl" method="POST" >
+                <fieldset>
+
+                  <div class="control-group">  
+                        <label class="control-label" for="network">User*</label>
+                        <div class="controls">
+                            <select name="user" id="user" required="true">
+                                <option value="">Please select one</option> 
+                                <%
+                                    int count = 1;
+                                    if (userList != null) {
+                                        for (Account code : userList) {
+                                %>
+              <option value="<%= code.getUuid()%>|<%= code.getUsername()%>"  ><%= code.getUsername()%></option>
+                                
+
+                                <%
+                                            count++;
+                                        }
+                                    }
+                                %>
+                            </select>
+                        </div>
+
+                    </div>  
+
+
+
+
+                    <div class="control-group">
+                        <label class="control-label" for="name">Notification Url</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="text" name="url"  value="<%= StringUtils.trimToEmpty(paramHash.get("url")) %>" required="true">
+
+                        </div>
+
+                    </div>  
+
+                    <div class="control-group">
+                        <label class="control-label" for="name">Password*</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="password" name="password" value="" required="true">
+
+                        </div>
+
+                    </div> 
+
+                    <div class="control-group">
+                        <label class="control-label" for="name">Repeat Password*</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="password" name="password2" value="" required="true">
+
+                        </div>
+
+                    </div> 
+
+
+                    <div class="form-actions">
+                        <button type="submit" name="sendsms" value="Send"   class="btn btn-primary">Add</button>
+                    </div>
+                            
+                </fieldset>
+            </form>
+
+
+       
+    </div><!--/span-->
+
+
+
+
+
+
 
 
 

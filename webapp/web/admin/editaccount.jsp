@@ -90,11 +90,10 @@
 
 <div class="row-fluid sortable">		
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-            <a class="btn" href="accounts.jsp" title="view accounts" data-rel="tooltip">View</a>                  
+        <div class="box-header well" data-original-title>               
             <a class="btn" href="addaccount.jsp" title="add account" data-rel="tooltip">Add</a>  
             <div class="box-icon">
-                <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> </a>                  
+                <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> </a>                
                 <a class="btn" href="#" title="delete message" data-rel="tooltip"><i class="icon-trash"></i></a> 
                 <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                 <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
@@ -154,7 +153,7 @@
 
 
 
-
+<br><br><br>
 
 <div class="box-content">
 
@@ -168,7 +167,7 @@
                      <div class="control-group">
                         <label class="control-label" for="network">Log Password</label>
                         <div class="controls">
-                         <input class="input-xlarge focused"  id="networkname" name="loginPasswd" type="text" value="">
+                         <input class="input-xlarge focused"  id="networkname" name="loginPasswd" type="password" value="">
                         </div>
                     </div>
 
@@ -176,7 +175,7 @@
                     <div class="control-group">
                         <label class="control-label" for="network">Cornfirm Log Password</label>
                         <div class="controls">
-                     <input class="input-xlarge focused"  id="networkname" name="loginPasswd2" type="text" value="">
+                     <input class="input-xlarge focused"  id="networkname" name="loginPasswd2" type="password" value="">
                         </div>
                     </div>
 
@@ -188,11 +187,6 @@
                         <a href="accounts.jsp"><button class="btn">Cancel</button></a>
                     </div>
 </div>
-
-
-
-
-
 
 
 

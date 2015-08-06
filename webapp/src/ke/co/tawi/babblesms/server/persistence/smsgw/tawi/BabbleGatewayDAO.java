@@ -15,6 +15,8 @@
  */
 package ke.co.tawi.babblesms.server.persistence.smsgw.tawi;
 
+import java.util.List;
+
 import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 
@@ -25,10 +27,34 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public interface BabbleGatewayDAO {
-
+    /**
+     * 
+     * @param account
+     * @return
+     */
 	public TawiGateway get(Account account);
 	
+	   /**
+	    * 
+	    * @param username
+	    * @return
+	    */
+	public TawiGateway getByAccountUsername(String username);
+	  /**
+	   * 
+	   * @param gateway
+	   * @return
+	   */
 	public boolean  put(TawiGateway gateway);
-	
+	   /**
+	    * 
+	    * @param gateway
+	    * @return
+	    */
 	public  boolean edit(TawiGateway gateway);
+	   /**
+	    * 
+	    * @return
+	    */
+	public List<TawiGateway> getAllRecords();
 }

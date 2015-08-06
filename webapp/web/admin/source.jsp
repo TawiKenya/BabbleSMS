@@ -106,7 +106,7 @@
 <div class="row-fluid sortable">		
     <div class="box span12">
         <div class="box-header well" data-original-title>
-            <a class="btn" href="source.jsp" title="view source" data-rel="tooltip">View</a>                  
+                         
             <a class="btn" href="addmask.jsp" title="add mask" data-rel="tooltip">Add Mask</a>
             <a class="btn" href="addshortcode.jsp" title="add shortcode" data-rel="tooltip">Add Shortcode</a>  
             <div class="box-icon">
@@ -173,25 +173,22 @@
                 <thead>
                     <tr>
                         <th>*</th>
-                        <th>Owner</th>
-
                         <th>Source</th>
-
                         <th>Network</th>
-
+                         <th>Owner</th>
                         <th>actions</th>
                     </tr>
                 </thead>   
                 <tbody>
-                    <%                                                          int count = 1;
+                    <%    int count = 1;
 
                         for (Shortcode code : shortcodelist) {
                     %>
                     <tr>
-                        <td width="10%"><%=count%></td>
-                        <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>
-                        <td class="center"><%=code.getCodenumber()%></td>
-                        <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>						
+                        <td width="10%"><%=count%></td>                     	
+                         <td class="center"><%=code.getCodenumber()%></td>	
+                          <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>	
+                          <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>			
                         <td class="center">
                             <form name="edit" method="post" action="editsource.jsp"> 
                                 <input type="hidden" name="accuuid" value="<%=code.getAccountuuid()%>">
@@ -220,9 +217,9 @@
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>
-                        <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>
                         <td class="center"><%=code.getMaskname()%></td>
-                        <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>						
+                        <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>		
+                         <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>				
                         <td class="center">
                             <form name="edit" method="post" action="editsource.jsp"> 
                                 <input type="hidden" name="accuuid" value="<%=code.getAccountuuid()%>">

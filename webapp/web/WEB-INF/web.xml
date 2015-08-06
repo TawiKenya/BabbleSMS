@@ -182,6 +182,12 @@
         <servlet-name>AdminAddAccount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AddAccount</servlet-class>
     </servlet>
+     
+      <servlet>
+        <servlet-name>addUrl</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.smsgateway.AddNotificationUrl</servlet-class>
+    </servlet>
+
      <servlet>
         <servlet-name>EditAccount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.EditAccount</servlet-class>
@@ -195,6 +201,11 @@
      <servlet>
         <servlet-name>AccountStatus</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AccountStatus</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>resetNotificationUrl</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.smsgateway.ResetNotificationUrl</servlet-class>
     </servlet>
  
     <servlet>
@@ -400,6 +411,11 @@
         <url-pattern>/admin/addAccount</url-pattern>
     </servlet-mapping>
 
+     <servlet-mapping>
+        <servlet-name>addUrl</servlet-name>
+        <url-pattern>/admin/addUrl</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
         <url-pattern>/editAccount</url-pattern>
@@ -412,6 +428,11 @@
      <servlet-mapping>
         <servlet-name>AccountStatus</servlet-name>
         <url-pattern>/deleteaccount</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>resetNotificationUrl</servlet-name>
+        <url-pattern>/resetNotificationUrl</url-pattern>
     </servlet-mapping>
     <!-- End - Administrator servlet mapping -->
     

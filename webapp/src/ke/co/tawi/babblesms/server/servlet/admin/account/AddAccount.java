@@ -98,7 +98,7 @@ public class AddAccount extends HttpServlet {
     	String loginPasswd = StringUtils.trimToEmpty(request.getParameter("password"));
     	String loginPasswd2 = StringUtils.trimToEmpty(request.getParameter("password2"));
     	String phone = StringUtils.trimToEmpty(request.getParameter("phone"));  
-    	String callback = StringUtils.trimToEmpty(request.getParameter("callback"));  
+   
             	
     	// This is used to store parameter names and values from the form.
     	Map<String, String> paramHash = new HashMap<>();    	
@@ -106,7 +106,7 @@ public class AddAccount extends HttpServlet {
     	paramHash.put("username", username);
     	paramHash.put("email", email);
     	paramHash.put("phone", phone);
-    	paramHash.put("callback", callback);
+   
         
 
         // No Name provided
@@ -141,7 +141,7 @@ public class AddAccount extends HttpServlet {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_PARAMETERS, null);
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, null);
         	
-        	 addAccount(name, username, email, loginPasswd, phone,callback);
+        	 addAccount(name, username, email, loginPasswd, phone);
         	 
              session.setAttribute(SessionConstants.ADMIN_ADD_SUCCESS, "Account created successfully.");
         }
@@ -171,7 +171,7 @@ public class AddAccount extends HttpServlet {
      * @param phone
      */
     private void addAccount(String name, String username, String email, String loginPasswd, 
-    		String phone,String callback) {
+    		String phone) {
         Account a = new Account();
 
         a.setName(name);
@@ -179,7 +179,6 @@ public class AddAccount extends HttpServlet {
         a.setLogpassword(loginPasswd);
         a.setEmail(email);
         a.setMobile(phone);
-        a.setCallback(callback);
         a.setStatusuuid(Status.ACTIVE);
 
         accountDAO.putAccount(a);           
