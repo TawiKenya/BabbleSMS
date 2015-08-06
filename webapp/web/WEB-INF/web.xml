@@ -133,10 +133,14 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.ContactUpload</servlet-class>
     </servlet>
     
-    <!-- Ajax servlets start -->
+    <!-- Ajax Client servlets start -->
     <servlet>
         <servlet-name>GetGroups</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroups</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetGroupMessages</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroupMessages</servlet-class>
     </servlet>
     
     <servlet>
@@ -148,7 +152,7 @@
         <servlet-name>GetContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetContact</servlet-class>
     </servlet>
-    <!-- Ajax servlets end -->
+    <!-- Ajax Client servlets end -->
     
     <!-- End - Account Holder servlets -->
 
@@ -368,6 +372,11 @@
     <servlet-mapping>
         <servlet-name>GetGroups</servlet-name>
         <url-pattern>/account/getGroups</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GetGroupMessages</servlet-name>
+        <url-pattern>/account/getSentGroupMessages</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

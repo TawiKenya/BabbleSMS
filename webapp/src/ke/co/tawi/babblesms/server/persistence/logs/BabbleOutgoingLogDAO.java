@@ -45,6 +45,13 @@ public interface BabbleOutgoingLogDAO {
      */
     public OutgoingLog get(String uuid);
     
+    /**
+    *
+    * @param uuid
+    * @return a List of {@link OutgoingLog} objects
+    */
+   public List<OutgoingLog> getAll(String uuid);
+    
     
     /**
      * 

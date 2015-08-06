@@ -444,7 +444,7 @@
                                             <div class="modal-content1">
                                             <a id="modal-display1">Please Wait .....</a>                                     
                                           <table id="scroll21">
-                                          <tr ><td size="50%" > Network provider</td><td size="50%">Number of contacts</td></tr> 
+                                          <tr ><td width=50% > Network provider</td><td width=50%>Number of contacts</td></tr> 
                                                 </table>
                                              </div>
                                      <div class="modal-dialog">

@@ -149,6 +149,36 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
         return outgoingLog;
     }
     
+    
+    
+    /**
+     * @see ke.co.tawi.babblesms.server.persistence.logs.BabbleOutgoingLogDAO#get(java.lang.String)
+     */
+    @Override
+    public List<OutgoingLog> getAll(String uuid) {
+        List<OutgoingLog> outgoingLog = null;
+
+        try (
+        	Connection conn = dbCredentials.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OutgoingLog WHERE Uuid = ?;");
+        		) {
+        	
+            pstmt.setString(1, uuid);
+            
+            try(ResultSet rset = pstmt.executeQuery();) {
+                if (rset.next()) {
+                	outgoingLog = beanProcessor.toBeanList(rset, OutgoingLog.class);
+                }
+            }
+            
+        } catch (SQLException e) {
+            logger.error("SQL Exception when getting outgoingLog with uuid: " + uuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+        } 
+        
+        return outgoingLog;
+    }
+    
    
     
     /**

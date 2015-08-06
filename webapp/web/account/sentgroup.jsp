@@ -221,12 +221,16 @@
                     
                                 <tr>
                                     <td width="2%"><%=ussdCount%></td>
-                                    <td class="center"><%= groupHash.get(code.getDestination()) %> </td>
+                                    <td class="center">
+                                           <a class ="msglink" href="#"  data-toggle="modal" data-target="#groupcheck">
+                                                 <%= groupHash.get(code.getDestination()) %>
+                                             </a>
+                                     </td>
                                     <td class="center"><%= code.getMessage() %></td>
                                     <td class="center" width="4%"><%= code.getOrigin() %> </td> 
                                     <td class="center"><%= networkHash.get(code.getNetworkUuid()) %></td> 
                                     <td class="center"><%= dateFormatter.format(code.getLogTime()) %> </td>
-                                    <td class="center"><%= code.getUuid() %> </td>
+                                    <td class="center" name="<%= code.getUuid() %>"><%= code.getUuid() %> </td>
                                 </tr>
 
                     <%
@@ -274,5 +278,19 @@
 
 </div><!--/row-->
 
+<div class="modal fade" id="groupcheck" tabindex="-1" role="dialog" arialabelled="exampleModalLabeled" aria-hidden="true">
+ 
+                                            <div class="modal-content1">
+                                            <a id="modal-display1">Please Wait .....</a>                                     
+                                          <table id="scroll21">
+                                          <tr ><td width=50%>Message Status</td><td width=50%>Count</td></tr> 
+                                                </table>
+                                             </div>
+                                     <div class="modal-dialog">
+                                                                       
+                                      </div>
+                                   
+                                </div>
+<script type="text/javascript" src="../js/tawi/getSentMessages.js"></script>
 
 <jsp:include page="footer.jsp" />
