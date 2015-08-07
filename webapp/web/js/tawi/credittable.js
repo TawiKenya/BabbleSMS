@@ -1,5 +1,6 @@
 /*
-  Copyright (c) 2015, Tawi Commercial Services Ltd. All rights reserved.
+  Copyright (c) 2015,
+  Tawi Commercial Services Ltd. All rights reserved.
   Licensed under the OSL-3.0 License:
   http://opensource.org/licenses/OSL-3.0
 
@@ -10,41 +11,48 @@
    var jssonBalance=null;
    var response=null;
    var saf=0;
+   var safContact=0;
    var orange=0;
+   var orangeContact=0;
    var yu=0;
+   var yuContact=0;
    var airtel=0;
-
+   var airtelContact=0;
+  
 
 function networkselect(val){	
          //Name of the selected network service provider
        var networkprovider=val.label;
 
+       //gets the selected individual contact       
+       getContactNetworkcount();
+     
           //maskuuid or shortcodeuuid of the source to be used
        var sourceUuid = val.value;
           //gets current balance of a given mask or shortcode
           if(jssonBalance===null){
-            currentBalance="<font font-size=8px color=red><i><u>Null Destination!!</u></i></font>";
+            currentBalance="<font font-size=8px color=red><i><u>No Destination!!</u></i></font>";
           }
           else{  var currentBalance=jssonBalance[sourceUuid];
           }
         
           //changes network provider color according to the item clicked
-      if(networkprovider=='Safaricom KE') {
+      if(networkprovider==='Safaricom KE') {
           creditConsumed("<font color=green>Safaricom</font>","Orange","Yu","Airtel");
           creditBalance("<font color=green>"+currentBalance+"</font>","0","0","0");
 	     }
 	
-      else if (networkprovider=='Yu KE') {  
+      else if (networkprovider==='Yu KE') {  
           creditConsumed("Safaricom","Orange","<font color=blue>Yu</font>","Airtel");	
           creditBalance("0","0","<font color=blue>"+currentBalance+"</font>","0");  	
 	     }
 	
-      else if(networkprovider=='Airtel KE'){
+      else if(networkprovider==='Airtel KE'){
          creditConsumed("Safaricom","Orange","Yu","<font color=red>Airtel</font>");
          creditBalance("0","0","0","<font color=red>"+currentBalance+"</font>");	
 	     }
 	
-      else if (networkprovider=='Orange KE'){
+      else if (networkprovider==='Orange KE'){
           creditConsumed("Safaricom","<font color=orange>Orange</font>","Yu","Airtel");	
           creditBalance("0","<font color=orange>"+currentBalance+"</font>","0","0");
         }
@@ -80,7 +88,7 @@ function getCreditBalance(called){
     }
 
 function HandleBalance(balance){
- if((balance.readyState==4) && (balance.status==200)){
+ if((balance.readyState===4) && (balance.status===200)){
      jssonBalance=JSON.parse(balance.responseText);     
    }
 }
@@ -152,7 +160,7 @@ function getcount(val){
           
        
         function Handleresp(xreq){        	
-     if((xreq.readyState==4) && (xreq.status==200)){      
+     if((xreq.readyState===4) && (xreq.status===200)){      
      //console.log(xreq.responseText);              
        var obj=JSON.parse(xreq.responseText); 
        response=obj;   
@@ -182,19 +190,51 @@ function getcount(val){
 
 
         //return the current safaricom contacts count
-       function safGroupCount(){
-       	return saf;
+       function safGroupCount(){        
+       	return saf + safContact;
        }
         //return the current orange contacts count
-       function orangeGroupCount(){
-       	return orange;
+       function orangeGroupCount(){          
+       	return orange + orangeContact;
        }
          //return the current yu contacts count
-       function yuGroupCount(){
-       	return yu;
+       function yuGroupCount(){        
+       	return yu + yuContact;
        }
          //return the current airtel contacts count
-       function airtelGroupCount(){
-       	return airtel;
+       function airtelGroupCount(){        
+       	return airtel + airtelContact;
        }
+
+
+//calculate the network count of the individual contacts selected
+        function getContactNetworkcount(){
+    //ensure every time the function is called all the previous counts are lost
+          orangeContact =0;
+          safContact=0;
+          yuContact =0;
+          airtelContact = 0;
+
+            $elem = $('#tokenize_simple.tokenize-sample.controls option:selected');
+       for (var i = 0; i < $elem.length; i++) {
+        //get count of individual safaricom contacts
+                  if($elem.eq(i).attr('network')==="Safaricom KE"){
+                    safContact= safContact+1;
+                  }
+        //get count of individual orange contacts
+             else if($elem.eq(i).attr('network')==="Orange KE"){
+              orangeContact =orangeContact +1;
+             }
+        //get count of individual Yu contacts
+             else if($elem.eq(i).attr('network')==="Yu KE"){
+              yuContact = yuContact +1;
+             }
+        //get count of individual airtel contacts
+             else if($elem.eq(i).attr('network')==="Airtel KE"){
+              airtelContact =airtelContact +1 ;
+             }
+
+              };
+             
+        }
 

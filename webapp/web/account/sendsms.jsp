@@ -222,7 +222,7 @@
                 
                         <div class="controls">
                            
-            <select id="destination" required="true" name="<%=account.getUuid()%>" onclick="getCreditBalance(this)">
+            <select id="destination" required="true" name="<%=account.getUuid()%>" onclick="getCreditBalance(this)" >
             <option value ="Choose">Choose Groups or Contacts</option>
             <option value = "Group">Group</option>
             
@@ -297,9 +297,10 @@
 
                             <div class="fluid">
                                 <div class="span50">
-
-                                    <label for="tokenize_simple"class="control_label">Type a contact name here  :</label>
-                                    <select id="tokenize_simple" class="tokenize-sample controls" name="phones"  multiple="multiple" style="margin: 0px; padding: 0px; border: 0px none; display: none;">
+                                     <div id="Zlabel">
+                                    <label for="tokenize_simple"class="control_label" width ="30%">Type a contact name here  :</label>
+                                    </div>
+                                    <select id="tokenize_simple" class="tokenize-sample controls" name="phones"  multiple="multiple" style="margin: 0px; padding: 0px; border: 0px none; display: none;" >
                                         <%
                                             List<Phone> phoneList;
 
@@ -309,15 +310,15 @@
                                                 phoneList = phoneDAO.getPhones(contact);
                                                 
                                                 if(phoneList.size() < 2) {
-                                                    out.println("<option value=\"" + phoneList.get(0).getUuid() + 
-                                                            "\">" + contact.getName() + "</option>"); 
+                                                    out.println("<option network=\""+networkHash.get(phoneList.get(0).getNetworkuuid())+
+                                                     "\"value=\"" + phoneList.get(0).getUuid() +"\">" + contact.getName() + "</option>"); 
                                                                               
                                                 } else {
                                                     for(Phone phone : phoneList) {
                                         
-                                                        out.println("<option value=\"" + phone.getUuid() + 
-                                                            "\">" + contact.getName() + " (" + phone.getPhonenumber() +
-                                                            ")</option>");                                                    
+                                                        out.println("<option  network="+networkHash.get(phone.getNetworkuuid())+
+                                                     "\"value=\"" + phone.getUuid() +"\">" 
+                                                     + contact.getName() + " (" + phone.getPhonenumber() +")</option>");                                                    
 
                                                     }// end 'for(Phone phone : phoneList)'
 

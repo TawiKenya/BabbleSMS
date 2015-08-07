@@ -24,7 +24,7 @@
 function countChar(val) {
         var len = val.value.length;
         var smsCount = Math.floor(len/160)+1;        
-              
+  getContactNetworkcount();            
 
         if(len===0){ 
           $('#charCount').text(0);
