@@ -23,6 +23,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
@@ -51,15 +52,23 @@
 
     //String accountuuid = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID);
     CacheManager mgr = CacheManager.getInstance();
-    Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
+    Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);//
+    Cache statusCache = mgr.getCache(CacheVariables.CACHE_STATUS_BY_UUID);
 
     GatewayDAO gatewayDAO = GatewayDAO.getInstance();
     List<TawiGateway> gatewaylist = gatewayDAO.getAllRecords();
 
+    
+
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
+    HashMap<String, String> accountstatusHash = new HashMap<String, String>();
+
+    
+
     Element element;
     Account account;
+    Status status;
 
     List<Account> userList = new ArrayList();
 
@@ -70,6 +79,13 @@
         element = accountCache.get(key);
         account = (Account) element.getObjectValue();
         userList.add(account);
+    }
+    keys = statusCache.getKeys();
+    for (Object key : keys) {
+        element = statusCache.get(key);
+        status = (Status) element.getObjectValue();
+        accountstatusHash.put(status.getUuid(), status.getDescription());
+
     }
 
 
@@ -164,11 +180,16 @@
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, null);
                 }
             %>
+
+  
+
+
             <div>
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
                         <th>*</th>
+                        <th>Status</th>
                         <th>Username</th>
                         <th>Mobile</th>
                         <th>Email</th>
@@ -179,9 +200,11 @@
                     <%                                                          
                         int count = 1;
                         for (Account code : userList) {
+                       
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>
+                         <td class="center"><%=accountstatusHash.get(code.getStatusuuid())%></td>
                         <td class="center"><%=code.getUsername()%></td>
                         <td class="center"><%=code.getMobile()%></td>
                         <td class="center"><%=code.getEmail()%> </td>							
@@ -203,8 +226,7 @@
 
                     <%
                             count++;
-                    
-                    }
+                            }
                     %>
                 </tbody>
             </table>  

@@ -11,19 +11,24 @@
 
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Shortcode"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.maskcode.Mask"%>
+
+<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance"%>
+
+
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="java.util.List"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
-<%@page import="ke.co.tawi.babblesms.server.persistence.network.NetworkDAO"%>
+<%@page import="ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO"%>
+
 
 <%
     // The following is for session management.    
     if (session == null) {
         response.sendRedirect("index.jsp");
     }
+
 
     String username = (String) session.getAttribute(SessionConstants.ADMIN_SESSION_KEY);
     if (StringUtils.isEmpty(username)) {
@@ -39,27 +44,41 @@
     Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
     Cache maskCache = mgr.getCache(CacheVariables.CACHE_MASK_BY_UUID);
     Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+
+    SmsBalanceDAO smsBalanceDAO = SmsBalanceDAO.getInstance();
+
 
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap();
     HashMap<String, String> accountHash = new HashMap();
 
+    
+    
+    
+    Account account = new Account();
     Element element;
+    if ((element = accountsCache.get(username)) != null) {
+        account = (Account) element.getObjectValue();
+    }
+
     Shortcode shortcode;
     Mask mask;
     Network network;
-    Account account;
 
     List<Shortcode> shortcodelist = new ArrayList();
     List<Mask> masklist = new ArrayList();
 
     List keys;
 
+
     keys = shortcodesCache.getKeys();
     for (Object key : keys) {
         element = shortcodesCache.get(key);
         shortcode = (Shortcode) element.getObjectValue();
+        // if (account.getUuid().equals(shortcode.getAccountuuid())) {
         shortcodelist.add(shortcode);
+       // }
     }
 
     keys = maskCache.getKeys();
@@ -84,10 +103,15 @@
         networkHash.put(network.getUuid(), network.getName());
 
     }
+   
+    
+
+   
+    List<SMSBalance> balanceList = smsBalanceDAO.getBalances(account);  
+
 
 
 %> 
-
 
 <jsp:include page="header.jsp" />
 
@@ -169,6 +193,11 @@
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, null);
                 }
             %>
+
+
+           
+         
+
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
@@ -176,6 +205,7 @@
                         <th>Source</th>
                         <th>Network</th>
                          <th>Owner</th>
+                       
                         <th>actions</th>
                     </tr>
                 </thead>   
@@ -183,12 +213,14 @@
                     <%    int count = 1;
 
                         for (Shortcode code : shortcodelist) {
+                        
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>                     	
                          <td class="center"><%=code.getCodenumber()%></td>	
                           <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>	
-                          <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>			
+                          <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>
+                          			
                         <td class="center">
                             <form name="edit" method="post" action="editsource.jsp"> 
                                 <input type="hidden" name="accuuid" value="<%=code.getAccountuuid()%>">
@@ -241,7 +273,13 @@
                         }
                     %>
                 </tbody>
-            </table>            
+            </table>     
+
+             <% 
+            for(SMSBalance bal : balanceList){
+              out.println(bal);
+            }    
+            %>   
         </div>
     </div><!--/span-->
 
