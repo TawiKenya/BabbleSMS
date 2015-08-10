@@ -44,7 +44,7 @@
     Cache networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
     Cache maskCache = mgr.getCache(CacheVariables.CACHE_MASK_BY_UUID);
     Cache accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
-    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+   
 
     SmsBalanceDAO smsBalanceDAO = SmsBalanceDAO.getInstance();
 
@@ -56,12 +56,9 @@
     
     
     
-    Account account = new Account();
+    
     Element element;
-    if ((element = accountsCache.get(username)) != null) {
-        account = (Account) element.getObjectValue();
-    }
-
+    Account account = new Account();
     Shortcode shortcode;
     Mask mask;
     Network network;
@@ -105,10 +102,18 @@
     }
    
     
-
+    HashMap<String, Integer> maskBalanceHash = new HashMap<String, Integer>();
+    HashMap<String, Integer> shortcodeBalanceHash = new HashMap<String, Integer>();
    
-    List<SMSBalance> balanceList = smsBalanceDAO.getBalances(account);  
+    List<SMSBalance> balanceList = smsBalanceDAO.getAllBalances();
 
+     for(SMSBalance balance : balanceList) {
+        if(balance instanceof ShortcodeBalance) {
+            shortcodeBalanceHash.put( ((ShortcodeBalance) balance ).getShortcodeUuid(), new Integer(balance.getCount()));            
+        } else {
+            maskBalanceHash.put( ((MaskBalance) balance ).getMaskUuid(), new Integer(balance.getCount()));
+        }
+    }// end 'for(SMSBalance balance : balanceList)'
 
 
 %> 
@@ -195,8 +200,7 @@
             %>
 
 
-           
-         
+          
 
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
@@ -205,7 +209,7 @@
                         <th>Source</th>
                         <th>Network</th>
                          <th>Owner</th>
-                       
+                         <th>Balance</th>
                         <th>actions</th>
                     </tr>
                 </thead>   
@@ -220,6 +224,7 @@
                          <td class="center"><%=code.getCodenumber()%></td>	
                           <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>	
                           <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>
+                           <td class="center"><%=shortcodeBalanceHash.get(code.getUuid())%></td> 
                           			
                         <td class="center">
                             <form name="edit" method="post" action="editsource.jsp"> 
@@ -245,23 +250,24 @@
                     %>
 
                     <%
-                        for (Mask code : masklist) {
+                        for (Mask msk : masklist) {
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>
-                        <td class="center"><%=code.getMaskname()%></td>
-                        <td class="center"><%=networkHash.get(code.getNetworkuuid())%></td>		
-                         <td class="center"><%=accountHash.get(code.getAccountuuid())%></td>				
+                        <td class="center"><%=msk.getMaskname()%></td>
+                        <td class="center"><%=networkHash.get(msk.getNetworkuuid())%></td>		
+                         <td class="center"><%=accountHash.get(msk.getAccountuuid())%></td>
+                        <td class="center"><%=maskBalanceHash.get(msk.getUuid())%></td>				
                         <td class="center">
                             <form name="edit" method="post" action="editsource.jsp"> 
-                                <input type="hidden" name="accuuid" value="<%=code.getAccountuuid()%>">
-                                <input type="hidden" name="source" value="<%=code.getMaskname()%>">
-                                <input type="hidden" name="networkuuid" value="<%=code.getNetworkuuid()%>">
-                                <input type="hidden" name="sourceuuid" value="<%=code.getUuid()%>">
+                                <input type="hidden" name="accuuid" value="<%=msk.getAccountuuid()%>">
+                                <input type="hidden" name="source" value="<%=msk.getMaskname()%>">
+                                <input type="hidden" name="networkuuid" value="<%=msk.getNetworkuuid()%>">
+                                <input type="hidden" name="sourceuuid" value="<%=msk.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="editsource" id="submit" value="Edit" /> 
                             </form>
                             <form name="delete" method="post" action="../deletesource">
-                                <input type="hidden" name="sourceuuid" value="<%=code.getUuid()%>">
+                                <input type="hidden" name="sourceuuid" value="<%=msk.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="deletesource" id="submit" value="Delete" /> 
                             </form>
                         </td>
@@ -275,11 +281,7 @@
                 </tbody>
             </table>     
 
-             <% 
-            for(SMSBalance bal : balanceList){
-              out.println(bal);
-            }    
-            %>   
+             
         </div>
     </div><!--/span-->
 

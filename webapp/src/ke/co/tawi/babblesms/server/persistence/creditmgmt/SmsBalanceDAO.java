@@ -306,6 +306,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
          	  
      	       ResultSet rset = pstmt.executeQuery();
      	       
+     	       
      	       list.addAll(beanProcessor.toBeanList(rset, ShortcodeBalance.class));
      	       
      	       rset = pstmt2.executeQuery();
@@ -333,7 +334,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
      	        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ShortcodeBalance");    
         		PreparedStatement pstmt2 = conn.prepareStatement("SELECT * FROM MaskBalance");  
         		ResultSet rset = pstmt.executeQuery();
-        		ResultSet rset2 = pstmt.executeQuery();
+        		ResultSet rset2 = pstmt2.executeQuery();
      	   ) {
          	        	       
      	       list.addAll(beanProcessor.toBeanList(rset, ShortcodeBalance.class));
