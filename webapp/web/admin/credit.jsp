@@ -135,9 +135,9 @@
 
             }
         %>
-        <div class="box-header well" data-original-title>
-
-            <h2><i class="icon-edit"></i> add credit</h2>            
+        <div class="box-header well" data-original-title> 
+            <h2><i class="icon-edit"></i> add credit</h2> 
+         <a class="btn" href="editcredit.jsp" title="add accounts" data-rel="tooltip">edit credit</a> 
             <div class="box-icon">
                 <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                 <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
@@ -189,13 +189,15 @@
 
                     </div> 
 
-
                     <div class="form-actions">
 
                         <button type="submit" name="sendsms" value="Send" class="btn btn-primary">Add</button>
                     </div>
                 </fieldset>
             </form>
+
+
+
 
 
         </div>
@@ -233,3 +235,4 @@
         });//end on change here.
     });
 </script>
+

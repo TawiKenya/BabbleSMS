@@ -225,6 +225,10 @@
         <servlet-name>addcredit</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.sms.Addcredit</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>updatecredit</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.sms.UpdateCredit</servlet-class>
+    </servlet>
 
 
 
@@ -352,6 +356,12 @@
         <servlet-name>addcredit</servlet-name>
         <url-pattern>/addcredit</url-pattern>
     </servlet-mapping>
+
+        <servlet-mapping>
+        <servlet-name>updatecredit</servlet-name>
+        <url-pattern>/updatecredit</url-pattern>
+      </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>Callback</servlet-name>
         <url-pattern>/callback</url-pattern>

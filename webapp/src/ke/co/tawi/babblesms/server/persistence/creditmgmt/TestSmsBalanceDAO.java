@@ -20,7 +20,9 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.MaskBalance;
 import ke.co.tawi.babblesms.server.beans.creditmgmt.SMSBalance;
+import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 
@@ -106,6 +108,28 @@ public class TestSmsBalanceDAO {
 	
 
 	/**
+	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO#deductBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)}.
+	 */
+	//@Ignore
+	@Test
+	public void testUpdateBalance() {
+		storage = new SmsBalanceDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		
+		Account acc = new Account();
+		acc.setUuid(ACCOUNT_UUID_DEMO);
+		
+		 ShortcodeBalance shortcodeb = new ShortcodeBalance(); 
+		 shortcodeb.setUuid(SHORTCODE_UUID);
+		 MaskBalance maskb = new MaskBalance();
+		 maskb.setUuid(MASK_UUID);
+
+		
+		assertTrue(storage.updateBalance(acc, shortcodeb, 11111));  
+		assertTrue(storage.updateBalance(acc, maskb, 22222));		
+	}
+	
+
+	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO#addBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)}.
 	 */
 	@Ignore
@@ -145,7 +169,7 @@ public class TestSmsBalanceDAO {
 	/**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO#getAllBalances()}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAllBalances() {
 	storage = new SmsBalanceDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);

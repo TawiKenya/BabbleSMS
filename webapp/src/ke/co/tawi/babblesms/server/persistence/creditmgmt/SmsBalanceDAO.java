@@ -287,6 +287,49 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	}
 
 	
+	/*
+	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#updateBalance(ke.co.tawi.babblesms.server.beans.account.Account, ke.co.tawi.babblesms.server.beans.maskcode.SMSSource, int)
+	 */
+	public boolean updateBalance(Account account, SMSBalance smsbal,int amount) {
+		boolean success = true;
+				
+			try(				
+					Connection conn = dbCredentials.getConnection();
+					
+					PreparedStatement pstmt = conn.prepareStatement("UPDATE ShortcodeBalance " +
+							"SET count =? WHERE accountUuid =? AND Shortcodeuuid =?;");	
+					
+					PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MaskBalance " +
+							"SET count =? WHERE accountUuid =? AND Maskuuid =?;");						
+					) {
+				
+				if(smsbal instanceof ShortcodeBalance) {								
+					pstmt.setInt(1, amount);
+					pstmt.setString(2, account.getUuid());
+					pstmt.setString(3, smsbal.getUuid());					
+					pstmt.executeUpdate();
+					
+				} else {	// MaskBalance		
+					pstmt2.setInt(1, amount);
+					pstmt2.setString(2, account.getUuid());
+					pstmt2.setString(3, smsbal.getUuid());
+					
+					pstmt2.executeUpdate();				
+				}				
+										
+			} catch(SQLException e) {
+				logger.error("SQLException while updating the balance of '" + account +
+						"' of amount " + amount + " for '" + smsbal + "'.");
+				logger.error(ExceptionUtils.getStackTrace(e));
+				System.out.println(ExceptionUtils.getStackTrace(e));
+				success = false;				
+			} 
+	
+		
+		return success;
+	
+	}
+	
 	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.creditmgmt.BabbleSmsBalanceDAO#getBalances(ke.co.tawi.babblesms.server.beans.account.Account)
 	 */
@@ -347,5 +390,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
                   
         return list;
 	}
+
+
 
 }

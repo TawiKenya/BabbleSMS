@@ -35,12 +35,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Servlet used to add account credit.
  * <p>
- * Copyright (c) Tawi Ltd., July 7,2014
+ * Copyright (c) Tawi Ltd., 
  *@author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  * @author <a href="mailto:mwenda@tawi.mobi">peter</a>
  */
@@ -60,6 +62,7 @@ public class Addcredit extends HttpServlet {
     private final ShortcodeDAO scodeDAO = ShortcodeDAO.getInstance();
     private SmsPurchaseDAO smspurchaseDAO;
     private HttpSession session;
+    
     ShortcodePurchase shortcodep;
     MaskPurchase maskp;
     Mask mask = new Mask();
@@ -77,6 +80,7 @@ public class Addcredit extends HttpServlet {
         smspurchaseDAO = SmsPurchaseDAO.getInstance();
         shortcodep = new ShortcodePurchase();
         maskp = new  MaskPurchase();
+        CacheManager.getInstance();
     }
   
 
@@ -118,7 +122,7 @@ public class Addcredit extends HttpServlet {
                getSource();
             
               //success message here
-                session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Credit updated successfully."); 
+                session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Credit added successfully."); 
            
         	}
         	 //err message and redirect url
