@@ -21,8 +21,8 @@ import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodePurchase;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsPurchaseDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 
 import java.io.IOException;
 import java.util.Date;
@@ -58,13 +58,13 @@ public class Addcredit extends HttpServlet {
     final String ERROR_INVALID_SOURCE = "Please provide a source that belongs to the account.";
     
     private String amount,sourceuuid,accountuuid;
-    private final MaskDAO maskDAO = MaskDAO.getInstance();
-    private final ShortcodeDAO scodeDAO = ShortcodeDAO.getInstance();
+    private MaskDAO maskDAO; 
+    private ShortcodeDAO scodeDAO;
     private SmsPurchaseDAO smspurchaseDAO;
     private HttpSession session;
     
-    ShortcodePurchase shortcodep;
-    MaskPurchase maskp;
+    ShortcodePurchase shortcodep =  new ShortcodePurchase();
+    MaskPurchase maskp = new  MaskPurchase();
     Mask mask = new Mask();
     Shortcode scode = new Shortcode();
 	
@@ -78,8 +78,8 @@ public class Addcredit extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         smspurchaseDAO = SmsPurchaseDAO.getInstance();
-        shortcodep = new ShortcodePurchase();
-        maskp = new  MaskPurchase();
+        maskDAO = MaskDAO.getInstance();
+        scodeDAO = ShortcodeDAO.getInstance();
         CacheManager.getInstance();
     }
   
@@ -136,9 +136,9 @@ public class Addcredit extends HttpServlet {
 		   long Dates = System.currentTimeMillis();
 	       int count = Integer.parseInt(amount);
 		//this lists holds mask details
-    	List<Mask> maskList = maskDAO.getmaskbyaccount(accountuuid);
+    	List<Mask> maskList = maskDAO.getAllMasks();
     	//this lists holds shortcode details
-    	List<Shortcode> shortcodeList = scodeDAO.getShortcodebyaccountuuid(accountuuid);
+    	List<Shortcode> shortcodeList = scodeDAO.getAllShortcodes();
        
     	    
               //loop via masks and check if source is a mask

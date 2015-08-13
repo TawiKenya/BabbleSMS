@@ -20,8 +20,8 @@ import ke.co.tawi.babblesms.server.beans.creditmgmt.ShortcodeBalance;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.persistence.creditmgmt.SmsBalanceDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 
 import org.apache.commons.lang3.StringUtils;
@@ -147,9 +147,9 @@ public class UpdateCredit extends HttpServlet  {
 
 private void EditCredit() {
 	//this lists holds mask details
-	List<Mask> maskList = maskDAO.getmaskbyaccount(accountuuid);
+	List<Mask> maskList = maskDAO.getAllMasks();
 	//this lists holds shortcode details
-	List<Shortcode> shortcodeList = scodeDAO.getShortcodebyaccountuuid(accountuuid);
+	List<Shortcode> shortcodeList = scodeDAO.getAllShortcodes();
    
 	
           //loop via masks and check if source is a mask

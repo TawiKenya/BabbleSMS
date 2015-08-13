@@ -16,13 +16,15 @@
 package ke.co.tawi.babblesms.server.servlet.admin.source;
 
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.MaskDAO;
-import ke.co.tawi.babblesms.server.persistence.items.maskcode.ShortcodeDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
+import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 
 import java.io.IOException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,9 +52,9 @@ public class Editsource extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 6839655965091886176L;
 	private CacheManager cacheManager;
-    private HttpSession session;
     private ShortcodeDAO shortcodeDAO;
     private MaskDAO maskDAO;
+    Account account = new Account();
 
     /**
      *
@@ -106,13 +108,14 @@ public class Editsource extends HttpServlet {
             String source = request.getParameter("source");
             String networkuuid = request.getParameter("networkuuid");
             String sourceuuid = request.getParameter("sourceuuid");
-            
-            if(maskDAO.getMask(sourceuuid)!=null){ 
+            account.setUuid(accountuuid); 
+           
+            if(maskDAO.getMasks(account)!=null){ 
                 mask.setAccountuuid(accountuuid);
                 mask.setMaskname(source);
                 mask.setNetworkuuid(networkuuid);
                 mask.setUuid(sourceuuid);  
-                if (maskDAO.updateMask(mask)) {
+                if (maskDAO.updateMask(mask, sourceuuid)) {
                 	updateMaskCache(mask); 
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Mask updated successfully.");
                 }else{
@@ -120,13 +123,13 @@ public class Editsource extends HttpServlet {
                 }
             }
               
-            else if(shortcodeDAO.getShortcode(sourceuuid)!=null){	
+            else if(shortcodeDAO.getShortcodes(account)!=null){	 
                 shortcode.setAccountuuid(accountuuid);
                 shortcode.setCodenumber(source);
                 shortcode.setNetworkuuid(networkuuid);
                 shortcode.setUuid(sourceuuid);
                
-                if (shortcodeDAO.updateShortcode(shortcode)) {
+                if (shortcodeDAO.update(shortcode, sourceuuid)) {
                     session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Shortcode updated successfully.");
                     updateShortcodeCache(shortcode); 
                 } 
@@ -141,28 +144,7 @@ public class Editsource extends HttpServlet {
        
      
     
-    if (userPath.equals("/deletesource")) {   
-    	
-           String sourceuuid = request.getParameter("sourceuuid");
-           //System.out.println(sourceuuid); 
-           if(maskDAO.getMask(sourceuuid) !=null){
-        		   if (maskDAO.deleteMask(sourceuuid)) {
-        			 session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Mask deleted successfully."); 
-        		   }else{
-        			 session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Mask deletion failed.");  
-       	       }        	   
-           }
-           else if(shortcodeDAO.getShortcode(sourceuuid) !=null){
-    if (shortcodeDAO.deleteShortcode(sourceuuid)) {
-        			  session.setAttribute(SessionConstants.ADMIN_DELETE_SUCCESS, "Shortcode deleted successfully.");  
-        		   }else{
-            		   session.setAttribute(SessionConstants.ADMIN_DELETE_ERROR, "Shortcode deletion failed.");
-            		   
-            	   }          
-            response.sendRedirect("admin/source.jsp");
-        
-         }
-      }
+    
     }//end dopodt
 
     private void updateShortcodeCache(Shortcode shortcode) {
