@@ -143,13 +143,48 @@
                 </fieldset>
             </form>
 
-
-            
-
-              </fieldset> 
-           </form>
-
         </div>
+
+
+
+
+
+
+       <div class="box-content">
+
+    
+             <p> 
+            <a href="#">Edit TawiSMSGateway </a>               
+            </p>
+           <form  class="form-horizontal" action="../resetNotificationUrl" method="POST">
+              <fieldset>
+                  
+                     <div class="control-group">
+                        <label class="control-label" for="network">Notification Url</label>
+                        <div class="controls">
+                         <input class="input-xlarge focused"  id="networkname" name="Url" 
+                         type="text" value="<%=request.getParameter("Url")%>">
+                        </div>
+                    </div>
+
+
+                    <div class="control-group">
+                        <label class="control-label" for="network">Username</label>
+                        <div class="controls">
+                     <input class="input-xlarge focused"  id="networkname" name="Username" 
+                     type="text" value="<%=request.getParameter("username")%>" readonly> 
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                        <a href="accounts.jsp"><button class="btn">Cancel</button></a>
+                    </div>
+</div>
+
+
+
 
 
 

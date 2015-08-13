@@ -63,15 +63,20 @@
     // This HashMap contains the UUIDs of Contacts as keys and the names of Contacts as values
     HashMap<String, String> networkHash = new HashMap<String, String>();
     HashMap<String, String> accountstatusHash = new HashMap<String, String>();
+    HashMap<String, String> gatewayHash = new HashMap<String, String>();
 
-    
+   
 
     Element element;
     Account account;
     Status status;
 
     List<Account> userList = new ArrayList();
-
+     
+      for(TawiGateway gw : gatewaylist){
+     gatewayHash.put(gw.getAccountUuid(), gw.getUrl());
+          }
+    
     List keys;
 
     keys = accountCache.getKeys();
@@ -189,10 +194,10 @@
                 <thead>
                     <tr>
                         <th>*</th>
-                        <th>Status</th>
                         <th>Username</th>
-                        <th>Mobile</th>
-                        <th>Email</th>
+                        <th>Status</th>                
+                        <th>Notification Url</th>
+                        <th>Phone</th>
                         <th>actions</th>
                     </tr>
                 </thead>   
@@ -204,10 +209,10 @@
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>
+                         <td class="center"><%=code.getUsername()%></td> 
                          <td class="center"><%=accountstatusHash.get(code.getStatusuuid())%></td>
-                        <td class="center"><%=code.getUsername()%></td>
-                        <td class="center"><%=code.getMobile()%></td>
-                        <td class="center"><%=code.getEmail()%> </td>							
+                         <td class="center"><%=gatewayHash.get(code.getUuid())%></td>
+                        <td class="center"><%=code.getMobile()%></td>						
                         <td class="center">
                             <form name="edit" method="post" action="editaccount.jsp"> 
                                 <input type="hidden" name="username" value="<%=code.getUsername()%>">
@@ -217,6 +222,7 @@
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">
                                 <input type="hidden" name="statusuuid" value="<%=code.getStatusuuid()%>">
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
+                                <input type="hidden" name="Url" value="<%=gatewayHash.get(code.getUuid())%>">
                      <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
                                 </form>                          
                         </td>      
@@ -234,45 +240,7 @@
 
        <br>   <br>   <br>
 
-          <div>
-<table class="table table-striped table-bordered bootstrap-datatable datatable">
-                <thead>
-                    <tr>
-                        <th>*</th>
-                         <th>Account Username</th>
-                        <th> Notification Url</th>                     
-                    </tr>
-                </thead>   
-                <tbody>
-                    <%                                                          
-                        int cnt = 1;
-                        for(TawiGateway g : gatewaylist){
-                    %>
-                    <tr>
-                        <td width="10%"><%=cnt%></td>
-                         <td class="center"><%=g.getUsername()%></td>     
-                        <td class="center"><%=g.getUrl()%></td>                                          
-                        <td class="center">
-                            <form name="edit" method="post" action="editurl.jsp"> 
-                                 <input type="hidden" name="Url" value="<%=g.getUrl()%>">
-                                 <input type="hidden" name="Username" value="<%=g.getUsername()%>">
-                                 <input type="hidden" name="accountuuid" value="<%=g.getAccountUuid()%>">
-                     <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
-                                </form>                          
-                        </td>      
 
-
-                    </tr>
-
-                    <%
-                            cnt++;
-                        }
-                    
-                    %>
-                </tbody>
-            </table>            
-
-      </div>
 
 
         </div>
