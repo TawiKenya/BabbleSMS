@@ -41,6 +41,13 @@
         </init-param>
         <load-on-startup>4</load-on-startup>
     </servlet>
+   
+
+<listener>
+  <listener-class> ke.co.tawi.babblesms.server.servlet.quartz.QuartzListener</listener-class>
+</listener>
+ 
+
     <!-- End - Startup servlets -->
     
     

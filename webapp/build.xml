@@ -79,7 +79,6 @@
   </target>
 
 
-
   <target name="prepareWar" depends="compile"
     description="Create appropriate WAR folder ready for warring">
     <echo message="prepareWar target" />

@@ -40,15 +40,21 @@ public class TestEmailUtil {
 	
 	final String FROM ="mwenda@tawi.mobi";
 	
-	final String[] TO ={"mwenda@tawi.mobi","migwi@tawi.mobi","petermwenda83@yahoo.com"};
+	final String TO = "mwenda@tawi.mobi,migwi@tawi.mobi,roym@tawi.mobi";
+	final String[] recipientList = TO.split(",");  
+	//private String recipient = "yamabs@gmail.com ,priya@gmail.com ";
+   // String[] recipientList = recipient.split(",");
 	
 	final String TO2 ="mwenda@tawi.mobi";
 	
-	final String[] CC ={"mwenda@tawi.mobi","migwi@tawi.mobi"};
+	final String  CC =" mwenda@tawi.mobi,migwi@tawi.mobi";
+	final String[] recCCList = CC.split(","); 
 	
 	final String CC2 ="mwenda@tawi.mobi";
 	
-	final String[] BCC = {"mwenda@tawi.mobi","migwi@tawi.mobi"};
+	final String BCC = "mwenda@tawi.mobi,migwi@tawi.mobi";
+	final String[] recBCCList = BCC.split(","); 
+	
 	
 	final String BCC2 = "mwenda@tawi.mobi";
 	
@@ -65,7 +71,7 @@ public class TestEmailUtil {
 	//@Ignore
 	@Test
 	public void testSendEmailStringStringArrayStringArrayStringArrayStringStringStringInt() {
-		EmailUtil util = new EmailUtil(FROM, TO, CC, BCC, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT,
+		EmailUtil util = new EmailUtil(FROM, recipientList, recCCList, recBCCList, SUBJECT, BODY, OUT_E_SERVER, OUT_E_PORT,
 				"smtpUsername", "smtpPasswd");
 		util.run();
 		

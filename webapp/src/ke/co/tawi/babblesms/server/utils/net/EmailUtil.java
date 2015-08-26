@@ -45,6 +45,8 @@ public class EmailUtil extends Thread {
 	private int outgoingEmailPort;
     private String outgoingUsername, outgoingPassword;
     
+    
+    
 	
     /**
      * Disable the default constructor
@@ -158,6 +160,7 @@ public class EmailUtil extends Thread {
 			email.setFrom(from);						
 			email.addTo(to);
 			
+			
 			if(cc.length > 0) {
 				email.addCc(cc);
 			}
@@ -181,6 +184,7 @@ public class EmailUtil extends Thread {
 		} catch(EmailException e) {
 			logger.error("EmailException when trying to send out a SimpleEmail: " + this.toString());
 			logger.error(ExceptionUtils.getStackTrace(e));
+			System.out.println(ExceptionUtils.getStackTrace(e)); 
 		}	
 	}
 
