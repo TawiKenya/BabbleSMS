@@ -31,7 +31,7 @@ public class QuartzListener extends HttpServlet implements ServletContextListene
         @Override
         public void contextInitialized(ServletContextEvent servletContext) {
 
-                System.out.println("Context Initialized");
+              //  System.out.println("Context Initialized");
                 
                 try {
                         // Setup the Job class and the Job group
@@ -42,7 +42,7 @@ public class QuartzListener extends HttpServlet implements ServletContextListene
                         Trigger trigger = newTrigger()
                         .withIdentity("TriggerName", "Group")
                         .startNow()
-                        .withSchedule(CronScheduleBuilder.cronSchedule("20 21 14 ? * *"))
+                        .withSchedule(CronScheduleBuilder.cronSchedule("20 20 23 ? * *"))
                         .build(); 
 
                         // Setup the Job and Trigger with Scheduler & schedule jobs
@@ -57,7 +57,7 @@ public class QuartzListener extends HttpServlet implements ServletContextListene
 
         @Override
         public void contextDestroyed(ServletContextEvent servletContext) {
-                System.out.println("Context Destroyed");
+             //   System.out.println("Context Destroyed");
                 try 
                 {
                         scheduler.shutdown();
