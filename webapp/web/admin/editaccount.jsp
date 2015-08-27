@@ -214,9 +214,7 @@
                          type="text" value="<%=url%>">
                         </div>
                     </div>
-                      <%
-                      }
-                      %>
+                     
 
 
                     <div class="form-actions">
@@ -224,6 +222,9 @@
                         <button type="submit" class="btn btn-primary">Edit</button>
                         <a href="accounts.jsp"><button class="btn">Cancel</button></a>
                     </div>
+                     <%
+                      }
+                      %>
                        </fieldset>
             </form>
                     </div>
