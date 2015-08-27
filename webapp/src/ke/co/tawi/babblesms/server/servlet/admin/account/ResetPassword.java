@@ -32,6 +32,7 @@ import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import org.apache.commons.lang3.StringUtils;
 /**
  * Servlet used to ResetPassword.
  * <p>
@@ -66,16 +67,21 @@ public class ResetPassword extends HttpServlet  {
             throws ServletException, IOException {
     	HttpSession session = request.getSession(false);
     	
-    	String loginPasswd = request.getParameter("loginPasswd");
-    	String loginPasswd2 = request.getParameter("loginPasswd2");
-    	String accountuuid = request.getParameter("accountuuid");
+    	String loginPasswd =  StringUtils.trimToEmpty(request.getParameter("loginPasswd"));
+    	String loginPasswd2 =  StringUtils.trimToEmpty(request.getParameter("loginPasswd2"));
+    	String accountuuid = StringUtils.trimToEmpty(request.getParameter("accountuuid"));
     	
     	 account = accountDAO.getAccount(accountuuid);
-
+        //  System.out.println(accountuuid); 
+            
     	
-    	if(!loginPasswd.equalsIgnoreCase(loginPasswd2)){
-    		 session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Password Mismatch."); 
-    	}else{
+    	if(StringUtils.isEmpty(loginPasswd) && StringUtils.isEmpty(loginPasswd2) ){
+    		 session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Password can't be empty."); 
+              response.sendRedirect("admin/accounts.jsp");
+    	}else if(!loginPasswd.equalsIgnoreCase(loginPasswd2)){
+             session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Password Mismatch."); 
+              response.sendRedirect("admin/accounts.jsp");
+        }else{
  
     	account.setLogpassword(SecurityUtil.getMD5Hash((loginPasswd)));  
         if(accountDAO.updateAccount(accountuuid, account)){

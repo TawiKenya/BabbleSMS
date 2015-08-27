@@ -29,6 +29,8 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author <a href="mailto:mmwenda@tawi.mobi">Peter Mwenda</a>
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
@@ -51,31 +53,31 @@ public class ResetNotificationUrl extends HttpServlet  {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 	    	HttpSession session = request.getSession(false);
-	    	String Url = request.getParameter("Url");
-	    	String Username = request.getParameter("Username");
-	    	String AccountUuid = request.getParameter("accountuuid");
-	    	
-	    	/*System.out.println(Url);
-	    	System.out.println(Username);
-	    	System.out.println(AccountUuid);*/
-	    	
-	    	Account account = new Account();
-	    	account.setUuid(AccountUuid); 
+	    	String Url =  StringUtils.trimToEmpty(request.getParameter("url"))  ;
+	    	String Username =  StringUtils.trimToEmpty(request.getParameter("username"));
+	    	String AccountUuid = StringUtils.trimToEmpty(request.getParameter("accountuuid"));
+	    	       
+              System.out.println(Url);
+              
+            Account account = new Account();
+	    	        account.setUuid(AccountUuid); 
 	    	
 	    	TawiGateway gateway = gatewayDAO.get(account);
-	    	
-	    	gateway.setUrl(Url);
-	    	gateway.setUsername(Username);
-	    	gateway.setAccountUuid(AccountUuid); 
-	  	    	
-	    	 if(gatewayDAO.edit(gateway)){
+	  	    		gateway.setUrl(Url);
+	    	        gateway.setUsername(Username);
+	    	        gateway.setAccountUuid(AccountUuid); 
+	    	       
+	   if(gatewayDAO.edit(gateway)){
             session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "TawiGateway updated successfully.");
         } else {
             session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "TawiGateway update failed."); 
                      
           }
 	    	 response.sendRedirect("admin/accounts.jsp");
-	 }
+
+	    	 	 
+	    	 
+	 }//end dopost
 	             
 	    /**
 	     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)

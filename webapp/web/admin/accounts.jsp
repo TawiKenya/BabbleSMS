@@ -205,13 +205,17 @@
                     <%                                                          
                         int count = 1;
                         for (Account code : userList) {
-                       
+
+                         String url=StringUtils.trimToEmpty(gatewayHash.get(code.getUuid()));
+                            if(StringUtils.equalsIgnoreCase(url,"null")){
+                                 url = "";
+                       }
                     %>
                     <tr>
                         <td width="10%"><%=count%></td>
                          <td class="center"><%=code.getUsername()%></td> 
                          <td class="center"><%=accountstatusHash.get(code.getStatusuuid())%></td>
-                         <td class="center"><%=gatewayHash.get(code.getUuid())%></td>
+                         <td class="center"><%=url%></td>
                         <td class="center"><%=code.getMobile()%></td>						
                         <td class="center">
                             <form name="edit" method="post" action="editaccount.jsp"> 
@@ -222,7 +226,7 @@
                                 <input type="hidden" name="email" value="<%=code.getEmail()%>">
                                 <input type="hidden" name="statusuuid" value="<%=code.getStatusuuid()%>">
                                 <input type="hidden" name="accountuuid" value="<%=code.getUuid()%>">
-                                <input type="hidden" name="Url" value="<%=gatewayHash.get(code.getUuid())%>">
+                                <input type="hidden" name="url" value="<%=url%>">
                      <input class="btn btn-success" type="submit" name="editnetwork" id="submit" value="Edit" /> 
                                 </form>                          
                         </td>      

@@ -147,49 +147,6 @@
 
 
 
-
-
-
-       <div class="box-content">
-
-    
-             <p> 
-            <a href="#">Edit TawiSMSGateway </a>               
-            </p>
-           <form  class="form-horizontal" action="../resetNotificationUrl" method="POST">
-              <fieldset>
-                  
-                     <div class="control-group">
-                        <label class="control-label" for="network">Notification Url</label>
-                        <div class="controls">
-                         <input class="input-xlarge focused"  id="networkname" name="Url" 
-                         type="text" value="<%=request.getParameter("Url")%>">
-                        </div>
-                    </div>
-
-
-                    <div class="control-group">
-                        <label class="control-label" for="network">Username</label>
-                        <div class="controls">
-                     <input class="input-xlarge focused"  id="networkname" name="Username" 
-                     type="text" value="<%=request.getParameter("username")%>" readonly> 
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">
-                        <button type="submit" class="btn btn-primary">Edit</button>
-                        <a href="accounts.jsp"><button class="btn">Cancel</button></a>
-                    </div>
-</div>
-
-
-
-
-
-
-<br><br><br>
-
 <div class="box-content">
 
     
@@ -221,7 +178,55 @@
                         <button type="submit" class="btn btn-primary">Edit</button>
                         <a href="accounts.jsp"><button class="btn">Cancel</button></a>
                     </div>
-</div>
+                       </fieldset>
+            </form>
+                    </div>
+                  <br><br>
+       <div class="box-content">
+
+    
+             <p> 
+            <a href="#">Edit TawiSMSGateway </a>               
+            </p>
+           <form  class="form-horizontal" action="../resetNotificationUrl" method="POST">
+              <fieldset>
+                     
+
+
+
+
+                    <div class="control-group">
+                        <label class="control-label" for="network">username</label>
+                        <div class="controls">
+                     <input class="input-xlarge focused"  id="networkname" name="username" 
+                     type="text" value="<%=request.getParameter("username")%>" readonly> 
+                        </div>
+                    </div>
+                    <%
+                    
+                            if(!StringUtils.isEmpty(request.getParameter("url"))){       
+                              String url = StringUtils.trimToEmpty(request.getParameter("url"));               
+                       %>
+                     <div class="control-group">
+                        <label class="control-label" for="network">Notification Url</label>
+                        <div class="controls">
+                         <input class="input-xlarge focused"  id="networkname" name="url" 
+                         type="text" value="<%=url%>">
+                        </div>
+                    </div>
+                      <%
+                      }
+                      %>
+
+
+                    <div class="form-actions">
+                        <input type="hidden" name="accountuuid" value="<%=request.getParameter("accountuuid")%>">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                        <a href="accounts.jsp"><button class="btn">Cancel</button></a>
+                    </div>
+                       </fieldset>
+            </form>
+                    </div>
 
 
 
