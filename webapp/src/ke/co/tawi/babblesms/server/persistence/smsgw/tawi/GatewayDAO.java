@@ -24,7 +24,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -108,6 +111,9 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 	
 	
 
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.smsgw.tawi.BabbleGatewayDAO#getByAccountUsername(java.lang.String)
+	 */
 	@Override
 	public TawiGateway getByAccountUsername(String username) {
 		TawiGateway gw = null;
@@ -138,6 +144,7 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 	 */
 	public boolean put(TawiGateway gateway) {
 		boolean success = true;
+		
 		try(
 				Connection conn = dbCredentials.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SMSGateway" 
@@ -148,13 +155,13 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 			pstmt.setString(3, gateway.getUsername());
 			pstmt.setString(4, SecurityUtil.getMD5Hash(gateway.getPasswd()));
 			pstmt.execute();
-		}
-		catch (SQLException e) {
-			logger.error("SQLException when trying to put TawiGateway "+gateway);
+			
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to put TawiGateway " + gateway);
 			logger.error(ExceptionUtils.getStackTrace(e));
-			System.out.println(ExceptionUtils.getStackTrace(e));
 			success = false;
 		}
+		
 		return success;
 	}
 
@@ -165,6 +172,7 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 	 */
 	public boolean edit(TawiGateway gateway) {
 		boolean success = true;
+		
 		try(Connection conn = dbCredentials.getConnection();
 		PreparedStatement pstmt = conn.prepareStatement("UPDATE SMSGateway SET url=?, "
 				+ "username=?, passwd=? WHERE accountUuid = ?;");
@@ -175,13 +183,11 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 			pstmt.setString(4, gateway.getAccountUuid());
 			pstmt.executeUpdate();
 
-    }catch (SQLException e) {
-	logger.error("SQLException when editting TawiGateway "+gateway);
-	logger.error(ExceptionUtils.getStackTrace(e));
-	System.out.println(ExceptionUtils.getStackTrace(e));
-     success = false;
-   }
-		
+		} catch (SQLException e) {
+			logger.error("SQLException when editting TawiGateway "+gateway);
+			logger.error(ExceptionUtils.getStackTrace(e));
+		    success = false;
+	   }		
 		
 		return success;
 	}
@@ -193,21 +199,47 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 	 */
 	public List<TawiGateway> getAllRecords() {
 		List<TawiGateway> list = null;
+		
 		try( Connection conn = dbCredentials.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SMSGateway;");
 				ResultSet rset = pstmt.executeQuery();
 				){
 			list = beanProcessor.toBeanList(rset, TawiGateway.class);
 			
-		}catch(SQLException e){
-			logger.error("SQL Exception when getting all from SMSGateway");
+		} catch(SQLException e){
+			logger.error("SQL Exception when getting all SMSGateways");
             logger.error(ExceptionUtils.getStackTrace(e));
-            System.out.println(ExceptionUtils.getStackTrace(e));
 		}
 		
 		return list;
 	}
 
 
-
+	
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.smsgw.tawi.BabbleGatewayDAO#logResponse(Account, String, Date)
+	 */
+	@Override
+	public void logResponse(Account account, String response, Date date) {
+				
+		try(
+			Connection con = dbCredentials.getConnection();				
+			
+			PreparedStatement pst = con.prepareStatement("INSERT INTO SentGatewayLog(uuid, accountuuid, "
+				+ "response, responsedate) VALUES(?,?,?,?);");						
+			    
+			){			
+				pst.setString(1, UUID.randomUUID().toString());
+				pst.setString(2, account.getUuid());
+				pst.setString(3, response);
+				pst.setTimestamp(4, new Timestamp(date.getTime()));	
+				pst.executeUpdate();
+							
+		} catch(SQLException e) {
+			logger.error("SQLException while trying to log " + response + " for " + account);
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}
+		
+	}
+	
 }

@@ -15,10 +15,11 @@
  */
 package ke.co.tawi.babblesms.server.persistence.smsgw.tawi;
 
-import java.util.List;
-
 import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.beans.account.Account;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Persistence description for {@link TawiGateway}
@@ -52,9 +53,19 @@ public interface BabbleGatewayDAO {
 	    * @return
 	    */
 	public  boolean edit(TawiGateway gateway);
+	
+	
 	   /**
 	    * 
 	    * @return
 	    */
 	public List<TawiGateway> getAllRecords();
+	
+	
+	/**
+	 * @param account
+	 * @param response
+	 * @param date
+	 */
+	public void logResponse(Account account, String response, Date date);
 }

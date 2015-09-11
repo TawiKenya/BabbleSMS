@@ -43,15 +43,13 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
-        
-	
+        	
 	private static SmsBalanceDAO smsbalanceDAO;
 	
 	private static SmsPurchaseDAO  smspurchaseDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
-	
-	
+		
 	
 	/**
 	 * @return the singleton instance of {@link SmsBalanceDAO}
@@ -95,45 +93,37 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 	@Override
 	public SMSPurchase getPurchase(String uuid) {
 		SMSPurchase purchase = null;
-				try(
-					Connection con = dbCredentials.getConnection();	
-					   PreparedStatement ps = con.prepareStatement("SELECT * FROM shortcodepurchase WHERE uuid =?");
-				       PreparedStatement ps2 = con.prepareStatement("SELECT * FROM maskpurchase WHERE uuid =?");	
-						){
-					
-			
-					             ps.setString(1, uuid);
-					             ps2.setString(1, uuid );
-					             try(
-					            		 ResultSet  rs1 = ps.executeQuery();			
-					            		 ResultSet  rs2 = ps2.executeQuery();
-					            		 ){
-					            	 if(rs1.next()){
-							        	   uuid = rs1.getString("uuid");
-							        if(uuid != null)	 {
-							        	purchase = beanProcessor.toBean(rs1, ShortcodePurchase.class);	
-							        }				   
-							           }else if(rs2.next()){
-							        	   uuid = rs2.getString("uuid");
-							        	   if(uuid != null)	 {
-							        	purchase = beanProcessor.toBean(rs2, MaskPurchase.class);	   
-							           }
-							        	   }//end if
-						
-					            	 
-					             } //end second try
-					             
-				}//end first try
-					            
-				catch(SQLException e) {
-					logger.error("SQLException while trying to get Purchase by " + uuid);
-					logger.error(ExceptionUtils.getStackTrace(e));
-				}
-				
-				
-				return purchase;
-	
 		
+		try(
+			Connection con = dbCredentials.getConnection();	
+			   PreparedStatement ps = con.prepareStatement("SELECT * FROM shortcodepurchase WHERE uuid =?");
+		       PreparedStatement ps2 = con.prepareStatement("SELECT * FROM maskpurchase WHERE uuid =?");	
+				){
+				
+	             ps.setString(1, uuid);
+	             ps2.setString(1, uuid );
+	             
+	             try(
+            		 ResultSet  rs1 = ps.executeQuery();			
+            		 ResultSet  rs2 = ps2.executeQuery();
+        		 ){
+	            	 
+	            	 if(rs1.next()) {
+	            		 purchase = beanProcessor.toBean(rs1, ShortcodePurchase.class);			   
+		             }
+	            	 
+	            	 if(rs2.next()) {
+	            		 purchase = beanProcessor.toBean(rs2, MaskPurchase.class);
+	        	     }		
+	            	 
+	             } //end second try
+			             
+		} catch(SQLException e) {
+			logger.error("SQLException while trying to get Purchase by " + uuid);
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}		
+		
+		return purchase;		
 	}
 
 	
@@ -198,8 +188,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 		}
 	
 		return success;		
-	}//end put
-	
+	}	
 	
 
 	/**
@@ -213,7 +202,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
 			Connection con = dbCredentials.getConnection();
 				PreparedStatement stm = con.prepareStatement("SELECT * FROM shortcodepurchase WHERE accountuuid = ?");
 				PreparedStatement stm2 = con.prepareStatement("SELECT * FROM maskpurchase WHERE accountuuid = ?");				
-				){
+			){
 			
 			 stm.setString(1, account.getUuid());
 			 stm2.setString(1, account.getUuid());
@@ -230,7 +219,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
         }		
 		
 		return list;
-	}//end getPurchase
+	}
 
 	
 	/**
@@ -259,7 +248,7 @@ public class SmsPurchaseDAO extends GenericDAO implements BabbleSmsPurchaseDAO {
         }
        
 		return list;
-	}//end get allpurchases
+	}
 
 	
-}//class end
+}

@@ -23,7 +23,7 @@ import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
 import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
-import ke.co.tawi.babblesms.server.utils.StringUtil;
+import ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -34,6 +34,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
@@ -56,13 +57,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.validator.routines.UrlValidator;
-
 import org.apache.log4j.Logger;
-
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -224,11 +222,15 @@ public class PostSMS extends Thread {
 		// Assuming all is ok, it would have the following pattern:
 		// requestStatus=ACCEPTED&messageIds=254726176878:b265ce23;254728932844:367941a36d2e4ef195;254724300863:11fca3c5966d4d
 		if(responseEntity != null) {
+						
 			OutgoingLog outgoingLog;
 			
 			
             try {
-            	String[] strTokens = StringUtils.split(EntityUtils.toString(responseEntity), '&');
+            	String response = EntityUtils.toString(responseEntity);
+            	GatewayDAO.getInstance().logResponse(account, response, new Date());
+            	            	
+            	String[] strTokens = StringUtils.split(response, '&');
             	String tmpStr = "", dateStr = "";
             	for(String str : strTokens) {
             		if(StringUtils.startsWith(str, "messageIds")) {

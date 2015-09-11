@@ -25,7 +25,7 @@
 
 -- Then run the "dbSetup.sh" script in the bin folder of this project.
 
-\c postgres
+\c postgres babblesms
 
 -- Then execute the following:
 DROP DATABASE IF EXISTS babblesmsdb; -- To drop a database you can't be logged into it. Drops if it exists.
@@ -305,6 +305,7 @@ CREATE TABLE contactgroupsent(
 \COPY contactgroupsent(sentcontactuuid, sentgroupuuid) FROM '/tmp/contactgroupsent.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE contactgroupsent OWNER TO babblesms;
 
+
 -- -------------------
 -- Table messagetemplate
 -- -------------------
@@ -426,4 +427,16 @@ CREATE TABLE SMSGateway(
     passwd text NOT NULL
 );
 \COPY SMSGateway (accountuuid,url,username,passwd) FROM '/tmp/SMSGateway.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE SMSGateway OWNER TO babblesms;
+
+
+
+-- --------------------
+-- Table SentGatewayLog
+-- ---------------------
+CREATE TABLE SentGatewayLog(
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    accountuuid text references account(uuid),
+    response text,
+    responsedate timestamp with time zone
+);

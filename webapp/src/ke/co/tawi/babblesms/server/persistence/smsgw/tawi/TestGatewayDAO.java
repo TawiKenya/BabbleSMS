@@ -17,6 +17,7 @@ package ke.co.tawi.babblesms.server.persistence.smsgw.tawi;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
@@ -75,10 +76,11 @@ public class TestGatewayDAO {
 		assertEquals(gw.getPasswd(), GATEWAY_PASSWD);
 	}
     
+    
     /**
 	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO#get(ke.co.tawi.babblesms.server.beans.account.Account)}.
 	 */
-    //@Ignore
+    @Ignore
 	@Test
 	public void testGetByAccountUsername() {
 		storage = new GatewayDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -90,6 +92,8 @@ public class TestGatewayDAO {
 		assertEquals(gw.getUsername(), GATEWAY_USERNAME);
 		assertEquals(gw.getPasswd(), GATEWAY_PASSWD);
 	}
+    
+    
     /**
      *  Test method for {@link ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO#get(ke.co.tawi.babblesms.server.beans.account.Account)}.
      */
@@ -112,10 +116,10 @@ public class TestGatewayDAO {
 		assertEquals(gw.getAccountUuid(), ACCOUNT_UUID_NEW);
 		assertEquals(gw.getUrl(), GATEWAY_URL_NEW);
 		assertEquals(gw.getUsername(), GATEWAY_USERNAME_NEW);
-		assertEquals(gw.getPasswd(), GATEWAY_PASSWD_NEW);*/
-		
-		
+		assertEquals(gw.getPasswd(), GATEWAY_PASSWD_NEW);*/		
 	}
+    
+    
     /**
      *  Test method for {@link ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO#get(ke.co.tawi.babblesms.server.beans.account.Account)}.
      */
@@ -140,23 +144,38 @@ public class TestGatewayDAO {
 		assertEquals(gw.getUsername(), GATEWAY_USERNAME_UPDATE);
 		assertEquals(gw.getPasswd(), GATEWAY_PASSWD_UPDATE);*/
 	}
-	
-	
+		
 	
    /**
     *  Test method for {@link ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO#get(ke.co.tawi.babblesms.server.beans.account.Account)}.
     */
-	  @Ignore
-		@Test
-		public void testGetAllRecords() { 
-			storage = new GatewayDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
-			List<TawiGateway> list = storage.getAllRecords(); 
-			assertEquals(list.size(), 4);
-			for(TawiGateway s : list){
-				System.out.println(s);
-			}
-			
+   @Ignore
+	@Test
+	public void testGetAllRecords() { 
+		storage = new GatewayDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		
+		List<TawiGateway> list = storage.getAllRecords(); 
+		assertEquals(list.size(), 4);
+		for(TawiGateway s : list){
+			System.out.println(s);
 		}
-	
+		
+	}
+	   
+   
+   /**
+	 * Test the logging of SMS Gateway responses
+	 */
+	@Test
+   public void testLogResponse() {
+		storage = new GatewayDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		
+		Account account = new Account();
+		account.setUuid(ACCOUNT_UUID);
+		
+		String response = "requestStatus=ACCEPTED&messageIds=254726176878:b265ce23;254728932844:367941a36d2e4ef195;254724300863:11fca3c5966d4d";
+		
+		storage.logResponse(account, response, new Date());
+   }
 	
 }

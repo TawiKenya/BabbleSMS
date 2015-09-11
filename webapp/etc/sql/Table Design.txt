@@ -236,12 +236,13 @@ A list of all SMS that have been sent from the system to Groups.
 - Sender UUID references Account (UUID)
 - Network UUID references Network
 
+
 ------------------------------
-Table contactgroupsent
+Table contactGroupSent
 ------------------------------
-Shows a relationship of a contact to which a message is sent to and the
-group the said contacts is associated with.
-- Id(primary key)
+Relationship between a message sent to a Group and the messages sent to
+the Contacts of the Group.
+- Id (primary key)
 - sentContactUUID references outgoinglog(UUID)
 - sentGroupUID references outgoingGroupLog(UUID)
 
@@ -317,11 +318,25 @@ the Java code.
 =========================
 For account management with the Tawi SMS Gateway.
 
-SMS Gateway
+-----------------------
+Table SMSGateway
+-----------------------
+Used to record contact information about the SMS Gateway.
 - Account uuid references Account(uuid)
 - URL
 - Username
 - Password
+
+
+-----------------------
+Table SentGatewayLog
+-----------------------
+Log of responses from the SMS Gateway that occur when Babble tries to send an
+outbound message to it.
+- uuid
+- Account uuid references Account(uuid)
+- Response
+- Timestamp
 
 
 ==================
