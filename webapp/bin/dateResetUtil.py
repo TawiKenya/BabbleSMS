@@ -55,7 +55,7 @@ class reg(object):
 #-------------------------------------------------------------------------------
 def random_date(start, end):
     return start + timedelta(
-        seconds = randint(0, int((end - start).total_seconds())))
+        seconds = randint(0, abs(int((end - start).total_seconds()))) )
 
 
 
