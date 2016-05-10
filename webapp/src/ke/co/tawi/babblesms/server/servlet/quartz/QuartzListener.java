@@ -31,8 +31,7 @@ public class QuartzListener extends HttpServlet implements ServletContextListene
         @Override
         public void contextInitialized(ServletContextEvent servletContext) {
 
-              //  System.out.println("Context Initialized");
-                
+                /*
                 try {
                         // Setup the Job class and the Job group
                         JobDetail job = newJob(QuartzJob.class).withIdentity(
@@ -52,7 +51,7 @@ public class QuartzListener extends HttpServlet implements ServletContextListene
                 }
                 catch (SchedulerException e) {
                         e.printStackTrace();
-                }
+                }*/
         }
 
         @Override
