@@ -19,7 +19,6 @@ import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
-import ke.co.tawi.babblesms.server.servlet.admin.sms.Addcredit;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,8 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
+//import net.sf.ehcache.CacheManager;
+//import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,7 +61,7 @@ public class Addshortcode extends HttpServlet {
     
     
     private ShortcodeDAO shortcodeDAO;   
-    private CacheManager cacheManager;
+    //private CacheManager cacheManager;
     private HttpSession session;
     
 
@@ -77,7 +76,7 @@ public class Addshortcode extends HttpServlet {
         
         shortcodeDAO = ShortcodeDAO.getInstance();
         
-        cacheManager = CacheManager.getInstance();
+        //cacheManager = CacheManager.getInstance();
     }
 
     /**
@@ -150,7 +149,7 @@ public class Addshortcode extends HttpServlet {
      * @param acc
      */
     private void updateShortcodeCache(Shortcode s) {
-    	cacheManager.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID).put(new Element(s.getUuid(), s));
+    	//cacheManager.getCache(CacheVariables.CACHE_SHORTCODE_BY_UUID).put(new Element(s.getUuid(), s));
     }
 
     
