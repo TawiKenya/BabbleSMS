@@ -17,6 +17,7 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.account.Status;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
@@ -27,7 +28,6 @@ import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.beans.contact.Email;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
-import ke.co.tawi.babblesms.server.beans.status.Status;
 
 import java.io.IOException;
 import java.util.HashMap;

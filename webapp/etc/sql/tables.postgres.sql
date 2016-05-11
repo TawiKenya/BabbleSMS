@@ -45,33 +45,27 @@ CREATE TABLE status (
     uuid text UNIQUE NOT NULL,
     description text UNIQUE NOT NULL
 );
--- import data from the CSV file for the status table
-\COPY status(uuid,description) FROM '/tmp/Status.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE status OWNER TO babblesms;
 
 
 -- -------------------
 -- Table Account
 -- -------------------
-CREATE TABLE Account (
+CREATE TABLE account (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     username text UNIQUE NOT NULL,
-    logpassword text,
-    apiusername text,
-    apipassword text,
-    usertype text,
+    logpassword text,    
     name text,
     mobile text,
     email text,
     dailysmsLimit int,
     creationdate timestamp with time zone DEFAULT now(),
-    statusuuid text REFERENCES status(uuid)
+    statusuuid text REFERENCES status(uuid),
+    apiusername text,
+    apipassword text
 );
-
--- import data from the CSV file for the Accounts table
-\COPY Account(uuid,username,logpassword,apiusername,apipassword,usertype,name,mobile,email,dailysmsLimit,statusuuid ) FROM '/tmp/Accounts.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE Account OWNER TO babblesms;
+ALTER TABLE account OWNER TO babblesms;
 
 
 
@@ -90,8 +84,6 @@ CREATE TABLE country (
     name text NOT NULL,
     codeFIPS text
 );
-
-\COPY country(uuid, name, codeFIPS) FROM '/tmp/Countries.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE country OWNER TO babblesms;
 
 
@@ -104,8 +96,6 @@ CREATE TABLE network (
     name text,
     countryUuid text REFERENCES country(uuid)
 );
-
-\COPY network(uuid,name,countryUuid) FROM '/tmp/Networks.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE network OWNER TO babblesms;
 
 
@@ -120,7 +110,6 @@ CREATE TABLE contact (
     accountuuid text REFERENCES account(uuid),
     statusuuid text REFERENCES status(uuid)
 );
-\COPY contact(uuid,name,description,accountuuid,statusuuid) FROM '/tmp/Contacts.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE contact OWNER TO babblesms;
 
 
@@ -135,7 +124,6 @@ CREATE TABLE phone (
     statusuuid text references status(uuid),
     networkuuid text references network(uuid)
 );
-\COPY phone(uuid,phonenumber,contactuuid,statusuuid,networkuuid) FROM '/tmp/phone.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE phone OWNER TO babblesms;
 
 
@@ -149,7 +137,6 @@ CREATE TABLE Email (
     contactuuid text references contact(uuid),
     statusuuid text references status(uuid)
 );
-\COPY Email(uuid,address,contactuuid,statusuuid) FROM '/tmp/Email.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Email OWNER TO babblesms;
 
 
@@ -167,7 +154,6 @@ CREATE TABLE groups (
     accountuuid text references account(uuid),
     statusuuid text references status(uuid)
 );
-\COPY groups(uuid,name,description,accountuuid,statusuuid,creationdate) FROM '/tmp/Groups.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE groups OWNER TO babblesms;
 
 
@@ -182,9 +168,6 @@ CREATE TABLE contactgroup (
     groupuuid text references groups(uuid),
     accountuuid text references account(uuid)
 );
-
--- import data from the CSV file for the contactgroup table
-\COPY contactgroup(uuid,contactuuid,groupuuid,accountuuid) FROM '/tmp/contactgroup.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE contactgroup OWNER TO babblesms;
 
 
@@ -205,8 +188,6 @@ CREATE TABLE shortcode (
     networkuuid text references network(uuid),
     creationdate timestamp with time zone DEFAULT now()
 );
-
-\COPY shortcode(uuid,codenumber,accountuuid,networkuuid) FROM '/tmp/Shortcodes.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE shortcode OWNER TO babblesms;
 
 
@@ -221,9 +202,8 @@ CREATE TABLE mask (
     networkuuid text references network(uuid),
     creationdate timestamp with time zone DEFAULT now()
 );
-
-\COPY mask(uuid,maskname,accountuuid,networkuuid) FROM '/tmp/Masks.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE mask OWNER TO babblesms;
+
 
 -- -------------------
 -- Table incominglog
@@ -238,8 +218,6 @@ CREATE TABLE incominglog (
     logTime timestamp with time zone DEFAULT now(),
     networkuuid text references network(uuid)
 );
-
-\COPY incominglog(uuid,origin,destination,recipientuuid,message,logTime,networkuuid) FROM '/tmp/IncomingLogs.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE incominglog OWNER TO babblesms;
 
 
@@ -252,8 +230,6 @@ CREATE TABLE messagestatus (
     uuid text UNIQUE NOT NULL,
     description text
 );
-
-\COPY messagestatus(uuid,description) FROM '/tmp/messagestatus.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE messagestatus OWNER TO babblesms;
 
 
@@ -272,7 +248,6 @@ CREATE TABLE outgoinglog (
     messagestatusuuid text references messagestatus(uuid),
     phoneuuid text references phone(uuid)
 );
-\COPY outgoinglog(uuid,origin,destination,message,networkuuid,sender,messagestatusuuid,logTime,phoneuuid) FROM '/tmp/outgoinglog.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE outgoinglog OWNER TO babblesms;
 
 
@@ -290,7 +265,6 @@ CREATE TABLE outgoingGrouplog (
     sender text references account(uuid),
     messagestatusuuid text references messagestatus(uuid)
 );
-\COPY outgoingGrouplog(uuid,origin,networkuuid,destination,message,sender,messagestatusuuid,logTime) FROM '/tmp/outgoingGrouplog.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE outgoingGrouplog OWNER TO babblesms;
 
 
@@ -302,7 +276,6 @@ CREATE TABLE contactgroupsent(
     sentcontactuuid text,
     sentgroupuuid text references outgoingGrouplog(uuid)
  );
-\COPY contactgroupsent(sentcontactuuid, sentgroupuuid) FROM '/tmp/contactgroupsent.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE contactgroupsent OWNER TO babblesms;
 
 
@@ -316,7 +289,6 @@ CREATE TABLE messagetemplate (
     contents text,
     accountuuid text REFERENCES account(uuid)
 );
-\COPY messagetemplate(uuid,title,contents,accountuuid) FROM '/tmp/MessageTemplate.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE messagetemplate OWNER TO babblesms;
 
 
@@ -332,9 +304,6 @@ CREATE TABLE Notification (
 	published text DEFAULT 'yes',
 	NotificationDate timestamp with time zone  DEFAULT now()
 );
-
--- import data from the CSV file for the Notification table
-\COPY Notification (uuid,ShortDesc,LongDesc,origin,NotificationDate) FROM '/tmp/Notification.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Notification OWNER TO babblesms;
 
 
@@ -348,7 +317,6 @@ CREATE TABLE NotificationStatus (
     ReadFlag text DEFAULT 'N',
     ReadDate timestamp with time zone 
 );
-\COPY NotificationStatus (uuid,NotificationUuid) FROM '/tmp/NotificationStatus.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE NotificationStatus OWNER TO babblesms;
 
 
@@ -363,7 +331,6 @@ CREATE TABLE ShortcodePurchase(
     count integer NOT NULL CHECK (count>=0),
     purchasedate timestamp with time zone   
 );  
-\COPY ShortcodePurchase (Uuid,accountuuid,Shortcodeuuid,count,purchasedate) FROM '/tmp/ShortcodePurchase.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ShortcodePurchase OWNER TO babblesms;
 
 
@@ -371,13 +338,12 @@ ALTER TABLE ShortcodePurchase OWNER TO babblesms;
 -- Table ShortcodeBalance
 -- ---------------------
 CREATE TABLE ShortcodeBalance(
-          Id SERIAL PRIMARY KEY,
-          Uuid text UNIQUE NOT NULL,
-          accountuuid text references account(uuid),
-          Shortcodeuuid text references Shortcode(uuid),
-          count integer NOT NULL CHECK(count>=0)
-         );
-\COPY ShortcodeBalance (Uuid,accountuuid,Shortcodeuuid,count) FROM '/tmp/ShortcodeBalance.csv' WITH DELIMITER AS '|' CSV HEADER
+  Id SERIAL PRIMARY KEY,
+  Uuid text UNIQUE NOT NULL,
+  accountuuid text references account(uuid),
+  Shortcodeuuid text references Shortcode(uuid),
+  count integer NOT NULL CHECK(count >= 0)
+);
 ALTER TABLE ShortcodeBalance OWNER TO babblesms;
 
 
@@ -392,7 +358,6 @@ CREATE TABLE MaskPurchase(
       count integer NOT NULL CHECK (count>=0),
       purchasedate timestamp with time zone 
 );
-\COPY MaskPurchase (Uuid,accountuuid,maskuuid,count,purchasedate) FROM '/tmp/MaskPurchase.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE MaskPurchase OWNER TO babblesms;
 
 
@@ -406,7 +371,6 @@ CREATE TABLE MaskBalance(
     maskuuid text references Mask(uuid),
     count integer NOT NULL CHECK (count>=0)  
 );
-\COPY MaskBalance (Uuid,accountuuid,Maskuuid,count) FROM '/tmp/MaskBalance.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE MaskBalance OWNER TO babblesms;
 
 
@@ -426,8 +390,7 @@ CREATE TABLE SMSGateway(
     username text NOT NULL,
     passwd text NOT NULL
 );
-\COPY SMSGateway (accountuuid,url,username,passwd) FROM '/tmp/SMSGateway.csv' WITH DELIMITER AS '|' CSV HEADER
-
+ALTER TABLE SMSGateway OWNER TO babblesms;
 
 
 -- --------------------
@@ -440,3 +403,4 @@ CREATE TABLE SentGatewayLog(
     response text,
     responsedate timestamp with time zone
 );
+ALTER TABLE SentGatewayLog OWNER TO babblesms;

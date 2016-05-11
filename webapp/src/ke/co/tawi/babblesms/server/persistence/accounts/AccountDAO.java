@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-
 package ke.co.tawi.babblesms.server.persistence.accounts;
+
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
-
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.persistence.GenericDAO;
-import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-
-
 
 
 /**
@@ -68,6 +66,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 		super();
 	}
 	
+	
 	/**
 	 * Used for testing purposes only.
      * @param dbName
@@ -89,21 +88,21 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public Account getAccount(String uuid) {
 		Account account = null;
-        ResultSet rset = null;
-        
-		
+        		
         try (  
         	 Connection conn = dbCredentials.getConnection();
         	 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Account WHERE Uuid = ?;");        		
     		){
            
 	            pstmt.setString(1, uuid);
-	            rset = pstmt.executeQuery();
+	            ResultSet rset = pstmt.executeQuery();
 	
 	            if (rset.next()) {
 	                account = beanProcessor.toBean(rset, Account.class);
 	            }
 
+	            rset.close();
+	            
         } catch (SQLException e) {
             logger.error("SQL Exception when getting an account with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
@@ -119,7 +118,6 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	@Override
 	public Account getAccountByName(String username) {
 		 Account account = null;
-		 ResultSet rset = null;
 
 	    try(
 	    		Connection conn = dbCredentials.getConnection();
@@ -127,11 +125,13 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
     		) {
 	        
 		        pstmt.setString(1, username);
-		        rset = pstmt.executeQuery();
+		        ResultSet rset = pstmt.executeQuery();
 		
 		        if (rset.next()) {
 		            account = beanProcessor.toBean(rset, Account.class);
 		        }
+		        
+		        rset.close();
 	
 	    } catch (SQLException e) {
 	        logger.error("SQL Exception when getting an account with username: " + username);
@@ -176,18 +176,22 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 
         try (
         		Connection conn = dbCredentials.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Account" 
-        		+"(Uuid, username, logpassword, name, mobile, email,statusuuid) VALUES (?,?,?,?,?,?,?);");
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO account" +
+                		"(Uuid, username, logpassword, name, mobile, email, statusuuid, apiusername,"
+                		+ "apiPassword, dailysmslimit) "
+                		+ "VALUES (?,?,?,?,?,?,?,?,?,?);");
             ) {
         	
             pstmt.setString(1, account.getUuid());
             pstmt.setString(2, account.getUsername());
-            pstmt.setString(3, SecurityUtil.getMD5Hash(account.getLogpassword()));
+            pstmt.setString(3, account.getLogpassword());
             pstmt.setString(4, account.getName());
             pstmt.setString(5, account.getMobile());
             pstmt.setString(6, account.getEmail()); 
             pstmt.setString(7, account.getStatusuuid());
-           
+            pstmt.setString(8, account.getApiUsername());
+            pstmt.setString(9, account.getApiPassword());
+            pstmt.setInt(10, account.getDailysmslimit());                        		
 
             pstmt.executeUpdate();
             
@@ -202,7 +206,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 
 	
 	/**
-	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleAccountDAO#updateAccount(java.lang.String, Account)
 	 */
 	@Override
 	public boolean updateAccount(String uuid, Account account) {
@@ -210,7 +214,8 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 
         try (  Connection conn = dbCredentials.getConnection();
         	PreparedStatement pstmt = conn.prepareStatement("UPDATE Account SET username=?, "
-        			+ "logpassword=?, name=?, mobile=?, email=? WHERE Uuid = ?;");
+        			+ "logpassword=?, name=?, mobile=?, email=?, statusuuid=?, apiUsername=?, "
+        			+ "apiPassword=?, dailysmslimit=? WHERE Uuid = ?;");
         	) {
             
             pstmt.setString(1, account.getUsername());
@@ -218,44 +223,21 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.setString(3, account.getName());
             pstmt.setString(4, account.getMobile());
             pstmt.setString(5, account.getEmail());
-            pstmt.setString(6, account.getUuid());
+            pstmt.setString(6, account.getStatusuuid());
+            pstmt.setString(7, account.getApiUsername());
+            pstmt.setString(8, account.getApiPassword());
+            pstmt.setInt(9, account.getDailysmslimit());
+            pstmt.setString(10, account.getUuid());
 
             pstmt.executeUpdate();
-
+            
         } catch (SQLException e) {
-            logger.error("SQL Exception when updating accounts with uuid " + account);
+            logger.error("SQL Exception when updating " + account + " with uuid " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         } 
         
         return success;
-	}
-	
-	
-	public boolean updateStatus(String uuid, String statusuuid) {
-		 boolean success = true;
-
-       try (  Connection conn = dbCredentials.getConnection();
-       	PreparedStatement p = conn.prepareStatement("UPDATE Account SET statusuuid=? WHERE Uuid = ?");
-       	) {
-           
-           p.setString(1, statusuuid);
-           p.setString(2, uuid);
-          
-
-           p.executeUpdate();
-
-       } catch (SQLException e) {
-           logger.error("SQL Exception when updating accounts with uuid " + uuid);
-           logger.error(ExceptionUtils.getStackTrace(e));
-           success = false;
-       } 
-       
-       return success;
-	}
-	
-	
-	
-	
+	}	
 	
 }

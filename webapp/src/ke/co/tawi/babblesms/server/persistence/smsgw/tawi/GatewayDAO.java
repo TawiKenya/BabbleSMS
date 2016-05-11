@@ -18,7 +18,7 @@ package ke.co.tawi.babblesms.server.persistence.smsgw.tawi;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
-import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

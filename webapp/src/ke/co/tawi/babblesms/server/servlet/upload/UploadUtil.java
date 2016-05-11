@@ -16,9 +16,9 @@
 package ke.co.tawi.babblesms.server.servlet.upload;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.account.Status;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
-import ke.co.tawi.babblesms.server.beans.status.Status;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 

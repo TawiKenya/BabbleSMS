@@ -18,10 +18,10 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
-import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.session.SessionStatistics;
 import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -42,6 +42,7 @@ import net.sf.ehcache.Element;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+
 import org.jasypt.util.text.BasicTextEncryptor;
 
 /**

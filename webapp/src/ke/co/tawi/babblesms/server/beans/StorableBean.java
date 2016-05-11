@@ -27,9 +27,7 @@ import java.util.UUID;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class StorableBean implements Serializable {
-
-	private static final long serialVersionUID = -5585942080895242409L;
-	
+		
 	private int id;
 	private String uuid;
         
@@ -70,4 +68,6 @@ public class StorableBean implements Serializable {
 		this.uuid = uuid;
 	}
 
+	
+	private static final long serialVersionUID = -5585942080895242409L;
 }

@@ -64,7 +64,6 @@ public class TestAccountDAO {
 	final String EMAIL = "admin@tawi.mobi",
 			EMAIL_NEW = "ssss@gmail.com",
 			EMAIL_UPDATE = "UPDATE@gmail.com";
-	final String CALLBACK = "http://account.co.ke",CALLBACK_NEW = "http://hhh.co.ke";
 
 	private AccountDAO storage;
 	
@@ -89,10 +88,9 @@ public class TestAccountDAO {
 	    assertEquals(acc.getLogpassword(),LOG_PASSWORD);
       	assertEquals(acc.getName(),NAME);  
       	assertEquals(acc.getMobile(),MOBILE);
-      	assertEquals(acc.getEmail(),EMAIL);
-      	
-		
+      	assertEquals(acc.getEmail(),EMAIL);		
 	}
+	
 
 	/**
 	 * Test method for
@@ -112,11 +110,9 @@ public class TestAccountDAO {
 	      assertEquals(acc.getName(), NAME);
 	      assertEquals(acc.getMobile(), MOBILE);
 	      assertEquals(acc.getEmail(), EMAIL);
-	      
-	
-		
 	}
 
+	
 	/**
 	 * Test method for
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#getAllAccounts()}
@@ -137,6 +133,7 @@ public class TestAccountDAO {
 			
 		}
 	}
+	
 
 	/**
 	 * Test method for
@@ -169,11 +166,9 @@ public class TestAccountDAO {
 		assertEquals(acc.getMobile(),MOBILE_NEW);
 		assertEquals(acc.getEmail(),EMAIL_NEW);
 		assertEquals(acc.getStatusuuid(),STATUS_UUID);
-		
-		
-
 	}
 
+	
 	/**
 	 * Test method for
 	 * {@link ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO#updateAccount(java.lang.String, ke.co.tawi.babblesms.server.beans.account.Account)}
@@ -182,9 +177,7 @@ public class TestAccountDAO {
 	//@Ignore
 	@Test
 	public void testUpdateAccount() {
-
-		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD,
-				DB_PORT);
+		storage = new AccountDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 
 		
 		  Account acc = new Account();
@@ -194,8 +187,7 @@ public class TestAccountDAO {
 		 acc.setLogpassword(LOG_PASSWORD_UPDATE);
 		 acc.setName(NAME_UPDATE);
 		 acc.setMobile(MOBILE_UPDATE);
-		 acc.setEmail(EMAIL_UPDATE);
-		
+		 acc.setEmail(EMAIL_UPDATE);		
 		  
 		 
 		assertTrue(storage.updateAccount( ACC_UUID_NEW, acc));
@@ -207,9 +199,6 @@ public class TestAccountDAO {
 		 assertEquals(acc.getName(), NAME_UPDATE); 
 		 assertEquals(acc.getMobile(), MOBILE_UPDATE); 
 		 assertEquals(acc.getEmail(), EMAIL_UPDATE);
-		 
-		 
-
 	}
 
 }

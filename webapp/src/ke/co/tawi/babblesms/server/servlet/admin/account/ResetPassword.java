@@ -28,7 +28,7 @@ import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
-import ke.co.tawi.babblesms.server.servlet.util.SecurityUtil;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;

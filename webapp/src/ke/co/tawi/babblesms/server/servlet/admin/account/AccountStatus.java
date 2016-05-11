@@ -1,5 +1,17 @@
 /**
+ * Copyright 2015 Tawi Commercial Services Ltd
  * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
  */
 package ke.co.tawi.babblesms.server.servlet.admin.account;
 
@@ -29,9 +41,12 @@ public class AccountStatus extends HttpServlet{
 	private static final long serialVersionUID = -9062947248527284222L;
 	private AccountDAO accountDAO;
     private CacheManager cacheManager;
+    
+    
 	/**
 	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
 	 */
+    @Override
 	public void init(ServletConfig config) throws ServletException {
 	        super.init(config);
 	        accountDAO = AccountDAO.getInstance();
@@ -42,6 +57,7 @@ public class AccountStatus extends HttpServlet{
 	 /**
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 		     HttpSession session = request.getSession(false); 
@@ -54,13 +70,14 @@ public class AccountStatus extends HttpServlet{
 		     Account account = new Account();
 		      account.setUuid(uuid);
 		      account.setStatusuuid(status); 
-		    if(accountDAO.updateStatus(uuid, status)){
+		      
+		    /*if(accountDAO.updateStatus(uuid, status)){
 		    	updateAccountCache(account);
 		    	 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_SUCCESS_KEY, "Account deleted successifully");
 		    	 response.sendRedirect("admin/changestatus.jsp");
 		    }else{
 		    	 session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, "Failed to delete account");
-		    }
+		    }*/
 		   
 	 }
 

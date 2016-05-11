@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Tawi Commercial Services Ltd
+ * Copyright 2016 Tawi Commercial Services Ltd
  * 
  * Licensed under the Open Software License, Version 3.0 (the “License”); you 
  * may not use this file except in compliance with the License. You may obtain a
@@ -52,20 +52,18 @@ suspended, deleted etc
 ---------------------
  This table stores information to the user at each state. Note that the word 
  "State" is a future reserved SQL keyword.
- - Id
+ - Id (primary key)
  - UUID
  - username
- - password
- - apiusername
- - apipassword
- - usertype
+ - password 
  - Creation Date
  - name
  - mobile
  - email
  - dailysmsLimit
  - Status uuid references Status(uuid)
- 
+ - api username (this is for the SMS Gateway)
+ - api password (this is for the SMS Gateway)
  
  
 ================================

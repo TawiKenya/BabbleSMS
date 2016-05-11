@@ -15,9 +15,9 @@
  */
 package ke.co.tawi.babblesms.server.beans.account;
 
-import java.util.Date;
-
 import ke.co.tawi.babblesms.server.beans.StorableBean;
+
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,19 +29,18 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Account extends StorableBean {
 
-    private static final long serialVersionUID = 1L;
-
     private String username;
     private String logpassword;
-    private String usertype;
     private String name;
     private String mobile;
     private String email;
     private int dailysmslimit;
     private Date creationdate;
     private String statusuuid;
-    private String callback;
-
+    private String apiUsername;
+    private String apiPassword;
+    
+    
     /**
      *
      */
@@ -49,14 +48,14 @@ public class Account extends StorableBean {
         super();
         username = "";
         logpassword = "";
-        usertype = "";
         name = "";
         mobile = "";
         email = "";
-        dailysmslimit =0;
+        dailysmslimit = 0;
         creationdate = new Date();
         statusuuid = "";
-        callback = "";
+        apiUsername = "";
+        apiPassword = "";
     }
 
     /**
@@ -91,22 +90,6 @@ public class Account extends StorableBean {
         this.logpassword = StringUtils.trimToEmpty(logpassword);
     }
     
-
-    /**
-     * 
-     * @return usertype
-     */
-    public String getUsertype() {
-        return usertype;
-    }
-
-    /**
-     * 
-     * @param usertype 
-     */
-    public void setUsertype(String usertype) {
-        this.usertype = StringUtils.trimToEmpty(usertype);
-    }
 
     /**
      * 
@@ -177,7 +160,7 @@ public class Account extends StorableBean {
      * @return creationdate
      */
     public Date getCreationdate() {
-        return creationdate;
+        return new Date(creationdate.getTime());
     }
 
     /**
@@ -204,21 +187,35 @@ public class Account extends StorableBean {
         this.statusuuid = StringUtils.trimToEmpty(statusuuid);
     }
 
-    
 	/**
-	 * @return the callback
+	 * @return the apiUsername
 	 */
-	public String getCallback() {
-		return callback;
+	public String getApiUsername() {
+		return apiUsername;
 	}
 
 	/**
-	 * @param callback the callback to set
+	 * @param apiUsername the apiUsername to set
 	 */
-	public void setCallback(String callback) {
-		this.callback =  StringUtils.trimToEmpty(callback);
+	public void setApiUsername(String apiUsername) {
+		this.apiUsername = StringUtils.trimToEmpty(apiUsername);
 	}
 
+	/**
+	 * @return the apiPassword
+	 */
+	public String getApiPassword() {
+		return apiPassword;
+	}
+
+	/**
+	 * @param apiPassword the apiPassword to set
+	 */
+	public void setApiPassword(String apiPassword) {
+		this.apiPassword = StringUtils.trimToEmpty(apiPassword);
+	}
+
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -231,8 +228,6 @@ public class Account extends StorableBean {
 		builder.append(username);
 		builder.append(", logpassword=");
 		builder.append(logpassword);
-		builder.append(", usertype=");
-		builder.append(usertype);
 		builder.append(", name=");
 		builder.append(name);
 		builder.append(", mobile=");
@@ -245,9 +240,13 @@ public class Account extends StorableBean {
 		builder.append(creationdate);
 		builder.append(", statusuuid=");
 		builder.append(statusuuid);
-		builder.append(", callback=");
-		builder.append(callback);
+		builder.append(", apiUsername=");
+		builder.append(apiUsername);
+		builder.append(", apiPassword=");
+		builder.append(apiPassword);
 		builder.append("]");
 		return builder.toString();
 	}
+
+	private static final long serialVersionUID = 1L;	
 }

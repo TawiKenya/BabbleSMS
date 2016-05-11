@@ -20,7 +20,7 @@ import java.util.List;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 
 /**
- * persistence description for {@link Account}s.
+ * Persistence description for {@link Account}s.
  * <p> 
  * 
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
@@ -66,7 +66,7 @@ public interface BabbleAccountDAO {
    * the argument. 
    *
    * @param account
-   * @return	code>true</code> if successfully inserted; <code>false</code> for
+   * @return	code>true</code> if successfully updated; <code>false</code> for
    * otherwise
    */
   public boolean updateAccount(String uuid, Account account);

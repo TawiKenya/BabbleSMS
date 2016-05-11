@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.persistence.status;
-
-import ke.co.tawi.babblesms.server.beans.status.Status;
+package ke.co.tawi.babblesms.server.persistence.accounts;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import ke.co.tawi.babblesms.server.beans.account.Status;
 
 /**
  * Tests our persistence implementation for {@link Status}
@@ -49,7 +49,7 @@ public class TestStatusDAO {
     
     
 	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.status.StatusDAO#getStatus(java.lang.String)}.
+	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.accounts.StatusDAO#getStatus(java.lang.String)}.
 	 */
     @Ignore
 	@Test
@@ -63,7 +63,7 @@ public class TestStatusDAO {
 
 
 	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.status.StatusDAO#getStatusByName(java.lang.String)}.
+	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.accounts.StatusDAO#getStatusByName(java.lang.String)}.
 	 */
     @Ignore
 	@Test
@@ -77,7 +77,7 @@ public class TestStatusDAO {
 	
 	
     /**
-	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.status.StatusDAO#getAllStatus()}.
+	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.accounts.StatusDAO#getAllStatus()}.
 	 */
     @Ignore
 	@Test
@@ -91,7 +91,7 @@ public class TestStatusDAO {
 	
 	
 	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.status.StatusDAO#putStatus(ke.co.tawi.babblesms.server.beans.status.Status)}.
+	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.accounts.StatusDAO#putStatus(ke.co.tawi.babblesms.server.beans.account.Status)}.
 	 */
     @Ignore
 	@Test
@@ -111,7 +111,7 @@ public class TestStatusDAO {
 	
 
 	/**
-	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.status.StatusDAO#updateStatus(java.lang.String, java.lang.String)}.
+	 * Test method for {@link ke.co.tawi.babblesms.server.persistence.accounts.StatusDAO#updateStatus(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testUpdateStatus() {

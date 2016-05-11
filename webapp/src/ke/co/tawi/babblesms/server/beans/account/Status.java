@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.beans.status;
+package ke.co.tawi.babblesms.server.beans.account;
 
 import ke.co.tawi.babblesms.server.beans.StorableBean;
 
@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Status extends StorableBean {
 
+	
 	/*
 	 * These match what is in the SQL table "status"
 	 */
@@ -57,6 +58,7 @@ public class Status extends StorableBean {
         return description;
     }
 
+    
     /**
      *
      * @param description
@@ -79,5 +81,7 @@ public class Status extends StorableBean {
 		builder.append("]");
 		return builder.toString();
 	}
-
+	
+	
+	private static final long serialVersionUID = 1904746514478837017L;
 }

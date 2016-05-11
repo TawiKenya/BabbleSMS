@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
 
 import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.status.Status;
+import ke.co.tawi.babblesms.server.beans.account.Status;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import net.sf.ehcache.CacheManager;

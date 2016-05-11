@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.persistence.status;
+package ke.co.tawi.babblesms.server.persistence.accounts;
+
+import ke.co.tawi.babblesms.server.beans.account.Status;
 
 import java.util.List;
-import ke.co.tawi.babblesms.server.beans.status.Status;
 
 /**
  * Persistence description for {@link Status}

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.persistence.status;
+package ke.co.tawi.babblesms.server.persistence.accounts;
 
-import ke.co.tawi.babblesms.server.beans.status.Status;
+import ke.co.tawi.babblesms.server.beans.account.Status;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 import java.sql.Connection;
@@ -80,7 +80,7 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
 
     
     /**
-	 * @see ke.co.tawi.babblesms.server.persistence.status.BabbleStatusDAO#getStatus(java.lang.String)
+	 * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleStatusDAO#getStatus(java.lang.String)
 	 */
    @Override
    public Status getStatus(String uuid) {
@@ -96,6 +96,8 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
 	       if (rset.next()) {
 	    	   status = beanProcessor.toBean(rset, Status.class);
            }
+	       
+	       rset.close();
 	       
        } catch (SQLException e) {
            logger.error("SQLException when getting Status with uuid: " + uuid);
@@ -127,6 +129,8 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
        if (rset.next()) {
     	   status = beanProcessor.toBean(rset, Status.class);
        }
+       
+       rset.close();
 	       
       } catch (SQLException e) {
           logger.error("SQLException when getting Status with description: " + description);
@@ -138,7 +142,7 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
   
   
   /**
-   * @see ke.co.tawi.babblesms.server.persistence.status.BabbleStatusDAO#getAllStatus()
+   * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleStatusDAO#getAllStatus()
    */
   @Override
   public List<Status> getAllStatus() {
@@ -163,7 +167,7 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
   
    
     /**
-     * @see ke.co.tawi.babblesms.server.persistence.status.BabbleStatusDAO#putStatus(ke.co.tawi.babblesms.server.beans.status.Status)
+     * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleStatusDAO#putStatus(ke.co.tawi.babblesms.server.beans.account.Status)
      */
     @Override
     public boolean putStatus(Status status) {
@@ -190,7 +194,7 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
 
     
     /**
-     * @see ke.co.tawi.babblesms.server.persistence.status.BabbleStatusDAO#updateStatus(java.lang.String, Status)
+     * @see ke.co.tawi.babblesms.server.persistence.accounts.BabbleStatusDAO#updateStatus(java.lang.String, Status)
      */
     @Override
     public boolean updateStatus(String uuid, Status status) {

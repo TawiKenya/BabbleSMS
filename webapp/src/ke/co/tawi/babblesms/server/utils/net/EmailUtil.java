@@ -21,8 +21,9 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.mail.DefaultAuthenticator;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 import org.apache.log4j.Logger;
 
@@ -118,8 +119,7 @@ public class EmailUtil extends Thread {
      */      
     public boolean validateEmail(String email) {
        
-		return  emailValidator.isValid(email);		
- 
+		return  emailValidator.isValid(email);		 
 	}
     
     
@@ -184,7 +184,6 @@ public class EmailUtil extends Thread {
 		} catch(EmailException e) {
 			logger.error("EmailException when trying to send out a SimpleEmail: " + this.toString());
 			logger.error(ExceptionUtils.getStackTrace(e));
-			System.out.println(ExceptionUtils.getStackTrace(e)); 
 		}	
 	}
 

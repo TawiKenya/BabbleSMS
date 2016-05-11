@@ -15,6 +15,11 @@
  */
 package ke.co.tawi.babblesms.server.servlet.admin.account;
 
+import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
+
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -24,10 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants;
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
@@ -40,14 +41,8 @@ import net.sf.ehcache.Element;
  */
 public class EditAccount extends HttpServlet {
 
-	
-	
-	
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	
 	private AccountDAO accountDAO;
     private CacheManager cacheManager;
     
@@ -72,7 +67,6 @@ public class EditAccount extends HttpServlet {
         String name = request.getParameter("name");
         String mobile = request.getParameter("mobile");
         String email = request.getParameter("email");
-        String callback = request.getParameter("callback");
       
 
         Account account = accountDAO.getAccount(accountuuid);
@@ -81,7 +75,6 @@ public class EditAccount extends HttpServlet {
         account.setName(name);
         account.setMobile(mobile);
         account.setEmail(email);
-        account.setCallback(callback); 
         
         updateAccountCache(account);
       
@@ -114,6 +107,6 @@ public class EditAccount extends HttpServlet {
     }
     
     
-
+    private static final long serialVersionUID = 1L;
 
 }
