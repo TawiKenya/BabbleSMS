@@ -22,12 +22,13 @@
 <%@page import="ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.smsgateway.TawiGateway"%>
 <%@page import="ke.co.tawi.babblesms.server.persistence.smsgw.tawi.GatewayDAO"%>
-<%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Status"%>
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 
 <%@page import="net.sf.ehcache.Element"%>
 <%@page import="net.sf.ehcache.Cache"%>

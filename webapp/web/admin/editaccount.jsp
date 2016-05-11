@@ -15,20 +15,22 @@
     under the License.
     */
 %>
-<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
-<%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
-<%@page import="net.sf.ehcache.Element"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.ehcache.Cache"%>
-<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
-<%@page import="net.sf.ehcache.CacheManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
+<%@page import="ke.co.tawi.babblesms.server.accountmgmt.admin.SessionConstants"%>
+<%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
 <%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
 
 <%
     // The following is for session management.    

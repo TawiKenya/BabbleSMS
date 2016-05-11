@@ -19,7 +19,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Email"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Phone"%>

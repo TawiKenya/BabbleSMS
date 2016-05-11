@@ -21,7 +21,7 @@
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Group"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
-<%@page import="ke.co.tawi.babblesms.server.beans.status.Status"%>
+<%@page import="ke.co.tawi.babblesms.server.beans.account.Status"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionConstants"%>
 <%@page import="ke.co.tawi.babblesms.server.cache.CacheVariables"%>
