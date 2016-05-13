@@ -23,7 +23,6 @@ import ke.co.tawi.babblesms.server.beans.network.Network;
  * Copyright (c) Tawi Commercial Services Ltd., Jun 27, 2013
  *
  * @author <a href="mailto:japhethk@tawi.mobi">Japheth Korir</a>
- * @version %I%, %G%
  */
 public interface BabbleNetworkDAO {
 
@@ -43,7 +42,7 @@ public interface BabbleNetworkDAO {
      * @return	<code>true</code> if successfully updated; <code>false</code> for
      * otherwise
      */
-    public boolean updateNetwork(String uuid, String network);
+    public boolean updateNetwork(String uuid, Network network);
 
     
     /**

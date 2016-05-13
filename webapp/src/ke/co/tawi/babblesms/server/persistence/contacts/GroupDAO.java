@@ -264,7 +264,7 @@ public class GroupDAO extends GenericDAO implements BabbleGroupDAO {
 
     
 	/**
-	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroupCount(ke.co.tawi.babblesms.server.beans.account.Account)
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleGroupDAO#getGroupCount(Account)
 	 */
 	@Override
 	public Map<String, Integer> getGroupCount(Account account) {
@@ -301,14 +301,10 @@ public class GroupDAO extends GenericDAO implements BabbleGroupDAO {
 		} catch (SQLException e) {
            logger.error("SQL Exception when getting a count of groups that belong to: " + account);
            logger.error(ExceptionUtils.getStackTrace(e));
-       }
-				
+       }				
 		
 		return groupMap;
 	}
-
-
-	
     
 }
 

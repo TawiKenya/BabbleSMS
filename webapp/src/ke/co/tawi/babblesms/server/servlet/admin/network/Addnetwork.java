@@ -130,12 +130,13 @@ public class Addnetwork extends HttpServlet {
         else if (userPath.equals("/editnetwork")) {             
             String networkuuid = request.getParameter("networkuuid");
             String networkname = request.getParameter("networkname");
-            Network net = new Network();
-            net.setUuid(networkuuid);
-            net.setName(networkname); 
-            if (networkDAO.updateNetwork(networkuuid, networkname)) {
+            Network network = new Network();
+            network.setUuid(networkuuid);
+            network.setName(networkname); 
+            
+            if (networkDAO.updateNetwork(networkuuid, network)) {
                 session.setAttribute(SessionConstants.ADMIN_UPDATE_SUCCESS, "Network updated successfully.");
-                networkCache.put(new Element(net.getUuid(), net));   
+                networkCache.put(new Element(network.getUuid(), network));   
             } else {
                 session.setAttribute(SessionConstants.ADMIN_UPDATE_ERROR, "Network update failed.");
             }

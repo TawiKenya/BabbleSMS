@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
 /**
  * Copyright (c) Tawi Commercial Services Ltd., Jun 27, 2013
  *
- * @author <a href="mailto:mwenda@tawi.mobi">peter mwenda</a>
- * @author <a href="mailto:michael@tawi.mobi">michael wakahe</a>
+ * @author <a href="mailto:mwenda@tawi.mobi">Peter Mwenda</a>
+ * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
 
@@ -122,7 +122,7 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
         				+ "WHERE LOWER(name) like LOWER(?);");        		
         		) {
            
-            pstmt.setString(1, "%"+name +"%");
+            pstmt.setString(1, "%" + name + "%");
             rset = pstmt.executeQuery();
 
             if (rset.next()) {
@@ -194,14 +194,15 @@ public class NetworkDAO extends GenericDAO implements BabbleNetworkDAO {
      * @see ke.co.tawi.babblesms.server.persistence.network.BabbleNetworkDAO#updateNetwork(java.lang.String, java.lang.String)
      */
     @Override
-    public boolean updateNetwork(String uuid, String network) {
+    public boolean updateNetwork(String uuid, Network network) {
         boolean success = true;
 
         try( Connection conn = dbCredentials.getConnection();
-        		 PreparedStatement  pstmt = conn.prepareStatement("UPDATE Network SET Name=? WHERE Uuid = ?;");) {
+        		 PreparedStatement  pstmt = conn.prepareStatement("UPDATE Network SET Name=?, countryUuid=? WHERE Uuid = ?;");) {
             
-            pstmt.setString(1, network);
-            pstmt.setString(2, uuid);
+            pstmt.setString(1, network.getName());
+            pstmt.setString(2, network.getCountryuuid());
+            pstmt.setString(3, uuid);
 
             pstmt.executeUpdate();
 

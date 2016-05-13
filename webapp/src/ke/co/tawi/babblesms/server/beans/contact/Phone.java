@@ -45,6 +45,9 @@ public class Phone extends StorableBean {
     }
     
 
+    /**
+     * @return the phone number
+     */
     public String getPhonenumber() {
         return phoneNumber;
     }

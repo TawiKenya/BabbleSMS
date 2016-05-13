@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.persistence.network;
-
-import ke.co.tawi.babblesms.server.beans.network.Country;
+package ke.co.tawi.babblesms.server.persistence.geolocation;
 
 import java.util.List;
+
+import ke.co.tawi.babblesms.server.beans.geolocation.Country;
 
 
 /**
@@ -26,25 +26,6 @@ import java.util.List;
  * @author <a href="mailto:japhethk@tawi.mobi">Japheth Korir</a>
  */
 public interface BabbleCountryDAO {
-
-    /**
-     *
-     * @param country
-     * @return		<code>true</code> if successfully inserted; <code>false</code>
-     * for otherwise
-     */
-    public boolean putCountry(Country country);
-
-    
-    /**
-     *
-     * @param uuid
-     * @param country
-     * @param code
-     * @return		<code>true</code> if successfully updated; <code>false</code> for
-     * otherwise
-     */
-    public boolean updateCountry(String uuid, String country, String code);
 
     
     /**

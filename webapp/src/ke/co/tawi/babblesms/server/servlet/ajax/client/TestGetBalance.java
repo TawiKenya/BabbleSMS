@@ -27,6 +27,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import org.junit.Test;
+
 /**
  * Tests our JSON list of Groups for a given account.
  * <p>

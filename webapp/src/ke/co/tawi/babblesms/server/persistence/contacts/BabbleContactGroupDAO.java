@@ -17,7 +17,6 @@ package ke.co.tawi.babblesms.server.persistence.contacts;
 
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
-import ke.co.tawi.babblesms.server.beans.account.Account;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public interface BabbleContactGroupDAO {
 
    
     /**
-     * Method used for creating a new relationship between a contact and a group
+     * Method used for creating a new relationship between a Contact and a Group
      * 
      * @param contact
      * @param group
@@ -60,8 +59,8 @@ public interface BabbleContactGroupDAO {
 	
 	
 	/**
-	 * @param int fromIndex
-	 * @param int toIndex
+	 * @param fromIndex
+	 * @param toIndex
 	  * @param group
 	  * @return a list of {@link Contact}s belonging to the particular {@link Group} of given pageSize
 	  */
@@ -71,7 +70,7 @@ public interface BabbleContactGroupDAO {
    /**
 	 * @param contact
 	 * @param account
-	 * @return a list of {@link Contact}s belonging to the particular {@link Group}
+	 * @return a list of {@link Group}s that this {@link Contact} belongs to. 
 	 */
-	public List<Group> getGroups(Contact contact, Account account);   
+	public List<Group> getGroups(Contact contact);   
 }

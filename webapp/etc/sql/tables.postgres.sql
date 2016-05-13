@@ -143,7 +143,6 @@ ALTER TABLE Email OWNER TO babblesms;
 -- -------------------
 -- Table groups
 ----------------------
-
 -- Since group is a reserved word in postgres we call our table groups instead of group
 CREATE TABLE groups (
     Id SERIAL PRIMARY KEY,
@@ -165,10 +164,11 @@ CREATE TABLE contactgroup (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     contactuuid text references contact(uuid),
-    groupuuid text references groups(uuid),
-    accountuuid text references account(uuid)
+    groupuuid text references groups(uuid)
 );
 ALTER TABLE contactgroup OWNER TO babblesms;
+
+
 
 
 -- ==================

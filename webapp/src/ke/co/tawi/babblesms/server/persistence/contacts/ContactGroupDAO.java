@@ -16,7 +16,6 @@
 package ke.co.tawi.babblesms.server.persistence.contacts;
 
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
-import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Group;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
@@ -24,8 +23,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -42,8 +40,7 @@ import org.apache.log4j.Logger;
  */
 public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO {
 
-    private static ContactGroupDAO contactGroupDAO;
-    
+    private static ContactGroupDAO contactGroupDAO;    
 
     private ContactDAO contactDAO;
     private GroupDAO groupDAO; 
@@ -97,8 +94,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	/**
 	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleContactGroupDAO#putContact(ke.co.tawi.babblesms.server.beans.contact.Contact, ke.co.tawi.babblesms.server.beans.contact.Group)
 	 * 
-	 * @return <code>true if the relationship can be established.</code>
-	 *            <code> false otherwise</code>
+	 * @return <code>true if the relationship can be established.</code>, <code> false otherwise</code>
 	 */
 	@Override
 	public boolean putContact(Contact contact, Group group) {
@@ -107,18 +103,16 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	        try (
 	            Connection conn = dbCredentials.getConnection();
 	        	PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ContactGroup "
-	        			+ "(Uuid, contactuuid, groupuuid, accountuuid) VALUES (?,?,?,?);");
+	        			+ "(Uuid, contactuuid, groupuuid) VALUES (?,?,?);");
 	        	) {
 		        	pstmt.setString(1, UUID.randomUUID().toString());
 		            pstmt.setString(2, contact.getUuid());
 		            pstmt.setString(3, group.getUuid());
-		            pstmt.setString(4, contact.getAccountUuid());
 	
 		            pstmt.execute();
 
 	        } catch (SQLException e) {
-	            logger.error("SQL Exception when trying to put " + contact 
-	            		+ " into " + group);
+	            logger.error("SQL Exception when trying to put " + contact + " into " + group);
 	            logger.error(ExceptionUtils.getStackTrace(e));
 	            success = false;
 	        }
@@ -131,7 +125,6 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	 * 
 	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleContactGroupDAO#removeContact(ke.co.tawi.babblesms.server.beans.contact.Contact, ke.co.tawi.babblesms.server.beans.contact.Group)
 	 * 
-	 * @return true if the relationship is successfully removed and false otherwise
 	 */
 	@Override
 	public boolean removeContact(Contact contact, Group group) {
@@ -139,17 +132,15 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 
         try (
         	Connection conn = dbCredentials.getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement("DELETE  FROM ContactGroup WHERE contactuuid = ? "
-            		+ "AND groupuuid = ?;");)
-            		{
+        	PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ContactGroup WHERE contactuuid = ? "
+            		+ "AND groupuuid = ?;");) {
             pstmt.setString(1, contact.getUuid());
             pstmt.setString(2, group.getUuid());
 
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("SQL Exception when deleting contactGroup with "
-            		+ contact + " and " + group);
+            logger.error("SQL Exception when deleting "	+ contact + " from " + group);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         } 
@@ -166,24 +157,24 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	 * @return a list of contacts associated with the given group object
 	 */
 	@Override
-	public List<Contact> getContacts(Group group) {
-		
-		List<Contact> contactList = new ArrayList<>();
+	public List<Contact> getContacts(Group group) {		
+		List<Contact> contactList = new LinkedList<>();		
 		Contact ct;		
+		
 		try (
 			   Connection conn = dbCredentials.getConnection();
 			   PreparedStatement pstmt = conn.prepareStatement("SELECT contactuuid FROM contactgroup WHERE groupuuid = ?;");
-			)
-		   {
-	           pstmt.setString(1,group.getUuid());
+			) {
+			
+	           pstmt.setString(1, group.getUuid());
+	           
 	           try(ResultSet rset = pstmt.executeQuery();){
 		           
 		           while(rset.next()){
 		        	   ct = contactDAO.getContact(rset.getString("contactuuid"));
 		        	   contactList.add(ct);
 		           }
-	           }
-	           
+	           }	           
 	           
            } catch (SQLException e) {
 	           logger.error("SQL Exception when getting contacts belonging to " + group);
@@ -203,7 +194,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	 */
 	@Override
 	public List<Contact> getContacts(Group group, int fromIndex, int toIndex) {
-		List<Contact> contactList = new ArrayList<>();
+		List<Contact> contactList = new LinkedList<>();
 		Contact ct;
 				
 		try (
@@ -215,6 +206,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	           pstmt.setString(1,group.getUuid());
 	           pstmt.setInt(2, toIndex - fromIndex);
 			   pstmt.setInt(3, fromIndex);
+			   
 	           try(ResultSet rset = pstmt.executeQuery();){
 		           
 		           while(rset.next()){
@@ -232,44 +224,36 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
         return contactList;
 	}
 
-
 	
 	/**
-	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleContactGroupDAO#getGroups(ke.co.tawi.babblesms.server.beans.contact.Contact, ke.co.tawi.babblesms.server.beans.account.Account)
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabbleContactGroupDAO#getGroups(ke.co.tawi.babblesms.server.beans.contact.Contact)
 	 */
 	@Override
-	public List<Group> getGroups(Contact contact , Account account ) {		
-		List<Group> groupList = new ArrayList<>();		
+	public List<Group> getGroups(Contact contact) {		
+		List<Group> groupList = new LinkedList<>();		
+		Group grp;
 		
 		try (
 			Connection conn = dbCredentials.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement("SELECT groupuuid FROM contactgroup "
-					+ "WHERE contactuuid = ? and accountuuid= ?;");
+					+ "WHERE contactuuid = ?;");
            ) {
 	           pstmt.setString(1,contact.getUuid());
-	           pstmt.setString(2,account.getUuid());
 	           
 	           try(ResultSet rset = pstmt.executeQuery();) {
 	           
 		           while(rset.next()){
-		        	   Group g = groupDAO.getGroup(rset.getString("groupuuid"));
-		        	   groupList.add(g);
+		        	   grp = groupDAO.getGroup(rset.getString("groupuuid"));
+		        	   groupList.add(grp);
 		           }
 	           }
-			           
-           }	        	 
-
-	        catch (SQLException e) {
-	           logger.error("SQL Exception when getting groups belonging to "
-	           		+ contact + " and " + account);
+	           
+           } catch (SQLException e) {
+	           logger.error("SQL Exception when getting groups belonging to " + contact );
 	           logger.error(ExceptionUtils.getStackTrace(e));
-	       } 
+	       } 		
 		
-		
-		Collections.sort(groupList, Group.GroupNameComparator );
+		Collections.sort(groupList, Group.GroupNameComparator);
         return groupList;	
 	}
-
-
-	
 }

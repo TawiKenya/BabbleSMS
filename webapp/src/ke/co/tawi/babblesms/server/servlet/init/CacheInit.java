@@ -17,19 +17,19 @@ package ke.co.tawi.babblesms.server.servlet.init;
 
 import ke.co.tawi.babblesms.server.beans.StorableBean;
 import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.geolocation.Country;
 import ke.co.tawi.babblesms.server.beans.maskcode.Mask;
 import ke.co.tawi.babblesms.server.beans.maskcode.Shortcode;
-import ke.co.tawi.babblesms.server.beans.network.Country;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
 
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.persistence.accounts.StatusDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactGroupDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.GroupDAO;
+import ke.co.tawi.babblesms.server.persistence.geolocation.CountryDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.MaskDAO;
 import ke.co.tawi.babblesms.server.persistence.maskcode.ShortcodeDAO;
 import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
-import ke.co.tawi.babblesms.server.persistence.network.CountryDAO;
 import ke.co.tawi.babblesms.server.persistence.network.NetworkDAO;
 import ke.co.tawi.babblesms.server.persistence.status.MessageStatusDAO;
 import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;

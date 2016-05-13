@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package ke.co.tawi.babblesms.server.persistence.network;
+package ke.co.tawi.babblesms.server.persistence.geolocation;
 
-import ke.co.tawi.babblesms.server.beans.network.Country;
+import ke.co.tawi.babblesms.server.beans.geolocation.Country;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
 import java.sql.Connection;
@@ -39,8 +39,11 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
 
     private static CountryDAO networkDAO;
 
-    private final Logger logger;
+    private Logger logger;
 
+    /**
+     * @return a singleton instance of CountryDAO
+     */
     public static CountryDAO getInstance() {
         if (networkDAO == null) {
             networkDAO = new CountryDAO();
@@ -48,6 +51,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         return networkDAO;
     }
 
+    
     /**
      *
      */
@@ -56,6 +60,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         logger = Logger.getLogger(this.getClass());
     }
 
+    
     /**
      * Used for testing purposes only.
      *
@@ -71,49 +76,6 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         logger = Logger.getLogger(this.getClass());
     }
 
-    
-    /**
-     *
-     */
-    @Override
-    public boolean putCountry(Country country) {
-        boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("INSERT INTO Country (Uuid, Name,codefips) VALUES (?,?,?);");
-            pstmt.setString(1, country.getUuid());
-            pstmt.setString(2, country.getName());
-            pstmt.setString(3, country.getCodefips());
-            
-
-            pstmt.execute();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when trying to put network: " + country);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        
-        return success;
-    }
-    
 
     /**
      *
@@ -143,6 +105,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting network with uuid: " + name);
             logger.error(ExceptionUtils.getStackTrace(e));
+            
         } finally {
             if (rset != null) {
                 try {
@@ -193,6 +156,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting network with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
+            
         } finally {
             if (rset != null) {
                 try {
@@ -240,6 +204,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         } catch (SQLException e) {
             logger.error("SQL Exception when getting all networks");
             logger.error(ExceptionUtils.getStackTrace(e));
+            
         } finally {
             if (rset != null) {
                 try {
@@ -263,51 +228,5 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
         
         return list;
     }
-    
-
-    /**
-     * @param uuid
-     * @param country
-     * @return success
-     */
-    @Override
-    public boolean updateCountry(String uuid, String country, String code) {
-        boolean success = true;
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dbCredentials.getConnection();
-            pstmt = conn.prepareStatement("UPDATE Country SET Name=?, codefips=? WHERE Uuid = ?;");
-            pstmt.setString(1, country);
-            pstmt.setString(2, code);
-            pstmt.setString(3, uuid);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when deleting network with uuid " + uuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-            
-        } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        
-        return success;
-    }
-    
 
 }

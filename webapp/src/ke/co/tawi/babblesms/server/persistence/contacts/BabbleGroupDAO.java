@@ -36,14 +36,13 @@ public interface BabbleGroupDAO {
     */
    public Group getGroup(String uuid);
    
- 
-   
    
    /**
+	 * @param account 
 	 * @param group
 	 * @return  a group
 	 */
-	public Group getGroupByName(Account account , String group);
+	public Group getGroupByName(Account account, String group);
       
    
    /**
@@ -72,7 +71,9 @@ public interface BabbleGroupDAO {
 
     
     /**
-     *
+     * Note that the Account owner of the Group as well as its creation date are not 
+     * updated by this method.
+     * 
      * @param uuid
      * @param group
      * @return	<code>true</code> if successfully updated; <code>false</code> for
@@ -89,7 +90,7 @@ public interface BabbleGroupDAO {
      * and the value is the count. 
      * 
      * @param account
-     * @return
+     * @return the mapping of count
      */
     public Map<String,Integer> getGroupCount(Account account);
 }

@@ -40,11 +40,22 @@ public interface BabblePhoneDAO {
    *
    * @param phoneNum
    * @return a list of {@link Phone}s which match the phone number, either 
-   * partially or wholly.
+   * partially or wholly. The result is limited to 30 numbers.
    */
   public List<Phone> getPhones(String phoneNum);
   
   
+  /**
+  *
+  * @param phoneNum
+  * @param contact 
+  * @return a list of {@link Phone}s which match the phone number, either 
+  * partially or wholly. The result is limited to 30 numbers. The phones belong
+  * to this particular Contact.
+  */
+ public List<Phone> getPhones(String phoneNum, Contact contact);
+ 
+ 
   /**
   *
   * @param contact
@@ -63,6 +74,7 @@ public interface BabblePhoneDAO {
 
     
     /**
+     * Note that the Contact that the Phone belongs to does not change with this method.
      *
      * @param uuid
      * @param phone

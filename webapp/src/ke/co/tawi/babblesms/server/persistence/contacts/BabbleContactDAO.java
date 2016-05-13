@@ -65,6 +65,7 @@ public interface BabbleContactDAO {
 
     
     /**
+     * Note that the Account that a Contact belongs to is not updated.
      *
      * @param uuid
      * @param contact

@@ -124,10 +124,13 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
      	   ) {
          	   pstmt.setString(1, account.getUuid());           
          	   pstmt.setString(2, "%" + name + "%");
-         	   try( ResultSet rset = pstmt.executeQuery();){
+         	   
+         	   ResultSet rset = pstmt.executeQuery();
      	       
      	       list = beanProcessor.toBeanList(rset, Contact.class);
-         	   }
+         	   
+     	       rset.close();
+     	       
         } catch (SQLException e) {
             logger.error("SQLException when getting contacts of " + account  +
             		" and name '" + name +  "'");
@@ -150,11 +153,14 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
      		   Connection conn = dbCredentials.getConnection();
      	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Contact WHERE accountuuid = ?;");    		   
      	   ) {
+        	
          	   pstmt.setString(1, account.getUuid());   
-     	       try(ResultSet rset = pstmt.executeQuery();){
+     	       ResultSet rset = pstmt.executeQuery();
      	       
      	       list = beanProcessor.toBeanList(rset, Contact.class);
-     	       }  
+     	       
+     	      rset.close();
+     	       
         } catch (SQLException e) {
             logger.error("SQLException when getting contacts of " + account);
             logger.error(ExceptionUtils.getStackTrace(e));
@@ -205,11 +211,10 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
         try (
       		   Connection conn = dbCredentials.getConnection();
       	       PreparedStatement pstmt = conn.prepareStatement("UPDATE contact SET name=?, "
-      	       		+ "description=?,  statusuuid=? WHERE Uuid=?;");        				   
+      	       		+ "description=?, statusuuid=? WHERE Uuid=?;");        				   
       	   ) {          	   	  
 	            pstmt.setString(1, c.getName());
-	            pstmt.setString(2, c.getDescription());
-	           // pstmt.setString(3, c.getAccountUuid());
+	            pstmt.setString(2, c.getDescription());	           
 	            pstmt.setString(3, c.getStatusUuid());
 	            pstmt.setString(4, c.getUuid()); 
 	            
@@ -217,13 +222,14 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
 	            
          } catch (SQLException e) {
              logger.error("SQLException when trying to update Contact with UUID '" + uuid + 
-            		 "' with "+ c);
+            		 "' with " + c);
              logger.error(ExceptionUtils.getStackTrace(e));
              success = false;
          }
                 
         return success;
 	}
+	
 	
 	/**
 	 * @param account
@@ -247,10 +253,12 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
 			psmt.setInt(2, endIndex - startIndex);
 			psmt.setInt(3, startIndex);
 			
-			try(ResultSet rset = psmt.executeQuery();){
+			ResultSet rset = psmt.executeQuery();
 			
-			 contactList = beanProcessor.toBeanList(rset, Contact.class);
-			}
+			contactList = beanProcessor.toBeanList(rset, Contact.class);
+			
+			rset.close();
+			
 		} catch (SQLException e) {
 			logger.error("SQLException when trying to get a Contact List with an index and offset.");
             logger.error(ExceptionUtils.getStackTrace(e));
@@ -259,35 +267,43 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
 		return contactList;		
 	}
 	
+	
 	/**
 	 * Method to fetch contacts that match the search string
+	 * 
+	 * @param account 
 	 * @param contMatcher
 	 * @return a list of contacts
 	 */
-	public List<Contact> getContactListMatch(Account account,String contMatcher){
+	public List<Contact> getContactListMatch(Account account, String contMatcher){
 		List<Contact> contactList = new ArrayList<Contact>();
-		ResultSet rset = null;
+		
 		BeanProcessor b = new BeanProcessor();
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
-				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM contact WHERE accountuuid = ? AND name ILIKE ? ORDER BY NAME ASC LIMIT ? OFFSET ?;");
+				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM contact WHERE accountuuid=? AND name ILIKE ? "
+						+ "ORDER BY NAME ASC LIMIT ? OFFSET ?;");
 			){
+			
 			psmt.setString(1, account.getUuid());
-			psmt.setString(2,"%" + contMatcher + "%");
+			psmt.setString(2, "%" + contMatcher + "%");
 			psmt.setInt(3, 15);
 			psmt.setInt(4, 0);
-			rset = psmt.executeQuery();
+			
+			ResultSet rset = psmt.executeQuery();
 
 			contactList = b.toBeanList(rset, Contact.class);
+			
+			rset.close();
 		}
+		
 		catch (SQLException e) {
 	           logger.error("SQL Exception when getting contacts from table contact that match the "
 	           		+ " string : " + contMatcher);
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	       }
 		
-		return contactList;
-		
+		return contactList;		
 	}
 }

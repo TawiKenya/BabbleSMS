@@ -1,3 +1,18 @@
+/**
+ * Copyright 2015 Tawi Commercial Services Ltd
+ * 
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ * 
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
 package ke.co.tawi.babblesms.server.persistence.network;
 
 import java.util.List;
@@ -37,9 +52,9 @@ public class TestNetworkDAO {
         assertEquals(nt.getUuid(), NT_UUID);
         assertEquals(nt.getName(), NT_NAME);
         assertEquals(nt.getCountryuuid(), COUNTRYUUID);
-
     }
 
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesnt.server.persistence.items.Network.NetworkDAO#getNetworkByACCOUNT}.
@@ -61,11 +76,10 @@ public class TestNetworkDAO {
         }
     }
 
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesnt.server.persistence.items.Network#PutNetwork(ke.co.tawi.babblesnt.server.beans.Network)}.
-     *
-     *
      *
      */
     @Test
@@ -85,24 +99,23 @@ public class TestNetworkDAO {
         assertEquals(nt.getCountryuuid(), COUNTRYUUID_NEW);
     }
     
+    
     /**
      * Test method for
      * {@link ke.co.tawi.babblesnt.server.persistence.items.Network#UpdateNetwork(ke.co.tawi.babblesms.server.beans.Network)}.
-     *
-     *
      *
      */
     @Test
     public void testUpdateNetwork() {
         storage = new NetworkDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 
-        
+        /*
         assertTrue(storage.updateNetwork(NT_UUID_NEW, NT_NAME_UPDATED));
 
         Network nt = storage.getNetwork(NT_UUID_NEW);
         assertEquals(nt.getUuid(), NT_UUID_NEW);
         assertEquals(nt.getName(), NT_NAME_UPDATED);
-        assertEquals(nt.getCountryuuid(), COUNTRYUUID_NEW);
+        assertEquals(nt.getCountryuuid(), COUNTRYUUID_NEW);*/
     }
 
 }

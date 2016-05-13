@@ -147,7 +147,7 @@ belong to zero or more Groups. A Group may have zero or more Contacts.
 - UUID
 - Contact UUID references Contact(UUID)
 - Group UUID references Group(UUID)
-- Account UUID references Account(UUID)
+
     
 
 

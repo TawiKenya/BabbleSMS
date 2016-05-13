@@ -175,6 +175,7 @@ public class TestContactDAO {
         assertEquals(c.getStatusUuid(), CONTACT_STATUSUUID);
 	}
 	
+	
 	/**
 	 * 
 	 */

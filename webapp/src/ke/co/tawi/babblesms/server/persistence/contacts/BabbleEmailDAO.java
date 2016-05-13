@@ -64,6 +64,7 @@ public interface BabbleEmailDAO {
 
     
     /**
+     * Note that the Contact owner of the email is not changed by this method.
      *
      * @param uuid
      * @param email

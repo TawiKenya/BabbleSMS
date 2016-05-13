@@ -69,7 +69,6 @@ public class TestContactGroupDAO {
     /**
      * method for testing removing a contact from a contact group 
      */
-
     //@Ignore
     @Test
     public void testRemovecontact(){
@@ -122,30 +121,27 @@ public class TestContactGroupDAO {
     	
     }
     
+    
     /**
      * method for testing getting groups given a contact object
      */
-
     //@Ignore
-
     @Test
     public void testGetgroups(){
     	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
     	Contact contact = new Contact();
     	contact.setUuid(CONTACTUUID_NEW);
-    	Account account = new Account();
-    	account.setUuid(ACCUUID_NEW);
-    	List<Group> list = storage.getGroups(contact,account);
+    	    	
+    	List<Group> list = storage.getGroups(contact);
     	
-    	assertEquals(list.size(), 0);
-    	
+    	assertEquals(list.size(), 0);    	
     }
+    
     
     /**
      * method to test creating a new contactgroup association given a group and contact object
      */
-
     //@Ignore
     @Test
     public void putContactgroup(){

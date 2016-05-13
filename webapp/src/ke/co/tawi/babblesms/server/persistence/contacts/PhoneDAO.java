@@ -98,11 +98,13 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 		   
 			psmt.setString(1, uuid);
 			
-			try(ResultSet rset = psmt.executeQuery();) {
-				if(rset.next()){
-					 phone = beanProcessor.toBean(rset, Phone.class);	
-				}
+			ResultSet rset = psmt.executeQuery();
+					
+			if(rset.next()){
+				 phone = beanProcessor.toBean(rset, Phone.class);	
 			}
+			
+			rset.close();
 			
 	   } catch (SQLException e) {
 		   		logger.error("SQLException when getting phone with uuid: " + uuid);
@@ -120,19 +122,20 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	 **/
 	@Override
 	public List<Phone> getPhones(String phoneNum) {
-		List<Phone> phoneList = new ArrayList<>();
-		
+		List<Phone> phoneList = new ArrayList<>();		
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
-				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM phone WHERE phonenumber ILIKE ?;");
+				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM phone WHERE phonenumber ILIKE ? LIMIT 30;");
 		   ){
 			
 			psmt.setString(1, "%" + phoneNum + "%");
 			
-			try(ResultSet rset = psmt.executeQuery();) {
-				phoneList = beanProcessor.toBeanList(rset, Phone.class);
-			}
+			ResultSet rset = psmt.executeQuery();
+			
+			phoneList = beanProcessor.toBeanList(rset, Phone.class);
+			
+			rset.close();
 			
 		} catch (SQLException e) {
 	           logger.error("SQL Exception when getting phones that match the "
@@ -143,6 +146,16 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
         return phoneList;
 	}
    
+	
+	/**
+	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabblePhoneDAO#getPhones(java.lang.String, ke.co.tawi.babblesms.server.beans.contact.Contact)
+	 */
+	@Override
+	public List<Phone> getPhones(String phoneNum, Contact contact) {
+		// TODO Auto-generated method stub
+		return null;
+	}    
+	
    
     /**
      *
@@ -183,8 +196,8 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
     	boolean success = true;
        
         try(
-        Connection conn = dbCredentials.getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("UPDATE phone SET phonenumber = ?, "
+	        Connection conn = dbCredentials.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement("UPDATE phone SET phonenumber = ?, "
         		+ "statusuuid = ?, networkuuid = ? WHERE uuid = ? ;");
            ){
         	pstmt.setString(1, phone.getPhonenumber());
@@ -220,9 +233,9 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 			
 			pstmt.setString(1, contact.getUuid());
 			
-			try(ResultSet rset = pstmt.executeQuery();) {
-				phoneList = beanProcessor.toBeanList(rset, Phone.class);
-			}
+			ResultSet rset = pstmt.executeQuery();
+			phoneList = beanProcessor.toBeanList(rset, Phone.class);
+			rset.close();
 		}
 		
 		 catch (SQLException e) {
@@ -231,6 +244,9 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	       } 		
 		
         return phoneList;	
-	}    
+	}
+
+
+	
 
 }
