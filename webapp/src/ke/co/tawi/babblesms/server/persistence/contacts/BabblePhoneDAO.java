@@ -34,17 +34,7 @@ public interface BabblePhoneDAO {
     * @return a {@link Phone}
     */
    public Phone getPhone(String uuid);
-   
-   
-   /**
-   *
-   * @param phoneNum
-   * @return a list of {@link Phone}s which match the phone number, either 
-   * partially or wholly. The result is limited to 30 numbers.
-   */
-  public List<Phone> getPhones(String phoneNum);
-  
-  
+
   /**
   *
   * @param phoneNum
