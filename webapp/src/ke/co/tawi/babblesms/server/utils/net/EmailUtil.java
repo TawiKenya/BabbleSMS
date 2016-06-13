@@ -21,7 +21,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.DefaultAuthenticator;
 
 import org.apache.commons.validator.routines.EmailValidator;
 

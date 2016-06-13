@@ -50,7 +50,7 @@
 
 
 
-        <%    
+<%    
         Object object;    
     final int PAGESIZE = 15;     
     String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);  
@@ -116,16 +116,16 @@
     String uuid = request.getParameter("uuid"); 
       
        //fetch the all contacts page
-    if(StringUtils.equalsIgnoreCase(uuid, "empty")){    
-    allContact = cUtils.getContacts(account.getUuid());
-     object = account;       
-         }
-         //or fetch the selected group contacts page
-   else{
-    allContact = cUtils.getContactInGroup(uuid);
-    Group group = groupDAO.getGroup(uuid);
-    object = group;                
-         }
+    if(StringUtils.equalsIgnoreCase(uuid, "empty")) {    
+        allContact = cUtils.getContacts(account.getUuid());
+        object = account;      
+ 
+     //or fetch the selected group contacts page
+    } else {
+        allContact = cUtils.getContactInGroup(uuid);
+        Group group = groupDAO.getGroup(uuid);
+        object = group;                
+    }
    
 
     int contactCount;
@@ -136,11 +136,8 @@
         contactPageList = new ArrayList<Contact>();
         contactCount = 0;
 
-    } 
-    
-    else {
-        contactPage = (ContactPage) session.getAttribute("currentIncomingPage");
-       
+    } else {
+        contactPage = (ContactPage) session.getAttribute("currentIncomingPage");       
 
         // Fetching the first contact page
         if (contactPage == null || StringUtils.equalsIgnoreCase(pageParam, "first")) {
@@ -187,11 +184,11 @@
 
         <div id="ContactsAdd">
         <span style="text-align:center;" >Page 
-                        <span class="pgNum" style="color:#317EAC;font-weight:bold;"><%=contactPage.getPageNum() %></span> 
-                        of 
-                        <span class="pgSize" style="color:#317EAC;font-weight:bold;"><%=contactPage.getTotalPage()%></span> 
-                        Page(s)
-                    </span>
+            <span class="pgNum" style="color:#317EAC;font-weight:bold;"><%=contactPage.getPageNum() %></span> 
+            of 
+            <span class="pgSize" style="color:#317EAC;font-weight:bold;"><%=contactPage.getTotalPage()%></span> 
+            Page(s)
+        </span>
 
             <div id="search-head"></div>
            <div id="showtext">
@@ -289,7 +286,8 @@
                     </span>
            </div> 
           </div>
-          <!--affect the popup on contact page-->
+                        
+<!--affect the popup on contact page-->
 <script src="../js/tawi/editcontact.js"></script>
 <!--affect the popup on contact page-->
 <script src="../js/tawi/editcontact_popup.js"></script>

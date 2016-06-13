@@ -1,6 +1,6 @@
 <%
     /**
-    Copyright 2015 Tawi Commercial Services Ltd
+    Copyright 2016 Tawi Commercial Services Ltd
 
     Licensed under the Open Software License, Version 3.0 (the “License”); you may 
     not use this file except in compliance with the License. You may obtain a copy 
@@ -85,10 +85,9 @@
     Network network;    
     
     List<Network> networkList = new ArrayList<Network>();   
-    List<Group> contactsgrpList = new ArrayList<Group>(); 
-     
-    contactsgrpList = groupDAO.getGroups(account); 
 
+    List<Group> contactsgrpList = groupDAO.getGroups(account); 
+     
     List keys;
      
     keys = networksCache.getKeys();
@@ -98,9 +97,6 @@
         networkHash.put(network.getUuid(), network.getName());
         networkList.add(network);
     }
-	
-    
-       
     
 %> 
 <jsp:include page="contactheader.jsp" />
@@ -108,17 +104,12 @@
 <!--manages the table on contacts page-->
 <script src="../js/tawi/contactgrpselected.js"></script>
 
-<!--<link rel="stylesheet" type="text/css" href="../css/grouptable.css">-->
-
-
 <div>
     <ul class="breadcrumb">
         <li>
             <a href="index.jsp">Home</a> <span class="divider">/</span>
         </li>
-        <li>
-          All contacts
-        </li>
+        <li>All Contacts</li>
     </ul>
 </div>
 
@@ -132,14 +123,14 @@
 
         <a class="btn" href="#"  onclick="del()" title="Export contacts" type="submit" data-rel="tooltip">Export</a> 
      
-  <button class="btn btn-default dropdown-toggle dropdown" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-more
-  <span class="caret"></span>    
-  </button>
-<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Send email</a></li>
-     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sortby</a></li>  
-</ul>     
+        <button class="btn btn-default dropdown-toggle dropdown" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+            more <span class="caret"></span>    
+        </button>
+        
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Send email</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sortby</a></li>  
+        </ul>     
 
          <%                                
                 String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
@@ -195,10 +186,10 @@ more
                 } 
 
 
-    String success = (String)session.getAttribute("success");
-    String fail = (String)session.getAttribute("fail");
+                String success = (String)session.getAttribute("success");
+                String fail = (String)session.getAttribute("fail");
 
-    if (StringUtils.isNotEmpty(fail)) {
+                if (StringUtils.isNotEmpty(fail)) {
                     out.println("<p class='error'>");
                     out.println(fail);
                     out.println("</p>");
@@ -213,143 +204,139 @@ more
                 }
           %>
                   
-          <h4>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search by Name:&nbsp;<input type="text" name="search" onkeyup="showuser(this.value)"  placeholder = "type then click enter to search" autofocus="autofocus"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <h4>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search by Name:&nbsp;<input type="text" name="search" onkeyup="showuser(this.value)"  placeholder = "type then click enter to search" autofocus="autofocus"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+            Search by Group:&nbsp;             
+              <select class="groupselect" onclick="Chromecheck()">
+              <option class="grp" value="empty" name="All Contacts" >All Contacts</option>
+                   <% if (contactsgrpList != null) {                        
+                      out.println("<td>");                   
+                      for(Group gr : contactsgrpList) { %>
+                    <option class="grp" value="<%=gr.getUuid()%>" name="<%=gr.getName()%>" ><%=gr.getName()%></option>          
+                            <%}                            
+                   } else {%> 
+              <option >No groups available</option>
+                   <% } %>                          
 
-          Search by Group:&nbsp;             
-            <select class="groupselect" onclick="Chromecheck()">
-             <option class="grp" value="empty" name="All Contacts" >All Contacts</option>
-                 <% if (contactsgrpList != null) {                        
-                    out.println("<td>");                   
-                    for(Group gr : contactsgrpList) { %>
-                  <option class="grp" value="<%=gr.getUuid()%>" name="<%=gr.getName()%>" ><%=gr.getName()%></option>          
-                          <%}                            
-                 } else {%> 
-                 <option >No groups available</option>
-                 <% } %>                          
-                           
-            </select>
+              </select>
            
-          </h4>
-           <div id="header-display"></div>
+        </h4>
+                   
+        <div id="header-display"></div>
                 
 
             <!--the new page is appended here-->
               
-           </div>    
+        </div> <!-- end '<div class="box-content">' -->    
 
-            
-
-
-        </div>
-    </div><!--/span-->
+    </div> <!-- end '<div class="box span12">' -->
+</div><!-- end '<div class="row-fluid sortable">' -->
 
 
 
-</div><!--/row-->
 
 
 <div style ="margin-left:30%; width:50%;">
-                   <span id="prev" name="<%=account.getUuid()%>" > 
-                <span class="icon-fast-backward"></span>
-                   &nbsp;<a>Prev</a>&nbsp;&nbsp;&nbsp;
-                   </span>
-                  &nbsp;&nbsp;&nbsp;
+    <span id="prev" name="<%= account.getUuid() %>" > 
+        <span class="icon-fast-backward"></span>
+        &nbsp;<a>Prev</a>&nbsp;&nbsp;&nbsp;
+    </span>
+    &nbsp;&nbsp;&nbsp;
 
-                   <span id="next" > 
-                   <a>Next</a>&nbsp;
-                <span class="icon-fast-forward"></span>
-                   </span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <input id="first"  value="First" type="submit" style="color:#fff; background-color:#555;">
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <input id="last"  value="Last" type="submit" style="color:#fff; background-color:#555;">                      
+    <span id="next" > 
+        <a>Next</a>&nbsp;
+        <span class="icon-fast-forward"></span>
+    </span>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input id="first"  value="First" type="submit" style="color:#fff; background-color:#555;">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input id="last"  value="Last" type="submit" style="color:#fff; background-color:#555;">                   
+</div>
 
-                   </div>
-
-
-        
 
 
 <!-- Contact Form  for the pop up starts-->
 <div id="contactdiv"style="display:none;">
-<form class="form" action = "editcontact" method = "POST" id="contact" >
-<!--onsubmit="return formValidator()"-->
-<b> Edit Contact Details</b>
-<p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:20px;" id ="close">x</p>
+    <form class="form" action = "editcontact" method = "POST" id="contact" >
+        <!--onsubmit="return formValidator()"-->
+        <b> Edit Contact Details</b>
+        <p style ="margin-top: 1px;margin-right: 2px;position:absolute;top:1%;right:1%; color:red; font-size:20px;" id ="close">x</p>
 
 
-<div class="control-group">
-         <label class="control-label" for="name">Name</label>
-             <div class="controls">
-         <input class="input-xlarge focused"  id="paragraph_1" type="text" name="name" required>
-             </div>
-</div>
+        <div class="control-group">
+            <label class="control-label" for="name">Name</label>
+            <div class="controls">
+               <input class="input-xlarge focused"  id="paragraph_1" type="text" name="name" required>
+            </div>
+        </div>
 
-<div class="control-group" id="phone">
-        <label class="control-label" for="phone">Phone Number</label>
-        <div class="controls" id="addphones1">
-        <input class="input-xlarge focused"  id="phone2"  name ="phone1[]" type="text" onkeypress='return validateQty(event);' required>
-        <button id='addphns'>+</button>
-        <select name="network[]" class="network" id="addphones">
+        <div class="control-group" id="phone">
+                <label class="control-label" for="phone">Phone Number</label>
+                <div class="controls" id="addphones1">
+                    <input class="input-xlarge focused"  id="phone2"  name ="phone1[]" type="text" onkeypress='return validateQty(event);' required>
+                    <button id='addphns'>+</button>
+                    
+                    <select name="network[]" class="network" id="addphones">
 
-                                <%
-                                    int count2 = 1;
-                                    if (networkList != null) {
-                                        for (Network netwk : networkList) {
-                                %>
-                                    <option value="<%= netwk.getUuid()%>"><%= netwk.getName()%></option>
-                                <%
-                                            count2++;
-                                        }
-                                    }
-                                %>
-          </select>
-          </div>
-</div>
-<div class="control-group" id="mail">
-<label class="control-label" for="email">Email</label>
-<div class="controls" id = "addemails1">
-<input class="input-xlarge focused"id="email" name="email[]" type="text" value="" >
-<button id="addemail">+</button>
-</div>
-</div>
+                        <%
+                            int count2 = 1;
+                            if (networkList != null) {
+                                for (Network netwk : networkList) {
+                        %>
+                            <option value="<%= netwk.getUuid()%>"><%= netwk.getName()%></option>
+                        <%
+                                    count2++;
+                                }
+                            }
+                        %>
+                      </select>
+                      
+                  </div>
+        </div>
+                      
+        <div class="control-group" id="mail">
+            <label class="control-label" for="email">Email</label>
+            <div class="controls" id = "addemails1">
+                <input class="input-xlarge focused"id="email" name="email[]" type="text" value="" >
+                <button id="addemail">+</button>
+            </div>
+        </div>
 
 
-<div class="control-group">
-<label class="control-label">Description</label>
-<div class="controls">
-<textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" ></textarea>
-</div>  
-</div>
+        <div class="control-group">
+            <label class="control-label">Description</label>
+            <div class="controls">
+                <textarea rows="2" cols="9" style="width:50%;" class="textarea" id = "textarea" name="description" ></textarea>
+            </div>  
+        </div>
 
-<!-- Group table here-->
-<div class="table-save">
-<div id="scrolledit">
-    <table id="scroll" class="table table-striped table-bordered">
-    <thead class="head-insert">
-        <tr>
-            <th> Choose A Group</th>
-        </tr>
-    </thead>
-    <!--table body is inserted here-->
-</table>
-</div>
-<!-- Group table ends here-->
+        <!-- Group table here-->
+        <div class="table-save">
+            <div id="scrolledit">
+                <table id="scroll" class="table table-striped table-bordered">
+                <thead class="head-insert">
+                    <tr>
+                        <th>Choose A Group</th>
+                    </tr>
+                </thead>
+                <!--table body is inserted here-->
+            </table>
+            </div>
+            <!-- Group table ends here-->
 
-<input type="hidden" id="uuid" name = "uuid" class="edit_area" />
-<input type="hidden" name="statusuuid" value="<%=Status.ACTIVE%>">
-<br/><br/>
-<div id="savecancelButtons2">
-<button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-<button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
- </div>
-</div>
+            <input type="hidden" id="uuid" name = "uuid" class="edit_area" />
+            <input type="hidden" name="statusuuid" value="<%=Status.ACTIVE%>" />
+            <br/><br/>
+            <div id="savecancelButtons2">
+                <button type="submit" id="save" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                <button type="" id="cancel1" class="btn btn-primary" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            </div>
+        </div>
 
-<br/>
+        <br/>
 
-</form>
+    </form>
 </div>
 
 <!-- Contact Form  for the pop up ends-->

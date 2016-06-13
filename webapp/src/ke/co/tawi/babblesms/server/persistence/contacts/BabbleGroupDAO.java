@@ -55,7 +55,6 @@ public interface BabbleGroupDAO {
      
    /**
    *
-   * @param account
    * @return a list of all {@link Group}s
    */
    public List<Group> getAllGroups();
