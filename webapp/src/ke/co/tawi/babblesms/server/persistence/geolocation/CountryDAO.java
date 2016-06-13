@@ -81,6 +81,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
      *
      * @param name
      * @return network
+     * Returns 
      *
      */
     @Override
@@ -106,26 +107,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
             logger.error("SQL Exception when getting network with uuid: " + name);
             logger.error(ExceptionUtils.getStackTrace(e));
             
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         
         return network;
     }
@@ -157,26 +139,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
             logger.error("SQL Exception when getting network with uuid: " + uuid);
             logger.error(ExceptionUtils.getStackTrace(e));
             
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         
         return network;
     }
@@ -205,26 +168,7 @@ public class CountryDAO extends GenericDAO implements BabbleCountryDAO {
             logger.error("SQL Exception when getting all networks");
             logger.error(ExceptionUtils.getStackTrace(e));
             
-        } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+        } 
         
         return list;
     }

@@ -23,6 +23,7 @@ import ke.co.tawi.babblesms.server.persistence.contacts.ContactDAO;
 
 import java.util.List;
 
+import org.apache.commons.dbutils.BeanProcessor;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -74,7 +75,7 @@ public class TestPhoneDAO {
     /**
      * 
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testGetPhone() {
     	storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -90,7 +91,7 @@ public class TestPhoneDAO {
  
     /**
      * 
-     */
+     
     @Ignore
     @Test
     public void  testGetPhones(){
@@ -175,5 +176,26 @@ public class TestPhoneDAO {
     	assertEquals(p.getStatusuuid() , STATUSUUID_NEW );
     	assertEquals(p.getNetworkuuid() , NETWORK_UUID_NEW );		
 	}	
+	
+	@Test
+	public void testPhoneDAO3(){
+		
+		Contact contact=new Contact();
+	
+		contact.setUuid(CONTACTUUID);
+		storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
+		
+		List<Phone>phoneList =storage.getPhones(PHONENUM, contact);
+		
+		System.out.println(phoneList.toString());
+		
+		assertTrue(phoneList.size()>0); 
+		
+		
+		 
+		
+		
+		
+	}
 
 }
