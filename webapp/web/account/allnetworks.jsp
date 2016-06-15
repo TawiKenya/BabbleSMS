@@ -213,7 +213,7 @@
                  for (Contact contact : contactPageList) {
                                     
                     emailList = emailDAO.getEmails(contact);
-                    contactGroupList = cgDAO.getGroups(contact, account);
+                    contactGroupList = cgDAO.getGroups(contact);
                     phoneList = phoneDAO.getPhones(contact);                  
             %>
           

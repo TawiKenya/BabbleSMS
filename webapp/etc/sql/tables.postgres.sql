@@ -164,7 +164,8 @@ CREATE TABLE contactgroup (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     contactuuid text references contact(uuid),
-    groupuuid text references groups(uuid)
+    groupuuid text references groups(uuid),
+    accountuuid text references account(uuid)
 );
 ALTER TABLE contactgroup OWNER TO babblesms;
 

@@ -77,11 +77,11 @@ $(document).ready(function(){
 });
 
 
-/*function executevent(uuid,count){ 
+function executevent(uuid,count){ 
     var str= "allnetworks.jsp?uuid="+uuid+"&first="+count;
     //alert(str);
     sendRequest1(str);		
-}*/
+}
 
 //make ajax call to various files
 function sendRequest1(str){         

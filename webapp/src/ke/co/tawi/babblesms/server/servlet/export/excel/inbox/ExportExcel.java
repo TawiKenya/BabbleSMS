@@ -100,6 +100,7 @@ public class ExportExcel extends HttpServlet {
         
          phnDAO = PhoneDAO.getInstance();
          ctDAO = ContactDAO.getInstance();
+         
 
         CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
@@ -151,7 +152,7 @@ public class ExportExcel extends HttpServlet {
         String sessionEmail = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
         Element element = accountsCache.get(sessionEmail);
         account = (Account) element.getObjectValue();
-
+        
         String fileName = new StringBuffer(account.getName()).append(" ")
                 .append(StringUtils.trimToEmpty(account.getUsername()))
                 .append(" ")
@@ -200,7 +201,7 @@ public class ExportExcel extends HttpServlet {
         int i=1;
         //create other rows
           for(IncomingLog log:InLog){ 
-        	  phoneList=phnDAO.getPhones(log.getOrigin());
+        	  phoneList=phnDAO.getPhones(log.getOrigin() );
         	          	  
         	  XSSFRow r = s.createRow(i);
         	  //row number

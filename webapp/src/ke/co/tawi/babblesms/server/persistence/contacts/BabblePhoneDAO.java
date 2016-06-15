@@ -43,7 +43,7 @@ public interface BabblePhoneDAO {
   * partially or wholly. The result is limited to 30 numbers. The phones belong
   * to this particular Contact.
   */
- public List<Phone> getPhones(String phoneNum, Contact contact);
+ public List<Phone> getPhones(String phoneNum);
  
  
   /**

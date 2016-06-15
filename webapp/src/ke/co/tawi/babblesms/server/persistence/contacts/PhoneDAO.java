@@ -117,17 +117,16 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 	 * @see ke.co.tawi.babblesms.server.persistence.contacts.BabblePhoneDAO#getPhones(java.lang.String, ke.co.tawi.babblesms.server.beans.contact.Contact)
 	 */
 	@Override
-	public List<Phone> getPhones(String phoneNum, Contact contact) {
+	public List<Phone> getPhones(String phoneNum) {
 		
 		List<Phone> phoneList = new ArrayList<>();		
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
-				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM phone WHERE phonenumber ILIKE ? AND contactuuid=? LIMIT 30;");
+				PreparedStatement psmt = conn.prepareStatement("SELECT * FROM phone WHERE phonenumber ILIKE ? LIMIT 30;");
 		   ){
 			
 			psmt.setString(1, "%" + phoneNum + "%");
-			psmt.setString(2, contact.getUuid());
 			
 			ResultSet rset = psmt.executeQuery();
 			
