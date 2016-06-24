@@ -216,7 +216,7 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
 		
 		try(
 				Connection conn = dbCredentials.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM phone WHERE contactuuid = ?;");
+				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM phone WHERE contactuuid = ? AND statusuuid='396F2C7F-961C-5C12-3ABF-867E7FD029E6';");
 				){
 			
 			pstmt.setString(1, contact.getUuid());

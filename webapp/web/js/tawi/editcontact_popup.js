@@ -115,11 +115,11 @@ $(document).ready(function() {
         	 	$clone.find('#phone2').val(text); 
         	 	$clone.find('#phone2').attr('title',text2);
                 $clone.append("<button style='color:red;' onclick='event.preventDefault(); $(this).parent().hide();'>x</button>");      
-        	 	$parent.append($clone);                
+        	 	//$parent.append($clone);                
         	 	$parent.find('#addphns').remove();
         	 	lists.length=lists.length-1;
         	 }        	 
-        	 $('#phone').append($parent);
+        	 //$('#phone').append($parent);
         	}   	
         
 
@@ -145,11 +145,11 @@ $(document).ready(function() {
         	 	$clone = $item.clone();
         	 	$clone.find('#email').val(text);
                 $clone.append("<button style='color:red;' onclick='event.preventDefault(); $(this).parent().hide();'>x</button>");
-        	 	$parent.append($clone);                
+        	 	//$parent.append($clone);                
         	 	$parent.find('#addemail').remove();
         	 	lists.length=lists.length-1;
         	  }        	  
-        	  $item.append($parent);
+        	 // $item.append($parent);
         	}      	
     
 
@@ -170,7 +170,7 @@ $(document).ready(function() {
 	         checkemails(email);
 	          $("#uuid").val(uuid);
 	          checkgroups(group);
-	         //$("#group").val(group);
+	         $("#group").val(group);
 	         $("#textarea").val(description);
 	         $(".tblTest").hide();
              $("#contactdiv").css("display", "block"); 

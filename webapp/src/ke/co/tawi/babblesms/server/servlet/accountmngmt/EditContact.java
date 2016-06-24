@@ -32,11 +32,6 @@ import ke.co.tawi.babblesms.server.beans.contact.Group;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -84,8 +79,8 @@ public class EditContact extends HttpServlet {
 		CacheManager mgr = CacheManager.getInstance();
 		accountCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
 		Status state = new Status();
-		ACTIVE_STATUS=state.ACTIVE;
-		SUSPENDED_STATUS=state.SUSPENDED;
+		ACTIVE_STATUS=Status.ACTIVE;
+		SUSPENDED_STATUS=Status.SUSPENDED;
 	}
 
 	
@@ -117,6 +112,11 @@ public class EditContact extends HttpServlet {
 		String [] groupArray =request.getParameterValues("groupselected[]");
 		String cuuid = request.getParameter("uuid").trim();
 		String [] phonenumArray = request.getParameterValues("phone1[]"); 
+		
+		for(int i=0; i<phonenumArray.length; i++){
+			System.out.println("The phone numbers are "+phonenumArray[i]);
+		}
+		
 		String [] emailArray = request.getParameterValues("email[]");
 		String[] networkArray = request.getParameterValues("network[]");
 		
@@ -182,25 +182,27 @@ public class EditContact extends HttpServlet {
 	    	boolean save=true;
 	    	try{
 	    	PhoneDAO phoneDAO=PhoneDAO.getInstance();
+	    	
 			List<Phone> plist = phoneDAO.getPhones(contact);
 			
 			phMap = new HashMap<>();
+			
 			for(Phone ph:plist){
 				ph.setStatusuuid(SUSPENDED_STATUS);
-				phMap.put(ph.getPhonenumber(), ph);				
-			   }  
+				phMap.put(ph.getPhonenumber(), ph);	
+				phoneDAO.updatePhone(ph.getUuid(), ph);
+			   } 
+			
+			for(int i=0; i<phonenumArray.length; i++){
+				System.out.println("This are the numbers in the array set to suspended "+phonenumArray[i]);
+			}
+			
+			
 			int i=0;
 			//Avoid the Null exception Error
 			try{
 			for(String phoneNum: phonenumArray){
-				if(phMap.containsKey(phoneNum.trim())){
-					Phone phone=phMap.get(phoneNum.trim());
-					phone.setStatusuuid(ACTIVE_STATUS);
-					phone.setNetworkuuid(networkArray[i].trim());
-					phoneDAO.updatePhone(phone.getUuid(), phone);					
-					i++;
-				}
-				else{
+				
 					Phone newPhone =new Phone();					
 					newPhone.setPhonenumber(phoneNum.trim());
 					newPhone.setContactUuid(cuuid);
@@ -208,7 +210,7 @@ public class EditContact extends HttpServlet {
 					newPhone.setNetworkuuid(networkArray[i].trim());
 					phoneDAO.putPhone(newPhone);					
 					i++;
-				}
+				
 			}
 			}catch(Exception e){}
 	    	}catch(Exception e){	    		
