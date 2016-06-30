@@ -76,7 +76,7 @@ public class EditTemplate extends HttpServlet {
 		String templateuuid = request.getParameter("templateuuid");
 		String deleteTemplate= request.getParameter("delete");
 		
-		System.out.println("Headed to editing the message template");
+		
 		
 		if(title.equals("")){
 			session.setAttribute(SessionConstants.ADD_ERROR, "please provide template title");
@@ -84,35 +84,35 @@ public class EditTemplate extends HttpServlet {
 		
 		else if(!title.isEmpty()) {
 			
-			System.out.println("The title is not empty");
+			
 			
 			MessageTemplate template = new MessageTemplate();
 			template.setUuid(templateuuid);
 			template.setTitle(title);;
 			template.setContents(contents);
 			
-			System.out.println("This is the template "+template.toString());
+			
 			
 			MessageTemplateDAO templateDAO = MessageTemplateDAO.getInstance();
 			
-			System.out.println("TemplateDAO instance has been created ");
+		
 			
 			if(templateDAO.update(template,templateuuid)==true){
 				
-				System.out.println("The update has been submitted successfully");
+				
 				session.setAttribute(SessionConstants.UPDATE_SUCCESS, success);
 				
 				response.sendRedirect("messagetemplate.jsp");
 			}
 			else{
-				System.out.println("The update was not successful");
+				
 				session.setAttribute(SessionConstants.ADD_ERROR, failure);
 				response.sendRedirect("messagetemplate.jsp");
 			}
 			
 		}
 		
-		System.out.println("This is the delete variable "+deleteTemplate);
+		
 		
 		if(deleteTemplate.equals("Delete")){
 			System.out.println("Deleting the message now!!!");
