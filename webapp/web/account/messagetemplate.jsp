@@ -193,7 +193,7 @@
 
 </div><!--/row-->
 <div id="contactdiv" style="display:none;">
-<form class="form" onsubmit="return formValidator()" action = "EditTemplate" method = "POST" id="contact" >
+<form class="form"  action = "EditTemplate" method = "POST" id="contact" >
 
 <b>Template's Details</b>
 <label>Title: <span></span></label>
@@ -205,8 +205,7 @@
 <br>
 <input type="submit"  value="Save" />
 <input type="submit" id="cancel" value="Cancel"/>
-
-
+<input type="submit" name="delete" id="deleteTemplate" value="Delete">
 <br/>
 
 </form>

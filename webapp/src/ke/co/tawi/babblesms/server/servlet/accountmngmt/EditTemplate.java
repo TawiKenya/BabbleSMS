@@ -43,6 +43,7 @@ public class EditTemplate extends HttpServlet {
 	
 	private final String success = "Your message template has been updated successfully";
 	private final String failure ="failed to update your message template.Try again";
+	private final String delete ="Your message template has been deleted successfully";
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	
@@ -73,28 +74,60 @@ public class EditTemplate extends HttpServlet {
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
 		String templateuuid = request.getParameter("templateuuid");
+		String deleteTemplate= request.getParameter("delete");
+		
+		System.out.println("Headed to editing the message template");
 		
 		if(title.equals("")){
 			session.setAttribute(SessionConstants.ADD_ERROR, "please provide template title");
 		}
-
-		else{
+		
+		else if(!title.isEmpty()) {
+			
+			System.out.println("The title is not empty");
+			
 			MessageTemplate template = new MessageTemplate();
 			template.setUuid(templateuuid);
 			template.setTitle(title);;
 			template.setContents(contents);
 			
+			System.out.println("This is the template "+template.toString());
+			
 			MessageTemplateDAO templateDAO = MessageTemplateDAO.getInstance();
-			if(templateDAO.update(template,templateuuid)){
+			
+			System.out.println("TemplateDAO instance has been created ");
+			
+			if(templateDAO.update(template,templateuuid)==true){
+				
+				System.out.println("The update has been submitted successfully");
 				session.setAttribute(SessionConstants.UPDATE_SUCCESS, success);
+				
+				response.sendRedirect("messagetemplate.jsp");
 			}
 			else{
+				System.out.println("The update was not successful");
 				session.setAttribute(SessionConstants.ADD_ERROR, failure);
+				response.sendRedirect("messagetemplate.jsp");
 			}
 			
 		}
-	
-		response.sendRedirect("messagetemplate.jsp");
+		
+		System.out.println("This is the delete variable "+deleteTemplate);
+		
+		if(deleteTemplate.equals("Delete")){
+			System.out.println("Deleting the message now!!!");
+			MessageTemplate template = new MessageTemplate();
+			template.setUuid(templateuuid);
+			template.setTitle(title);;
+			template.setContents(contents);
+			MessageTemplateDAO templateDAO = MessageTemplateDAO.getInstance();
+			templateDAO.delete(template);
+			System.out.println("Deleting the message now!!!");
+			session.setAttribute(SessionConstants.UPDATE_SUCCESS, success);	
+			
+			response.sendRedirect("messagetemplate.jsp");
+		}
+		
 	}
 
 
