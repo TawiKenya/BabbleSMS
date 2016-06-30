@@ -69,7 +69,7 @@ public class TestContactGroupDAO {
     /**
      * method for testing removing a contact from a contact group 
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testRemovecontact(){
     	 storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -88,7 +88,7 @@ public class TestContactGroupDAO {
     /**
      * method for testing getting  contacts given a group object
      */    
-    //@Ignore
+    @Ignore
     @Test
     public void testGetcontacts(){
     	 storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -107,7 +107,7 @@ public class TestContactGroupDAO {
     /**
      * method for testing getting a given limit of contacts
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testGetContactsbyLimit(){
     	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
@@ -131,9 +131,11 @@ public class TestContactGroupDAO {
     	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
     	
     	Contact contact = new Contact();
-    	contact.setUuid(CONTACTUUID_NEW);
+    	contact.setUuid("290a302f-7de0-4126-9a05-ab9b94a5c8a0");
+    	contact.setAccountUuid("650195B6-9357-C147-C24E-7FBDAEEC74ED");
     	    	
     	List<Group> list = storage.getGroups(contact);
+    	System.out.println(list.toString());
     	
     	assertEquals(list.size(), 0);    	
     }
@@ -142,7 +144,7 @@ public class TestContactGroupDAO {
     /**
      * method to test creating a new contactgroup association given a group and contact object
      */
-    //@Ignore
+    @Ignore
     @Test
     public void putContactgroup(){
     	storage = new ContactGroupDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);

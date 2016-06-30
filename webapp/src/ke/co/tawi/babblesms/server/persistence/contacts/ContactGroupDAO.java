@@ -236,9 +236,10 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 		try (
 			Connection conn = dbCredentials.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement("SELECT groupuuid FROM contactgroup "
-					+ "WHERE contactuuid = ?;");
+					+ "WHERE contactuuid = ? AND accountuuid=?;");
            ) {
 	           pstmt.setString(1,contact.getUuid());
+	           pstmt.setString(2, contact.getAccountUuid());
 	           
 	           try(ResultSet rset = pstmt.executeQuery();) {
 	           
@@ -249,6 +250,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	           }
 	           
            } catch (SQLException e) {
+        	 
 	           logger.error("SQL Exception when getting groups belonging to " + contact );
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	       } 		
