@@ -109,13 +109,10 @@ public class EditContact extends HttpServlet {
 		String contactname = request.getParameter("name").trim();
 		String contactstatusuuid = request.getParameter("statusuuid").trim();
 		String description =request.getParameter("description").trim();
+		
 		String [] groupArray =request.getParameterValues("groupselected[]");
 		String cuuid = request.getParameter("uuid").trim();
 		String [] phonenumArray = request.getParameterValues("phone1[]"); 
-		
-		for(int i=0; i<phonenumArray.length; i++){
-			System.out.println("The phone numbers are "+phonenumArray[i]);
-		}
 		
 		String [] emailArray = request.getParameterValues("email[]");
 		String[] networkArray = request.getParameterValues("network[]");
@@ -193,9 +190,6 @@ public class EditContact extends HttpServlet {
 				phoneDAO.updatePhone(ph.getUuid(), ph);
 			   } 
 			
-			for(int i=0; i<phonenumArray.length; i++){
-				System.out.println("This are the numbers in the array set to suspended "+phonenumArray[i]);
-			}
 			
 			
 			int i=0;
@@ -288,6 +282,7 @@ public class EditContact extends HttpServlet {
 	          for (String groupuuid : groupArray) {		    
 	             Group group  = new Group();
 	             group.setUuid(groupuuid.trim());
+	             group.setAccountsuuid(contact.getAccountUuid());	             
 	             cgDAO.putContact(contact, group);
 		                 }
                      }

@@ -103,11 +103,13 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
 	        try (
 	            Connection conn = dbCredentials.getConnection();
 	        	PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ContactGroup "
-	        			+ "(Uuid, contactuuid, groupuuid) VALUES (?,?,?);");
+	        			+ "(Uuid, contactuuid, groupuuid, accountuuid) VALUES (?,?,?,?);");
 	        	) {
 		        	pstmt.setString(1, UUID.randomUUID().toString());
 		            pstmt.setString(2, contact.getUuid());
 		            pstmt.setString(3, group.getUuid());
+		            pstmt.setString(4, contact.getAccountUuid());
+
 	
 		            pstmt.execute();
 
