@@ -164,8 +164,8 @@
 
     /** Declare and initialize variables to be used for crediting**/
 
-    int credit_Balance = 0;
-    int credit_Consumed = 0;
+    int credit_Balance=0 ;
+    int credit_Consumed=0 ;
 
 %>
 <jsp:include page="messageheader.jsp" />
@@ -229,12 +229,16 @@
             <option value = "Contact">Contact(s)</option>
             </select></div>
                         <div id="credittable">
+                        <i>(Select Group/Contacts and Source to view balance)</i>
                                 <table border="1">
                                     <tr width="5%">
                                         <th>Network</th>
                                         <th>Credit Consumed</th>
                                         <th>Credit Balance</th>
                                     </tr>
+                                    <%
+                                    if(credit_Consumed>0){
+                                    %>
                                    <tr width="5%">
                                        <td id="Safaricom"><font color="green">Safaricom</font></td>
                                         <td id="safcreditconsumed"><%=credit_Consumed%></td>
@@ -255,6 +259,28 @@
                                         <td id="yucreditconsumed"><%=credit_Consumed%></td>
                                         <td id="yucreditbalance"><%=credit_Balance%></td>
                                     </tr>
+                                    <%}else{ %>
+                                     <tr width="5%">
+                                       <td id="Safaricom"><font color="green">Safaricom</font></td>
+                                        <td id="safcreditconsumed"></td>
+                                        <td id="safcreditbalance"></td>
+                                    </tr>
+                                   <tr width="5%">
+                                        <td id="Airtel">Airtel</td>
+                                        <td id="airtelcreditconsumed"></td>
+                                        <td id="airtelcreditbalance"></td>
+                                    </tr>
+                                   <tr width="5%">
+                                        <td id="Orange">Orange</td>
+                                        <td id="orangecreditconsumed"></td>
+                                        <td id="orangecreditbalance"></td>
+                                    </tr>
+                                     <tr width="5%">
+                                        <td id="Yu">Yu</td>
+                                        <td id="yucreditconsumed"></td>
+                                        <td id="yucreditbalance"></td>
+                                    </tr>
+                                    <%} %>
                                 </table>
                      </div>
             
@@ -350,6 +376,7 @@
                         <div class="controls">
                                                             
                                 <select name="source" id="source" required="true">
+                                <option class="message_source">Select Source</option>
                                     <%
                                         //for mask
                                         int count = 1;
@@ -357,8 +384,6 @@
                                             for (Mask code : masklist) {
 
                                     %>
-
-
                                         <option class="message_source" id="<%= code.getMaskname()%>" value="<%= code.getUuid() %>" label="<%= networkHash.get(code.getNetworkuuid()) %>"  onclick="networkselect(this)">
 
                                             <%= code.getMaskname() + " (" + networkHash.get(code.getNetworkuuid()) + ")" %>
