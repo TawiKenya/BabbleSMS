@@ -210,6 +210,8 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
 
         return list;
     }
+    
+    
 
 }
 

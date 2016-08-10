@@ -261,9 +261,28 @@
 <li><a id ="btn-dangers1" href="sendsms.jsp" title="write message" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet">Compose</span></a></li>
 <li><a class="ajax-link"id ="btn-dangers1" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet">Quick Reports</span></a></li>
 <li><a class="ajax-link" id ="btn-dangers1"href="inbox.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
-<li><a class="ajax-link"id ="btn-dangers1" href="sent.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent</span></a></li>
+
+<!-- <option><a class="ajax-link"id ="btn-dangers1" href="sentReceived.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent And Received</span></a></option>
+ -->
 <li><a class="ajax-link" id ="btn-dangers1" href="sentgroup.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Sent Group</span></a></li>
 <li><a class="ajax-link"id ="btn-dangers1" href="messagetemplate.jsp"><i class="icon-edit"></i><span class="hidden-tablet">Message Template</span></a></li>
+<li>
+&nbsp;&nbsp;&nbsp;
+<i class="icon-edit"></i>
+<span class="hidden-tablet">
+
+<select class="ajax-link" id="btn-dangers1"onchange="location = this.value;" style="width:140px; color: #369bd7;font-weight: 590; font-family: sans-serif; ">
+<option value="sent.jsp">Sent Messages</option>
+<option value="sent.jsp">All Sent</option>
+<option value="sentStatus.jsp">Sent</option>
+<option value="sentReceived.jsp">Sent And Received</option>
+<option value="sentRejected.jsp">Sent And Rejected</option>
+<option value="sentFailed.jsp">Sent And Failed</option>
+<option value="sentTransit.jsp">Sent And In Transit</option>
+</select>
+
+</span>
+</li>
 </ul>
 </div><!--/.well -->
 </div><!--/span-->
