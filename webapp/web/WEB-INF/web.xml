@@ -253,7 +253,10 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.inbox.ExportExcel</servlet-class>
     </servlet>
  
-    
+    <servlet>
+        <servlet-name>exportExcelOutbox</servlet-name>
+        <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.outbox.ExportExcel</servlet-class>
+    </servlet>
     
     
     <!-- Servlet mapping start -->
@@ -377,6 +380,11 @@
     <servlet-mapping>
         <servlet-name>exportExcel</servlet-name>
         <url-pattern>/account/exportExcel</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>exportExcelOutbox</servlet-name>
+        <url-pattern>/account/exportExcelOutbox</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>

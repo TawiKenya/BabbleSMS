@@ -153,8 +153,7 @@ public class ExportExcel extends HttpServlet {
         Element element = accountsCache.get(sessionEmail);
         account = (Account) element.getObjectValue();
         
-        String fileName = new StringBuffer(account.getName()).append(" ")
-                .append(StringUtils.trimToEmpty(account.getUsername()))
+        String fileName = new StringBuffer(account.getUsername())
                 .append(" ")
                 .append(SPREADSHEET_NAME)
                 .toString();

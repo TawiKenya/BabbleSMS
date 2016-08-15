@@ -271,7 +271,7 @@
 <i class="icon-edit"></i>
 <span class="hidden-tablet">
 
-<select class="ajax-link" id="btn-dangers1"onchange="location = this.value;" style="width:140px; color: #369bd7;font-weight: 590; font-family: sans-serif; ">
+<select class="ajax-link" id="btn-dangers1"onchange="location = this.value;" style="width:140px; color: #369bd7;font-weight: 550; font-family: sans-serif; ">
 <option value="sent.jsp">Sent Messages</option>
 <option value="sent.jsp">All Sent</option>
 <option value="sentStatus.jsp">Sent</option>

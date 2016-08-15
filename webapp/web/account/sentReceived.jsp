@@ -222,7 +222,7 @@
 
                 <div id="export" class="row">                             
                  
-                <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
+                <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcelOutbox" target="_blank">
                     <p>
                         <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export All">
                         <input class="toolbarBtn" type="submit" name="exporttoxEcel" value="Export Page As Excel" >
@@ -230,7 +230,7 @@
                     </p>
                 </form>
 
-                <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcel" target="_blank">
+                <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcelOutbox" target="_blank">
                     <p>
                         <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export Page">
                         <input class="toolbarBtn" type="submit" name="exporttoExcel" value="Export All As Excel" >

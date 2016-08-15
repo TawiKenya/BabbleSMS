@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox.InboxPage;
+import ke.co.tawi.babblesms.server.accountmgmt.pagination.sent.SentPage;
 import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 import ke.co.tawi.babblesms.server.beans.network.Network;
 import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.persistence.logs.IncomingLogDAO;
+import ke.co.tawi.babblesms.server.persistence.logs.OutgoingLogDAO;
 import ke.co.tawi.babblesms.server.persistence.utils.DbFileUtils;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
 import ke.co.tawi.babblesms.server.utils.export.ZipUtil;
@@ -62,10 +62,10 @@ public class ExportExcel extends HttpServlet {
     private HashMap<String, String> networkHash;
 
     // This is a mapping between the UUIDs of TopupStatuses and their status in English
-    private HashMap<String, IncomingLog> incomingLogHash;
+    private HashMap<String, OutgoingLog> outgoingLogHash;
 
     private DbFileUtils dbFileUtils;
-    private IncomingLogDAO incomingLogDAO;
+    private OutgoingLogDAO outgoingLogDAO;
 
     /**
      *
@@ -80,7 +80,7 @@ public class ExportExcel extends HttpServlet {
         CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
         networksCache = mgr.getCache(CacheVariables.CACHE_NETWORK_BY_UUID);
-        incomingLogDAO = IncomingLogDAO.getInstance();
+        outgoingLogDAO = OutgoingLogDAO.getInstance();
         
         networkHash = new HashMap<>();
 //        incomingLogHash = new HashMap<>();
@@ -95,7 +95,7 @@ public class ExportExcel extends HttpServlet {
             networkHash.put(network.getUuid(), network.getName());
         }
 
-        IncomingLog incomingLog;
+        OutgoingLog outgoingLog;
 //        keys = inboxCache.getKeys();
 //
 //        for (Object key : keys) {
@@ -135,8 +135,7 @@ public class ExportExcel extends HttpServlet {
         Element element = accountsCache.get(sessionEmail);
         account = (Account) element.getObjectValue();
 
-        fileName = new StringBuffer(account.getName()).append(" ")
-                .append(StringUtils.trimToEmpty(account.getUsername()))
+        fileName = new StringBuffer(account.getUsername()).append(" ")
                 .append(" ")
                 .append(SPREADSHEET_NAME)
                 .toString();
@@ -161,16 +160,16 @@ public class ExportExcel extends HttpServlet {
 
         } else if (StringUtils.equalsIgnoreCase(exportExcelOption, "Export Page")) { //export a single page
 
-            InboxPage inboxPage = (InboxPage) session.getAttribute("currentOutgoingPage");
+            SentPage sentPage = (SentPage) session.getAttribute("currentOutgoingPage");
 
-            successExcelFile = AllTopupsExportUtil.createExcelExport(inboxPage.getContents(), networkHash,
+            successExcelFile = AllTopupsExportUtil.createExcelExport2(sentPage.getContents(), networkHash,
                     networkHash, "|", excelFile.toString());
 
         } else {	//export search results
 
-            InboxPage inboxPage = (InboxPage) session.getAttribute("currentSearchPage");
+            SentPage sentPage = (SentPage) session.getAttribute("currentSearchPage");
 
-            successExcelFile = AllTopupsExportUtil.createExcelExport(inboxPage.getContents(), networkHash,
+            successExcelFile = AllTopupsExportUtil.createExcelExport2(sentPage.getContents(), networkHash,
                     networkHash, "|", excelFile.toString());
         }
 
@@ -216,7 +215,7 @@ public class ExportExcel extends HttpServlet {
      */
     private String getExportOutboxSqlQuery(Account account) {
         String query = "SELECT outgoinglog.uuid, outgoinglog.origin, outgoinglog.destination, "
-                + "outgoinglog.message, network.name, outgoinglog.datetime FROM outgoinglog "
+                + "outgoinglog.message, network.name, outgoinglog.logtime FROM outgoinglog "
                 + "INNER JOIN network ON network.uuid=outgoinglog.networkuuid "
                 + "WHERE outgoinglog.sender = '" 
                 + account.getUuid() + "';";

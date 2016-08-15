@@ -143,8 +143,7 @@ public class ExportCsv extends HttpServlet {
         Element element = accountsCache.get(sessionEmail);
         account = (Account) element.getObjectValue();
 
-        fileName = new StringBuffer(account.getName()).append(" ")
-                .append(StringUtils.trimToEmpty(account.getUsername()))
+        fileName = new StringBuffer(account.getUsername())
                 .append(" ")
                 .append(SPREADSHEET_NAME)
                 .toString();

@@ -16,6 +16,7 @@
 package ke.co.tawi.babblesms.server.utils.export.topups;
 
 import ke.co.tawi.babblesms.server.beans.log.IncomingLog;
+import ke.co.tawi.babblesms.server.beans.log.OutgoingLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -240,6 +241,97 @@ public class AllTopupsExportUtil {
             Cell cell;
 
             for (IncomingLog topup : topups) {
+                row = sheet.createRow(rowCount);
+
+                cell = row.createCell(0);
+                cell.setCellValue(topup.getUuid());
+
+                //cell = row.createCell(1);
+                //cell.setCellValue(topup.getMessageid());
+
+                cell = row.createCell(2);
+                cell.setCellValue(topup.getDestination());
+
+                cell = row.createCell(3);
+                cell.setCellValue(networkHash.get(topup.getOrigin()));
+
+                cell = row.createCell(4);
+                cell.setCellValue(statusHash.get(topup.getMessage()));
+
+                cell = row.createCell(5);
+                cell.setCellValue(topup.getLogTime().toString());
+
+                rowCount++;
+            }
+
+            out = new FileOutputStream(excelFile);
+            wb.write(out);
+            out.close();
+
+        } catch (IOException e) {
+            logger.error("IOException while trying to create Excel file '" + excelFile
+                    + "' from list of topups.");
+            logger.error(ExceptionUtils.getStackTrace(e));
+            success = false;
+        }
+
+        wb.dispose(); // dispose of temporary files backup of this workbook on disk
+
+        return success;
+    }
+    public static boolean createExcelExport2(final List<OutgoingLog> topups, final HashMap<String, String> networkHash,
+            final HashMap<String, String> statusHash, final String delimiter, final String excelFile) {
+        boolean success = true;
+
+        int rowCount = 0;	// To keep track of the row that we are on
+
+        Row row;
+        Map<String, CellStyle> styles;
+
+        SXSSFWorkbook wb = new SXSSFWorkbook(5000); // keep 5000 rows in memory, exceeding rows will be flushed to disk
+        // Each line of the file is approximated to be 200 bytes in size, 
+        // therefore 5000 lines are approximately 1 MB in memory
+        // wb.setCompressTempFiles(true); // temporary files will be gzipped on disk
+
+        Sheet sheet = wb.createSheet("Airtime Topup");
+        styles = createStyles(wb);
+
+        PrintSetup printSetupTopup = sheet.getPrintSetup();
+        printSetupTopup.setLandscape(true);
+        sheet.setFitToPage(true);
+
+        // Set up the heading to be seen in the Excel sheet
+        row = sheet.createRow(rowCount);
+
+        Cell titleCell;
+
+        row.setHeightInPoints(45);
+        titleCell = row.createCell(0);
+        titleCell.setCellValue("Airtime Topups");
+        sheet.addMergedRegion(CellRangeAddress.valueOf("$A$1:$L$1"));
+        titleCell.setCellStyle(styles.get("title"));
+
+        rowCount++;
+        row = sheet.createRow(rowCount);
+        row.setHeightInPoints(12.75f);
+
+        for (int i = 0; i < TOPUP_TITLES.length; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellValue(TOPUP_TITLES[i]);
+            cell.setCellStyle(styles.get("header"));
+        }
+
+        rowCount++;
+
+        FileUtils.deleteQuietly(new File(excelFile));
+        FileOutputStream out;
+
+        try {
+            FileUtils.touch(new File(excelFile));
+
+            Cell cell;
+
+            for (OutgoingLog topup : topups) {
                 row = sheet.createRow(rowCount);
 
                 cell = row.createCell(0);

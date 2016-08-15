@@ -16,6 +16,7 @@
 package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -87,6 +88,10 @@ public class AddTemplate extends HttpServlet{
 			MessageTemplateDAO templateDAO = MessageTemplateDAO.getInstance();
 			if(templateDAO.put(template)){
 				session.setAttribute(SessionConstants.UPDATE_SUCCESS, success);
+				PrintWriter out = response.getWriter();
+				   out.println("<script type='text/javascript'>");
+				   out.println("alert('Template added Successfully');");
+				   out.println("</script>");
 			}
 			else{
 				session.setAttribute(SessionConstants.ADD_ERROR, failure);

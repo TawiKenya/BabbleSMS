@@ -233,7 +233,7 @@
                                 <table border="1">
                                     <tr width="5%">
                                         <th>Network</th>
-                                        <th>Credit Consumed</th>
+                                        <th>Credit to be consumed</th>
                                         <th>Credit Balance</th>
                                     </tr>
                                     <%
