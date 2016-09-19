@@ -10,14 +10,14 @@
    //global variables
    var jssonBalance=null;
    var response=null;
-   var saf=0;
-   var safContact=0;
-   var orange=0;
-   var orangeContact=0;
-   var yu=0;
-   var yuContact=0;
-   var airtel=0;
-   var airtelContact=0;
+   var saf="";
+   var safContact="";
+   var orange="";
+   var orangeContact="";
+   var yu="";
+   var yuContact="";
+   var airtel="";
+   var airtelContact="";
   
 
 function networkselect(val){	
@@ -39,22 +39,22 @@ function networkselect(val){
           //changes network provider color according to the item clicked
       if(networkprovider==='Safaricom KE') {
           creditConsumed("<font color=green>Safaricom</font>","Orange","Yu","Airtel");
-          creditBalance("<font color=green>"+currentBalance+"</font>","0","0","0");
+          creditBalance("<font color=green>"+currentBalance+"</font>","","","");
 	     }
 	
       else if (networkprovider==='Yu KE') {  
           creditConsumed("Safaricom","Orange","<font color=blue>Yu</font>","Airtel");	
-          creditBalance("0","0","<font color=blue>"+currentBalance+"</font>","0");  	
+          creditBalance("","","<font color=blue>"+currentBalance+"</font>","");  	
 	     }
 	
       else if(networkprovider==='Airtel KE'){
          creditConsumed("Safaricom","Orange","Yu","<font color=red>Airtel</font>");
-         creditBalance("0","0","0","<font color=red>"+currentBalance+"</font>");	
+         creditBalance("","","","<font color=red>"+currentBalance+"</font>");	
 	     }
 	
       else if (networkprovider==='Orange KE'){
           creditConsumed("Safaricom","<font color=orange>Orange</font>","Yu","Airtel");	
-          creditBalance("0","<font color=orange>"+currentBalance+"</font>","0","0");
+          creditBalance("","<font color=orange>"+currentBalance+"</font>","","");
         }
     }
 

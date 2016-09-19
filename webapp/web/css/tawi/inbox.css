@@ -1,0 +1,29 @@
+/**
+This css is used in the header
+**/
+
+.row1{
+	display: table;
+    width: 100%; 
+   
+}
+.cols1{
+	 display: table-cell;
+}
+.navbar-custom {
+    background-color:#B8c4cc;
+    color:#080808;
+    border-radius:0;
+    
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color:#080808;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: #080808;
+    background-color:transparent;
+}
+.navbar-custom .navbar-brand {
+    color:#080808;
+}

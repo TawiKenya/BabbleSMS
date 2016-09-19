@@ -79,7 +79,6 @@ $(document).ready(function(){
 
 function executevent(uuid,count){ 
     var str= "allnetworks.jsp?uuid="+uuid+"&first="+count;
-    //alert(str);
     sendRequest1(str);		
 }
 

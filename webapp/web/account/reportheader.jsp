@@ -77,110 +77,43 @@
         <link href='../css/tawi/uploadify.css' rel='stylesheet'>
         <link href='../css/tawi/template.css' rel='stylesheet'>
          <link href="../css/tawi/errorFormat.css" rel='stylesheet'>
-        
+        <link href="../css/tawi/inbox.css" rel="stylesheet">
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
         
         <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
   
-	
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
+        
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
     </head>
 
     <body>
 
         <!-- topbar starts -->
-        <div class="navbar">
-            <div class="navbar-inner">
+        <nav class="navbar navbar-custom">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.jsp">Babble SMS</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li ><a href="inbox.jsp">MESSAGES</a></li>
+				<li><a href="contact.jsp">CONTACTS</a></li>
+				<li class="active"><a href="portfolio.jsp">REPORT</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#"><span class="hidden-phone"> <%=username%></span>
+						Log In</a></li>
+				<li><a href="../logout"><span
+						class="glyphicon glyphicon-user"></span> Log Out</a></li>
+				<li><a href="setting.jsp"><span
+						class="glyphicon glyphicon-log-in"></span> Settings</a></li>
+			</ul>
+		</div>
+	</nav>
 
-                <div class="container-fluid">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="index.html">  <span>Babble</span></a>
-
-                    
-
-                    <!-- user dropdown starts -->
-                    <div class="btn-group pull-right" >
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="icon-user"></i><span class="hidden-phone"> <%=username%></span>
-                            <span class="caret"></span>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <!--<li><a href="#">Profile</a></li>-->
-                            <li class="divider"></li>
-                            <li><a href="../logout">Logout</a></li>
-                            <li><a href="setting.jsp">Setting</a>
-                               
-                                <ul class="dropdown-menu" id="themes">
-                                    <li><a data-value="classic" href="#"><i class="icon-blank"></i>mt  kenya</a></li>
-                                    <li><a data-value="cerulean" href="#"><i class="icon-blank"></i>kilimanjaro</a></li>
-                                    <li><a data-value="cyborg" href="#"><i class="icon-blank"></i> lake victoria</a></li>
-                                    <li><a data-value="redy" href="#"><i class="icon-blank"></i>clement</a></li>
-                                    <li><a data-value="journal" href="#"><i class="icon-blank"></i>nairobi</a></li>
-                                    <li><a data-value="simplex" href="#"><i class="icon-blank"></i>mombasa</a></li>
-                                    <li><a data-value="slate" href="#"><i class="icon-blank"></i>naivasha</a></li>
-                                    <li><a data-value="spacelab" href="#"><i class="icon-blank"></i> Spacelab</a></li>
-                                    <li><a data-value="united" href="#"><i class="icon-blank"></i> United</a></li>
-                                </ul>
-
-                            </li>
-
-                        </ul>
-
-
-                    </div>
-
-                    <!-- user dropdown ends -->
-
-
-                </div>
-                <!-- top menu -->                        
-                <div class="topmenu">                     
-                    <a href="inbox.jsp">MESSAGES</a>
-                    <a href="contact.jsp">CONTACTS</a>
-                    <a href="portfolio.jsp">REPORT</a>
-	               
-                </div>    
-            </div>
-
-        </div>
-        <!-- topbar ends -->
-
-        <div class="container-fluid">
-            <div class="row-fluid">
-
-
-                <!-- left menu starts -->
-                <div class="span2 main-menu-span">
-                    <div class="well nav-collapse sidebar-nav">
-                        <ul class="nav nav-tabs nav-stacked main-menu">
-                            <!--menu to change depending on page requested-->
-                            <li class="nav-header hidden-tablet">Message Board</li>
-                             <li><a class="ajax-link" href="portfolio.jsp"><i class="icon-globe"></i><span class="hidden-tablet">Balance</span></a></li>
-                            <li><a class="ajax-link" href="purchase.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Purchase History </span></a></li>
-                            <li><a class="ajax-link" href="administrator.jsp"><i class="icon-plus-sign"></i><span class="hidden-tablet">Admin Notices</span></a></li>
-                           
-                            
-                        </ul>
-                        <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
-                    </div><!--/.well -->
-                </div><!--/span-->
-                <!-- left menu ends -->
 
                 <noscript>
                     <div class="alert alert-block span10">
@@ -188,8 +121,5 @@
                         <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
                     </div>
                 </noscript>
-
-                <div id="content" class="span10">
-                    <!-- content starts -->
 
 

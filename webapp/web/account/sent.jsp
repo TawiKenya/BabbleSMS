@@ -170,38 +170,23 @@
 %>    
 
 
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="#">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            <a href="#">Sent</a>
-        </li>
-    </ul>
-</div>
-
-<div class="row-fluid sortable">		
-    <div class="box span12">
-
-
-        <div class="clear"></div>
-
-        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left:9px;">
+	
+    
+         <div class="col-lg-10 col-md-10 col-sm-5">
            
-           <div id="refresh">
+           <div id="refresh" class="col-lg-1 col-md-1 col-sm-1">
                 <form name="pageForm" method="post" action="sent.jsp">
-                    <p><input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />
-                        <input class="toolbarBtn" type="hidden" name="page" value="First" /></p>
+                    <p><input class="btn btn-info" type="submit" name="refresh" value="Refresh" />
+                        <input class="btn btn-info" type="hidden" name="page" value="First" /></p>
                 </form>
             </div>
 
-            <div id="pagination">
+            <div id="pagination" class="col-lg-5 col-md-5 col-sm-2">
                 <form name="pageForm" method="post" action="sent.jsp">                                
                     <%                                            if (!sentPage.isFirstPage()) {
                     %>
-                    <input class="toolbarBtn" type="submit" name="page" value="First" />
-                    <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                    <input class="btn btn-info" type="submit" name="page" value="First" />
+                    <input class="btn btn-info" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -212,38 +197,39 @@
                     <%
                         if (!sentPage.isLastPage()) {
                     %>
-                    <input class="toolbarBtn" type="submit" name="page" value="Next">  
-                    <input class="toolbarBtn" type="submit" name="page" value="Last">
+                    <input class="btn btn-info" type="submit" name="page" value="Next">  
+                    <input class="btn btn-info" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
                 </form>
             </div>                            
 
-                <div id="export" class="row">                             
+                <div id="export" class="col-lg-2 col-md-2 col-sm-1">                             
                  
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcelOutbox" target="_blank">
                     <p>
-                        <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export All">
-                        <input class="toolbarBtn" type="submit" name="exporttoxEcel" value="Export Page As Excel" >
-                        <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
+                        <input class="btn btn-info" type="hidden" name="exportExcel" value="Export All">
+                        <input class="btn btn-info" type="submit" name="exporttoxEcel" value="Export Page As Excel" >
+                        <input class="btn btn-info" type="hidden" name="page" value="sent.jsp">
                     </p>
                 </form>
-
+                </div>
+                <div id="export" class="col-lg-2 col-md-2 col-sm-1">
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcelOutbox" target="_blank">
                     <p>
-                        <input class="toolbarBtn" type="hidden" name="exportExcel" value="Export Page">
-                        <input class="toolbarBtn" type="submit" name="exporttoExcel" value="Export All As Excel" >
-                        <input class="toolbarBtn" type="hidden" name="page" value="sent.jsp">
+                        <input class="btn btn-info" type="hidden" name="exportExcel" value="Export Page">
+                        <input class="btn btn-info" type="submit" name="exporttoExcel" value="Export All As Excel" >
+                        <input class="btn btn-info" type="hidden" name="page" value="sent.jsp">
                     </p>
                 </form>               
             </div>
-        </div>
+    
 
         <div class="clear"></div>
 
-        <div class="box-content" style="margin-top: -0.5%">
-            <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
+        <div class="col-lg-10 col-md-10 col-sm-5">
+            <table id="incomingUSSD" class="table table-striped table-bordered bootstrap-datatable datatable" summary="Outgoing">
                 <thead>
                     <tr width="3%" >
                         <th>*</th>                        
@@ -298,18 +284,18 @@
                 </tbody>
             </table>            
         </div>
-
+</div>
         <div class="clear"></div>
 
-        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left:9px;">
+        
             
 
-            <div id="pagination">
+            <div id="pagination" class="col-lg-10 col-md-10 col-sm-5">
                 <form name="pageForm" method="post" action="sent.jsp">                                
                     <%                                            if (!sentPage.isFirstPage()) {
                     %>
-                    <input class="toolbarBtn" type="submit" name="page" value="First" />
-                    <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                    <input class="btn btn-info" type="submit" name="page" value="First" />
+                    <input class="btn btn-info" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -320,17 +306,17 @@
                     <%
                         if (!sentPage.isLastPage()) {
                     %>
-                    <input class="toolbarBtn" type="submit" name="page" value="Next">  
-                    <input class="toolbarBtn" type="submit" name="page" value="Last">
+                    <input class="btn btn-info" type="submit" name="page" value="Next">  
+                    <input class="btn btn-info" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
                 </form>
             </div>                            
             
-        </div>
+     
 
-    </div><!--/span-->
+    
 
 </div><!--/row-->
 

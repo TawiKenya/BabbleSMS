@@ -46,21 +46,38 @@
 %> 
 <jsp:include page="reportheader.jsp" />
 
+<div class="row">
+<div class="col-lg-3 col-md-3 col-sm-2">
 
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="#">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            <a href="#">View contacts</a>
-        </li>
-    </ul>
-</div>
+		<!-- left menu starts -->
 
-<div class="row-fluid sortable">		
-    <div class="box span12">
-        <div class="box-header well" data-original-title>
+
+		<ul class="nav nav-tabs nav-stacked main-menu">
+			<!--menu to change depending on page requested-->
+			<li class="nav-header hidden-tablet">Message Board</li>
+			<li><a class="ajax-link" href="portfolio.jsp"><i
+					class="icon-globe"></i><span class="hidden-tablet">Balance</span></a></li>
+			<li><a class="ajax-link" href="purchase.jsp"><i
+					class="icon-plus-sign"></i><span class="hidden-tablet">Purchase
+						History </span></a></li>
+			<li><a class="ajax-link" href="administrator.jsp"><i
+					class="icon-plus-sign"></i><span class="hidden-tablet">Admin
+						Notices</span></a></li>
+
+
+		</ul>
+		<!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
+
+
+		<!-- left menu ends -->
+
+
+
+	</div>
+
+<div class="col-lg-9 col-md-9 col-sm-9">		
+    
+        <div class="well" data-original-title>
             <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> Refresh</a>                  
             <a class="btn" href="#" title="delete message" data-rel="tooltip"><i class="icon-trash"></i> Delete</a>  
             <div class="box-icon">
@@ -117,9 +134,9 @@
                 </tbody>
             </table>            
         </div>
-    </div><!--/span-->
+    
 
-</div><!--/row-->
 
+</div>
 
 <jsp:include page="footer.jsp" />

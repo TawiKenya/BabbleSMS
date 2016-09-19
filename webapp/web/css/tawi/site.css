@@ -67,8 +67,9 @@ http://opensource.org/licenses/OSL-3.0
     background: none repeat scroll 0 0 #F6F6F6;
     border: 1px solid #CCCCCC;
     border-radius: 5px 5px 5px 5px;
-    float: left;
-    width: 40%;
+   
+   
+    
 }
 
 .stats_overview p {
@@ -79,8 +80,9 @@ http://opensource.org/licenses/OSL-3.0
 }
 
 .overview_today,.overview_previous {
-    float: left;
+   /* float: left;
     width: 50%;
+    */
 }
 
 .overview_today p {
@@ -337,10 +339,4 @@ http://opensource.org/licenses/OSL-3.0
     color: #333333;
     font-weight: bold;
 }
-.col-md-3{
-    width: 25%;
-    float: left;
-}
-.col-md-3 input {
-    height: 25px;
-}
+

@@ -71,19 +71,50 @@
 %> 
 <jsp:include page="contactheader.jsp" />
 
+<div class="row">
+<div class="col-lg-2 col-md-2 col-sm-2">
 
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="index.jsp">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            All Groups
-        </li>
-    </ul>
-</div>
 
-<div class="row-fluid sortable">		
+		<ul class="nav nav-tabs nav-stacked main-menu">
+						<!--menu to change depending on page requested-->
+			 			
+						<li class="nav-header hidden-tablet">Contacts</li>
+						<li><div class="dropdown">
+								<button class="btn btn-default dropdown-toggle" type="button"
+									id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu"
+									aria-labelledby="dropdownMenu1">
+									<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="inactivecontacts.jsp">Inactive contacts</a></li>-->
+			 					
+									<li role="presentation"><a role="menuitem" tabindex="-1"
+										href="#">Inactive contacts</a></li>
+								</ul>
+								<a class="ajax-link" href="contact.jsp"><i
+									class="icon-inbox"></i><span class="hidden-tablet">All
+										contacts</span></a>
+							</div></li>
+						<li><a class="ajax-link" href="addcontact.jsp"><i
+								class="icon-plus-sign"></i><span class="hidden-tablet">Add
+									contact</span></a></li>
+						<li class="nav-header hidden-tablet">Groups</li>
+						<li><a class="ajax-link" href="groups.jsp"><i
+								class="icon-globe"></i><span class="hidden-tablet">All
+									groups</span></a></li>
+						<!--   <li><a class="ajax-link" href="#"><i class="icon-globe"></i><span class="hidden-tablet">View group</span></a></li>-->
+				 		<li><a class="ajax-link" href="addgroup.jsp"><i
+								class="icon-plus-sign"></i><span class="hidden-tablet">Add
+									group </span></a></li>
+						<!--<li><a class="ajax-link" href="#"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li> 
+	          <li><a class="ajax-link" href="contactspergroup.jsp"><i class="icon-folder-open"></i><span class="hidden-tablet">Group Contacts</span></a></li>-->
+						</ul>
+				<!--  	<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
+					
+
+	</div>
+
+<div class="col-lg-10 col-md-10 col-sm-5">		
     <!--<div class="box span12">
         <div class="box-header well" data-original-title>
             <a class="btn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> Refresh</a>                  

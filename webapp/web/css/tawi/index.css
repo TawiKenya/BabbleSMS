@@ -1,0 +1,29 @@
+
+/*this css is specifially used in the logoin page. index.jsp*/
+
+.logo {
+	text-align:center;
+   }
+   
+ .login-form {
+    padding: 20px;
+ }
+ 
+ .loginError{
+  color:#800000;
+ }
+ 
+ .banner{
+   background-image: url("../../img/background.jpg");
+   text-align: center;
+ }
+ 
+ .footer{
+ background-color: rgba(6,156,6,.83);
+ text-align: center;
+ height: 4.3rem; 
+ }
+ 
+ .footer a{
+ color:#ffffff;
+ }

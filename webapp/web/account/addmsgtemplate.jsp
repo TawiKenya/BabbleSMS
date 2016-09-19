@@ -63,26 +63,23 @@
 </script>
 
 
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="#">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            <a href="#">add template</a>
-        </li>
-    </ul>
-</div>
 
 
 
-
-<div class="row-fluid sortable">
-    <div class="box span12">
-        <div class="box-header well" data-original-title>
+<div class="col-lg-10 col-md-10 col-sm-5">
+    
+        
+        <div id=successmessage>
+        <%
+        if(SessionConstants.UPDATE_SUCCESS.equals("template added")){
+        	%><h2>Template added successfully</h2><% 
+        }
+        %>
+        </div>
+        
             <h2><i class="icon-edit"></i> Add message templates</h2>
             
-        </div>
+      
         <div class="box-content">
             <form class="form-horizontal" method="POST" action="AddTemplate">
                 <fieldset>
@@ -105,10 +102,10 @@
             </form>
 
         </div>
-    </div><!--/span-->
+    
 
 </div><!--/row-->
-
+</div>
 
 
 <jsp:include page="footer.jsp" />

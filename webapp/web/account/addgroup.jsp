@@ -69,23 +69,54 @@
     }
 
 %>
-
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="index.jsp">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            Add group
-        </li>
-    </ul>
-</div>
+<div class="row">
+<div class="col-lg-2 col-md-2 col-sm-2">
 
 
+		<ul class="nav nav-tabs nav-stacked main-menu">
+						<!--menu to change depending on page requested-->
+			 			
+						<li class="nav-header hidden-tablet">Contacts</li>
+						<li><div class="dropdown">
+								<button class="btn btn-default dropdown-toggle" type="button"
+									id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu"
+									aria-labelledby="dropdownMenu1">
+									<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="inactivecontacts.jsp">Inactive contacts</a></li>-->
+			 					
+									<li role="presentation"><a role="menuitem" tabindex="-1"
+										href="#">Inactive contacts</a></li>
+								</ul>
+								<a class="ajax-link" href="contact.jsp"><i
+									class="icon-inbox"></i><span class="hidden-tablet">All
+										contacts</span></a>
+							</div></li>
+						<li><a class="ajax-link" href="addcontact.jsp"><i
+								class="icon-plus-sign"></i><span class="hidden-tablet">Add
+									contact</span></a></li>
+						<li class="nav-header hidden-tablet">Groups</li>
+						<li><a class="ajax-link" href="groups.jsp"><i
+								class="icon-globe"></i><span class="hidden-tablet">All
+									groups</span></a></li>
+						<!--   <li><a class="ajax-link" href="#"><i class="icon-globe"></i><span class="hidden-tablet">View group</span></a></li>-->
+				 		<li><a class="ajax-link" href="addgroup.jsp"><i
+								class="icon-plus-sign"></i><span class="hidden-tablet">Add
+									group </span></a></li>
+						<!--<li><a class="ajax-link" href="#"><i class="icon-plus-sign"></i><span class="hidden-tablet">Add group </span></a></li> 
+	          <li><a class="ajax-link" href="contactspergroup.jsp"><i class="icon-folder-open"></i><span class="hidden-tablet">Group Contacts</span></a></li>-->
+						</ul>
+				<!--  	<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
+					
+
+	</div>
 
 
-<div class="row-fluid sortable">
-    <div class="box span12">
+
+
+<div class="col-lg-10 col-md-10 col-sm-5">
+    
        <!-- <div class="box-header well" data-original-title>
             <h2><i class="icon-edit"></i> Add Group</h2>
             <div class="box-icon">
@@ -94,7 +125,7 @@
                 <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
             </div>
         </div>-->
-        <div class="box-content">
+     
 
             <%                
                 String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
@@ -114,36 +145,38 @@
                     session.setAttribute(SessionConstants.ADD_SUCCESS, null);
                 }
             %>
+            <div class="col-lg-2 col-md-2"></div>
+            <div class="cl-lg-4 col-md-4">
             <form class="form-horizontal" action="addGroup" method="POST">
-                <fieldset>
-                    <div class="control-group">
-                        <label class="control-label" for="gname" autofocus>Name</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="groupname" type="text" name="name" value="">
-                        </div>
+               
+                    <div class="form-group">
+                        <label for="gname" autofocus>Name</label>
+                        
+                          <input class="form-control input-xlarge focused" id="groupname" type="text" name="name" value="">
+                        
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="desc">Description</label>
-                        <div class="controls">
-                            <textarea rows ="3" cols ="3" id="groupdesc" name="desc" > </textarea>
-                        </div>
+                    <div class="form-group">
+                        <label  for="desc">Description</label>
+                       
+                            <textarea class="form-control" rows ="3" cols ="3" id="groupdesc" name="desc" > </textarea>
+                        
                     </div>
 
                     <!--<div class = "input_fields_wrap">
                     <button class = "add_field_button">Add contacts</button>
                        </div>-->
-                    <div class="form-actions">
+                    
                         <button type="submit" class="btn btn-primary">Save</button>
                         <input type="submit" id="cancel" value="Cancel"/>
-                    </div>
-                </fieldset>
+                  
+                
             </form>
+</div>
+       
+    
 
-        </div>
-    </div><!--/span-->
+</div>
 
-</div><!--/row-->
-
-
+</div>
 
 <jsp:include page="footer.jsp" />

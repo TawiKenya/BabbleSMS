@@ -84,19 +84,8 @@
 <jsp:include page="messageheader.jsp" />
 
 
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="#">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            View contacts
-        </li>
-    </ul>
-</div>
-
-<div class="row-fluid sortable">		
-    <div class="box span12">
+<div class="col-lg-10 col-md-10 col-sm-5">		
+    
         <%                String addErrStr = (String) session.getAttribute(SessionConstants.ADD_ERROR);
                 String addSuccessStr = (String) session.getAttribute(SessionConstants.ADD_SUCCESS);
                 
@@ -148,11 +137,12 @@
                     session.setAttribute(SessionConstants.UPDATE_SUCCESS, null);
                 }
             %>
-        <div class="box-header well" data-original-title>
-            <a class="btn" href="messagetemplate.jsp" title="view accounts" data-rel="tooltip">View</a>                  
-            <a class="btn" href="addmsgtemplate.jsp" title="add accounts" data-rel="tooltip">Add</a>  
+        
+            <a class="btn-large" href="messagetemplate.jsp" title="view accounts">View &nbsp;&nbsp;&nbsp;&nbsp;</a>                  
+            <a class="btn-large" href="addmsgtemplate.jsp" title="add accounts">Add</a>  
 
-        </div>
+        
+        
         <div class="box-content">
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
@@ -189,8 +179,8 @@
                 </tbody>
             </table>            
         </div>
-    </div><!--/span-->
-
+    
+</div>
 </div><!--/row-->
 <div id="contactdiv" style="display:none;">
 <form class="form"  action = "EditTemplate" method = "POST" id="contact" >

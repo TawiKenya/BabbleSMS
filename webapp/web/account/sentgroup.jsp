@@ -135,37 +135,16 @@
 <jsp:include page="messageheader.jsp" />
 
 
-<div>
-    <ul class="breadcrumb">
-        <li>
-            <a href="#">Home</a> <span class="divider">/</span>
-        </li>
-        <li>
-            <a href="#">Sent Group</a>
-        </li>
-    </ul>
-</div>
-
-<div class="row-fluid sortable">		
-    <div class="box span12">
-        <!--<div class="box-header well" data-original-title>
-            <a class="toolbarBtn" href="#" title="refresh page" data-rel="tooltip"><i class="icon-refresh"></i> Refresh</a>                  
-            <a class="toolbarBtn" href="#" title="delete message" data-rel="tooltip"><i class="icon-trash"></i> Delete</a>  
-           <!-- <div class="box-icon">
-                <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-            </div>-->
-        <!--</div>-->
-
-
+<div class="col-lg-10 col-md-10 col-sm-5">		
+   
+       
         <div class="clear"></div>
 
-        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left: 9px;">
+        
         <div id="refresh">
                 <form name="pageForm" method="post" action="sentgroup.jsp">
-                    <input class="toolbarBtn" type="submit" name="refresh" value="Refresh" />
-                    <input class="toolbarBtn" type="hidden" name="page" value="First" />
+                    <input class="btn btn-info" type="submit" name="refresh" value="Refresh" />
+                    <input class="btn btn-info" type="hidden" name="page" value="First" />
                      </form>
             </div>
             <div id="pagination">
@@ -173,8 +152,8 @@
                     <%                                            
                         if (!sgPage.isFirstPage()) {
                     %>
-                        <input class="toolbarBtn" type="submit" name="page" value="First" />
-                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                        <input class="btn btn-info" type="submit" name="page" value="First" />
+                        <input class="btn btn-info" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -185,8 +164,8 @@
                     <%
                         if (!sgPage.isLastPage()) {                        
                     %>
-                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
-                        <input class="toolbarBtn" type="submit" name="page" value="Last">
+                        <input class="btn btn-info" type="submit" name="page" value="Next">  
+                        <input class="btn btn-info" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
@@ -194,12 +173,12 @@
             </div>
 
             
-        </div>
+        
 
         <div class="clear"></div>
 
-         <div class="box-content" style="margin-top: -0.5%">
-            <table id="incomingUSSD" class="ussdTable" summary="Outgoing">
+         
+            <table id="incomingUSSD" class="table table-striped table-bordered " summary="Outgoing">
                 <thead>
                     <tr>
 
@@ -240,17 +219,19 @@
                     %>
                 </tbody>
             </table>            
-        </div>
+       
+  
+   
         <div class="clear"></div>
 
-        <div class="ussdNavControls" style="margin-top: 1%;width:98%;margin-left: 9px;">
+        
            <div id="pagination">
                 <form name="pageForm" method="post" action="sentgroup.jsp">                                
                     <%                                            
                         if (!sgPage.isFirstPage()) {
                     %>
-                        <input class="toolbarBtn" type="submit" name="page" value="First" />
-                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                        <input class="btn btn-info" type="submit" name="page" value="First" />
+                        <input class="btn btn-info" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -261,8 +242,8 @@
                     <%
                         if (!sgPage.isLastPage()) {                        
                     %>
-                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
-                        <input class="toolbarBtn" type="submit" name="page" value="Last">
+                        <input class="btn btn-info" type="submit" name="page" value="Next">  
+                        <input class="btn btn-info" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
@@ -270,7 +251,7 @@
             </div>
 
             
-        </div>
+      
 
         <div class="clear"></div>
 
