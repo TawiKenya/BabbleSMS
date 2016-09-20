@@ -15,19 +15,18 @@
  */
 package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
-import ke.co.tawi.babblesms.server.session.SessionConstants;
-import ke.co.tawi.babblesms.server.session.SessionStatistics;
-import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
-import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
-
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.Date;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,15 +34,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.jasypt.util.text.BasicTextEncryptor;
+
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.session.SessionStatistics;
+import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
-
-import org.jasypt.util.text.BasicTextEncryptor;
 
 /**
  * Receives the request for an account holder to log in.
@@ -118,8 +122,11 @@ public class Login extends HttpServlet {
         Account account = new Account();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        hiddenCaptchaStr = request.getParameter("captchaHidden");
-        String captchaAnswer = request.getParameter("captchaAnswer").trim();
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        
+        
+       // hiddenCaptchaStr = request.getParameter("captchaHidden");
+       // String captchaAnswer = request.getParameter("captchaAnswer").trim();
         
         Element element;
         if ((element = accountsCache.get(username)) != null) {
@@ -128,7 +135,7 @@ public class Login extends HttpServlet {
         
         if (account != null) {
             // Check that the system generated captcha and the user input for the captcha match				
-            if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
+            if (validateCaptcha(gRecaptchaResponse )==false) {
                 session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_ERROR_KEY, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
                 response.sendRedirect("index.jsp");
 
@@ -158,6 +165,76 @@ public class Login extends HttpServlet {
     }
 
     
+    
+    
+    
+    public static final String url = "https://www.google.com/recaptcha/api/siteverify";
+	public static final String secret = "6LdieygTAAAAAFBXbgIIbQ6MTH8T_9YENyjz_Pzs";
+	private final static String USER_AGENT = "Mozilla/5.0";
+
+	public static boolean validateCaptcha(String gRecaptchaResponse) throws IOException {
+		if (gRecaptchaResponse == null || "".equals(gRecaptchaResponse)) {
+			return false;
+		}
+		
+		try{
+		URL obj = new URL(url);
+		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+		// add reuqest header
+		con.setRequestMethod("POST");
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+		String postParams = "secret=" + secret + "&response="
+				+ gRecaptchaResponse;
+
+		// Send post request
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.writeBytes(postParams);
+		wr.flush();
+		wr.close();
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + postParams);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		// print result
+		System.out.println(response.toString());
+		
+		//parse JSON response and return 'success' value
+		JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
+		JsonObject jsonObject = jsonReader.readObject();
+		jsonReader.close();
+		
+		return jsonObject.getBoolean("success");
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Checks to see that the captcha generated by the person and the captcha
      * submitted are equal. Case is ignored.
@@ -166,6 +243,9 @@ public class Login extends HttpServlet {
      * @param userCaptcha
      * @return boolean
      */
+    
+    
+    /**
     private boolean validateCaptcha(String encodedSystemCaptcha, String userCaptcha) {
         boolean valid = false;
         String decodedHiddenCaptcha = "";
@@ -184,7 +264,7 @@ public class Login extends HttpServlet {
 
         return valid;
     }
-
+*/
     
     /**
      * @param accountuuid
