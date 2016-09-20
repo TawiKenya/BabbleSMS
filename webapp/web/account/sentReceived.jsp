@@ -284,14 +284,8 @@
                 </tbody>
             </table>            
         </div>
-</div>
-        <div class="clear"></div>
-
-        
-            
-
-            <div id="pagination" class="col-lg-10 col-md-10 col-sm-5">
-                <form name="pageForm" method="post" action="sentReceived.jsp.jsp">                                
+ <div id="pagination" class="col-lg-10 col-md-10 col-sm-1">
+                <form name="pageForm" method="post" action="sent.jsp">                                
                     <%                                            if (!sentPage.isFirstPage()) {
                     %>
                     <input class="btn btn-info" type="submit" name="page" value="First" />
@@ -313,6 +307,9 @@
                     %>                                
                 </form>
             </div>                            
+          </div>  
+     
+                                        
             
      
 

@@ -175,8 +175,8 @@
            
            <div id="refresh" class="col-lg-1 col-md-1 col-sm-1">
                 <form name="pageForm" method="post" action="sentStatus.jsp">
-                    <p><input class="btn-large" type="submit" name="refresh" value="Refresh" />
-                        <input class="btn-large" type="hidden" name="page" value="First" /></p>
+                    <p><input class="btn btn-info" type="submit" name="refresh" value="Refresh" />
+                        <input class="btn btn-info" type="hidden" name="page" value="First" /></p>
                 </form>
             </div>
 
@@ -184,8 +184,8 @@
                 <form name="pageForm" method="post" action="sentStatus.jsp">                                
                     <%                                            if (!sentPage.isFirstPage()) {
                     %>
-                    <input class="btn-large" type="submit" name="page" value="First" />
-                    <input class="btn-large" type="submit" name="page" value="Previous" />
+                    <input class="btn btn-info" type="submit" name="page" value="First" />
+                    <input class="btn btn-info" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -196,8 +196,8 @@
                     <%
                         if (!sentPage.isLastPage()) {
                     %>
-                    <input class="btn-large" type="submit" name="page" value="Next">  
-                    <input class="btn-large" type="submit" name="page" value="Last">
+                    <input class="btn btn-info" type="submit" name="page" value="Next">  
+                    <input class="btn btn-info" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
@@ -208,18 +208,18 @@
                  
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcelOutbox" target="_blank">
                     <p>
-                        <input class="btn-large" type="hidden" name="exportExcel" value="Export All">
-                        <input class="btn-large" type="submit" name="exporttoxEcel" value="Export Page As Excel" >
-                        <input class="btn-large" type="hidden" name="page" value="sentStatus.jsp">
+                        <input class="btn btn-info" type="hidden" name="exportExcel" value="Export All">
+                        <input class="btn btn-info" type="submit" name="exporttoxEcel" value="Export Page As Excel" >
+                        <input class="btn btn-info" type="hidden" name="page" value="sentStatus.jsp">
                     </p>
                 </form>
                 </div>
                 <div id="export" class="col-lg-2 col-md-2 col-sm-1">
                 <form id="exportToExcel" name="exportExcelForm" method="post" action="exportExcelOutbox" target="_blank">
                     <p>
-                        <input class="btn-large" type="hidden" name="exportExcel" value="Export Page">
-                        <input class="btn-large" type="submit" name="exporttoExcel" value="Export All As Excel" >
-                        <input class="btn-large" type="hidden" name="page" value="sentStatus.jsp">
+                        <input class="btn btn-info" type="hidden" name="exportExcel" value="Export Page">
+                        <input class="btn btn-info" type="submit" name="exporttoExcel" value="Export All As Excel" >
+                        <input class="btn btn-info" type="hidden" name="page" value="sentStatus.jsp">
                     </p>
                 </form>               
             </div>
@@ -284,18 +284,12 @@
                 </tbody>
             </table>            
         </div>
-</div>
-        <div class="clear"></div>
-
-        
-            
-
-            <div id="pagination" class="col-lg-10 col-md-10 col-sm-5">
-                <form name="pageForm" method="post" action="sentStatus.jsp">                                
+ <div id="pagination" class="col-lg-10 col-md-10 col-sm-1">
+                <form name="pageForm" method="post" action="sent.jsp">                                
                     <%                                            if (!sentPage.isFirstPage()) {
                     %>
-                    <input class="btn-large" type="submit" name="page" value="First" />
-                    <input class="btn-large" type="submit" name="page" value="Previous" />
+                    <input class="btn btn-info" type="submit" name="page" value="First" />
+                    <input class="btn btn-info" type="submit" name="page" value="Previous" />
                     <%
                         }
                     %>
@@ -306,13 +300,15 @@
                     <%
                         if (!sentPage.isLastPage()) {
                     %>
-                    <input class="btn-large" type="submit" name="page" value="Next">  
-                    <input class="btn-large" type="submit" name="page" value="Last">
+                    <input class="btn btn-info" type="submit" name="page" value="Next">  
+                    <input class="btn btn-info" type="submit" name="page" value="Last">
                     <%
                         }
                     %>                                
                 </form>
             </div>                            
+          </div>  
+                               
             
      
 
