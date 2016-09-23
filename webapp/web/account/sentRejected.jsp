@@ -226,9 +226,26 @@
             </div>
     
 
-        <div class="clear"></div>
+       <div class="col-lg-12 col-md-12 col-sm-6">
 
-        <div class="col-lg-10 col-md-10 col-sm-5">
+		<div class="col-lg-3 col-md-3 col-sm-3">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default">Sent and Rejected</button>
+				<button type="button" class="btn btn-default dropdown-toggle"
+					data-toggle="dropdown">
+					<span class="caret"></span> <span class="sr-only"> Toggle
+						Dropdown </span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="sentReceived.jsp"> Received </a></li>
+					<li><a href="sentTransit.jsp"> In Transit </a></li>
+					<li><a href="sentRejected.jsp"> Rejected </a></li>
+					<li><a href="sentFailed.jsp"> Failed</a></li>
+
+				</ul>
+			</div>			
+
+		</div>
             <table id="incomingUSSD" class="table table-striped table-bordered bootstrap-datatable datatable" summary="Outgoing">
                 <thead>
                     <tr width="3%" >

@@ -53,56 +53,84 @@ body {
 <script src="../js/jquery/jquery-1.7.2.min.js"></script>
 
 <link href="../css/tawi/errorFormat.css" rel='stylesheet'>
+
 <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+
 <link href="../css/tawi/charisma-app.css" rel="stylesheet">
+
 <link href="../css/jquery/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+
 <link href='../css/tawi/fullcalendar.css' rel='stylesheet'>
+
 <link href='../css/tawi/fullcalendar.print.css' rel='stylesheet'
 	media='print'>
+	
 <link href='../css/tawi/chosen.css' rel='stylesheet'>
+
 <link href='../css/tawi/uniform.default.css' rel='stylesheet'>
+
 <link href='../css/tawi/colorbox.css' rel='stylesheet'>
+
 <link href='../css/jquery/jquery.cleditor.css' rel='stylesheet'>
+
 <link href='../css/jquery/jquery.noty.css' rel='stylesheet'>
+
 <link href='../css/tawi/noty_theme_default.css' rel='stylesheet'>
+
 <link href='../css/tawi/elfinder.min.css' rel='stylesheet'>
+
 <link href='../css/tawi/elfinder.theme.css' rel='stylesheet'>
+
 <link href='../css/jquery/jquery.iphone.toggle.css' rel='stylesheet'>
+
 <link href='../css/tawi/opa-icons.css' rel='stylesheet'>
+
 <link href='../css/tawi/uploadify.css' rel='stylesheet'>
+
 <link href='../css/tawi/template.css' rel='stylesheet'>
+
 <link href='../css/tawi/site.css' rel='stylesheet'>
+
 <link href='../css/tawi/grouptable.css' rel='stylesheet'>
+
 <link href="../css/tawi/poup.css" rel="stylesheet">
+
 <link href="../css/tawi/credit.css" rel="stylesheet">
+
 <link href="../css/tawi/inbox.css" rel="stylesheet">
+
 <!--jqplot charts-->
 <!--<script language="javascript" type="text/javascript" src="../js/jqplot/jquery.min.js"></script>-->
-<script language="javascript" type="text/javascript"
-	src="../js/jqplot/jquery.jqplot.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="../css/jquery/jquery.jqplot.min.css" />
+
+<script language="javascript" type="text/javascript" src="../js/jqplot/jquery.jqplot.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../css/jquery/jquery.jqplot.min.css" />
+
 <script type="text/javascript" src="../js/jquery/jquery-1.4.2.min.js"></script>
+
 <script src="../js/jquery/jquery.autocomplete.js"></script>
+
 <style type="text/css">
 .tokenize-sample {
 	width: 300px;
 }
 </style>
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
 <script type="text/javascript" src="../js/jquery/jquery.tokenize.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="../css/jquery/jquery.tokenize.css" />
+
+<link rel="stylesheet" type="text/css" href="../css/jquery/jquery.tokenize.css" />
+
 <script type="text/javascript" src="../js/jqplot/jquery.jqplot.min.js"></script>
-<script type="text/javascript"
-	src="../js/jqplot/jqplot.barRenderer.min.js"></script>
-<script type="text/javascript"
-	src="../js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>
-<script type="text/javascript"
-	src="../js/jqplot/jqplot.pointLabels.min.js"></script>
-<script type="text/javascript"
-	src="../js/jqplot/jqplot.pieRenderer.min.js"></script>
+
+<script type="text/javascript" src="../js/jqplot/jqplot.barRenderer.min.js"></script>
+
+<script type="text/javascript" src="../js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>
+
+<script type="text/javascript" src="../js/jqplot/jqplot.pointLabels.min.js"></script>
+
+<script type="text/javascript" src="../js/jqplot/jqplot.pieRenderer.min.js"></script>
+
 <script>
 	$(document).ready(function() {
 		// calling of password matcher function
@@ -137,6 +165,8 @@ body {
 				$('.section').show();
 			}
 		});
+		
+		
 		jQuery(function() {
 			$("#receiver").autocomplete("sentTocontact.jsp");
 		});
@@ -222,41 +252,49 @@ body {
 			</ul>
 		</div>
 	</nav>
-<div class="container-fluid">
+	<div class="container-fluid">
 
 
 
-	<div class="row">
+		<div class="row">
 
 
 
 
 
-		<div class="col-lg-2 col-md-2 col-sm-1">
+			<div class="col-lg-2 col-md-2 col-sm-1">
 
 
-			<ul class="nav nav-tabs nav-stacked main-menu">
-				<!--menu to change depending on page requested-->
-				<li class="nav-header hidden-tablet">Main</li>
-				<li><a id="btn-dangers1" href="sendsms.jsp"
-					title="write message" data-rel="tooltip"><i
-						class="icon-folder-open"></i><span class="hidden-tablet">Compose</span></a></li>
-				<li><a class="ajax-link" id="btn-dangers1" href="index.jsp"><i
-						class="icon-home"></i><span class="hidden-tablet">Quick
-							Reports</span></a></li>
-				<li><a class="ajax-link" id="btn-dangers1" href="inbox.jsp"><i
-						class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
+				<ul class="nav nav-tabs nav-stacked main-menu">
+					<!--menu to change depending on page requested-->
+					<li class="nav-header hidden-tablet">Main</li>
+					<li><a id="btn-dangers1" href="sendsms.jsp"
+						title="write message" data-rel="tooltip"><i
+							class="icon-folder-open"></i><span class="hidden-tablet">Compose</span></a></li>
+					<li><a class="ajax-link" id="btn-dangers1" href="index.jsp"><i
+							class="icon-home"></i><span class="hidden-tablet">Quick
+								Reports</span></a></li>
+					<li><a class="ajax-link" id="btn-dangers1" href="inbox.jsp"><i
+							class="icon-envelope"></i><span class="hidden-tablet">Inbox</span></a></li>
 
-				<li><a class="ajax-link" id="btn-dangers1" href="sentgroup.jsp"><i
-						class="icon-edit"></i><span class="hidden-tablet">Sent
-							Group</span></a></li>
-				<li><a class="ajax-link" id="btn-dangers1"
-					href="messagetemplate.jsp"><i class="icon-edit"></i><span
-						class="hidden-tablet">Message Template</span></a></li>
-				<li>&nbsp;&nbsp;&nbsp; <i class="icon-edit"></i> <span
-					class="hidden-tablet"> <select class="ajax-link"
-						id="btn-dangers1" onchange="location = this.value;"
+					<li><a class="ajax-link" id="btn-dangers1"
+						href="sentgroup.jsp"><i class="icon-edit"></i><span
+							class="hidden-tablet">Sent Group</span></a></li>
+					<li><a class="ajax-link" id="btn-dangers1"
+						href="messagetemplate.jsp"><i class="icon-edit"></i><span
+							class="hidden-tablet">Message Template</span></a></li>
+
+					<li><a class="ajax-link" id="btn-dangers1" href="sent.jsp"><i
+							class="icon-edit"></i><span class="hidden-tablet">Sent
+								Messages</span></a></li>
+
+					<!--  	
+				<li>&nbsp;&nbsp;&nbsp; <i class="icon-edit"></i> <span class="hidden-tablet"> 
+					
+					
+					<select class="ajax-link" id="btn-dangers1" onchange="location = this.value;"
 						style="width: 140px; color: #369bd7; font-weight: 550; font-family: sans-serif;">
+						
 							<option value="sent.jsp">Sent Messages</option>
 							<option value="sent.jsp">All Sent</option>
 							<option value="sentStatus.jsp">Sent</option>
@@ -264,25 +302,29 @@ body {
 							<option value="sentRejected.jsp">Sent And Rejected</option>
 							<option value="sentFailed.jsp">Sent And Failed</option>
 							<option value="sentTransit.jsp">Sent And In Transit</option>
+							
+						
 					</select>
 
 				</span>
 				</li>
-			</ul>
-
-		</div>
-
-		<br />
-		<br />
+			-->
 
 
+				</ul>
 
-	<noscript>
-		<div class="alert alert-block span10">
-			<h4 class="alert-heading">Warning!</h4>
-			<p>
-				You need to have <a href="http://en.wikipedia.org/wiki/JavaScript"
-					target="_blank">JavaScript</a> enabled to use this site.
-			</p>
-		</div>
-	</noscript>
+			</div>
+
+			<br /> <br />
+
+
+
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>
+						You need to have <a href="http://en.wikipedia.org/wiki/JavaScript"
+							target="_blank">JavaScript</a> enabled to use this site.
+					</p>
+				</div>
+			</noscript>
