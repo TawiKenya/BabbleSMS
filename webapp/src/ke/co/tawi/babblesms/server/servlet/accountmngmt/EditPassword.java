@@ -18,6 +18,7 @@ package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.persistence.accounts.AccountDAO;
 import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Receives a form request toedit a account's details
@@ -39,10 +41,10 @@ import org.apache.log4j.Logger;
  *
  */
 
-public class EditPassword extends HttpServlet{
-	
+public class EditPassword extends HttpServlet {
+
 	private Logger logger = Logger.getLogger(this.getClass());
-	
+
 	/**
 	 * @param config
 	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
@@ -54,55 +56,52 @@ public class EditPassword extends HttpServlet{
 		super.init(config);
 
 	}
-	
+
 	/**
 	 * method to handle form processing
+	 * 
 	 * @param request
 	 * @param response
-	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse)
 	 * 
 	 * @throws IOException
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException{
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(true);
-		
-		String accuuid = request.getParameter("accuuid");
-		
-		
-		String password = request.getParameter("oldpassword");
-		String newpassword = request.getParameter("newpassword");
-		String confirmpassword = request.getParameter("confirmpassword");
-		
-		
-		
 
-		
-			AccountDAO acDAO = AccountDAO.getInstance();
-			Account accounts = acDAO.getAccount(accuuid);
-	if(password !=accounts.getLogpassword()){
-			session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Old password wrong!Please type again");
-			
+		String accuuid = request.getParameter("accuuid");
+
+		String password = request.getParameter("oldpassword");
+
+		String newpassword = request.getParameter("newpassword");
+
+		String confirmpassword = request.getParameter("confirmpassword");
+
+		AccountDAO acDAO = AccountDAO.getInstance();
+
+		Account accounts = acDAO.getAccount(accuuid);
+
+		if (StringUtils.equals(SecurityUtil.getMD5Hash(password), accounts.getLogpassword()) == false) {
+			session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY,
+					"Old password wrong!Please type again");
+
+		} else {
+			accounts.setLogpassword(newpassword);
+
+			if (acDAO.updateAccount(confirmpassword, accounts)) {
+				session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY,
+						"You have successfully edited your password");
+			}
+
+			else {
+				session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Password  Editing Failed.");
 
 			}
-	else{		
-		    	 accounts.setLogpassword(newpassword);
-			
-		    if( acDAO.updateAccount(confirmpassword, accounts)){
-			 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_SUCCESS_KEY, "You have successfully edited your password");
-		   }
-
-			else{
-			 session.setAttribute(SessionConstants.CLIENT_EDIT_ACCOUNT_ERROR_KEY, "Password  Editing Failed.");  
-
-                   }
 		}
-		
-			response.sendRedirect("setting.jsp");	
-		}
-	
-		
+
+		response.sendRedirect("setting.jsp");
 	}
 
-
-
+}
