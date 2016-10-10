@@ -197,9 +197,7 @@ public class Login extends HttpServlet {
 		wr.close();
 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + postParams);
-		System.out.println("Response Code : " + responseCode);
+		
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				con.getInputStream()));
@@ -211,8 +209,8 @@ public class Login extends HttpServlet {
 		}
 		in.close();
 
-		// print result
-		System.out.println(response.toString());
+	
+		
 		
 		//parse JSON response and return 'success' value
 		JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
@@ -221,7 +219,7 @@ public class Login extends HttpServlet {
 		
 		return jsonObject.getBoolean("success");
 		}catch(Exception e){
-			e.printStackTrace();
+			
 			return false;
 		}
 	}
