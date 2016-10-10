@@ -735,7 +735,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	input[type="url"], input[type="search"], input[type="tel"], input[type="color"],
 	.uneditable-input {
 	display: inline-block;
-	height: 18px;
+	height: 28px;
+	width:200px;
 	padding: 4px;
 	margin-bottom: 9px;
 	font-size: 13px;
@@ -1061,7 +1062,7 @@ input:focus:required:invalid:focus, textarea:focus:required:invalid:focus,
 	padding: 17px 20px 18px;
 	margin-top: 18px;
 	margin-bottom: 18px;
-	background-color: #080808;
+	background-color: #ffffff;
 	border-top: 1px solid #e5e5e5;
 	*zoom: 1;
 }
