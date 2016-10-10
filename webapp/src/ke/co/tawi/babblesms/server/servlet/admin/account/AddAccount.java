@@ -127,7 +127,7 @@ public class AddAccount extends HttpServlet {
             // No website login password provided
         } else if (StringUtils.isBlank(loginPasswd) || StringUtils.isBlank(loginPasswd2)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_NO_LOGIN_PASSWD);
-        
+         System.out.println("This is the password received "+loginPasswd);
             // The website login passwords provided do not match
         } else if (!StringUtils.equals(loginPasswd, loginPasswd2)) {
             session.setAttribute(SessionConstants.ADMIN_ADD_ACCOUNT_ERROR_KEY, ERROR_LOGIN_PASSWD_MISMATCH);
@@ -177,6 +177,8 @@ public class AddAccount extends HttpServlet {
         a.setName(name);
         a.setUsername(username);
         a.setLogpassword(loginPasswd);
+        System.out.println("This is the password in the account object"+a.getLogpassword());
+        
         a.setEmail(email);
         a.setMobile(phone);
         a.setStatusuuid(Status.ACTIVE);
@@ -195,6 +197,8 @@ public class AddAccount extends HttpServlet {
     private void updateAccountCache(Account acc) {
         cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME).put(new Element(acc.getUsername(), acc));
         cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(acc.getUuid(), acc));
+        
+        
     }
 
 }
