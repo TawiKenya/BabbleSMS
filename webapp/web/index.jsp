@@ -27,16 +27,7 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
 <%@page import="org.jasypt.util.text.BasicTextEncryptor"%>
-<%@ page import="net.tanesha.recaptcha.ReCaptcha"%>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory"%>
-<%
-	BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-	textEncryptor.setPassword(FontImageGenerator.SECRET_KEY);
 
-	final int CAPTCHA_LENGTH = 4;
-	String captchaStr = RandomStringUtils.randomAlphabetic(CAPTCHA_LENGTH);
-	String encryptedCaptchaStr = textEncryptor.encrypt(captchaStr.toLowerCase());
-%>
 
 <html lang="en">
 <head>
