@@ -111,7 +111,7 @@ function sendRequest1(str){
            if ((request.readyState == 4)&&(request.status==200)) {
            	//alert(request.responseText);  
              $('#ContactsAdd').remove();        	
-            $('#header-display').after(request.responseText);
+            $('#header-display').html(request.responseText);
              }
          }
     
