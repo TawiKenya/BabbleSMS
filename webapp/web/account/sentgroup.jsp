@@ -129,7 +129,7 @@
 
         ussdCount = (sgPage.getPageNumber() - 1) * sgPage.getPageSize() + 1;
 
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h:mma");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy, h:mm aaa");
     SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 %>    
 <jsp:include page="messageheader.jsp" />

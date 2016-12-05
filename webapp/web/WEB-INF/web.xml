@@ -1,10 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2015 Tawi Commercial Services Ltd
+
+    Licensed under the Open Software License, Version 3.0 (the "License"); you may
+    not use this file except in compliance with the License. You may obtain a copy
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software distributed
+    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and limitations
+    under the License.
+-->
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 
     <!-- Servlet definition start -->
-    
+
     <!-- Start - Startup servlets -->
     <servlet>
         <servlet-name>Log4jInit</servlet-name>
@@ -15,7 +30,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
+
     <servlet>
         <servlet-name>PropertiesConfig</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig</servlet-class>
@@ -25,13 +40,13 @@
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
-    
+
     <servlet>
         <servlet-name>DbPoolUtil</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.util.DbPoolUtil</servlet-class>
         <load-on-startup>3</load-on-startup>
     </servlet>
-    
+
     <servlet>
         <servlet-name>CacheInit</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.init.CacheInit</servlet-class>
@@ -41,22 +56,22 @@
         </init-param>
         <load-on-startup>4</load-on-startup>
     </servlet>
-   
+
 
 <listener>
   <listener-class> ke.co.tawi.babblesms.server.servlet.quartz.QuartzListener</listener-class>
 </listener>
- 
+
 
     <!-- End - Startup servlets -->
-    
-    
+
+
     <!-- Start - Account Holder servlets -->
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Login</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Logout</servlet-class>
@@ -66,7 +81,7 @@
       <servlet-name>ResetPassword</servlet-name>
       <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.ResetPassword</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>AddContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.contactmgmt.AddContact</servlet-class>
@@ -77,7 +92,7 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.contactmgmt.AddGroup</servlet-class>
     </servlet>
    <servlet>
-        <servlet-name>EditGroup</servlet-name> 
+        <servlet-name>EditGroup</servlet-name>
        <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditGroup</servlet-class>
     </servlet>
 
@@ -98,7 +113,7 @@
     <servlet>
         <servlet-name>EditPassword</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditPassword</servlet-class>
-    </servlet> 
+    </servlet>
     <servlet>
         <servlet-name>EditTemplate</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditTemplate</servlet-class>
@@ -106,14 +121,14 @@
     <servlet>
         <servlet-name>AddTemplate</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.AddTemplate</servlet-class>
-    </servlet>     
-        
+    </servlet>
+
     <!--<servlet>
         <servlet-name>NetworkCount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Netcount</servlet-class>
-    </servlet>-->   
-    
-    
+    </servlet>-->
+
+
     <servlet>
         <servlet-name>FontImageGenerator</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator</servlet-class>
@@ -134,12 +149,12 @@
         <servlet-name>OutgoingPie</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.report.chart.pie.OutgoingPie</servlet-class>
     </servlet>
-        
+
     <servlet>
         <servlet-name>ContactUpload</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.upload.ContactUpload</servlet-class>
     </servlet>
-    
+
     <!-- Ajax Client servlets start -->
     <servlet>
         <servlet-name>GetGroups</servlet-name>
@@ -149,18 +164,18 @@
         <servlet-name>GetGroupMessages</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetGroupMessages</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>GetBalance</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetBalance</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>GetContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.ajax.client.GetContact</servlet-class>
     </servlet>
     <!-- Ajax Client servlets end -->
-    
+
     <!-- End - Account Holder servlets -->
 
 
@@ -174,26 +189,26 @@
 
 
     <!-- Ajax admin servlets end -->
-    
 
-    
-    
+
+
+
     <!-- Start - Administrator servlets -->
     <servlet>
         <servlet-name>AdminLogin</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Login</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>AdminLogout</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.Logout</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>AdminAddAccount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.AddAccount</servlet-class>
     </servlet>
-     
+
       <servlet>
         <servlet-name>addUrl</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.smsgateway.AddNotificationUrl</servlet-class>
@@ -218,7 +233,7 @@
         <servlet-name>resetNotificationUrl</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.smsgateway.ResetNotificationUrl</servlet-class>
     </servlet>
- 
+
     <servlet>
         <servlet-name>addshortcode</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.source.Addshortcode</servlet-class>
@@ -227,7 +242,7 @@
         <servlet-name>addmask</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.source.Addmask</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>addcredit</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.sms.Addcredit</servlet-class>
@@ -239,10 +254,10 @@
 
 
 
-    
+
     <!-- End - Administrator servlets -->
-    
-    
+
+
     <servlet>
         <servlet-name>Callback</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.sms.callback.Callback</servlet-class>
@@ -252,20 +267,20 @@
         <servlet-name>exportExcel</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.inbox.ExportExcel</servlet-class>
     </servlet>
- 
+
     <servlet>
         <servlet-name>exportExcelOutbox</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.export.excel.outbox.ExportExcel</servlet-class>
     </servlet>
-    
-    
+
+
     <!-- Servlet mapping start -->
-    
+
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
@@ -281,63 +296,63 @@
     <servlet-mapping>
         <servlet-name>AddContact</servlet-name>
         <url-pattern>/account/addContact</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
         <url-pattern>/account/editaccount</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
 
      <servlet-mapping>
         <servlet-name>EditPassword</servlet-name>
         <url-pattern>/account/editpassword</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>AddGroup</servlet-name>
         <url-pattern>/account/addGroup</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
 
      <servlet-mapping>
         <servlet-name>EditGroup</servlet-name>
         <url-pattern>/account/editGroup</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>SendSMS</servlet-name>
         <url-pattern>/account/SendSMS</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>EditTemplate</servlet-name>
         <url-pattern>/account/EditTemplate</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>AddTemplate</servlet-name>
         <url-pattern>/account/AddTemplate</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>EditContact</servlet-name>
         <url-pattern>/account/editcontact</url-pattern>
-    </servlet-mapping>    
-    
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>FontImageGenerator</servlet-name>
         <url-pattern>/fontImageGenerator</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>IncomingBarDay</servlet-name>
         <url-pattern>/account/incomingBarDay</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>OutgoingBarDay</servlet-name>
         <url-pattern>/account/outgoingBarDay</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>IncomingPie</servlet-name>
         <url-pattern>/account/incomingPie</url-pattern>
@@ -347,12 +362,12 @@
         <url-pattern>/account/outgoingPie</url-pattern>
     </servlet-mapping>
 
-    
+
     <!--<servlet-mapping>
         <servlet-name>NetworkCount</servlet-name>
         <url-pattern>/account/NetCount</url-pattern>
     </servlet-mapping>-->
-    
+
        <servlet-mapping>
         <servlet-name>addshortcode</servlet-name>
         <url-pattern>/addshortcode</url-pattern>
@@ -361,7 +376,7 @@
         <servlet-name>addmask</servlet-name>
         <url-pattern>/addmask</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>addcredit</servlet-name>
         <url-pattern>/addcredit</url-pattern>
@@ -381,18 +396,18 @@
         <servlet-name>exportExcel</servlet-name>
         <url-pattern>/account/exportExcel</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>exportExcelOutbox</servlet-name>
         <url-pattern>/account/exportExcelOutbox</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>ContactUpload</servlet-name>
         <url-pattern>/account/uploadContacts</url-pattern>
     </servlet-mapping>
 
-    
+
     <!-- Client Ajax servlet mapping start -->
     <servlet-mapping>
         <servlet-name>GetGroups</servlet-name>
@@ -408,7 +423,7 @@
         <servlet-name>GetBalance</servlet-name>
         <url-pattern>/account/getBalance</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>GetContact</servlet-name>
         <url-pattern>/account/getContact</url-pattern>
@@ -428,18 +443,18 @@
 
 
 
-    
+
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>
         <servlet-name>AdminLogin</servlet-name>
-        <url-pattern>/admin/Login</url-pattern>      
+        <url-pattern>/admin/Login</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>AdminLogout</servlet-name>
         <url-pattern>/admin/Logout</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>AdminAddAccount</servlet-name>
         <url-pattern>/admin/addAccount</url-pattern>
@@ -469,10 +484,10 @@
         <url-pattern>/resetNotificationUrl</url-pattern>
     </servlet-mapping>
     <!-- End - Administrator servlet mapping -->
-    
+
     <!-- Servlet mapping end -->
-    
-    
+
+
     <session-config>
         <session-timeout>8</session-timeout>
     </session-config>

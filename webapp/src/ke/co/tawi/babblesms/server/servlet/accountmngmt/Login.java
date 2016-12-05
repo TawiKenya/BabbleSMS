@@ -134,8 +134,10 @@ public class Login extends HttpServlet {
         }
         
         if (account != null) {
-            // Check that the system generated captcha and the user input for the captcha match				
-            if (validateCaptcha(gRecaptchaResponse )==false) {
+            // Check that the system generated captcha and the user input for the captcha match
+        	
+        	if (validateCaptcha(gRecaptchaResponse ) == true) { // disable captcha check
+            //if (validateCaptcha(gRecaptchaResponse ) == false) {        		
                 session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_ERROR_KEY, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
                 response.sendRedirect("index.jsp");
 

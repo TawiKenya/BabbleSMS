@@ -18,12 +18,9 @@
 %>
 
 
-
 <%@page import="ke.co.tawi.babblesms.server.beans.network.Network"%>
-<%@page
-	import="ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox.InboxPage"%>
-<%@page
-	import="ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox.InboxPaginator"%>
+<%@page	import="ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox.InboxPage"%>
+<%@page	import="ke.co.tawi.babblesms.server.accountmgmt.pagination.inbox.InboxPaginator"%>
 <%@page import="ke.co.tawi.babblesms.server.session.SessionStatistics"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.account.Account"%>
 <%@page import="ke.co.tawi.babblesms.server.beans.contact.Contact"%>
@@ -156,27 +153,22 @@
 	PhoneDAO phnDAO = PhoneDAO.getInstance();
 	ContactDAO ctssDAO = ContactDAO.getInstance();
 
-	SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+	SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy h:mm aaa");
 	SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 %>
 
 <jsp:include page="messageheader.jsp" />
 
+    <div class="col-lg-10 col-md-10 col-sm-5">
 
+        <div class="col-lg-1 col-md-1 col-sm-1">
 
-
-
-		<div class="col-lg-10 col-md-10 col-sm-5">
-
-			<div class="col-lg-1 col-md-1 col-sm-1">
-
-				<form name="pageForm" method="post" action="inbox.jsp">
-					<input class="btn btn-info" type="submit" name="refresh"
-						value="Refresh" /> <input class="toolbarBtn" type="hidden"
-						name="page" value="First" />
-
-				</form>
-			</div>
+                <form name="pageForm" method="post" action="inbox.jsp">
+                    <input class="btn btn-info" type="submit" name="refresh"
+                                value="Refresh" /> <input class="toolbarBtn" type="hidden"
+                                name="page" value="First" />
+                </form>
+        </div>
 
 			<div class="col-lg-5 col-md-5 col-sm-2"></div>
 

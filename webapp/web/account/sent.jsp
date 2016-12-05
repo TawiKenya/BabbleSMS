@@ -171,7 +171,7 @@
 	PhoneDAO phoneDAO = PhoneDAO.getInstance();
 	ContactDAO ctDAO = ContactDAO.getInstance();
 
-	SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+	SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy, h:mm aaa");
 	SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 %>
 
