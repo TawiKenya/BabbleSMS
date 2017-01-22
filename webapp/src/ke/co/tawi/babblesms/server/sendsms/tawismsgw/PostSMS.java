@@ -232,6 +232,7 @@ public class PostSMS extends Thread {
 			
             try {
             	String response = EntityUtils.toString(responseEntity);
+            	
             	GatewayDAO.getInstance().logResponse(account, response, new Date());
             	            	
             	String[] strTokens = StringUtils.split(response, '&');

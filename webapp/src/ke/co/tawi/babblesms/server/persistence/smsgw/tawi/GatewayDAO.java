@@ -184,7 +184,7 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.error("SQLException when editting TawiGateway "+gateway);
+			logger.error("SQLException when editing TawiGateway " + gateway);
 			logger.error(ExceptionUtils.getStackTrace(e));
 		    success = false;
 	   }		
@@ -207,7 +207,7 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 			list = beanProcessor.toBeanList(rset, TawiGateway.class);
 			
 		} catch(SQLException e){
-			logger.error("SQL Exception when getting all SMSGateways");
+			logger.error("SQLException when getting all SMSGateways");
             logger.error(ExceptionUtils.getStackTrace(e));
 		}
 		

@@ -208,14 +208,9 @@
 
 
 
-			<form id="sendsms" name="myform" class="form-horizontal"
-				action="SendSMS" method="POST">
-
-
+			<form id="sendsms" name="myform" class="form-horizontal" action="SendSMS" method="POST">
 
 				<label class="control-label" for="destination">TO:</label>
-
-
 
 				<div class="controls">
 
@@ -419,12 +414,6 @@
 					</div>
 
 				</div>
-
-
-
-
-
-
 
 
 				<div id="dialog-confirm"></div>

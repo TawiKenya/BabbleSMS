@@ -42,7 +42,7 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -70,9 +70,7 @@ public class Callback extends HttpServlet {
     										// UUID in BabbleSMS
     
     private List<Shortcode>  shortcodeList;
-    
-    private Logger logger = Logger.getLogger(this.getClass());
-    
+        
     /**
      * @param config
      * @throws ServletException

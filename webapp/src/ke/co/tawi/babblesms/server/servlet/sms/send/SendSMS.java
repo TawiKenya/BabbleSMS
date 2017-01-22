@@ -67,8 +67,7 @@ import org.apache.commons.collections.list.SetUniqueList;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public class SendSMS extends HttpServlet {
-				
-			
+							
 	private Cache accountsCache;
 		
 	private PhoneDAO phoneDAO;
@@ -113,7 +112,7 @@ public class SendSMS extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void doPost(HttpServletRequest request , HttpServletResponse response) throws IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		// Respond as soon as possible to the client request
 		HttpSession session = request.getSession(true);
