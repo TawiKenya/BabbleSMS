@@ -1,12 +1,37 @@
+<?xml version="1.0"?>
+<!--
+    Copyright 2015 Tawi Commercial Services Ltd
+
+    Licensed under the Open Software License, Version 3.0 (the “License”); you may
+    not use this file except in compliance with the License. You may obtain a copy
+    of the License at:
+    http://opensource.org/licenses/OSL-3.0
+
+    Unless required by applicable law or agreed to in writing, software 
+    distributed under the License is distributed on an “AS IS” BASIS, WITHOUT 
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+    See the License for the specific language governing permissions and 
+    limitations under the License.
+-->
+   
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
   <modelVersion>4.0.0</modelVersion>
   <groupId>ke.co.tawi.babblesms</groupId>
   <artifactId>BabbleSMS</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>BabbleSMS Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <url>http://babblesms.tawi.mobi</url>
+  <inceptionYear>2015</inceptionYear>
+  
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -14,8 +39,33 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+    </dependency>
   </dependencies>
+  
+  <developers>
+        <developer>
+            <name>Michael Wakahe</name>
+            <id>michael</id>
+            <email>michael@tawi.co.ke</email>
+            <organization>Tawi Commercial Services Ltd</organization>
+            <roles>
+                <role>Software Architect</role>
+            </roles>
+        </developer>
+    </developers>
+        
+  <contributors>
+        <contributor>
+            <name>Eugene Wang'ombe</name>
+        </contributor>
+   </contributors>
+   
   <build>
     <finalName>BabbleSMS</finalName>
   </build>
+  
 </project>
