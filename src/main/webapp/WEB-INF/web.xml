@@ -26,7 +26,7 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.init.Log4jInit</servlet-class>
         <init-param>
             <param-name>log4j-init-file</param-name>
-            <param-value>/WEB-INF/log/log4j.properties</param-value>
+            <param-value>/WEB-INF/classes/log4j.properties</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -36,7 +36,7 @@
         <servlet-class>ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig</servlet-class>
         <init-param>
             <param-name>config-file</param-name>
-            <param-value>/WEB-INF/config.properties</param-value>
+            <param-value>/WEB-INF/classes/config.properties</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
@@ -106,10 +106,12 @@
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.sms.send.SendSMS</servlet-class>
     </servlet>
+    <!-- 
     <servlet>
         <servlet-name>EditAccount</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditAccount</servlet-class>
-    </servlet>
+    </servlet> 
+    -->
     <servlet>
         <servlet-name>EditPassword</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditPassword</servlet-class>
@@ -215,7 +217,7 @@
     </servlet>
 
      <servlet>
-        <servlet-name>EditAccount</servlet-name>
+        <servlet-name>EditAccount2</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.admin.account.EditAccount</servlet-class>
     </servlet>
 
@@ -298,11 +300,13 @@
         <url-pattern>/account/addContact</url-pattern>
     </servlet-mapping>
 
+	<!-- 
     <servlet-mapping>
         <servlet-name>EditAccount</servlet-name>
         <url-pattern>/account/editaccount</url-pattern>
     </servlet-mapping>
-
+	-->
+	
      <servlet-mapping>
         <servlet-name>EditPassword</servlet-name>
         <url-pattern>/account/editpassword</url-pattern>
@@ -466,7 +470,7 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>EditAccount</servlet-name>
+        <servlet-name>EditAccount2</servlet-name>
         <url-pattern>/editAccount</url-pattern>
     </servlet-mapping>
      <servlet-mapping>
