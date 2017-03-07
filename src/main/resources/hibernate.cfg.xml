@@ -1,0 +1,49 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<!--
+ Copyright 2015 Tawi Commercial Services Ltd
+
+  Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ not use this file except in compliance with the License. You may obtain a copy
+ of the License at:
+ http://opensource.org/licenses/OSL-3.0
+
+ Unless required by applicable law or agreed to in writing, software 
+ distributed under the License is distributed on an “AS IS” BASIS, WITHOUT 
+ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+ See the License for the specific language governing permissions and 
+ limitations under the License.
+-->
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">babblesms</property>
+        <property name="hibernate.connection.password">Hymfatsh8</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/babblesmsdb</property>
+
+        <property name="connection_pool_size">2</property>
+        <property name="statement_cache.size">2</property>
+        
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">false</property>
+    
+        <property name="use_outer_join">true</property>
+        
+        <!-- Drop and re-create the database schema on startup -->
+        <!-- <property name="hbm2ddl.auto">create</property> -->
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Disable the second-level cache  -->
+        <!-- <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property> -->
+
+
+        <!-- <mapping class="org.javabrains.sanjaya.dto.UserDetails"/> -->
+
+    </session-factory>
+</hibernate-configuration>
