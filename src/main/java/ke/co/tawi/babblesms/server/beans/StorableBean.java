@@ -18,6 +18,11 @@ package ke.co.tawi.babblesms.server.beans;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Represents an object in the Babblesms architecture that can be stored in the
@@ -26,6 +31,7 @@ import java.util.UUID;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
+@MappedSuperclass
 public class StorableBean implements Serializable {
 		
 	private int id;
@@ -43,6 +49,7 @@ public class StorableBean implements Serializable {
 	/**
 	 * @return the id
 	 */
+	@Id
 	public int getId() {
 		return id;
 	}
@@ -54,12 +61,16 @@ public class StorableBean implements Serializable {
 		this.id = id;
 	}
 	
+	
 	/**
 	 * @return the uuid
 	 */
+	@Column(name = "uuid", unique = true)
+    @NotEmpty
 	public String getUuid() {
 		return uuid;
 	}
+	
 	
 	/**
 	 * @param uuid - the uuid to set

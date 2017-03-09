@@ -43,7 +43,7 @@
         <!-- <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property> -->
 
 
-        <!-- <mapping class="org.javabrains.sanjaya.dto.UserDetails"/> -->
+        <mapping class="ke.co.tawi.babblesms.server.beans.account.Status"/> 
 
     </session-factory>
 </hibernate-configuration>

@@ -15,9 +15,6 @@
  */
 package ke.co.tawi.babblesms.server.servlet.init;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -43,19 +40,7 @@ public class BabbleServletContextListener implements ServletContextListener {
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		System.out.println("Have started listening to context.");
-		
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		
-		Map properties = sessionFactory.getProperties();
-		Iterator iter = properties.keySet().iterator();
-		
-		String key;
-		
-		while(iter.hasNext()) {
-			key = (String)iter.next();
-			System.out.println("Key is '" + key + ", value is '" + properties.get(key) + "'");
-		}
+				
 	}
 
 	
@@ -65,8 +50,8 @@ public class BabbleServletContextListener implements ServletContextListener {
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		System.out.println("Have stopped listening to context.");
-
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		sessionFactory.close();
 	}
 }
 

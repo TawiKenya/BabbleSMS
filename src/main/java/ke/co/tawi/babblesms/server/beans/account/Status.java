@@ -19,6 +19,9 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 
 /**
  * A generic status.
@@ -26,6 +29,8 @@ import org.apache.commons.lang3.StringUtils;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
+@Entity
+@Table( name = "status" )
 public class Status extends StorableBean {
 
 	
@@ -49,7 +54,7 @@ public class Status extends StorableBean {
         description = "";
     }
     
-
+     
     /**
      *
      * @return the description
