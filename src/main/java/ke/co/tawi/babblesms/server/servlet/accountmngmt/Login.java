@@ -15,6 +15,14 @@
  */
 package ke.co.tawi.babblesms.server.servlet.accountmngmt;
 
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.cache.CacheVariables;
+import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
+import ke.co.tawi.babblesms.server.session.SessionConstants;
+import ke.co.tawi.babblesms.server.session.SessionStatistics;
+import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
+import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,13 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 
-import ke.co.tawi.babblesms.server.beans.account.Account;
-import ke.co.tawi.babblesms.server.cache.CacheVariables;
-import ke.co.tawi.babblesms.server.servlet.util.FontImageGenerator;
-import ke.co.tawi.babblesms.server.session.SessionConstants;
-import ke.co.tawi.babblesms.server.session.SessionStatistics;
-import ke.co.tawi.babblesms.server.session.SessionStatisticsFactory;
-import ke.co.tawi.babblesms.server.utils.security.SecurityUtil;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -68,7 +69,7 @@ public class Login extends HttpServlet {
     private String hiddenCaptchaStr = "";
 
     private Cache accountsCache, statisticsCache;
-
+    
     /**
      *
      * @param config
@@ -84,9 +85,10 @@ public class Login extends HttpServlet {
         CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
         statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
-
+        
         logger = Logger.getLogger(this.getClass());
-
+        
+        logger.info("Have inited login class");
     }
 
     
@@ -109,7 +111,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+    	
         HttpSession session = request.getSession(false);
 
         if (session != null) {
@@ -144,6 +146,7 @@ public class Login extends HttpServlet {
             } else {
                 // Correct login
                 if (StringUtils.equals(SecurityUtil.getMD5Hash(password), account.getLogpassword())) {
+                	
                     updateCache(account.getUuid());
                     session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_ACCOUNTUUID, account.getUuid());
                     session.setAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY, username);

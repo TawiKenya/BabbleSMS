@@ -19,6 +19,9 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -27,6 +30,8 @@ import org.apache.commons.lang3.StringUtils;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
+@Entity
+@Table( name = "account" )
 public class Account extends StorableBean {
 
     private String username;

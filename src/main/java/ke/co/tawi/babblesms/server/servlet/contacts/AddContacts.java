@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
  */
 @WebServlet(name = "AddContacts",
         urlPatterns = {
-            "/account/addcontact", "/account/editcontact", "/account/editEmail", "/account/deleteemail", "/account/deletecontact"})
+            "/account/addcontact", "/account/editEmail", "/account/deleteemail", "/account/deletecontact"})
 public class AddContacts extends HttpServlet {
 	private Logger logger = Logger.getLogger(this.getClass());
 	
@@ -72,6 +72,7 @@ public class AddContacts extends HttpServlet {
     private final String ERROR_INVALID_EMAIL = "Please provide a valid email address.";
     private final String ERROR_DUPLICATE_EMAIL = "You have supplied duplicate email addresses.";
     private final String ERROR_PUBLICATE_PHONE = "You have supplied duplicate phone numbers.";
+    
     Contact ct;
     Email mail;
     Phone phn;

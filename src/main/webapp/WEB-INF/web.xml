@@ -71,7 +71,12 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Login</servlet-class>
     </servlet>
-
+	<servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    
+    
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.Logout</servlet-class>
@@ -86,7 +91,12 @@
         <servlet-name>AddContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.contactmgmt.AddContact</servlet-class>
     </servlet>
-
+	<servlet-mapping>
+        <servlet-name>AddContact</servlet-name>
+        <url-pattern>/account/addContact</url-pattern>
+    </servlet-mapping>
+    
+    
      <servlet>
         <servlet-name>AddGroup</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.contactmgmt.AddGroup</servlet-class>
@@ -101,7 +111,11 @@
         <servlet-name>EditContact</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.accountmngmt.EditContact</servlet-class>
     </servlet>
-
+	<servlet-mapping>
+        <servlet-name>EditContact</servlet-name>
+        <url-pattern>/account/editcontact</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>ke.co.tawi.babblesms.server.servlet.sms.send.SendSMS</servlet-class>
@@ -278,10 +292,7 @@
 
     <!-- Servlet mapping start -->
 
-    <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
+    
 
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
@@ -295,10 +306,7 @@
     </servlet-mapping>
 
 
-    <servlet-mapping>
-        <servlet-name>AddContact</servlet-name>
-        <url-pattern>/account/addContact</url-pattern>
-    </servlet-mapping>
+    
 
 	<!-- 
     <servlet-mapping>
@@ -337,10 +345,7 @@
         <url-pattern>/account/AddTemplate</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>EditContact</servlet-name>
-        <url-pattern>/account/editcontact</url-pattern>
-    </servlet-mapping>
+    
 
     <servlet-mapping>
         <servlet-name>FontImageGenerator</servlet-name>

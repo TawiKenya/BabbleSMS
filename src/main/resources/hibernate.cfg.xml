@@ -10,11 +10,11 @@
  of the License at:
  http://opensource.org/licenses/OSL-3.0
 
- Unless required by applicable law or agreed to in writing, software 
- distributed under the License is distributed on an “AS IS” BASIS, WITHOUT 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an “AS IS” BASIS, WITHOUT
  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
- See the License for the specific language governing permissions and 
+ See the License for the specific language governing permissions and
  limitations under the License.
 -->
 <hibernate-configuration>
@@ -27,12 +27,12 @@
 
         <property name="connection_pool_size">2</property>
         <property name="statement_cache.size">2</property>
-        
+
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
-    
+
         <property name="use_outer_join">true</property>
-        
+
         <!-- Drop and re-create the database schema on startup -->
         <!-- <property name="hbm2ddl.auto">create</property> -->
 
@@ -43,7 +43,8 @@
         <!-- <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property> -->
 
 
-        <mapping class="ke.co.tawi.babblesms.server.beans.account.Status"/> 
+        <mapping class="ke.co.tawi.babblesms.server.beans.account.Status"/>
+        <mapping class="ke.co.tawi.babblesms.server.beans.contact.Contact"/>
 
     </session-factory>
 </hibernate-configuration>

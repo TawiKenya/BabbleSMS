@@ -17,8 +17,8 @@ package ke.co.tawi.babblesms.server.persistence.contacts;
 
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
-import ke.co.tawi.babblesms.server.beans.contact.Phone;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+import ke.co.tawi.babblesms.server.persistence.HibernateUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,6 +31,9 @@ import java.util.List;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 
 /**
@@ -90,6 +93,20 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
    public Contact getContact(String uuid) {
        Contact contact = null;
 
+       Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+       session.beginTransaction();
+       
+       Query<Contact> query = session.createQuery("from Contact where uuid = :uuid ");
+       query.setParameter("uuid", uuid);
+       List<Contact> list = query.list();
+       
+       if(list.size() > 0) {
+    	   contact = list.get(0);
+       }
+            
+       session.getTransaction().commit();
+       
+       /*
        try (
 		   Connection conn = dbCredentials.getConnection();
 	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Contact WHERE Uuid = ?;");    		   
@@ -104,8 +121,8 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
        } catch (SQLException e) {
            logger.error("SQLException when getting contact with uuid: " + uuid);
            logger.error(ExceptionUtils.getStackTrace(e));
-       }
-              
+       }*/
+                     
        return contact;
    }
     
@@ -138,6 +155,9 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
         }
                 
         Collections.sort(list);
+        
+        logger.info("List size is: " + list.size());
+        
         return list;
 	}
 	
@@ -167,6 +187,9 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
         }
           
         Collections.sort(list);
+        
+        logger.info("List size2 is: " + list.size());
+        
         return list;
 	}
 	
@@ -263,6 +286,8 @@ public class ContactDAO extends GenericDAO implements BabbleContactDAO {
 			logger.error("SQLException when trying to get a Contact List with an index and offset.");
             logger.error(ExceptionUtils.getStackTrace(e));
 	    }
+		
+		logger.info("List size3 is: " + contactList.size());
 		
 		return contactList;		
 	}

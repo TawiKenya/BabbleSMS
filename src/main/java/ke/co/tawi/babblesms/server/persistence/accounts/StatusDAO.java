@@ -15,6 +15,7 @@
  */
 package ke.co.tawi.babblesms.server.persistence.accounts;
 
+import ke.co.tawi.babblesms.server.persistence.HibernateUtil;
 import ke.co.tawi.babblesms.server.beans.account.Status;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
 
@@ -28,7 +29,8 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 /**
  * Persistence implementation for {@link Status}
@@ -86,24 +88,19 @@ public class StatusDAO extends GenericDAO implements BabbleStatusDAO{
    public Status getStatus(String uuid) {
        Status status = null;
 
-       try (
-		   Connection conn = dbCredentials.getConnection();
-	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Status WHERE Uuid = ?;");
-	   ) {
-    	   pstmt.setString(1, uuid);           
-    	   ResultSet rset = pstmt.executeQuery();
-	       
-	       if (rset.next()) {
-	    	   status = beanProcessor.toBean(rset, Status.class);
-           }
-	       
-	       rset.close();
-	       
-       } catch (SQLException e) {
-           logger.error("SQLException when getting Status with uuid: " + uuid);
-           logger.error(ExceptionUtils.getStackTrace(e));
-       }
+       Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+       session.beginTransaction();
        
+       Query<Status> query = session.createQuery("from Status where uuid = :uuid ");
+       query.setParameter("uuid", uuid);
+       List<Status> list = query.list();
+       
+       if(list.size() > 0) {
+    	   status = list.get(0);
+       }
+            
+       session.getTransaction().commit();
+                     
        return status;
    }
 

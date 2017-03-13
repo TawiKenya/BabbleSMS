@@ -21,6 +21,8 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -34,7 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @MappedSuperclass
 public class StorableBean implements Serializable {
 		
-	private int id;
+	private long id;
 	private String uuid;
         
 	
@@ -46,18 +48,21 @@ public class StorableBean implements Serializable {
 		uuid = UUID.randomUUID().toString();
 	}
 	
+	
 	/**
 	 * @return the id
 	 */
 	@Id
-	public int getId() {
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public long getId() {
 		return id;
 	}
+	
 	
 	/**
 	 * @param id - the id to set
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
