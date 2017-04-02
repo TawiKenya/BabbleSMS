@@ -1,0 +1,55 @@
+/**
+ * Copyright 2017 Tawi Commercial Services Ltd
+ *
+ * Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ * not use this file except in compliance with the License. You may obtain a copy
+ * of the License at:
+ * http://opensource.org/licenses/OSL-3.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
+***********************
+* How To Instructions *
+***********************
+
+Here we go through the steps to create a MySQL schema with the following details:
+Database name: babblesmsdb
+Database username: babblesms
+Database password: pass
+
+
+1) Install MySQL 5.6 and above or MariaDB 10 and above on your local machine.
+   Install both client and server applications.
+
+
+2) Create the database user account as follows:
+
+        % mysql -h localhost -u root -p
+        Enter password: ******
+        mysql> CREATE USER 'babblesms'@'localhost' IDENTIFIED BY 'pass';
+        mysql> GRANT ALL ON babblesmsdb.* TO 'babblesms'@'localhost';
+        Query OK, 0 rows affected (0.09 sec)
+        mysql> quit
+        Bye
+
+    In the commands shown, the % represents the prompt displayed by your shell or
+    command interpreter, and mysql> is the prompt displayed by mysql.
+
+
+3) Create the database as follows:
+        % mysql -h localhost -u babblesms -p
+        Enter password: ******
+        mysql> CREATE DATABASE babblesmsdb;
+        Query OK, 0 rows affected (0.09 sec)
+        mysql> quit
+        Bye
+
+
+4) Execute the script file as follows:
+        % mysql -h localhost -u babblesms -p babblesmsdb < tables.mysql.sql
