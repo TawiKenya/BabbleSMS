@@ -32,7 +32,8 @@ import ke.co.tawi.babblesms.server.servlet.util.PropertiesConfig;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 
@@ -79,7 +80,7 @@ public class Login extends HttpServlet {
        textEncryptor.setPassword(ENCRYPT_PASSWORD);
        // CacheManager mgr = CacheManager.getInstance();
        
-        logger = Logger.getLogger(this.getClass());
+       logger = LogManager.getLogger(this.getClass());
     }
 
 

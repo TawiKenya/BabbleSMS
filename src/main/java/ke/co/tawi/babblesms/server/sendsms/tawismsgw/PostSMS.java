@@ -63,7 +63,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -148,7 +149,7 @@ public class PostSMS extends Thread {
 		
 		outgoingLogDAO = OutgoingLogDAO.getInstance(); 
 		
-		logger = Logger.getLogger(this.getClass());		
+		logger = LogManager.getLogger(this.getClass());
 	}
 
 	

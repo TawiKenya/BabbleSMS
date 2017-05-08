@@ -25,7 +25,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariConfig;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Information on logging into the database. Also has does pooling of JDBC. This
@@ -39,7 +40,8 @@ import org.apache.log4j.Logger;
  */
 public class DBCredentials {
 
-    private Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
+    
     private HikariDataSource datasource;
     
     private Connection con;

@@ -23,7 +23,8 @@ import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
@@ -52,7 +53,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
      */
     protected MessageTemplateDAO() {
         super();
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
 
     /**
@@ -67,7 +68,7 @@ public class MessageTemplateDAO extends GenericDAO implements BabbleMessageTempl
     public MessageTemplateDAO(String dbName, String dbHost, String dbUsername,
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
 
     /**

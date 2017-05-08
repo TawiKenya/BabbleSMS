@@ -53,7 +53,8 @@ import net.sf.ehcache.config.DiskStoreConfiguration;
 import net.sf.ehcache.config.SizeOfPolicyConfiguration;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Brings certain frequently accessed variables into cache.
@@ -82,7 +83,7 @@ public class CacheInit extends HttpServlet {
     
     private SizeOfPolicyConfiguration sizeOfPolicyConfiguration;
 
-    private Logger logger = Logger.getLogger(this.getClass());
+    private Logger logger = LogManager.getLogger(this.getClass());
     
     
     /**

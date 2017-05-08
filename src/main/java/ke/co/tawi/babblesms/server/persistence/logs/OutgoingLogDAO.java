@@ -29,7 +29,8 @@ import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Persistence implementation for {@link OutgoingLog}
@@ -63,7 +64,7 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
      */
     protected OutgoingLogDAO() {
         super();
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
 
     
@@ -79,7 +80,7 @@ public class OutgoingLogDAO extends GenericDAO implements BabbleOutgoingLogDAO {
     public OutgoingLogDAO(String dbName, String dbHost, String dbUsername,
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
 
     

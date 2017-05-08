@@ -35,7 +35,9 @@ import java.util.Arrays;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Various manipulations on an uploaded Contact CSV file.
@@ -49,7 +51,7 @@ public class UploadUtil {
 	private String[] networkArray, networkUuidArray;
 	private List<String> networkList;
 	
-	private static Logger logger = Logger.getLogger(UploadUtil.class);
+	private static Logger logger = LogManager.getLogger(UploadUtil.class);
 	
 	
 	/**

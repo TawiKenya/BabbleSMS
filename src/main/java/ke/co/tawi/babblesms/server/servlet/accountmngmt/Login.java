@@ -43,7 +43,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 import net.sf.ehcache.Cache;
@@ -86,7 +87,7 @@ public class Login extends HttpServlet {
         accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
         statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
         
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
         
         logger.info("Have inited login class");
     }

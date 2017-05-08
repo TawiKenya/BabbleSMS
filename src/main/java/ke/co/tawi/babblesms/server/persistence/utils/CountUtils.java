@@ -26,7 +26,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Database utilities used for counting.
@@ -41,7 +42,7 @@ public class CountUtils extends GenericDAO {
 	
 	private static CountUtils countUtils;
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     /**
      *

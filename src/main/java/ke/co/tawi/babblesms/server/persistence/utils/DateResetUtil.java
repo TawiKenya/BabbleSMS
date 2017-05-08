@@ -29,7 +29,8 @@ import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.math3.random.RandomDataGenerator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -42,7 +43,7 @@ public class DateResetUtil extends GenericDAO {
 
 	private static DateResetUtil resetUtil;
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
     
     /**
      *

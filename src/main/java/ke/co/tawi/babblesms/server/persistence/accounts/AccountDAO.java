@@ -28,7 +28,8 @@ import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -44,7 +45,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
 	
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
-	private Logger logger = Logger.getLogger(this.getClass());
+	private final Logger logger = LogManager.getLogger(this.getClass());
 	
 	
     /**
@@ -196,7 +197,7 @@ public class AccountDAO extends GenericDAO implements BabbleAccountDAO {
             pstmt.executeUpdate();
             
         } catch (SQLException e) {
-        	logger.error("SQLException when trying to put: " + account);
+        	logger.error("SQL Exception when trying to put: " + account);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         }      

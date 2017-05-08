@@ -24,7 +24,8 @@ import org.apache.commons.mail.EmailException;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Email utility
@@ -37,7 +38,7 @@ public class EmailUtil extends Thread {
     
     private EmailValidator emailValidator = EmailValidator.getInstance();   
 
-    private Logger logger = Logger.getLogger(this.getClass());
+    private Logger logger = LogManager.getLogger(this.getClass());
 	
     private String from;
     private String[] to, cc, bcc; 

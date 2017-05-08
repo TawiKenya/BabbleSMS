@@ -31,7 +31,8 @@ import java.util.UUID;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Persistence implementation for {@link TawiGateway}
@@ -43,7 +44,7 @@ public class GatewayDAO extends GenericDAO implements BabbleGatewayDAO {
 
 	private static GatewayDAO gatewayDAO;
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     private BeanProcessor beanProcessor = new BeanProcessor();
     

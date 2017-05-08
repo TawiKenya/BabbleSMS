@@ -43,7 +43,8 @@ import net.sf.ehcache.Element;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Receives form values from addcontact.jsp section and adds a new
@@ -56,7 +57,7 @@ import org.apache.log4j.Logger;
         urlPatterns = {
             "/account/addcontact", "/account/editEmail", "/account/deleteemail", "/account/deletecontact"})
 public class AddContacts extends HttpServlet {
-	private Logger logger = Logger.getLogger(this.getClass());
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
     private final CacheManager mgr = CacheManager.getInstance();
     private final EmailDAO emailDAO = EmailDAO.getInstance();

@@ -35,7 +35,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.jasypt.util.text.BasicTextEncryptor;
 
@@ -75,7 +76,7 @@ public class FontImageGenerator extends HttpServlet {
 		textEncryptor = new BasicTextEncryptor();
 		textEncryptor.setPassword(SECRET_KEY);
 		
-		logger = Logger.getLogger(this.getClass());
+		logger = LogManager.getLogger(this.getClass());
     }
 
     

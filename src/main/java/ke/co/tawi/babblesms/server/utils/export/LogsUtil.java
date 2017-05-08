@@ -15,7 +15,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A utility class that filters through a file and extracts a specific
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
 
 public class LogsUtil {
 	
-	private static final Logger logger = Logger.getLogger(LogsUtil.class);
+	private static final Logger logger = LogManager.getLogger(LogsUtil.class);
 	
 	/**
 	 * This method extracts lines in the file containing the specified pattern and return the new

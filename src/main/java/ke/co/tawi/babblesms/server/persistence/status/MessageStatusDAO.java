@@ -7,15 +7,17 @@ import java.sql.SQLException;
 import java.util.List;
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MsgStatus;
 import ke.co.tawi.babblesms.server.persistence.GenericDAO;
+
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Copyright (c) Tawi Commercial Services Ltd., Jun 27, 2013
  *
  * @author <a href="mailto:japhethk@tawi.mobi">Japheth Korir</a>
- * @version %I%, %G%
  */
 public class MessageStatusDAO extends GenericDAO implements BabbleMessageStatusDAO {
 
@@ -35,7 +37,7 @@ public class MessageStatusDAO extends GenericDAO implements BabbleMessageStatusD
      */
     protected MessageStatusDAO() {
         super();
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
 
     /**
@@ -50,7 +52,7 @@ public class MessageStatusDAO extends GenericDAO implements BabbleMessageStatusD
     public MessageStatusDAO(String dbName, String dbHost, String dbUsername,
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
 
     /**

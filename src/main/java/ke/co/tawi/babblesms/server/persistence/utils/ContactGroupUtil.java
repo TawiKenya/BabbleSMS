@@ -31,7 +31,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility that creates new associations among contacts, groups and accounts
@@ -68,7 +69,7 @@ public class ContactGroupUtil extends GenericDAO {
 		account = new Account();
 		account.setUuid(accountUUID);
 
-		logger = Logger.getLogger(this.getClass());
+		logger = LogManager.getLogger(this.getClass());
 	}
 
 	

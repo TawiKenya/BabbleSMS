@@ -30,7 +30,8 @@ import java.util.List;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Persistence implementation for {@link OutgoingGrouplog}
@@ -65,7 +66,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
      */
     protected OutgoingGroupLogDAO() {
         super();
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
     
 
@@ -82,7 +83,7 @@ public class OutgoingGroupLogDAO extends GenericDAO implements BabbleOutgoingGro
     public OutgoingGroupLogDAO(String dbName, String dbHost, String dbUsername,
             String dbPassword, int dbPort) {
         super(dbName, dbHost, dbUsername, dbPassword, dbPort);
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
     
 

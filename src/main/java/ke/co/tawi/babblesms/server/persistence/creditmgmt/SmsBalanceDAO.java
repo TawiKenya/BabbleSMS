@@ -34,7 +34,8 @@ import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -49,7 +50,7 @@ public class SmsBalanceDAO extends GenericDAO implements BabbleSmsBalanceDAO {
 	
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
-	private Logger logger = Logger.getLogger(this.getClass());
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	
 	/**

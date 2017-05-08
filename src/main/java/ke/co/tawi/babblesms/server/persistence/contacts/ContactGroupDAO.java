@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -45,7 +46,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
     private ContactDAO contactDAO;
     private GroupDAO groupDAO; 
 
-    private Logger logger = Logger.getLogger(this.getClass());
+    private Logger logger = LogManager.getLogger(this.getClass());
 
     
     /**
@@ -87,7 +88,7 @@ public class ContactGroupDAO extends GenericDAO implements BabbleContactGroupDAO
         contactDAO =  new ContactDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
         groupDAO = new  GroupDAO(dbName, dbHost, dbUsername, dbPassword, dbPort);
 
-        logger = Logger.getLogger(this.getClass());
+        logger = LogManager.getLogger(this.getClass());
     }
     
     

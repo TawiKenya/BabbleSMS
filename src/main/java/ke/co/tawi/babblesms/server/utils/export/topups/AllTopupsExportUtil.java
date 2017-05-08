@@ -33,7 +33,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -60,7 +61,7 @@ public class AllTopupsExportUtil {
     final static String[] TOPUP_TITLES = {"Transaction Id", "Phone Number",
         "Amount (KES)", "Network Operator", "Transaction Status", "Time"};
 
-    private static Logger logger = Logger.getLogger(AllTopupsExportUtil.class);
+    private static Logger logger = LogManager.getLogger(AllTopupsExportUtil.class);
 
     /**
      * Creates a Microsoft Excel Workbook containing Topup activity provided in

@@ -30,7 +30,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.math3.random.RandomDataGenerator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility that updates the origin of the SMS to phone numbers that exist in 
@@ -67,7 +68,7 @@ public class ContactsResetUtil extends GenericDAO {
 		account = new Account();		
 		account.setUuid(accountUuid);
 		
-		logger = Logger.getLogger(this.getClass());
+		logger = LogManager.getLogger(this.getClass());
 	}
 
 	

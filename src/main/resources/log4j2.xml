@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2015 Tawi Commercial Services Ltd
+ 
+ Licensed under the Open Software License, Version 3.0 (the “License”); you may
+ not use this file except in compliance with the License. You may obtain a copy
+ of the License at:
+ http://opensource.org/licenses/OSL-3.0
+
+ Unless required by applicable law or agreed to in writing, software 
+ distributed under the License is distributed on an “AS IS” BASIS, WITHOUT 
+ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+ See the License for the specific language governing permissions and 
+ limitations under the License.
+-->
+
+<Configuration status="WARN">
+    <Properties>
+        <Property name="log-path">/opt/Programs/WildFly/10/standalone/log</Property>
+    </Properties>
+    
+    
+    <Appenders>
+    
+        <Console name="console-log" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c (%13F:%L) - %msg%n"/>
+        </Console>
+        
+        <RollingFile name="trace-log" fileName="${log-path}/log4jBabble-trace.log"
+                     filePattern="${log-path}/log4jBabble-trace-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c (%13F:%L) - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        
+        <RollingFile name="info-log" fileName="${log-path}/log4jBabble-info.log"
+                     filePattern="${log-path}/log4jBabble-info-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c (%13F:%L) - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        
+        <RollingFile name="error-log" fileName="${log-path}/log4jBabble-error.log"
+                     filePattern="${log-path}/log4jBabble-error-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c (%13F:%L) - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        
+    </Appenders>
+    
+    
+    <Loggers>
+    
+    	<!-- 
+	    	Example of logging specific to a Java package
+	        <Logger name="ke.co.tawi.babblesms.somepackage" level="debug" additivity="false">
+	            <appender-ref ref="trace-log" level="debug"/>
+	            <appender-ref ref="error-log" level="error"/>
+	            <appender-ref ref="console-log" level="debug"/>
+	        </Logger>
+        -->
+        
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console-log" />            
+            <appender-ref ref="info-log" level="info" />
+            <appender-ref ref="error-log" level="error" />
+        </Root>
+        
+    </Loggers>
+    
+    
+</Configuration>

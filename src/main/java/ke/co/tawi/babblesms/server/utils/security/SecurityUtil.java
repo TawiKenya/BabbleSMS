@@ -20,7 +20,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility with security related functions.
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
  */
 public class SecurityUtil {
 
-	private static Logger logger = Logger.getLogger(SecurityUtil.class);
+	private final static Logger logger = LogManager.getLogger(SecurityUtil.class);
 	
 	
 	/**

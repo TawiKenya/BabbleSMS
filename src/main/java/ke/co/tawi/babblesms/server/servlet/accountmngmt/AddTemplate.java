@@ -25,7 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import ke.co.tawi.babblesms.server.beans.messagetemplate.MessageTemplate;
 import ke.co.tawi.babblesms.server.persistence.template.MessageTemplateDAO;
@@ -44,7 +45,7 @@ public class AddTemplate extends HttpServlet{
 	
 	private final String success = "Your message template has been successfully added";
 	private final String failure ="failed to add your message template.Try again";
-	private Logger logger = Logger.getLogger(this.getClass());
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	
 	/**

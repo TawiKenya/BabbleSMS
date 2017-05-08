@@ -14,7 +14,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A utility class that allows for working with Zip archives.
@@ -27,7 +28,7 @@ import org.apache.log4j.Logger;
 
 public class ZipUtil {
 	
-	private static Logger logger = Logger.getLogger(ZipUtil.class);
+	private static Logger logger = LogManager.getLogger(ZipUtil.class);
 	
 	
 	 /**

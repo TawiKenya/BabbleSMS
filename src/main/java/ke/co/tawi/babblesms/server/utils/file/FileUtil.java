@@ -19,7 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Various file utilities.
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class FileUtil {
 
-	private static Logger logger = Logger.getLogger(FileUtil.class);
+	private static Logger logger = LogManager.getLogger(FileUtil.class);
 	
 	/**
 	* Identify file type of file with provided path and name
