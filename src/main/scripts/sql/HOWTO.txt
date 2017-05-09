@@ -51,5 +51,10 @@ Database password: pass
         Bye
 
 
-4) Execute the script file as follows:
+4) Unzip the files
+
+
+5) Execute the SQL and data import script as follows:
         % mysql -h localhost -u babblesms -p babblesmsdb < tables.mysql.sql
+
+
