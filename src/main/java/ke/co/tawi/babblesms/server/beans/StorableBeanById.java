@@ -15,16 +15,46 @@
  */
 package ke.co.tawi.babblesms.server.beans;
 
-import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 /**
- * Represents an object in the Babblesms architecture that can be stored in the
- * RDBMS.
+ * An object that can be persisted with its primary key as an integer (id).
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class StorableBean implements Serializable   { 
-		
+@MappedSuperclass
+public class StorableBeanById extends StorableBean {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	
+	
+	/**
+	 * 
+	 */
+	public StorableBeanById() {
+		id = 0;
+	}
+	
+	
+	/**
+	 * @return the id
+	 */
+	
+	public long getId() {
+		return id;
+	}
+	
+	
+	/**
+	 * @param id - the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
 }

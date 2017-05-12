@@ -15,12 +15,24 @@
  */
 package ke.co.tawi.babblesms.server.beans.contact;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import ke.co.tawi.babblesms.server.beans.StorableBeanById;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.account.Status;
+
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Contact within an Address Book.
@@ -30,13 +42,28 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Entity
 @Table( name = "contact" )
-public class Contact extends StorableBean implements Comparable<Contact> {
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+public class Contact extends StorableBeanById implements Comparable<Contact> {
 
     private String name;
     private String description;
-    private String accountUuid;
-    private String statusUuid;
-
+    private String uuid;
+    
+    @ManyToOne
+	@JoinColumn(name="accountUuid", referencedColumnName="uuid")
+    private Account account;
+    
+    @ManyToOne
+	@JoinColumn(name="statusUuid", referencedColumnName="uuid")
+    private Status status;
+    
+    @OneToMany(mappedBy="contact", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	private Set<Phone> phones;
+    
+    @OneToMany(mappedBy="contact", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	private Set<Email> emails;
+    
+    
     /**
      * 
      */
@@ -44,8 +71,10 @@ public class Contact extends StorableBean implements Comparable<Contact> {
         super();
         name = "";
         description = "";
-        accountUuid = "";
-        statusUuid = "";        
+        uuid = "";
+        
+        account = new Account();
+        status = new Status();      
     }
 
 
@@ -82,45 +111,85 @@ public class Contact extends StorableBean implements Comparable<Contact> {
 
 
 	/**
-	 * @return the accountUuid
+	 * @return the account
 	 */
-	public String getAccountUuid() {
-		return accountUuid;
+	public Account getAccount() {
+		return account;
 	}
 
 
 	/**
-	 * @param accountUuid the accountUuid to set
+	 * @param account the account to set
 	 */
-	public void setAccountUuid(String accountUuid) {
-		this.accountUuid = StringUtils.trimToEmpty(accountUuid);
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 
 	/**
-	 * @return the statusUuid
+	 * @return the status
 	 */
-	public String getStatusUuid() {
-		return statusUuid;
+	public Status getStatus() {
+		return status;
 	}
 
 
 	/**
-	 * @param statusUuid the statusUuid to set
+	 * @param status the status to set
 	 */
-	public void setStatusUuid(String statusUuid) {
-		this.statusUuid = StringUtils.trimToEmpty(statusUuid);
+	public void setStatus(Status status) {
+		this.status = status;
 	}
-
 
 	
+	/**
+	 * @return the uuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
 
+
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	
+	
 	/**
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
 	public int compareTo(Contact c) {
 		return name.compareTo(((Contact) c).getName());
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean isEqual = false;
+		
+		if(obj instanceof Contact) {	
+			Contact type = (Contact)obj;
+			
+			isEqual = type.getUuid().equals(getId());		
+		}
+		
+		return isEqual;		
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
 	}
 
 
@@ -130,18 +199,53 @@ public class Contact extends StorableBean implements Comparable<Contact> {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Contact [getUuid()=");
-		builder.append(getUuid());
+		builder.append("Contact [Id=");
+		builder.append(getId());
 		builder.append(", name=");
 		builder.append(name);
 		builder.append(", description=");
 		builder.append(description);
-		builder.append(", accountUuid=");
-		builder.append(accountUuid);
-		builder.append(", statusUuid=");
-		builder.append(statusUuid);
+		builder.append(", uuid=");
+		builder.append(uuid);
+		builder.append(", account=");
+		builder.append(account.getUsername());
+		builder.append(", status=");
+		builder.append(status.getDescription());
 		builder.append("]");
 		return builder.toString();
 	}
-	
+
+
+	/**
+	 * @return the phones
+	 */
+	public Set<Phone> getPhones() {
+		return phones;
+		//return null;
+	}
+
+
+	/**
+	 * @param phones the phones to set
+	 */
+	public void setPhones(Set<Phone> phones) {
+		this.phones = phones;
+	}
+
+
+	/**
+	 * @return the emails
+	 */
+	public Set<Email> getEmails() {
+		return emails;
+		//return null;
+	}
+
+
+	/**
+	 * @param emails the emails to set
+	 */
+	public void setEmails(Set<Email> emails) {
+		this.emails = emails;
+	}	
 }

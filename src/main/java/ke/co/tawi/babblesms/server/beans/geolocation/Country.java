@@ -15,9 +15,16 @@
  */
 package ke.co.tawi.babblesms.server.beans.geolocation;
 
+import ke.co.tawi.babblesms.server.beans.StorableBeanByUUID;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.StringUtils;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 
 /**
  * A country.
@@ -25,7 +32,10 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Country extends StorableBean {
+@Entity
+@Table( name = "country" )
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+public class Country extends StorableBeanByUUID implements Comparable<Country> {
 
     private String name;
     private String codefips;
@@ -72,19 +82,56 @@ public class Country extends StorableBean {
     }
 
     
+    /**
+	 * 
+	 * @param o
+	 * @return int
+	 */
+	@Override
+	public int compareTo(Country o) {		
+		return name.compareTo(((Country) o).getName());
+	}
+
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean isEqual = false;
+		
+		if(obj instanceof Country) {	
+			Country type = (Country)obj;
+			
+			isEqual = type.getUuid().equals(getUuid());		
+		}
+		
+		return isEqual;		
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
+	}
+	
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Country [getUuid()=");
+		builder.append("Country [uuid()=");
 		builder.append(getUuid());
 		builder.append(", name=");
 		builder.append(name);
-		builder.append(", codefips=");
+		builder.append(", codeFIPS=");
 		builder.append(codefips);
 		builder.append("]");
 		return builder.toString();
-	}    
+	}
 }

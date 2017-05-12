@@ -128,6 +128,7 @@ public class SentGroupPaginator {
     	 return sent;
      }
      
+     
      /**
       * @return the total pages of all OutgoingGrouplogs
       */

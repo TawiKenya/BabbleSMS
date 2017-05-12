@@ -15,9 +15,21 @@
  */
 package ke.co.tawi.babblesms.server.beans.contact;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import ke.co.tawi.babblesms.server.beans.StorableBeanById;
+import ke.co.tawi.babblesms.server.beans.account.Status;
+import ke.co.tawi.babblesms.server.beans.network.Network;
+
+import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A phone number belonging to a {@link Contact}
@@ -25,13 +37,27 @@ import org.apache.commons.lang3.StringUtils;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Phone extends StorableBean {
+@Entity
+@Table( name = "phone" )
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+public class Phone extends StorableBeanById {
 	
+	private String uuid;
     private String phoneNumber;
-    private String contactUuid;
-    private String statusUuid;
-    private String networkUuid;
+    
+    @ManyToOne
+	@JoinColumn(name="contactUuid", referencedColumnName="uuid")
+    private Contact contact;
+    
+    @ManyToOne
+	@JoinColumn(name="statusUuid", referencedColumnName="uuid")
+    private Status status;
+    
+    @ManyToOne
+	@JoinColumn(name="networkUuid", referencedColumnName="uuid")
+    private Network network;
         
+    
     /**
      * 
      */
@@ -39,9 +65,11 @@ public class Phone extends StorableBean {
         super();
         
         phoneNumber = "";
-        contactUuid = "";
-        statusUuid = "";
-        networkUuid = "";
+        uuid = UUID.randomUUID().toString();
+        
+        contact = new Contact();
+        status = new Status();        
+        network = new Network();
     }
     
 
@@ -56,52 +84,87 @@ public class Phone extends StorableBean {
         this.phoneNumber = StringUtils.trimToEmpty(phonenumber);
     }
 
-    public String getContactUuid() {
-        return contactUuid;
-    }
 
-    public void setContactUuid(String contactsuuid) {
-        this.contactUuid = StringUtils.trimToEmpty(contactsuuid);
-    }
-
-    public String getStatusuuid() {
-        return statusUuid;
-    }
-
-    public void setStatusuuid(String statusuuid) {
-        this.statusUuid = StringUtils.trimToEmpty(statusuuid);
-    }
-
-    public String getNetworkuuid() {
-        return networkUuid;
-    }
-
-    public void setNetworkuuid(String networkuuid) {
-        this.networkUuid = StringUtils.trimToEmpty(networkuuid);
-    }
-
-    
 	/**
-	 * @see java.lang.Object#toString()
+	 * @return the uuid
 	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Phone [getUuid()=");
-		builder.append(getUuid());
-		builder.append(", phonenumber=");
-		builder.append(phoneNumber);
-		builder.append(", contactuuid=");
-		builder.append(contactUuid);
-		builder.append(", statusuuid=");
-		builder.append(statusUuid);
-		builder.append(", networkuuid=");
-		builder.append(networkUuid);
-		builder.append("]");
-		return builder.toString();
+	public String getUuid() {
+		return uuid;
 	}
 
 
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+
+	/**
+	 * @return the phoneNumber
+	 */
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+
+	/**
+	 * @param phoneNumber the phoneNumber to set
+	 */
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+
+	/**
+	 * @return the contact
+	 */
+	public Contact getContact() {
+		return contact;
+	}
+
+
+	/**
+	 * @param contact the contact to set
+	 */
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+
+	/**
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+	/**
+	 * @return the network
+	 */
+	public Network getNetwork() {
+		return network;
+	}
+
+
+	/**
+	 * @param network the network to set
+	 */
+	public void setNetwork(Network network) {
+		this.network = network;
+	}
+	
+	
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -114,7 +177,7 @@ public class Phone extends StorableBean {
 		if(obj instanceof Phone) {
 			phone = (Phone) obj;
 			
-			return getUuid().equals(phone.getUuid());
+			return uuid.equals(phone.getUuid());
 		}
 		
 		return false;
@@ -126,6 +189,30 @@ public class Phone extends StorableBean {
 	 */
 	@Override
 	public int hashCode() {
-		return getUuid().hashCode();
+		return uuid.hashCode();
 	}
+
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Phone [Id=");
+		builder.append(getId());
+		builder.append(", uuid=");
+		builder.append(uuid);
+		builder.append(", phoneNumber=");
+		builder.append(phoneNumber);
+		builder.append(", contact=");
+		builder.append(contact.getName());
+		builder.append(", status=");
+		builder.append(status.getDescription());
+		builder.append(", network=");
+		builder.append(network.getName());
+		builder.append("]");
+		return builder.toString();
+	}	
+	
 }

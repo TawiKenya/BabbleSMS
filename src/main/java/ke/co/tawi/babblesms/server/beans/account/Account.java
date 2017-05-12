@@ -15,14 +15,19 @@
  */
 package ke.co.tawi.babblesms.server.beans.account;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import ke.co.tawi.babblesms.server.beans.StorableBeanByUUID;
 
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * An account holder on the BabbleSMS platform.
@@ -32,7 +37,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Entity
 @Table( name = "account" )
-public class Account extends StorableBean {
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+public class Account extends StorableBeanByUUID {
 
     private String username;
     private String logpassword;
@@ -40,10 +46,13 @@ public class Account extends StorableBean {
     private String mobile;
     private String email;
     private int dailysmslimit;
-    private Date creationdate;
-    private String statusuuid;
+    private Date creationdate;    
     private String apiUsername;
     private String apiPassword;
+    
+    @ManyToOne
+	@JoinColumn(name="statusUuid", referencedColumnName="uuid")
+    private Status status;
     
     
     /**
@@ -57,12 +66,14 @@ public class Account extends StorableBean {
         mobile = "";
         email = "";
         dailysmslimit = 0;
-        creationdate = new Date();
-        statusuuid = "";
+        creationdate = new Date();        
         apiUsername = "";
         apiPassword = "";
+        
+        status = new Status();
     }
 
+    
     /**
      *
      * @return username
@@ -175,22 +186,7 @@ public class Account extends StorableBean {
     public void setCreationdate(Date creationdate) {
         this.creationdate = new Date(creationdate.getTime());
     }
-
-    /**
-     * 
-     * @return statusuuid
-     */
-    public String getStatusuuid() {
-        return statusuuid;
-    }
-
-    /**
-     * 
-     * @param statusuuid 
-     */
-    public void setStatusuuid(String statusuuid) {
-        this.statusuuid = StringUtils.trimToEmpty(statusuuid);
-    }
+    
 
 	/**
 	 * @return the apiUsername
@@ -220,7 +216,49 @@ public class Account extends StorableBean {
 		this.apiPassword = StringUtils.trimToEmpty(apiPassword);
 	}
 
+
+	/**
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}	
 	
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {        
+        boolean isEqual = false;
+		
+		if(obj instanceof Account) {	
+			Account type = (Account)obj;
+			
+			isEqual = type.getUuid().equals(getUuid());		
+		}
+		
+		return isEqual;
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
+	}
+
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -231,8 +269,6 @@ public class Account extends StorableBean {
 		builder.append(getUuid());
 		builder.append(", username=");
 		builder.append(username);
-		builder.append(", logpassword=");
-		builder.append(logpassword);
 		builder.append(", name=");
 		builder.append(name);
 		builder.append(", mobile=");
@@ -243,15 +279,12 @@ public class Account extends StorableBean {
 		builder.append(dailysmslimit);
 		builder.append(", creationdate=");
 		builder.append(creationdate);
-		builder.append(", statusuuid=");
-		builder.append(statusuuid);
 		builder.append(", apiUsername=");
 		builder.append(apiUsername);
-		builder.append(", apiPassword=");
-		builder.append(apiPassword);
+		builder.append(", status=");
+		builder.append(status.getDescription());
 		builder.append("]");
 		return builder.toString();
-	}
-
-	private static final long serialVersionUID = 1L;	
+	}	
+	
 }

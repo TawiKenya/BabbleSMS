@@ -51,7 +51,8 @@ Database password: pass
         Bye
 
 
-4) Unzip the files
+4) Unzip the compressed files in the folder 'data'. The uncompressed files should
+   reside in the 'data' directory.
 
 
 5) Execute the SQL and data import script as follows:

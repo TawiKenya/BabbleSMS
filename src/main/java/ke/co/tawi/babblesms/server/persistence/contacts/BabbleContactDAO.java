@@ -27,14 +27,6 @@ import java.util.List;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public interface BabbleContactDAO {
-
-	/**
-    *
-    * @param uuid
-    * @return	a {@link Contact} with a matching uuid, or null if there is no
-    * matching Contact.
-    */
-   public Contact getContact(String uuid);
    
    
    /**
@@ -52,26 +44,7 @@ public interface BabbleContactDAO {
    * @param account
    * @return	a list of networks by account uuid
    */
-  public List<Contact> getContacts(Account account);
-  
-  
-    /**
-     *
-     * @param contact
-     * @return		<code>true</code> if successfully inserted; <code>false</code>
-     * for otherwise
-     */
-    public boolean putContact(Contact contact);
-
-    
-    /**
-     * Note that the Account that a Contact belongs to is not updated.
-     *
-     * @param uuid
-     * @param contact
-     * @return	<code>true</code> if successfully updated; <code>false</code> for
-     * otherwise
-     */
-    public boolean updateContact(String uuid, Contact contact);    
+  public List<Contact> getContacts(Account account);  
+   
     
 }

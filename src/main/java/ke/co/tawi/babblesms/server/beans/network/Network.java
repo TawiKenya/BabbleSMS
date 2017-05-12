@@ -15,9 +15,18 @@
  */
 package ke.co.tawi.babblesms.server.beans.network;
 
+import ke.co.tawi.babblesms.server.beans.StorableBeanByUUID;
+import ke.co.tawi.babblesms.server.beans.geolocation.Country;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.StringUtils;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A mobile network operator (MNO).
@@ -25,7 +34,10 @@ import ke.co.tawi.babblesms.server.beans.StorableBean;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Network extends StorableBean {
+@Entity
+@Table( name = "network" )
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+public class Network extends StorableBeanByUUID {
 
 	// This is to match what is in the RDBMS table 'network'
 	public final static String YU_KE = "741AC38C-3E40-6887-9CD6-365EF9EA1EF0";
@@ -34,7 +46,10 @@ public class Network extends StorableBean {
 	public final static String SAFARICOM_KE = "B936DA83-8A45-E9F0-2EAE-D75F5C232E78";
 	
     private String name;
-    private String countryuuid;
+    
+    @ManyToOne
+	@JoinColumn(name="countryUuid", referencedColumnName="uuid")
+    private Country country;
 
     /**
      * 
@@ -42,7 +57,7 @@ public class Network extends StorableBean {
     public Network() {
         super();
         name = "";
-        countryuuid = "";
+        country = new Country();
     }
 
     
@@ -63,21 +78,47 @@ public class Network extends StorableBean {
     
     
     /**
-     * @return the Country UUID
-     */
-    public String getCountryuuid() {
-        return countryuuid;
-    }
+	 * @return the country
+	 */
+	public Country getCountry() {
+		return country;
+	}
 
-    
-    /**
-     * @param countryuuid
-     */
-    public void setCountryuuid(String countryuuid) {
-        this.countryuuid = countryuuid;
-    }
 
-    
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(Country country) {
+		this.country = country;
+	}	
+	
+		
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {        
+        boolean isEqual = false;
+		
+		if(obj instanceof Network) {	
+			Network type = (Network)obj;
+			
+			isEqual = type.getUuid().equals(getUuid());		
+		}
+		
+		return isEqual;
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
+	}
+
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -88,11 +129,10 @@ public class Network extends StorableBean {
 		builder.append(getUuid());
 		builder.append(", name=");
 		builder.append(name);
-		builder.append(", countryuuid=");
-		builder.append(countryuuid);
+		builder.append(", country=");
+		builder.append(country.getName());
 		builder.append("]");
 		return builder.toString();
-	}
-	
+	}	
 	
 }

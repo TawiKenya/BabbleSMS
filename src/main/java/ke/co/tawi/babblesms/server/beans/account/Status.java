@@ -15,78 +15,99 @@
  */
 package ke.co.tawi.babblesms.server.beans.account;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import ke.co.tawi.babblesms.server.beans.StorableBeanByUUID;
 
-import org.apache.commons.lang3.StringUtils;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A generic status.
+ * The status of an account holder on the system, for example Active & 
+ * Suspended. Can also be used elsewhere e.g. Status of a shortcode
  * <p>
- *  
+ * Copyright (c) Tawi Commercial Services Ltd., Dec 29, 2011  
+ * 
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
+ * 
  */
 @Entity
 @Table( name = "status" )
-public class Status extends StorableBean {
-
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+public class Status extends StorableBeanByUUID {
 	
-	/*
-	 * These match what is in the SQL table "status"
+	// These match what is in the SQL table "AccountStatus"
+	public final static String STATUS_ACTIVE = "acecb9fa-7e21-455d-8abb-c61a840cdbec";
+	public final static String STATUS_TEST = "91bb7fb1-00d8-496d-97d8-e18e78ffc8d3";
+	
+	@Column(name="description", unique=true)
+	private String description;
+	
+	
+	/**
+	 * 
 	 */
-	public final static String ACTIVE = "396F2C7F-961C-5C12-3ABF-867E7FD029E6";
-	public final static String SUSPENDED = "19CAAC90-0D72-59D4-1DC1-2C86808459F9";
-	public final static String PENDING  = "5A13538F-AC41-FDE2-4CD6-B939FA03123B";
-	public final static String UNKNOWN = "8E1DEF0F-4DCC-E13B-F89D-35181AD4003D";
+	public Status() {
+		super();
+		description = "";
+	}
+		
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
 	
-    private String description;
 
-    
-    /**
-     * 
-     */
-    public Status() {
-        super();
-        
-        description = "";
-    }
-    
-     
-    /**
-     *
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    
-    /**
-     *
-     * @param description
-     */
-    public void setDescription(String description) {
-        this.description = StringUtils.trimToEmpty(description);
-    }
 
-    
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean isEqual = false;
+		
+		if(obj instanceof Status) {	
+			Status type = (Status)obj;
+			
+			isEqual = type.getUuid().equals(getUuid());		
+		}
+		
+		return isEqual;		
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
+	}
+	
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Status [getUuid()=");
+		builder.append("Status [uuid=");
 		builder.append(getUuid());
 		builder.append(", description=");
 		builder.append(description);
 		builder.append("]");
 		return builder.toString();
-	}
-	
-	
-	private static final long serialVersionUID = 1904746514478837017L;
+	}	
 }

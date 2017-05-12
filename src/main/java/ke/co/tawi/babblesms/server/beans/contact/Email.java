@@ -15,30 +15,54 @@
  */
 package ke.co.tawi.babblesms.server.beans.contact;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import ke.co.tawi.babblesms.server.beans.StorableBeanById;
+import ke.co.tawi.babblesms.server.beans.account.Status;
+
+import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+@Entity
+@Table( name = "email" )
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 /**
  * An email belonging to a {@link Contact}
  * <p>
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Email extends StorableBean {
+public class Email extends StorableBeanById {
 
+	private String uuid;	
     private String address;
-    private String contactUuid;
-    private String statusUuid;
+    
+    @ManyToOne
+	@JoinColumn(name="contactUuid", referencedColumnName="uuid")
+    private Contact contact;
+    
+    @ManyToOne
+	@JoinColumn(name="statusUuid", referencedColumnName="uuid")
+    private Status status;
 
     /**
      * 
      */
     public Email() {
         super();
+        
         address = "";
-        contactUuid = "";
-        statusUuid = "";
+        uuid = UUID.randomUUID().toString();
+        
+        contact = new Contact();
+        status = new Status();  
     }
 
     
@@ -58,53 +82,99 @@ public class Email extends StorableBean {
         this.address = StringUtils.trimToEmpty(address);
     }
 
+
+	/**
+	 * @return the uuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+
+
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+
+	/**
+	 * @return the contact
+	 */
+	public Contact getContact() {
+		return contact;
+	}
+
+
+	/**
+	 * @param contact the contact to set
+	 */
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+
+	/**
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
         
-    /**
-     * @return a Contact UUID
-     */
-    public String getContactuuid() {
-        return contactUuid;
-    }
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		
+		Email email;
+		
+		if(obj instanceof Phone) {
+			email = (Email) obj;
+			
+			return uuid.equals(email.getUuid());
+		}
+		
+		return false;
+	}
 
-    
-    /**
-     * @param contactuuid
-     */
-    public void setContactuuid(String contactuuid) {
-        this.contactUuid = StringUtils.trimToEmpty(contactuuid);
-    }
 
-    
-    /**
-     * @return a Status UUD
-     */
-    public String getStatusuuid() {
-        return statusUuid;
-    }
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return uuid.hashCode();
+	}
 
-    
-    /**
-     * @param statusuuid
-     */
-    public void setStatusuuid(String statusuuid) {
-        this.statusUuid = StringUtils.trimToEmpty(statusuuid);
-    }
 
-    
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Email [getUuid()=");
-		builder.append(getUuid());
+		builder.append("Email [Id=");
+		builder.append(getId());
+		builder.append(", uuid=");
+		builder.append(uuid);
 		builder.append(", address=");
 		builder.append(address);
-		builder.append(", contactuuid=");
-		builder.append(contactUuid);
-		builder.append(", statusuuid=");
-		builder.append(statusUuid);
+		builder.append(", contact=");
+		builder.append(contact.getName());
+		builder.append(", status=");
+		builder.append(status.getDescription());
 		builder.append("]");
 		return builder.toString();
 	}
