@@ -28,13 +28,6 @@ import java.util.List;
  */
 public interface BabbleEmailDAO {
 
-	/**
-    *
-    * @param uuid
-    * @return	an {@link Email}
-    */
-   public Email getEmail(String uuid);
-   
    
    /**
    *
@@ -51,26 +44,6 @@ public interface BabbleEmailDAO {
   * @param contact
   * @return	a list of {@link Email}s belonging to this contact
   */
-  public List<Email> getEmails(Contact contact);
-  
- 
-    /**
-     *
-     * @param email
-     * @return		<code>true</code> if successfully inserted; <code>false</code>
-     * for otherwise
-     */
-    public boolean putEmail(Email email);
-
-    
-    /**
-     * Note that the Contact owner of the email is not changed by this method.
-     *
-     * @param uuid
-     * @param email
-     * @return		<code>true</code> if successfully deleted; <code>false</code> for
-     * otherwise
-     */
-    public boolean updateEmail(String uuid, Email email);
+  public List<Email> getEmails(Contact contact); 
     
 }

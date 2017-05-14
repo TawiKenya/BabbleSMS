@@ -97,12 +97,21 @@ public class StorageImpl extends Storage {
 	 */
 	@Override
 	public StorableBeanById get(Class aClass, long id) {
+		System.out.println("We are fetching a StorableBeanById");
 		Session session = sessionFactory.openSession();
 		
 		session.getTransaction().begin();
 		
 		StorableBeanById bean = (StorableBeanById) session.get(aClass, id);
 				
+		if(aClass.getSimpleName().equals("Group")) {
+			System.out.println("We are fetching a Group");
+			ke.co.tawi.babblesms.server.beans.contact.Group group = 
+					(ke.co.tawi.babblesms.server.beans.contact.Group)bean;
+			
+			System.out.println("Group size is: " + group.getContacts().size());
+		}
+		
 		session.close();
 		
 		return bean;

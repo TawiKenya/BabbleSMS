@@ -19,12 +19,15 @@ import ke.co.tawi.babblesms.server.beans.StorableBeanById;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.account.Status;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -63,6 +66,8 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
     @OneToMany(mappedBy="contact", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	private Set<Email> emails;
     
+    @ManyToMany(mappedBy="contacts")
+    private Set<Group> groups = new HashSet<Group>();
     
     /**
      * 
@@ -71,7 +76,7 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
         super();
         name = "";
         description = "";
-        uuid = "";
+        uuid = UUID.randomUUID().toString();
         
         account = new Account();
         status = new Status();      
@@ -159,6 +164,56 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 	
 	
 	/**
+	 * @return the phones
+	 */
+	public Set<Phone> getPhones() {
+		return phones;
+		//return null;
+	}
+
+
+	/**
+	 * @param phones the phones to set
+	 */
+	public void setPhones(Set<Phone> phones) {
+		this.phones = phones;
+	}
+
+
+	/**
+	 * @return the emails
+	 */
+	public Set<Email> getEmails() {
+		return emails;
+		//return null;
+	}
+
+
+	/**
+	 * @param emails the emails to set
+	 */
+	public void setEmails(Set<Email> emails) {
+		this.emails = emails;
+	}
+
+
+	/**
+	 * @return the groups
+	 */
+	public Set<Group> getGroups() {
+		return groups;
+	}
+
+
+	/**
+	 * @param groups the groups to set
+	 */
+	public void setGroups(Set<Group> groups) {
+		this.groups = groups;
+	}
+	
+	
+	/**
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
@@ -214,38 +269,4 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 		builder.append("]");
 		return builder.toString();
 	}
-
-
-	/**
-	 * @return the phones
-	 */
-	public Set<Phone> getPhones() {
-		return phones;
-		//return null;
-	}
-
-
-	/**
-	 * @param phones the phones to set
-	 */
-	public void setPhones(Set<Phone> phones) {
-		this.phones = phones;
-	}
-
-
-	/**
-	 * @return the emails
-	 */
-	public Set<Email> getEmails() {
-		return emails;
-		//return null;
-	}
-
-
-	/**
-	 * @param emails the emails to set
-	 */
-	public void setEmails(Set<Email> emails) {
-		this.emails = emails;
-	}	
 }

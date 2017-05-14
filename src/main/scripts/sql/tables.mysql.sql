@@ -18,6 +18,8 @@
 -- Refer to "HOWTO.txt" for information on how to create the database user and
 -- schema.
 
+DROP TABLE IF EXISTS contact_group;
+DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS email;
 DROP TABLE IF EXISTS phone;
 DROP TABLE IF EXISTS contact;
@@ -146,3 +148,31 @@ LOAD DATA LOCAL INFILE 'data/Emails.csv' INTO TABLE email FIELDS TERMINATED BY '
 (uuid, address, contactUuid, statusUuid);
 
 
+-- -------------------
+-- Table groups
+----------------------
+-- Since 'group' is a reserved word in some databases we call our table groups
+CREATE TABLE groups (
+    Id SERIAL,
+    uuid VARCHAR(40) UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    description VARCHAR(300),
+    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    accountUuid VARCHAR(40) REFERENCES account(uuid),
+    statusUuid VARCHAR(40) REFERENCES status(uuid),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+LOAD DATA LOCAL INFILE 'data/Groups.csv' INTO TABLE groups FIELDS TERMINATED BY '|'  IGNORE 1 LINES
+(uuid, name, description, accountUuid, statusUuid, creationDate);
+
+
+-- -------------------
+-- Table contact_group
+----------------------
+CREATE TABLE contact_group (
+    contactUuid VARCHAR(40) REFERENCES contact(uuid),
+    groupUuid VARCHAR(40) REFERENCES groups(uuid)
+) ENGINE=InnoDB;
+
+LOAD DATA LOCAL INFILE 'data/Contact_Group.csv' INTO TABLE contact_group FIELDS TERMINATED BY '|'  IGNORE 1 LINES;

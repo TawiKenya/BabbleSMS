@@ -1,39 +1,6 @@
 
 
 
--- -------------------
--- Table groups
-----------------------
--- Since 'group' is a reserved word in some databases we call our table groups
-CREATE TABLE groups (
-    Id SERIAL,
-    uuid VARCHAR(40) UNIQUE NOT NULL,
-    name text NOT NULL,
-    description text,
-    creationdate timestamp with time zone DEFAULT now(),
-    accountuuid text references account(uuid),
-    statusuuid text references status(uuid),
-    PRIMARY KEY (id)
-) ENGINE=InnoDB;
-ALTER TABLE groups OWNER TO babblesms;
-
-
-
--- -------------------
--- Table contactgroup
-----------------------
-CREATE TABLE contactgroup (
-    Id SERIAL PRIMARY KEY,
-    uuid text UNIQUE NOT NULL,
-    contactuuid text references contact(uuid),
-    groupuuid text references groups(uuid),
-    accountuuid text references account(uuid)
-);
-ALTER TABLE contactgroup OWNER TO babblesms;
-
-
-
-
 -- ==================
 -- ==================
 -- 3. SMS Management

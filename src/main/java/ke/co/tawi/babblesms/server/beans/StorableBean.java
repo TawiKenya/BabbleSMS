@@ -16,6 +16,7 @@
 package ke.co.tawi.babblesms.server.beans;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * Represents an object in the Babblesms architecture that can be stored in the
@@ -24,7 +25,13 @@ import java.io.Serializable;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class StorableBean implements Serializable   { 
+public class StorableBean implements Serializable   {
+
+	/**
+	 * 
+	 */
+	public static final long serialVersionUID = new Random().nextLong();
+	
 		
 	
 }

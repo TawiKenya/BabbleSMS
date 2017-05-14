@@ -28,14 +28,6 @@ import java.util.Map;
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
 public interface BabbleGroupDAO {
-
-	/**
-    *
-    * @param uuid
-    * @return	a uuid
-    */
-   public Group getGroup(String uuid);
-   
    
    /**
 	 * @param account 
@@ -51,35 +43,7 @@ public interface BabbleGroupDAO {
    * @return	a list of {@link Group}s belonging to that {@link Account}
    */
    public List<Group> getGroups(Account account);
-    
-     
-   /**
-   *
-   * @return a list of all {@link Group}s
-   */
-   public List<Group> getAllGroups();
-   
-   
-    /**
-     *
-     * @param group
-     * @return		<code>true</code> if successfully inserted; <code>false</code>
-     * for otherwise
-     */
-    public boolean putGroup(Group group);
-
-    
-    /**
-     * Note that the Account owner of the Group as well as its creation date are not 
-     * updated by this method.
-     * 
-     * @param uuid
-     * @param group
-     * @return	<code>true</code> if successfully updated; <code>false</code> for
-     * otherwise
-     */
-    public boolean updateGroup(String uuid, Group group);
-
+       
 
     /**
      * Return a mapping of the count of Contacts in a Group for all the Groups

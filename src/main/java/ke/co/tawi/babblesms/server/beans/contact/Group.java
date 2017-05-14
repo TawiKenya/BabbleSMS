@@ -15,12 +15,29 @@
  */
 package ke.co.tawi.babblesms.server.beans.contact;
 
-import ke.co.tawi.babblesms.server.beans.StorableBean;
+import ke.co.tawi.babblesms.server.beans.StorableBeanById;
+import ke.co.tawi.babblesms.server.beans.account.Account;
+import ke.co.tawi.babblesms.server.beans.account.Status;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.FetchType;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Group is a number of {@link Contact}s.
@@ -28,13 +45,29 @@ import org.apache.commons.lang3.StringUtils;
  *  
  * @author <a href="mailto:michael@tawi.mobi">Michael Wakahe</a>
  */
-public class Group extends StorableBean {
-
-    private String statusuuid;
+@Entity
+@Table( name = "groups" )
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+public class Group extends StorableBeanById {
+    
+	private String uuid;
     private String description;
-    private String accountsuuid;
     private String name;
-    private Date creationdate;
+    private Date creationDate;
+    
+    @ManyToOne
+	@JoinColumn(name="accountUuid", referencedColumnName="uuid")
+    private Account account;
+    
+    @ManyToOne
+	@JoinColumn(name="statusUuid", referencedColumnName="uuid")
+    private Status status;
+    
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "contact_group", joinColumns = { @JoinColumn(name = "groupUuid") }, 
+    	inverseJoinColumns = { @JoinColumn(name = "contactUuid") })
+    Set<Contact> contacts;
     
     
     /**
@@ -42,53 +75,19 @@ public class Group extends StorableBean {
      */
     public Group() {
         super();
-        statusuuid = "";
+        
+        uuid = UUID.randomUUID().toString();
         name = "";
         description = "";
-        accountsuuid = "";
-        creationdate= new Date();
-    }
-
-    public String getStatusuuid() {
-        return statusuuid;
-    }
-
-    public void setStatusuuid(String statusuuid) {
-        this.statusuuid = StringUtils.trimToEmpty(statusuuid);
-    }
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = StringUtils.trimToEmpty(name);
-    }
-    
-    public Date getCreationdate() {
-        return new Date(creationdate.getTime());
-    }
-
-    public void setCreationdate(Date date) {
-        creationdate = new Date(date.getTime());
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = StringUtils.trimToEmpty(description);
-    }
-
-    public String getAccountsuuid() {
-        return accountsuuid;
-    }
-
-    public void setAccountsuuid(String accountsuuid) {
-        this.accountsuuid = StringUtils.trimToEmpty(accountsuuid);
-    }
         
+        creationDate = new Date();
+        
+        account = new Account();
+        status = new Status(); 
+        
+        contacts = new HashSet<Contact>();
+    }
+
     
     /**
      * Comparator for sorting a list by Group Name
@@ -104,30 +103,160 @@ public class Group extends StorableBean {
 		   return s1.getName().compareTo(s2.getName());
     	}
 	};
+	
     
-    
-    
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Group ");
-        builder.append("[uuid=");
-        builder.append(getUuid());
-        builder.append(", description=");
-        builder.append(description);        
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", creationdate=");
-        builder.append(creationdate);
-        builder.append(", accountsuuid=");
-        builder.append(accountsuuid);
-        builder.append(", statusuuid=");
-        builder.append(statusuuid);
-        builder.append("]");
-        return builder.toString();
+    public String getName() {
+        return name;
     }
 
+    
+    public void setName(String name) {
+        this.name = StringUtils.trimToEmpty(name);
+    }
+    
+
+    public String getDescription() {
+        return description;
+    }
+    
+
+    public void setDescription(String description) {
+        this.description = StringUtils.trimToEmpty(description);
+    }    
+
+
+	/**
+	 * @return the uuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+
+
+	/**
+	 * @param uuid the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+
+	/**
+	 * @return the creationDate
+	 */
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+
+	/**
+	 * @param creationDate the creationDate to set
+	 */
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+
+	/**
+	 * @return the account
+	 */
+	public Account getAccount() {
+		return account;
+	}
+
+
+	/**
+	 * @param account the account to set
+	 */
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+
+	/**
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+    
+    
+	/**
+	 * @return the contacts
+	 */
+	public Set<Contact> getContacts() {
+		return contacts;
+	}
+
+
+	/**
+	 * @param contacts the contacts to set
+	 */
+	public void setContacts(Set<Contact> contacts) {
+		this.contacts = contacts;
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean isEqual = false;
+		
+		if(obj instanceof Group) {	
+			Group type = (Group)obj;
+			
+			isEqual = type.getUuid().equals(getId());		
+		}
+		
+		return isEqual;		
+	}
+	
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getUuid().hashCode();
+	}
+
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Group [Id=");
+		builder.append(getId());
+		builder.append(", uuid=");
+		builder.append(uuid);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", creationDate=");
+		builder.append(creationDate);
+		builder.append(", account=");
+		builder.append(account.getUsername());
+		builder.append(", status=");
+		builder.append(status.getDescription());
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
+	/** For Serialization */
+	public static final long serialVersionUID = new Random().nextLong();
+	
 }

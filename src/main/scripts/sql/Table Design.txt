@@ -108,7 +108,7 @@ This table stores phone numbers associated with the Contact
 - Phone Number
 - Contact UUID references Contact
 - Status uuid references Status
-- networkuuid text references network(uuid)
+- Network uuid text references Network
 
 
 ------
@@ -131,17 +131,15 @@ This table stores groups. A Group may have zero or more Contacts.
 - Name
 - Description
 - Date of Creation
-- Account uuid references Account(uuid)
+- Account uuid references Account
 - Status uuid references Status
 
 
 -------------------
-Table ContactGroup
+Table Contact_Group
 -------------------
 This table is used to show the association of Contacts and Groups. A Contact may
 belong to zero or more Groups. A Group may have zero or more Contacts.
-- Id (primary key)
-- UUID
 - Contact UUID references Contact(UUID)
 - Group UUID references Group(UUID)
 

@@ -28,13 +28,6 @@ import java.util.List;
  */
 public interface BabblePhoneDAO {
 
-	/**
-    *
-    * @param uuid
-    * @return a {@link Phone}
-    */
-   public Phone getPhone(String uuid);
-
   /**
   *
   * @param phoneNum
@@ -51,26 +44,7 @@ public interface BabblePhoneDAO {
   * @param contact
   * @return	a list of {@link Phone}s belonging to this contact
   */
- public List<Phone> getPhones(Contact contact);
-  
+ public List<Phone> getPhones(Contact contact);  
  
-    /**
-     *
-     * @param phone
-     * @return		<code>true</code> if successfully inserted; <code>false</code>
-     * for otherwise
-     */
-    public boolean putPhone(Phone phone);
-
-    
-    /**
-     * Note that the Contact that the Phone belongs to does not change with this method.
-     *
-     * @param uuid
-     * @param phone
-     * @return		<code>true</code> if successfully deleted; <code>false</code> for
-     * otherwise
-     */
-    public boolean updatePhone(String uuid, Phone phone);
 
 }

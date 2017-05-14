@@ -20,9 +20,10 @@ import ke.co.tawi.babblesms.server.beans.account.Status;
 import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.contact.Contact;
 import ke.co.tawi.babblesms.server.beans.contact.Phone;
-import ke.co.tawi.babblesms.server.beans.contact.Email;
+import ke.co.tawi.babblesms.server.beans.contact.Group;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Iterator;
 
 import org.hibernate.SessionFactory;
@@ -141,7 +142,7 @@ public class TestStorageImpl {
 		// Test Contact
 		//*****************	
 		long id = 3l;
-		
+		/*
 		Contact contact = (Contact)storage.get(Contact.class, id);
 		
 		assertEquals(contact.getName(), "Susan Omeara");
@@ -166,9 +167,18 @@ public class TestStorageImpl {
 		
 		assertEquals(phone.getUuid(), "af235d97-8ae8-4bd6-87dd-c5b5247fec82");
 		assertEquals(phone.getPhonenumber(), "254724300863");
+		*/
 		
-		System.out.println("Phone is: "  + phone);
+		//*****************
+		// Test Phone
+		//*****************	
+		id = 4l;
 		
+		Group group = (Group)storage.get(Group.class, id);
+		assertEquals(group.getName(), "Staff");
+		
+		//Set<Contact> contacts = group.getContacts();
+		//assertEquals(contacts.size(), 27);
 	}
 	
 	
