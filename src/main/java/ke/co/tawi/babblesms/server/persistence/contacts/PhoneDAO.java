@@ -161,7 +161,7 @@ public class PhoneDAO extends GenericDAO implements BabblePhoneDAO {
         		){
             pstmt.setString(1, phone.getUuid());
             pstmt.setString(2, phone.getPhonenumber());
-            pstmt.setString(3, phone.getContactUuid());
+            pstmt.setString(3, phone.getUuid());
             pstmt.setString(4, phone.getStatusuuid());
             pstmt.setString(5, phone.getNetworkuuid());
             

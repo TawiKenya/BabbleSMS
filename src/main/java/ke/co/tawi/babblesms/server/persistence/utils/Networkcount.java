@@ -114,7 +114,7 @@ public class Networkcount {
 	             
 	             if((fone.getNetworkuuid()).equalsIgnoreCase(nwkuuid)){
 	            createphone= new Phone();
-	            createphone.setContactUuid(fone.getContactUuid());
+	            createphone.setUuid(fone.getUuid());
 	            createphone.setPhonenumber(fone.getPhonenumber());
 	            createphone.setNetworkuuid(fone.getNetworkuuid()); 
 	            createphone.setStatusuuid(fone.getStatusuuid());

@@ -142,7 +142,7 @@ public class TestStorageImpl {
 		// Test Contact
 		//*****************	
 		long id = 3l;
-		/*
+		
 		Contact contact = (Contact)storage.get(Contact.class, id);
 		
 		assertEquals(contact.getName(), "Susan Omeara");
@@ -151,13 +151,16 @@ public class TestStorageImpl {
 		
 		assertEquals(contact.getEmails().size(), 3);
 		assertEquals(contact.getPhones().size(), 3);
+				
+		//Iterator<Phone> phoneIter = contact.getPhones().iterator();
+		//while(phoneIter.hasNext()) {
+		//	System.out.println(phoneIter.next());
+		//}
 		
-		Iterator<Phone> phoneIter = contact.getPhones().iterator();
-		while(phoneIter.hasNext()) {
-			//System.out.println(phoneIter.next());
-		}
+		Set<Group> groups = contact.getGroups();
+		assertEquals(groups.size(), 4);
 		
-		
+		/*
 		//*****************
 		// Test Phone
 		//*****************		
@@ -169,16 +172,16 @@ public class TestStorageImpl {
 		assertEquals(phone.getPhonenumber(), "254724300863");
 		*/
 		
-		//*****************
-		// Test Phone
-		//*****************	
+		//**************************
+		// Test Group with Contacts
+		//**************************
 		id = 4l;
 		
 		Group group = (Group)storage.get(Group.class, id);
 		assertEquals(group.getName(), "Staff");
 		
-		//Set<Contact> contacts = group.getContacts();
-		//assertEquals(contacts.size(), 27);
+		Set<Contact> contacts = group.getContacts();
+		assertEquals(contacts.size(), 38);		
 	}
 	
 	

@@ -174,7 +174,7 @@ public class UploadUtil {
 			    	 phone = new Phone();
 			    	 phone.setPhonenumber(StringUtils.trimToEmpty(phoneTokens[j]));
 			    	 phone.setPhonenumber(StringUtils.remove(phone.getPhonenumber(), ' '));
-			    	 phone.setContactUuid(contact.getUuid());
+			    	 phone.setUuid(contact.getUuid());
 			    	 phone.setStatusuuid(Status.ACTIVE);
 			    	 
 			    	 network = StringUtils.lowerCase( StringUtils.trimToEmpty( networkTokens[j] ));

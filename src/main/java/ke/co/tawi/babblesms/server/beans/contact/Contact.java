@@ -20,6 +20,7 @@ import ke.co.tawi.babblesms.server.beans.account.Account;
 import ke.co.tawi.babblesms.server.beans.account.Status;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -50,6 +51,8 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 
     private String name;
     private String description;
+    
+    
     private String uuid;
     
     @ManyToOne
@@ -66,7 +69,7 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
     @OneToMany(mappedBy="contact", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	private Set<Email> emails;
     
-    @ManyToMany(mappedBy="contacts")
+    @ManyToMany(mappedBy="contacts", fetch = FetchType.EAGER)
     private Set<Group> groups = new HashSet<Group>();
     
     /**
@@ -146,23 +149,7 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 		this.status = status;
 	}
 
-	
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
-
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
-	
+		
 	/**
 	 * @return the phones
 	 */
@@ -214,6 +201,22 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 	
 	
 	/**
+	 * @return the contactUuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+
+
+	/**
+	 * @param contactUuid the contactUuid to set
+	 */
+	public void setUuid(String contactUuid) {
+		this.uuid = contactUuid;
+	}
+	
+	
+	/**
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
@@ -232,7 +235,7 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 		if(obj instanceof Contact) {	
 			Contact type = (Contact)obj;
 			
-			isEqual = type.getUuid().equals(getId());		
+			isEqual = type.getUuid().equals(uuid);		
 		}
 		
 		return isEqual;		
@@ -269,4 +272,9 @@ public class Contact extends StorableBeanById implements Comparable<Contact> {
 		builder.append("]");
 		return builder.toString();
 	}
+
+
+	/** For Serialization */
+	public static final long serialVersionUID = new Random().nextLong();
+	
 }

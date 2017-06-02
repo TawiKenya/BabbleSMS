@@ -122,9 +122,9 @@ This table stores emails associated with the contact
 - Status uuid references Status
 
 
------------------
+----------------
  Table Group
- ----------------
+----------------
 This table stores groups. A Group may have zero or more Contacts.
 - Id (primary key)
 - UUID
@@ -140,8 +140,8 @@ Table Contact_Group
 -------------------
 This table is used to show the association of Contacts and Groups. A Contact may
 belong to zero or more Groups. A Group may have zero or more Contacts.
-- Contact UUID references Contact(UUID)
-- Group UUID references Group(UUID)
+- Contact Id references Contact(Id)
+- Group Id references Group(Id)
 
 
 

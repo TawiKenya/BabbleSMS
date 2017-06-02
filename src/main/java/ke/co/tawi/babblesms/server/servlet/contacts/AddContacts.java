@@ -164,7 +164,7 @@ public class AddContacts extends HttpServlet {
                 for (String phonenum : phonenumArray) {
                     phn = new Phone();
                     phn.setPhonenumber(phonenum);
-                    phn.setContactUuid(ct.getUuid());
+                    phn.setUuid(ct.getUuid());
                     phn.setNetworkuuid(networkArray[count]);
                     //phn.setStatusuuid(statusuuid);
 

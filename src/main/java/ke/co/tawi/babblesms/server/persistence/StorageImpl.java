@@ -57,6 +57,7 @@ public class StorageImpl extends Storage {
 		return sessionFactory;
 	}
 	
+	
 	/**
 	 * @see mobi.tawi.smsgw2.persistence.Storage#save(mobi.tawi.smsgw2.beans.StorableBean)
 	 */
@@ -96,22 +97,13 @@ public class StorageImpl extends Storage {
 	 * @see mobi.tawi.smsgw2.persistence.Storage#get(java.lang.Class, long)
 	 */
 	@Override
-	public StorableBeanById get(Class aClass, long id) {
-		System.out.println("We are fetching a StorableBeanById");
+	public StorableBeanById get(Class aClass, long id) {		
 		Session session = sessionFactory.openSession();
 		
 		session.getTransaction().begin();
 		
 		StorableBeanById bean = (StorableBeanById) session.get(aClass, id);
 				
-		if(aClass.getSimpleName().equals("Group")) {
-			System.out.println("We are fetching a Group");
-			ke.co.tawi.babblesms.server.beans.contact.Group group = 
-					(ke.co.tawi.babblesms.server.beans.contact.Group)bean;
-			
-			System.out.println("Group size is: " + group.getContacts().size());
-		}
-		
 		session.close();
 		
 		return bean;

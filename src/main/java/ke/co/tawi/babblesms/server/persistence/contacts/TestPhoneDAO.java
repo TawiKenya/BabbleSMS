@@ -83,7 +83,7 @@ public class TestPhoneDAO {
     	Phone p = storage.getPhone(PHONE_UUID);
     	assertEquals(p.getUuid(), PHONE_UUID);
     	assertEquals(p.getPhonenumber(), PHONENUM);
-    	assertEquals(p.getContactUuid(), CONTACTUUID);
+    	assertEquals(p.getUuid(), CONTACTUUID);
     	assertEquals(p.getStatusuuid(), STATUSUUID);
     	assertEquals(p.getNetworkuuid(), NETWORK_UUID);
     }
@@ -161,7 +161,7 @@ public class TestPhoneDAO {
 		storage = new PhoneDAO(DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWD, DB_PORT);
 		
 	    Phone phone = new Phone();
-	    phone.setContactUuid(CONTACTUUID_NEW);
+	    phone.setUuid(CONTACTUUID_NEW);
 	    phone.setPhonenumber(PHONE);
 	    phone.setStatusuuid(STATUSUUID_NEW);
 	    phone.setNetworkuuid(NETWORK_UUID_NEW);
@@ -172,7 +172,7 @@ public class TestPhoneDAO {
 	    
     	assertEquals(p.getUuid(), PUTPHONEUUID);
     	assertEquals(p.getPhonenumber() , PHONE );
-    	assertEquals(p.getContactUuid() , CONTACTUUID_NEW);
+    	assertEquals(p.getUuid() , CONTACTUUID_NEW);
     	assertEquals(p.getStatusuuid() , STATUSUUID_NEW );
     	assertEquals(p.getNetworkuuid() , NETWORK_UUID_NEW );		
 	}	

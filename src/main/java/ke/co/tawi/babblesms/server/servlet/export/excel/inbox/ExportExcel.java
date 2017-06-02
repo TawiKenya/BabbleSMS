@@ -215,7 +215,7 @@ public class ExportExcel extends HttpServlet {
         	      XSSFCell c3 = r.createCell(2);
         	      if(phoneList.size()>0){
         	         for(Phone phone:phoneList){ 
-        		 Contact contacts = ctDAO.getContact(phone.getContactUuid());      	                     
+        		 Contact contacts = ctDAO.getContact(phone.getUuid());      	                     
         			  c3.setCellValue(ch.createRichTextString(contacts.getName()));  }   
         			       }
         		  else{ 

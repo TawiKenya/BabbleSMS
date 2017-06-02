@@ -199,7 +199,7 @@ public class EditContact extends HttpServlet {
 				
 					Phone newPhone =new Phone();					
 					newPhone.setPhonenumber(phoneNum.trim());
-					newPhone.setContactUuid(cuuid);
+					newPhone.setUuid(cuuid);
 					newPhone .setStatusuuid(ACTIVE_STATUS);
 					newPhone.setNetworkuuid(networkArray[i].trim());
 					phoneDAO.putPhone(newPhone);					

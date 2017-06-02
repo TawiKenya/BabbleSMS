@@ -171,8 +171,8 @@ LOAD DATA LOCAL INFILE 'data/Groups.csv' INTO TABLE groups FIELDS TERMINATED BY 
 -- Table contact_group
 ----------------------
 CREATE TABLE contact_group (
-    contactUuid VARCHAR(40) REFERENCES contact(uuid),
-    groupUuid VARCHAR(40) REFERENCES groups(uuid)
+    contact_id BIGINT REFERENCES contact(Id),
+    group_id BIGINT REFERENCES groups(Id)
 ) ENGINE=InnoDB;
 
 LOAD DATA LOCAL INFILE 'data/Contact_Group.csv' INTO TABLE contact_group FIELDS TERMINATED BY '|'  IGNORE 1 LINES;

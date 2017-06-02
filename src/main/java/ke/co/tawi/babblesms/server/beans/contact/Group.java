@@ -48,9 +48,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table( name = "groups" )
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Group extends StorableBeanById {
-    
-	private String uuid;
+public class Group extends StorableBeanById {    
+	
+	private String uuid;	
     private String description;
     private String name;
     private Date creationDate;
@@ -64,11 +64,12 @@ public class Group extends StorableBeanById {
     private Status status;
     
     
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "contact_group", joinColumns = { @JoinColumn(name = "groupUuid") }, 
-    	inverseJoinColumns = { @JoinColumn(name = "contactUuid") })
+    @ManyToMany(fetch = FetchType.EAGER) // Since we are using L2 caching, this won't be a performance hit
+    @JoinTable(name = "contact_group",
+		joinColumns = { @JoinColumn(name = "group_id") },
+		inverseJoinColumns = { @JoinColumn(name = "contact_id") })
     Set<Contact> contacts;
-    
+        
     
     /**
      * 
@@ -123,22 +124,6 @@ public class Group extends StorableBeanById {
     public void setDescription(String description) {
         this.description = StringUtils.trimToEmpty(description);
     }    
-
-
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return uuid;
-	}
-
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
 
 
 	/**
@@ -199,9 +184,25 @@ public class Group extends StorableBeanById {
 
 	/**
 	 * @param contacts the contacts to set
-	 */
+	 */	
 	public void setContacts(Set<Contact> contacts) {
 		this.contacts = contacts;
+	}
+	
+	
+	/**
+	 * @return the groupUuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+
+
+	/**
+	 * @param groupUuid the groupUuid to set
+	 */
+	public void setUuid(String groupUuid) {
+		this.uuid = groupUuid;
 	}
 	
 	
@@ -215,7 +216,7 @@ public class Group extends StorableBeanById {
 		if(obj instanceof Group) {	
 			Group type = (Group)obj;
 			
-			isEqual = type.getUuid().equals(getId());		
+			isEqual = type.getUuid().equals(uuid);		
 		}
 		
 		return isEqual;		
@@ -227,7 +228,7 @@ public class Group extends StorableBeanById {
 	 */
 	@Override
 	public int hashCode() {
-		return getUuid().hashCode();
+		return uuid.hashCode();
 	}
 
 
@@ -241,10 +242,10 @@ public class Group extends StorableBeanById {
 		builder.append(getId());
 		builder.append(", uuid=");
 		builder.append(uuid);
-		builder.append(", description=");
-		builder.append(description);
 		builder.append(", name=");
 		builder.append(name);
+		builder.append(", description=");
+		builder.append(description);		
 		builder.append(", creationDate=");
 		builder.append(creationDate);
 		builder.append(", account=");
@@ -257,6 +258,6 @@ public class Group extends StorableBeanById {
 	
 	
 	/** For Serialization */
-	public static final long serialVersionUID = new Random().nextLong();
+	public static final long serialVersionUID = new Random().nextLong();	
 	
 }
