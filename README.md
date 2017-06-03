@@ -41,21 +41,12 @@ Linux.
 FEATURES
 --------
 
-The program has three REST API endpoints: Balance, Deposit and Withdrawal
-There is no requirement for authentication. It is assumed the web service is for
-one account only and is open to the world.
-
-The project constraints are as follows:
-○ Balance endpoint - this returns the outstanding balance
-○ Deposit endpoint - credits the account with the specified amount
-■ Max deposit for the day = $150K
-■ Max deposit per transaction = $40K
-■ Max deposit frequency = 4 transactions/day
-○ Withdrawal endpoint deducts the   account   with   the   specified   amount
-■ Max withdrawal for the day = $50K
-■ Max withdrawal per transaction = $20K
-■ Max withdrawal frequency = 3 transactions/day
-■ Cannot withdraw when balance is less than withdrawal amount
+The application allows for the following:
+- Addition and editing of Contacts
+- Addition and editing of Groups
+- Send SMS to Contacts and Groups
+- Receive SMS from mobile subscribers
+- View credit balance
 
 
 --------------
@@ -277,15 +268,15 @@ CREDITS / CONTACT
 ## Acknowledgments
 * Kenyan mobile money operators
 
+## Contributing
+All contributions are welcome. You can pull requests to us via Github.
+
 
 ----------
 VERSIONING
 ----------
 The project uses git via Github. The project repository can be viewed here:
-https://bitbucket.org/mwakahe2/bankaccount
-
-## Contributing
-All contributions are welcome. You can pull requests to us via Github.
+https://github.com/TawiKenya/BabbleSMS
 
 
 --------
@@ -293,3 +284,9 @@ LICENSE
 --------
 This project is licensed under the Open Software License v. 3.0 (OSL-3.0) - see
 the [LICENSE.md](LICENSE.md) file for details.
+
+
+-----------------
+USEFUL RESOURCES
+-----------------
+-
