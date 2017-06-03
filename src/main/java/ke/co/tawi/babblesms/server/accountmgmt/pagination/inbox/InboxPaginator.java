@@ -96,7 +96,7 @@ public class InboxPaginator {
         List<Shortcode> smsCodes = shortCodeDAO.getShortcodes(account);
 
         for (Shortcode code : smsCodes) {
-            shortcodes.add(code.getUuid());
+        //    shortcodes.add(code.getUuid());
         }
     }
     

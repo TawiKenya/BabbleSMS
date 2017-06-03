@@ -281,7 +281,7 @@ CREDITS / CONTACT
 ----------
 VERSIONING
 ----------
-The project uses git via BitBucket. The project repository can be viewed here:
+The project uses git via Github. The project repository can be viewed here:
 https://bitbucket.org/mwakahe2/bankaccount
 
 ## Contributing

@@ -245,7 +245,7 @@ public class AllTopupsExportUtil {
                 row = sheet.createRow(rowCount);
 
                 cell = row.createCell(0);
-                cell.setCellValue(topup.getUuid());
+                //cell.setCellValue(topup.getUuid());
 
                 //cell = row.createCell(1);
                 //cell.setCellValue(topup.getMessageid());
@@ -336,7 +336,7 @@ public class AllTopupsExportUtil {
                 row = sheet.createRow(rowCount);
 
                 cell = row.createCell(0);
-                cell.setCellValue(topup.getUuid());
+                //cell.setCellValue(topup.getUuid());
 
                 //cell = row.createCell(1);
                 //cell.setCellValue(topup.getMessageid());
@@ -423,14 +423,4 @@ public class AllTopupsExportUtil {
     }
 }
 
-/*
-** Local Variables:
-**   mode: java
-**   c-basic-offset: 2
-**   tab-width: 2
-**   indent-tabs-mode: nil
-** End:
-**
-** ex: set softtabstop=2 tabstop=2 expandtab:
-**
-*/
+
